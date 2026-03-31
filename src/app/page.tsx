@@ -51,11 +51,11 @@ export default function HomePage() {
   }, []);
 
   const handleToggleSearch = useCallback(() => {
-    setShowSearch((prev) => !prev);
-    if (showSearch) {
-      setFilters((f) => ({ ...f, search: "" }));
-    }
-  }, [showSearch]);
+    setShowSearch((prev) => {
+      if (prev) setFilters((f) => ({ ...f, search: "" }));
+      return !prev;
+    });
+  }, []);
 
   return (
     <div className="h-screen flex flex-col">
