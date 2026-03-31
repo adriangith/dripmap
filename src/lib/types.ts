@@ -52,7 +52,8 @@ export interface PracticalInfo {
 export interface LocationStatus {
   site: SiteStatus;
   waterAccess: WaterAccessStatus;
-  note: string;
+  note?: string;
+  /** ISO 8601 date string, e.g. "2026-03-15" */
   lastVerified: string;
 }
 
