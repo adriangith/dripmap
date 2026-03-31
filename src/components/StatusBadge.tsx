@@ -1,6 +1,8 @@
 import type { SiteStatus, WaterAccessStatus } from "@/lib/types";
 
-const STATUS_STYLES: Record<string, string> = {
+type AllStatus = SiteStatus | WaterAccessStatus;
+
+const STATUS_STYLES: Record<AllStatus, string> = {
   open: "bg-green-100 text-green-800",
   closed: "bg-red-100 text-red-800",
   seasonal: "bg-amber-100 text-amber-800",
@@ -8,7 +10,7 @@ const STATUS_STYLES: Record<string, string> = {
   unknown: "bg-gray-100 text-gray-600",
 };
 
-const STATUS_LABELS: Record<string, string> = {
+const STATUS_LABELS: Record<AllStatus, string> = {
   open: "Open",
   closed: "Closed",
   seasonal: "Seasonal",

@@ -1,7 +1,7 @@
-import { Waves, Droplets, CloudRain, Sparkles, TreePine } from "lucide-react";
+import { Waves, Droplets, CloudRain, Sparkles, TreePine, type LucideIcon } from "lucide-react";
 import type { LocationType } from "@/lib/types";
 
-const TYPE_CONFIG: Record<LocationType, { icon: typeof Waves; label: string; color: string }> = {
+const TYPE_CONFIG: Record<LocationType, { icon: LucideIcon; label: string; color: string }> = {
   waterfall: { icon: Waves, label: "Waterfall", color: "text-blue-600" },
   "swimming-hole": { icon: Droplets, label: "Swimming Hole", color: "text-cyan-600" },
   "splash-pad": { icon: CloudRain, label: "Splash Pad", color: "text-violet-600" },
