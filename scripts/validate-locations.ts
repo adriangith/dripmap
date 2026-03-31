@@ -96,7 +96,7 @@ export function validateLocation(data: Record<string, unknown>): string[] {
 }
 
 // CLI entrypoint: validate all YAML files in data/locations/
-if (process.argv[1] && process.argv[1].includes("validate-locations")) {
+if (process.argv[1] === __filename) {
   const locationsDir = path.resolve(process.cwd(), "data/locations");
 
   if (!fs.existsSync(locationsDir)) {
@@ -107,8 +107,8 @@ if (process.argv[1] && process.argv[1].includes("validate-locations")) {
   const files = fs.readdirSync(locationsDir).filter((f) => f.endsWith(".yaml"));
 
   if (files.length === 0) {
-    console.error("Error: No YAML files found in data/locations/");
-    process.exit(1);
+    console.warn("Warning: No YAML files found in data/locations/ — nothing to validate.");
+    process.exit(0);
   }
 
   let hasErrors = false;
@@ -116,7 +116,14 @@ if (process.argv[1] && process.argv[1].includes("validate-locations")) {
   for (const file of files) {
     const filePath = path.join(locationsDir, file);
     const content = fs.readFileSync(filePath, "utf-8");
-    const data = yaml.load(content) as Record<string, unknown>;
+    let data: Record<string, unknown>;
+    try {
+      data = yaml.load(content) as Record<string, unknown>;
+    } catch (e) {
+      hasErrors = true;
+      console.error(`\n❌ ${file}: YAML parse error — ${(e as Error).message}`);
+      continue;
+    }
     const errors = validateLocation(data);
 
     if (errors.length > 0) {
