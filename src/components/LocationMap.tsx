@@ -117,7 +117,7 @@ export default function LocationMap({
     }
 
     return () => {
-      if (marker) marker.closePopup();
+      mapRef.current?.closePopup();
     };
   }, [highlightedSlug]);
 
