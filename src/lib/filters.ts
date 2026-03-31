@@ -1,5 +1,11 @@
 import type { LocationIndexEntry, Filters } from "./types";
 
+/**
+ * Filters a location index by the active fields in `filters`.
+ * NOTE: `accessibility`, `season`, and `cost` are not applied here because
+ * `LocationIndexEntry` does not include `practical` data. Apply them after
+ * fetching full `Location` objects if needed.
+ */
 export function filterLocations(
   locations: LocationIndexEntry[],
   filters: Filters
