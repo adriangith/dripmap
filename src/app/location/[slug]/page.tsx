@@ -119,7 +119,7 @@ export default async function LocationPage({ params }: PageProps) {
                 <div>
                   <p className="text-xs text-gray-500">Accessibility</p>
                   <p className="text-sm font-medium capitalize">
-                    {p.accessibility.replace("-", " ")}
+                    {p.accessibility.replaceAll("-", " ")}
                   </p>
                 </div>
               </div>
@@ -166,7 +166,7 @@ export default async function LocationPage({ params }: PageProps) {
                       key={f}
                       className="px-2 py-0.5 text-xs bg-gray-100 text-gray-700 rounded capitalize"
                     >
-                      {f.replace("-", " ")}
+                      {f.replaceAll("-", " ")}
                     </span>
                   ))}
                 </div>
