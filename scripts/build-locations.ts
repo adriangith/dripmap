@@ -15,6 +15,11 @@ export function buildIndex(locations: Location[]): LocationIndexEntry[] {
   }));
 }
 
+/**
+ * Returns the full location object for detail-page JSON output.
+ * Intentional extension point: future enrichment (e.g. resolving photo URLs,
+ * adding computed fields) belongs here.
+ */
 export function buildDetail(location: Location): Location {
   return location;
 }
@@ -27,13 +32,30 @@ if (process.argv[1] === __filename) {
 
   fs.mkdirSync(detailDir, { recursive: true });
 
+  if (!fs.existsSync(locationsDir)) {
+    console.error(`Error: ${locationsDir} does not exist`);
+    process.exit(1);
+  }
+
   const files = fs.readdirSync(locationsDir).filter((f) => f.endsWith(".yaml"));
+
+  if (files.length === 0) {
+    console.warn("Warning: No YAML files found in data/locations/ — nothing to build.");
+    process.exit(0);
+  }
+
   const locations: Location[] = [];
 
   for (const file of files) {
     const filePath = path.join(locationsDir, file);
     const content = fs.readFileSync(filePath, "utf-8");
-    const data = yaml.load(content) as Location;
+    let data: Location;
+    try {
+      data = yaml.load(content) as Location;
+    } catch (e) {
+      console.error(`Error parsing ${file}: ${(e as Error).message}`);
+      process.exit(1);
+    }
     locations.push(data);
 
     const detail = buildDetail(data);
