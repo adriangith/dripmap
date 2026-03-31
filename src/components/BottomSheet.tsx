@@ -72,7 +72,7 @@ export default function BottomSheet({ children }: BottomSheetProps) {
     return () => {
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("mouseup", onMouseUp);
-      window.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("touchmove", onTouchMove, { passive: true });
       window.removeEventListener("touchend", onTouchEnd);
     };
   }, [isDragging, handleDragMove, handleDragEnd]);
