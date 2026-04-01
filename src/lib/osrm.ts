@@ -18,3 +18,20 @@ export function formatDriveTime(seconds: number): string {
   }
   return `~${hrs} hr ${mins} min`;
 }
+
+/**
+ * Format a distance in meters as a human-readable drive distance.
+ * Under 10 km: one decimal place. 10 km+: whole numbers.
+ */
+export function formatDriveDistance(meters: number): string {
+  const km = meters / 1000;
+
+  // Round to 1 decimal place first
+  const rounded = Math.round(km * 10) / 10;
+
+  if (rounded >= 10) {
+    return `${Math.round(km)} km`;
+  }
+
+  return `${rounded} km`;
+}

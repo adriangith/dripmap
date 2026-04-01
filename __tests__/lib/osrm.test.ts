@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { formatDriveTime } from "../../src/lib/osrm";
+import { formatDriveTime, formatDriveDistance } from "../../src/lib/osrm";
 
 describe("formatDriveTime", () => {
   it("rounds short durations to nearest 5 min with minimum of 5", () => {
@@ -21,5 +21,19 @@ describe("formatDriveTime", () => {
   it("rounds hour durations to nearest 5 min", () => {
     expect(formatDriveTime(3720)).toBe("~1 hr");
     expect(formatDriveTime(4080)).toBe("~1 hr 10 min");
+  });
+});
+
+describe("formatDriveDistance", () => {
+  it("formats distances under 10 km with one decimal place", () => {
+    expect(formatDriveDistance(500)).toBe("0.5 km");
+    expect(formatDriveDistance(3200)).toBe("3.2 km");
+    expect(formatDriveDistance(9950)).toBe("10 km");
+  });
+
+  it("formats distances 10 km and above as whole numbers", () => {
+    expect(formatDriveDistance(10000)).toBe("10 km");
+    expect(formatDriveDistance(38000)).toBe("38 km");
+    expect(formatDriveDistance(380000)).toBe("380 km");
   });
 });
