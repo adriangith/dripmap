@@ -1,3 +1,54 @@
+import type { Coordinates } from "./types";
+
+export interface DrivingInfo {
+  distance: number;  // meters
+  duration: number;  // seconds
+}
+
+const OSRM_BASE = "https://router.project-osrm.org/route/v1/driving";
+const TIMEOUT_MS = 3000;
+
+/**
+ * Fetch driving distance and duration from OSRM.
+ * Returns null on any failure (network, timeout, no route).
+ */
+export async function fetchDrivingInfo(
+  origin: Coordinates,
+  destination: Coordinates,
+): Promise<DrivingInfo | null> {
+  const url = `${OSRM_BASE}/${origin.lng},${origin.lat};${destination.lng},${destination.lat}?overview=false`;
+
+  const controller = new AbortController();
+
+  const abortPromise = new Promise<null>((resolve) => {
+    const timer = setTimeout(() => {
+      controller.abort();
+      resolve(null);
+    }, TIMEOUT_MS);
+    // Clean up timer if signal is aborted externally before timeout
+    controller.signal.addEventListener("abort", () => clearTimeout(timer));
+  });
+
+  const fetchPromise = (async (): Promise<DrivingInfo | null> => {
+    try {
+      const res = await fetch(url, { signal: controller.signal });
+      if (!res.ok) return null;
+
+      const data = await res.json();
+      if (data.code !== "Ok" || !data.routes?.[0]) return null;
+
+      return {
+        distance: data.routes[0].distance,
+        duration: data.routes[0].duration,
+      };
+    } catch {
+      return null;
+    }
+  })();
+
+  return Promise.race([fetchPromise, abortPromise]);
+}
+
 /**
  * Format a duration in seconds as a human-readable drive time.
  * Rounds to nearest 5 minutes, minimum "~5 min".
