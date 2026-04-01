@@ -1,16 +1,18 @@
-import type { LocationIndexEntry } from "@/lib/types";
+import type { LocationIndexEntry, Coordinates } from "@/lib/types";
 import LocationCard from "./LocationCard";
 
 interface LocationListProps {
   locations: LocationIndexEntry[];
   highlightedSlug: string | null;
   onHover: (slug: string | null) => void;
+  userLocation?: Coordinates | null;
 }
 
 export default function LocationList({
   locations,
   highlightedSlug,
   onHover,
+  userLocation,
 }: LocationListProps) {
   if (locations.length === 0) {
     return (
@@ -28,6 +30,7 @@ export default function LocationList({
           location={loc}
           onHover={onHover}
           isHighlighted={loc.slug === highlightedSlug}
+          userLocation={userLocation}
         />
       ))}
     </div>

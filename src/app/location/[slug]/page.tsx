@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, MapPin, Car, Shield, DollarSign, Calendar, AlertTriangle } from "lucide-react";
+import { ArrowLeft, MapPin, Car, Shield, DollarSign, Calendar, AlertTriangle, Navigation, ExternalLink } from "lucide-react";
 import { getLocationDetailStatic, getAllLocationSlugs } from "@/lib/locations";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -231,6 +231,29 @@ export default async function LocationPage({ params }: PageProps) {
               {location.coordinates.lat.toFixed(4)},{" "}
               {location.coordinates.lng.toFixed(4)}
             </p>
+            {/* Get Directions */}
+            <div className="flex gap-3 mt-3">
+              <a
+                href={`https://www.google.com/maps/dir/?api=1&destination=${location.coordinates.lat},${location.coordinates.lng}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-blue-700 transition-colors"
+              >
+                <Navigation className="w-4 h-4" />
+                Google Maps
+                <ExternalLink className="w-3.5 h-3.5 opacity-70" />
+              </a>
+              <a
+                href={`https://maps.apple.com/?daddr=${location.coordinates.lat},${location.coordinates.lng}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-lg bg-gray-900 px-4 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-gray-800 transition-colors"
+              >
+                <Navigation className="w-4 h-4" />
+                Apple Maps
+                <ExternalLink className="w-3.5 h-3.5 opacity-70" />
+              </a>
+            </div>
           </section>
 
           <p className="text-xs text-gray-400 mb-6">

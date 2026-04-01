@@ -7,7 +7,7 @@ import FilterBar from "@/components/FilterBar";
 import LocationList from "@/components/LocationList";
 import BottomSheet from "@/components/BottomSheet";
 import { filterLocations } from "@/lib/filters";
-import type { LocationIndexEntry, Filters } from "@/lib/types";
+import type { LocationIndexEntry, Filters, Coordinates } from "@/lib/types";
 
 const LocationMap = dynamic(() => import("@/components/LocationMap"), {
   ssr: false,
@@ -32,6 +32,7 @@ export default function HomePage() {
   const [filters, setFilters] = useState<Filters>(emptyFilters);
   const [highlightedSlug, setHighlightedSlug] = useState<string | null>(null);
   const [showSearch, setShowSearch] = useState(false);
+  const [userLocation, setUserLocation] = useState<Coordinates | null>(null);
 
   const [loadError, setLoadError] = useState(false);
 
@@ -68,6 +69,10 @@ export default function HomePage() {
     });
   }, []);
 
+  const handleUserLocation = useCallback((coords: Coordinates) => {
+    setUserLocation(coords);
+  }, []);
+
   return (
     <div className="h-screen flex flex-col overflow-hidden">
       <Header onSearchClick={handleToggleSearch} showSearch />
@@ -81,6 +86,7 @@ export default function HomePage() {
             highlightedSlug={highlightedSlug}
             onMarkerClick={handleMarkerClick}
             onMarkerHover={handleMarkerHover}
+            onUserLocation={handleUserLocation}
           />
         </div>
 
@@ -103,6 +109,7 @@ export default function HomePage() {
               locations={filteredLocations}
               highlightedSlug={highlightedSlug}
               onHover={setHighlightedSlug}
+              userLocation={userLocation}
             />
           </div>
         </div>
@@ -126,6 +133,7 @@ export default function HomePage() {
           locations={filteredLocations}
           highlightedSlug={highlightedSlug}
           onHover={setHighlightedSlug}
+          userLocation={userLocation}
         />
       </BottomSheet>
     </div>

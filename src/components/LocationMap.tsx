@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import { Crosshair } from "lucide-react";
 
-import type { LocationIndexEntry, LocationType } from "@/lib/types";
+import type { LocationIndexEntry, LocationType, Coordinates } from "@/lib/types";
 
 const PIN_COLORS: Record<LocationType, string> = {
   waterfall: "#2563eb",
@@ -33,11 +34,43 @@ function createPinIcon(type: LocationType): L.DivIcon {
   });
 }
 
+function createUserLocationIcon(): L.DivIcon {
+  return L.divIcon({
+    className: "",
+    html: `<div class="user-location-pulse" style="
+      position: relative;
+      width: 18px; height: 18px;
+    ">
+      <div style="
+        position: absolute; inset: 0;
+        background: #3b82f6;
+        border: 3px solid white;
+        border-radius: 50%;
+        box-shadow: 0 2px 6px rgba(59,130,246,0.5);
+        z-index: 2;
+      "></div>
+      <div class="user-location-ring" style="
+        position: absolute;
+        top: 50%; left: 50%;
+        width: 36px; height: 36px;
+        margin: -18px 0 0 -18px;
+        background: rgba(59,130,246,0.15);
+        border: 2px solid rgba(59,130,246,0.3);
+        border-radius: 50%;
+        z-index: 1;
+      "></div>
+    </div>`,
+    iconSize: [18, 18],
+    iconAnchor: [9, 9],
+  });
+}
+
 interface LocationMapProps {
   locations: LocationIndexEntry[];
   highlightedSlug: string | null;
   onMarkerClick: (slug: string) => void;
   onMarkerHover: (slug: string | null) => void;
+  onUserLocation?: (coords: Coordinates) => void;
 }
 
 export default function LocationMap({
@@ -45,10 +78,15 @@ export default function LocationMap({
   highlightedSlug,
   onMarkerClick,
   onMarkerHover,
+  onUserLocation,
 }: LocationMapProps) {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<L.Map | null>(null);
   const markersRef = useRef<Map<string, L.Marker>>(new Map());
+  const userMarkerRef = useRef<L.Marker | null>(null);
+
+  const [locating, setLocating] = useState(false);
+  const [locateError, setLocateError] = useState<string | null>(null);
 
   // Initialize map
   useEffect(() => {
@@ -146,5 +184,86 @@ export default function LocationMap({
     };
   }, [highlightedSlug]);
 
-  return <div ref={mapContainerRef} className="h-full w-full" />;
+  const handleLocateMe = useCallback(() => {
+    if (typeof navigator === "undefined" || !navigator.geolocation) {
+      setLocateError("Geolocation not supported");
+      return;
+    }
+
+    setLocating(true);
+    setLocateError(null);
+
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const { latitude: lat, longitude: lng } = pos.coords;
+        const map = mapRef.current;
+        if (map) {
+          // Remove old user marker
+          if (userMarkerRef.current) {
+            userMarkerRef.current.remove();
+          }
+
+          const userMarker = L.marker([lat, lng], {
+            icon: createUserLocationIcon(),
+            zIndexOffset: 1000,
+          })
+            .addTo(map)
+            .bindPopup("You are here");
+
+          userMarkerRef.current = userMarker;
+          map.setView([lat, lng], 12);
+        }
+
+        onUserLocation?.({ lat, lng });
+        setLocating(false);
+      },
+      (err) => {
+        switch (err.code) {
+          case err.PERMISSION_DENIED:
+            setLocateError("Location permission denied");
+            break;
+          case err.POSITION_UNAVAILABLE:
+            setLocateError("Location unavailable");
+            break;
+          case err.TIMEOUT:
+            setLocateError("Location request timed out");
+            break;
+          default:
+            setLocateError("Unable to get location");
+        }
+        setLocating(false);
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 },
+    );
+  }, [onUserLocation]);
+
+  // Auto-dismiss error after 4 seconds
+  useEffect(() => {
+    if (!locateError) return;
+    const t = setTimeout(() => setLocateError(null), 4000);
+    return () => clearTimeout(t);
+  }, [locateError]);
+
+  return (
+    <div className="relative h-full w-full">
+      <div ref={mapContainerRef} className="h-full w-full" />
+
+      {/* Locate me button — positioned above mobile bottom sheet */}
+      <button
+        onClick={handleLocateMe}
+        disabled={locating}
+        aria-label="Show my location"
+        className="absolute bottom-[160px] right-4 lg:bottom-4 z-[1000] flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-lg border border-gray-200 hover:bg-gray-50 active:bg-gray-100 transition-colors disabled:opacity-60"
+      >
+        <Crosshair className={`w-5 h-5 text-blue-600 ${locating ? "animate-spin" : ""}`} />
+      </button>
+
+      {/* Error toast */}
+      {locateError && (
+        <div className="absolute bottom-[210px] right-4 lg:bottom-16 z-[1000] rounded-lg bg-red-50 border border-red-200 px-3 py-2 text-sm text-red-700 shadow-md">
+          {locateError}
+        </div>
+      )}
+    </div>
+  );
 }

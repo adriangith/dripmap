@@ -5,6 +5,14 @@ export const metadata: Metadata = {
   title: "dripmap — Find Water Play Locations",
   description: "Discover waterfalls, swimming holes, splash pads, and more worldwide.",
   manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "dripmap",
+  },
+  icons: {
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+  },
 };
 
 export const viewport: Viewport = {

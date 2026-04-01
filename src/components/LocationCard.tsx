@@ -1,5 +1,6 @@
 import Link from "next/link";
-import type { LocationIndexEntry } from "@/lib/types";
+import type { LocationIndexEntry, Coordinates } from "@/lib/types";
+import { haversineDistanceKm, formatDistance } from "@/lib/useCurrentLocation";
 import TypeBadge from "./TypeBadge";
 import StatusBadge from "./StatusBadge";
 
@@ -7,13 +8,20 @@ interface LocationCardProps {
   location: LocationIndexEntry;
   onHover?: (slug: string | null) => void;
   isHighlighted?: boolean;
+  userLocation?: Coordinates | null;
 }
 
 export default function LocationCard({
   location,
   onHover,
   isHighlighted,
+  userLocation,
 }: LocationCardProps) {
+  const distance =
+    userLocation
+      ? formatDistance(haversineDistanceKm(userLocation, location.coordinates))
+      : null;
+
   return (
     <Link
       href={`/location/${location.slug}`}
@@ -31,6 +39,9 @@ export default function LocationCard({
           <div className="flex items-center gap-2 mt-1">
             <TypeBadge type={location.type} showLabel={false} />
             <span className="text-sm text-gray-500">{location.country}</span>
+            {distance && (
+              <span className="text-xs text-blue-600 font-medium">{distance}</span>
+            )}
           </div>
         </div>
         <div className="flex flex-col items-end gap-1 shrink-0">
