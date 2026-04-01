@@ -89,6 +89,8 @@ export default function LocationMap({
   // Keep a ref so callbacks always read the latest sheetHeight without re-creating
   const sheetHeightRef = useRef(sheetHeight);
   useEffect(() => { sheetHeightRef.current = sheetHeight; }, [sheetHeight]);
+  // Skip fitBounds after locate so the centering isn't overridden by re-sort
+  const skipFitBoundsRef = useRef(false);
 
   const [locating, setLocating] = useState(false);
   const [locateError, setLocateError] = useState<string | null>(null);
@@ -166,8 +168,8 @@ export default function LocationMap({
       markersRef.current.set(loc.slug, marker);
     }
 
-    // Fit bounds if there are locations
-    if (locations.length > 0) {
+    // Fit bounds if there are locations (skip if user just located themselves)
+    if (locations.length > 0 && !skipFitBoundsRef.current) {
       const bounds = L.latLngBounds(
         locations.map((l) => [l.coordinates.lat, l.coordinates.lng])
       );
@@ -178,6 +180,7 @@ export default function LocationMap({
         maxZoom: 10,
       });
     }
+    skipFitBoundsRef.current = false;
   }, [locations, onMarkerClick, onMarkerHover]);
 
   // Highlight effect
@@ -226,6 +229,10 @@ export default function LocationMap({
             .bindPopup("You are here");
 
           userMarkerRef.current = userMarker;
+
+          // Prevent fitBounds from overriding this view when the
+          // distance-sorted location list triggers a re-render
+          skipFitBoundsRef.current = true;
 
           // Center user in visible area above the sheet
           const sh = sheetHeightRef.current;
