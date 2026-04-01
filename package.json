@@ -13,7 +13,8 @@
     "test:e2e": "npm run build && playwright test",
     "validate": "npx tsx scripts/validate-locations.ts",
     "build:data": "npx tsx scripts/build-locations.ts",
-    "prebuild": "npm run validate && npm run build:data"
+    "prebuild": "npm run validate && npm run build:data",
+    "dev:network:https": "next dev --hostname 0.0.0.0 --experimental-https --experimental-https-key certificates/localhost-key.pem --experimental-https-cert certificates/localhost.pem"
   },
   "dependencies": {
     "js-yaml": "^4.1.1",
