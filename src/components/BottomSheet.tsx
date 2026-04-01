@@ -61,12 +61,15 @@ export default function BottomSheet({ children }: BottomSheetProps) {
 
     const onMouseMove = (e: MouseEvent) => handleDragMove(e.clientY);
     const onMouseUp = () => handleDragEnd();
-    const onTouchMove = (e: TouchEvent) => handleDragMove(e.touches[0].clientY);
+    const onTouchMove = (e: TouchEvent) => {
+      e.preventDefault();
+      handleDragMove(e.touches[0].clientY);
+    };
     const onTouchEnd = () => handleDragEnd();
 
     window.addEventListener("mousemove", onMouseMove);
     window.addEventListener("mouseup", onMouseUp);
-    window.addEventListener("touchmove", onTouchMove, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: false });
     window.addEventListener("touchend", onTouchEnd);
 
     return () => {
@@ -89,8 +92,12 @@ export default function BottomSheet({ children }: BottomSheetProps) {
       {/* Drag handle */}
       <div
         className="flex items-center justify-center py-3 cursor-grab active:cursor-grabbing shrink-0"
+        style={{ touchAction: "none" }}
         onMouseDown={(e) => handleDragStart(e.clientY)}
-        onTouchStart={(e) => handleDragStart(e.touches[0].clientY)}
+        onTouchStart={(e) => {
+          e.preventDefault();
+          handleDragStart(e.touches[0].clientY);
+        }}
       >
         <div className="w-10 h-1 rounded-full bg-gray-300" />
       </div>
