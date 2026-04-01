@@ -37,6 +37,12 @@ export function createLeafletMock() {
     control: {
       zoom: vi.fn().mockReturnValue(mockZoomControl),
     },
+    Icon: {
+      Default: {
+        prototype: {} as Record<string, unknown>,
+        mergeOptions: vi.fn(),
+      },
+    },
   };
 
   return { L, mockMap, mockTileLayer, mockMarker, mockZoomControl };

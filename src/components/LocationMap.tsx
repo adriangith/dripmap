@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+
 import type { LocationIndexEntry, LocationType } from "@/lib/types";
 
 const PIN_COLORS: Record<LocationType, string> = {
@@ -51,6 +52,11 @@ export default function LocationMap({
   // Initialize map
   useEffect(() => {
     if (!mapContainerRef.current || mapRef.current) return;
+
+    // Prevent Leaflet from resolving default marker images relative to the
+    // current page URL (they 404 on sub-routes like /location/*)
+    delete (L.Icon.Default.prototype as unknown as Record<string, unknown>)._getIconUrl;
+    L.Icon.Default.mergeOptions({ iconUrl: "", iconRetinaUrl: "", shadowUrl: "" });
 
     const map = L.map(mapContainerRef.current, {
       zoomControl: false,
