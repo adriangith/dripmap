@@ -1,0 +1,38 @@
+slug: lake-nillahcootie
+name: Lake Nillahcootie
+type: swimming-hole
+coordinates:
+  lat: -36.833
+  lng: 146.033
+region: Victoria, Australia
+country: AU
+description: >
+  A flat, shallow, north-facing lake at relatively low elevation that heats up earlier in the year, making it a bit warmer for swimming than most other large reservoirs in Victoria. Perfect for a springtime swim when venturing outdoors into the water again after winter.
+photos:
+  - url: /images/placeholder.jpg
+    alt: Lake Nillahcootie swimming hole in Victoria, Australia
+practical:
+  accessibility: easy
+  parking: available
+  facilities:
+    - picnic-tables
+  bestSeason:
+    - spring
+    - summer
+  dangerLevel: low
+  cost: free
+directions: >
+  Located south of Benalla. From Benalla, head south on the Midland Highway, then turn east onto Lake Nillahcootie Road. Swimming and picnic areas are signposted around the lake.
+tips:
+  - Warms up earlier than most Victorian reservoirs — great for spring swimming
+  - Shallow lake with gradual entry — suitable for families
+  - Water levels can vary with irrigation demand
+  - Good spot for an early season swim
+tags:
+  - lake
+  - family-friendly
+  - warm-water
+status:
+  site: open
+  waterAccess: open
+  lastVerified: "2026-04-01"

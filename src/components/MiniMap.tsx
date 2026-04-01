@@ -39,15 +39,19 @@ export default function MiniMap({ coordinates, name }: MiniMapProps) {
         border-radius: 50% 50% 50% 0;
         transform: rotate(-45deg);
         box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        pointer-events: none;
       "></div>`,
       iconSize: [24, 24],
       iconAnchor: [12, 24],
       popupAnchor: [0, -24],
     });
 
+    const popupEl = document.createElement("span");
+    popupEl.textContent = name;
+
     L.marker([coordinates.lat, coordinates.lng], { icon })
       .addTo(map)
-      .bindPopup(name);
+      .bindPopup(popupEl);
 
     mapRef.current = map;
 

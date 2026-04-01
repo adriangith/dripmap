@@ -66,4 +66,17 @@ describe("validateLocation", () => {
     expect(errors.length).toBeGreaterThan(0);
     expect(errors[0]).toContain("status.site");
   });
+
+  it("rejects malformed lastVerified dates", () => {
+    const badDates = ["not-a-date", "01-01-2026", "2026/01/01", "2026-13-01", ""];
+    for (const bad of badDates) {
+      const errors = validateLocation({
+        ...validLocation,
+        status: { ...validLocation.status, lastVerified: bad },
+      });
+      expect(errors).toContainEqual(
+        expect.stringContaining("lastVerified")
+      );
+    }
+  });
 });

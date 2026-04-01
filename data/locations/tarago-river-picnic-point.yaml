@@ -1,0 +1,40 @@
+slug: tarago-river-picnic-point
+name: Tarago River at Picnic Point, Longwarry North
+type: swimming-hole
+coordinates:
+  lat: -38.12
+  lng: 145.79
+region: Victoria, Australia
+country: AU
+description: >
+  The Tarago River meanders past a grassy knoll with a shallow, sandy beach where you can dangle your feet in the water from the streamside logs, or wade into the water for a splash around. Playground and barbecue facilities make it ideal for families.
+photos:
+  - url: /images/placeholder.jpg
+    alt: Tarago River at Picnic Point, Longwarry North swimming hole in Victoria, Australia
+practical:
+  accessibility: easy
+  parking: available
+  facilities:
+    - playground
+    - barbecues
+    - picnic-tables
+  bestSeason:
+    - summer
+  dangerLevel: low
+  cost: free
+directions: >
+  Located at Longwarry North, east of Melbourne. From the Princes Highway, turn off at Longwarry and follow signs to Picnic Point on the Tarago River.
+tips:
+  - Shallow water suitable for children and wading
+  - Playground and barbecue facilities for families
+  - Peaceful riverside setting for relaxation
+  - Sandy beach provides easy water access
+tags:
+  - river
+  - family-friendly
+  - picnic
+  - wading
+status:
+  site: open
+  waterAccess: open
+  lastVerified: "2026-04-01"

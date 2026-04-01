@@ -1,0 +1,42 @@
+slug: lysterfield-lake
+name: Lysterfield Lake
+type: swimming-hole
+coordinates:
+  lat: -37.92
+  lng: 145.31
+region: Victoria, Australia
+country: AU
+description: >
+  Arguably the best outdoor swimming venue within the Melbourne metropolitan area. Lysterfield Lake features two sandy beaches, electric barbecues and large lawn areas perfect for family picnics. The lake is set within Lysterfield Park with walking and cycling trails.
+photos:
+  - url: /images/placeholder.jpg
+    alt: Lysterfield Lake swimming hole in Victoria, Australia
+practical:
+  accessibility: easy
+  parking: available
+  facilities:
+    - restrooms
+    - barbecues
+    - picnic-tables
+  bestSeason:
+    - spring
+    - summer
+  dangerLevel: low
+  cost: paid
+directions: >
+  Located in Lysterfield Park in Melbourne's south-east. Access via Churchill National Park Drive off Wellington Road. Follow signs to the lake beaches. Entry fees apply for vehicles.
+tips:
+  - Arrive early on hot days as the car park fills up quickly
+  - Two beaches available — explore both to find your preferred spot
+  - Electric barbecues are available free of charge
+  - Walking and mountain biking trails surround the lake
+tags:
+  - family-friendly
+  - beach
+  - picnic
+  - lake
+status:
+  site: open
+  waterAccess: open
+  note: "Vehicle entry fee applies"
+  lastVerified: "2026-04-01"

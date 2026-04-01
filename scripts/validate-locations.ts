@@ -89,6 +89,8 @@ export function validateLocation(data: Record<string, unknown>): string[] {
     errors.push(...checkEnum(status.waterAccess, VALID_WATER_ACCESS, "status.waterAccess"));
     if (typeof status.lastVerified !== "string") {
       errors.push("status.lastVerified: required string field is missing");
+    } else if (!/^\d{4}-\d{2}-\d{2}$/.test(status.lastVerified) || isNaN(Date.parse(status.lastVerified))) {
+      errors.push("status.lastVerified: must be a valid YYYY-MM-DD date");
     }
   }
 

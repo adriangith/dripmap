@@ -68,13 +68,18 @@ describe("MiniMap", () => {
   it("adds a marker at the provided coordinates", async () => {
     const MiniMap = await getMiniMap();
     render(<MiniMap coordinates={coords} name="Fairy Pools" />);
-    expect(leafletMock.L.marker).toHaveBeenCalledWith([coords.lat, coords.lng]);
+    expect(leafletMock.L.marker).toHaveBeenCalledWith(
+      [coords.lat, coords.lng],
+      expect.objectContaining({ icon: expect.anything() })
+    );
   });
 
   it("binds a popup with the location name", async () => {
     const MiniMap = await getMiniMap();
     render(<MiniMap coordinates={coords} name="Fairy Pools" />);
-    expect(leafletMock.mockMarker.bindPopup).toHaveBeenCalledWith("Fairy Pools");
+    const popupArg = leafletMock.mockMarker.bindPopup.mock.calls[0][0];
+    expect(popupArg).toBeInstanceOf(HTMLElement);
+    expect(popupArg.textContent).toBe("Fairy Pools");
   });
 
   it("calls map.remove() on unmount", async () => {

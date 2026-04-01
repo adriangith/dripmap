@@ -1,0 +1,37 @@
+slug: blue-lake-plenty-gorge
+name: Blue Lake, Plenty Gorge
+type: swimming-hole
+coordinates:
+  lat: -37.685
+  lng: 145.12
+region: Victoria, Australia
+country: AU
+description: >
+  A former quarry in bush parklands in Melbourne's north-east. The lake sits within Plenty Gorge Park and offers swimming in a natural bush setting. Water quality can vary, with the lake sometimes turning green in summer due to algae, but conditions are generally better during the cooler months.
+photos:
+  - url: /images/placeholder.jpg
+    alt: Blue Lake, Plenty Gorge swimming hole in Victoria, Australia
+practical:
+  accessibility: moderate
+  parking: available
+  facilities: []
+  bestSeason:
+    - spring
+  dangerLevel: moderate
+  cost: free
+directions: >
+  Located in Plenty Gorge Park in Melbourne's north-east. Access via Yan Yean Road or Plenty Road, then follow trails into the gorge parklands. The lake is reached via walking tracks from several entry points.
+tips:
+  - Water quality varies seasonally — visit during cooler months for clearer water
+  - Wear sturdy shoes for the walk in
+  - No facilities at the lake — bring your own supplies
+  - Check for algal bloom warnings before visiting
+tags:
+  - quarry
+  - bush-setting
+  - urban-fringe
+status:
+  site: open
+  waterAccess: seasonal
+  note: "Water quality can be poor in summer due to algal blooms"
+  lastVerified: "2026-04-01"

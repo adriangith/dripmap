@@ -1,0 +1,39 @@
+slug: tronoh-dredge-hole
+name: Tronoh Dredge Hole, Harrietville
+type: swimming-hole
+coordinates:
+  lat: -36.89
+  lng: 147.06
+region: Victoria, Australia
+country: AU
+description: >
+  A picturesque lake and former mining dredge hole hidden in the forest behind Harrietville. The lake has its own quirkily named jetty and a swimming pontoon, though algal blooms have been an ongoing problem at this otherwise ideal swimming spot.
+photos:
+  - url: /images/placeholder.jpg
+    alt: Tronoh Dredge Hole, Harrietville swimming hole in Victoria, Australia
+practical:
+  accessibility: easy
+  parking: limited
+  facilities: []
+  bestSeason:
+    - spring
+    - summer
+  dangerLevel: low
+  cost: free
+directions: >
+  From Harrietville, follow signs or local directions to the Tronoh Dredge Hole. The lake is located in forested area behind the town, accessible via a short walk.
+tips:
+  - Check for algal bloom warnings before swimming
+  - Swimming pontoon available in the lake
+  - Beautiful bush setting — bring a picnic
+  - Historic gold mining heritage adds interest to the visit
+tags:
+  - lake
+  - historic
+  - bush-setting
+  - pontoon
+status:
+  site: open
+  waterAccess: seasonal
+  note: "Algal blooms can be an ongoing problem"
+  lastVerified: "2026-04-01"

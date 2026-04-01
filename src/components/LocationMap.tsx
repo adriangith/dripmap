@@ -25,6 +25,7 @@ function createPinIcon(type: LocationType): L.DivIcon {
       border-radius: 50% 50% 50% 0;
       transform: rotate(-45deg);
       box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      pointer-events: none;
     "></div>`,
     iconSize: [28, 28],
     iconAnchor: [14, 28],
@@ -89,17 +90,30 @@ export default function LocationMap({
 
     // Add new markers
     for (const loc of locations) {
+      const popupContent = document.createElement("div");
+      const strong = document.createElement("strong");
+      strong.textContent = loc.name;
+      const typeSpan = document.createElement("span");
+      typeSpan.style.textTransform = "capitalize";
+      typeSpan.textContent = loc.type.replace("-", " ");
+      popupContent.append(strong, document.createElement("br"), typeSpan);
+
       const marker = L.marker([loc.coordinates.lat, loc.coordinates.lng], {
         icon: createPinIcon(loc.type),
       })
         .addTo(map)
-        .bindPopup(
-          `<strong>${loc.name}</strong><br/><span style="text-transform:capitalize">${loc.type.replace("-", " ")}</span>`
-        );
+        .bindPopup(popupContent, { autoClose: true, closeOnClick: true });
 
+      // Show popup on hover, navigate on click
       marker.on("click", () => onMarkerClick(loc.slug));
-      marker.on("mouseover", () => onMarkerHover(loc.slug));
-      marker.on("mouseout", () => onMarkerHover(null));
+      marker.on("mouseover", () => {
+        marker.openPopup();
+        onMarkerHover(loc.slug);
+      });
+      marker.on("mouseout", () => {
+        marker.closePopup();
+        onMarkerHover(null);
+      });
 
       markersRef.current.set(loc.slug, marker);
     }

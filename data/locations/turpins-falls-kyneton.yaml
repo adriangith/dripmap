@@ -1,0 +1,38 @@
+slug: turpins-falls-kyneton
+name: Turpins Falls, Kyneton
+type: swimming-hole
+coordinates:
+  lat: -37.22
+  lng: 144.44
+region: Victoria, Australia
+country: AU
+description: >
+  A large waterfall pool with a high rock wall on three sides, larger than an Olympic swimming pool. Turpins Falls was home to the Turpins Falls Swimming Club back in the 1930s before municipal swimming pools became popular. A dramatic and historic swimming spot.
+photos:
+  - url: /images/placeholder.jpg
+    alt: Turpins Falls, Kyneton swimming hole in Victoria, Australia
+practical:
+  accessibility: moderate
+  parking: available
+  facilities: []
+  bestSeason:
+    - spring
+    - summer
+  dangerLevel: moderate
+  cost: free
+directions: >
+  From Kyneton, head north-east following signs to Turpins Falls. Access is via a walking track from the car park area. The falls are in a gorge — expect a steep descent.
+tips:
+  - The pool is larger than an Olympic swimming pool
+  - High rock walls on three sides create a dramatic amphitheatre
+  - Historic swimming club operated here in the 1930s
+  - Steep descent to the falls — wear sturdy footwear
+tags:
+  - waterfall
+  - rock-pool
+  - historic
+  - scenic
+status:
+  site: open
+  waterAccess: seasonal
+  lastVerified: "2026-04-01"

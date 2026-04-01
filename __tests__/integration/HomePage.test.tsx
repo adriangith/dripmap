@@ -49,6 +49,11 @@ vi.mock("next/link", () => ({
   ),
 }));
 
+// ── next/navigation — stub (no longer used for marker click, kept for compat) ──
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({ push: vi.fn(), back: vi.fn(), forward: vi.fn(), refresh: vi.fn(), replace: vi.fn(), prefetch: vi.fn() }),
+}));
+
 // ── Sample data (matches public/generated/locations-index.json) ───────────
 const SAMPLE_LOCATIONS: LocationIndexEntry[] = [
   {
@@ -87,6 +92,7 @@ const getHomePage = () =>
 describe("HomePage integration", () => {
   beforeEach(() => {
     globalThis.fetch = vi.fn().mockResolvedValue({
+      ok: true,
       json: () => Promise.resolve(SAMPLE_LOCATIONS),
     } as unknown as Response);
   });
@@ -199,50 +205,38 @@ describe("HomePage integration", () => {
     expect(counts.length).toBeGreaterThanOrEqual(1);
   });
 
-  it("clicking a map marker highlights the corresponding card", async () => {
+  it("clicking a map marker navigates to the detail page", async () => {
+    // jsdom doesn't implement navigation; mock location.href
+    const origLocation = window.location;
+    const mockLocation = { ...origLocation, href: origLocation.href };
+    Object.defineProperty(window, "location", { value: mockLocation, writable: true });
+
     const HomePage = await getHomePage();
-    const { findAllByText, container } = render(<HomePage />);
+    const { findAllByText } = render(<HomePage />);
     await findAllByText("Fairy Pools");
 
-    // Simulate a marker click via the captured onMarkerClick callback
     act(() => {
       (capturedMapProps.onMarkerClick as (slug: string) => void)("fairy-pools");
     });
 
-    // The card for fairy-pools should now have highlight styling
-    const fairyLink = container.querySelector("a[href='/location/fairy-pools']")!;
-    expect(fairyLink.className).toContain("border-blue-400");
-    expect(fairyLink.className).toContain("bg-blue-50");
-
-    // Other cards should NOT be highlighted
-    const niagaraLink = container.querySelector("a[href='/location/niagara-falls']")!;
-    expect(niagaraLink.className).not.toContain("border-blue-400");
+    expect(mockLocation.href).toBe("/location/fairy-pools");
+    Object.defineProperty(window, "location", { value: origLocation, writable: true });
   });
 
-  it("clicking a different marker moves the highlight", async () => {
+  it("clicking a different marker navigates to that detail page", async () => {
+    const origLocation = window.location;
+    const mockLocation = { ...origLocation, href: origLocation.href };
+    Object.defineProperty(window, "location", { value: mockLocation, writable: true });
+
     const HomePage = await getHomePage();
-    const { findAllByText, container } = render(<HomePage />);
+    const { findAllByText } = render(<HomePage />);
     await findAllByText("Fairy Pools");
 
-    // Highlight fairy-pools first
-    act(() => {
-      (capturedMapProps.onMarkerClick as (slug: string) => void)("fairy-pools");
-    });
-    expect(
-      container.querySelector("a[href='/location/fairy-pools']")!.className
-    ).toContain("border-blue-400");
-
-    // Now click niagara-falls marker
     act(() => {
       (capturedMapProps.onMarkerClick as (slug: string) => void)("niagara-falls");
     });
 
-    // Niagara should be highlighted, Fairy Pools should not
-    expect(
-      container.querySelector("a[href='/location/niagara-falls']")!.className
-    ).toContain("border-blue-400");
-    expect(
-      container.querySelector("a[href='/location/fairy-pools']")!.className
-    ).not.toContain("border-blue-400");
+    expect(mockLocation.href).toBe("/location/niagara-falls");
+    Object.defineProperty(window, "location", { value: origLocation, writable: true });
   });
 });

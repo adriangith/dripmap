@@ -1,0 +1,38 @@
+slug: ovens-river-wangaratta
+name: Ovens River at Northern Beaches, Wangaratta
+type: swimming-hole
+coordinates:
+  lat: -36.34
+  lng: 146.31
+region: Victoria, Australia
+country: AU
+description: >
+  Two steep, sandy beaches leading down to deep, slow-moving water on two bends of the Ovens River within a bushland reserve on the northern side of Wangaratta. Features some snags in the water and a few rope swings from overhanging trees.
+photos:
+  - url: /images/placeholder.jpg
+    alt: Ovens River at Northern Beaches, Wangaratta swimming hole in Victoria, Australia
+practical:
+  accessibility: moderate
+  parking: available
+  facilities: []
+  bestSeason:
+    - summer
+  dangerLevel: moderate
+  cost: free
+directions: >
+  From Wangaratta, head north across the river. The Northern Beaches are located in the bushland reserve, signposted from local roads.
+tips:
+  - Watch for submerged snags in the water
+  - Rope swings available from overhanging trees — use with caution
+  - Two separate beaches to explore
+  - Deep water suitable for strong swimmers
+tags:
+  - river
+  - beach
+  - rope-swing
+  - bush-setting
+status:
+  site: open
+  waterAccess: open
+  note: "Submerged snags present — swim with caution"
+  lastVerified: "2026-04-01"

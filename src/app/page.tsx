@@ -33,11 +33,19 @@ export default function HomePage() {
   const [highlightedSlug, setHighlightedSlug] = useState<string | null>(null);
   const [showSearch, setShowSearch] = useState(false);
 
+  const [loadError, setLoadError] = useState(false);
+
   useEffect(() => {
     fetch("/generated/locations-index.json")
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
       .then((data: LocationIndexEntry[]) => setAllLocations(data))
-      .catch(() => setAllLocations([]));
+      .catch(() => {
+        setAllLocations([]);
+        setLoadError(true);
+      });
   }, []);
 
   const filteredLocations = useMemo(
@@ -46,7 +54,7 @@ export default function HomePage() {
   );
 
   const handleMarkerClick = useCallback((slug: string) => {
-    setHighlightedSlug(slug);
+    window.location.href = `/location/${slug}`;
   }, []);
 
   const handleMarkerHover = useCallback((slug: string | null) => {
@@ -66,8 +74,8 @@ export default function HomePage() {
 
       {/* Desktop layout: side-by-side */}
       <div className="flex-1 flex overflow-hidden">
-        {/* Map */}
-        <div className="flex-1 relative">
+        {/* Map — leave room for collapsed bottom sheet on mobile */}
+        <div className="flex-1 relative pb-[140px] lg:pb-0">
           <LocationMap
             locations={filteredLocations}
             highlightedSlug={highlightedSlug}
@@ -86,6 +94,11 @@ export default function HomePage() {
             onToggleSearch={handleToggleSearch}
           />
           <div className="flex-1 overflow-y-auto">
+            {loadError && (
+              <div className="mx-3 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
+                Failed to load locations. Please try refreshing the page.
+              </div>
+            )}
             <LocationList
               locations={filteredLocations}
               highlightedSlug={highlightedSlug}
@@ -104,6 +117,11 @@ export default function HomePage() {
           showSearch={showSearch}
           onToggleSearch={handleToggleSearch}
         />
+        {loadError && (
+          <div className="mx-3 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
+            Failed to load locations. Please try refreshing the page.
+          </div>
+        )}
         <LocationList
           locations={filteredLocations}
           highlightedSlug={highlightedSlug}
