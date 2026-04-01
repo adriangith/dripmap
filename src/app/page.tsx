@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import dynamic from "next/dynamic";
 import Header from "@/components/Header";
 import FilterBar from "@/components/FilterBar";
@@ -40,7 +40,10 @@ export default function HomePage() {
       .catch(() => setAllLocations([]));
   }, []);
 
-  const filteredLocations = filterLocations(allLocations, filters);
+  const filteredLocations = useMemo(
+    () => filterLocations(allLocations, filters),
+    [allLocations, filters]
+  );
 
   const handleMarkerClick = useCallback((slug: string) => {
     setHighlightedSlug(slug);

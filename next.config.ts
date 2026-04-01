@@ -70,6 +70,7 @@ const nextConfig: NextConfig = {
     unoptimized: true,
   },
   turbopack: {},
+  allowedDevOrigins: ["192.168.5.18"],
 };
 
 export default withPWA(nextConfig);
