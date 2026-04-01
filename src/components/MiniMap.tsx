@@ -30,7 +30,22 @@ export default function MiniMap({ coordinates, name }: MiniMapProps) {
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     }).addTo(map);
 
-    L.marker([coordinates.lat, coordinates.lng])
+    const icon = L.divIcon({
+      className: "",
+      html: `<div style="
+        width: 24px; height: 24px;
+        background: #2563eb;
+        border: 2px solid white;
+        border-radius: 50% 50% 50% 0;
+        transform: rotate(-45deg);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      "></div>`,
+      iconSize: [24, 24],
+      iconAnchor: [12, 24],
+      popupAnchor: [0, -24],
+    });
+
+    L.marker([coordinates.lat, coordinates.lng], { icon })
       .addTo(map)
       .bindPopup(name);
 

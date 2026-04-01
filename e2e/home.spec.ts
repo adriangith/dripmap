@@ -60,6 +60,21 @@ test("filtering by type hides non-matching cards", async ({ page }) => {
   await expect(page.getByText("Fairy Pools")).not.toBeVisible();
 });
 
+test("detail page renders mini map without errors", async ({ page }) => {
+  const errors: string[] = [];
+  page.on("pageerror", (err) => errors.push(err.message));
+
+  await page.goto("/location/fairy-pools");
+  await expect(
+    page.getByRole("heading", { name: "Fairy Pools" })
+  ).toBeVisible();
+  // Mini map marker should render (uses divIcon, not default icon)
+  const marker = page.locator(".leaflet-marker-icon");
+  await expect(marker).toBeVisible({ timeout: 10_000 });
+
+  expect(errors).toHaveLength(0);
+});
+
 test("all 3 markers are visible on the map", async ({ page }) => {
   await page.goto("/");
   const markers = page.locator(".leaflet-marker-icon");
