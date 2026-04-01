@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { Crosshair } from "lucide-react";
@@ -86,6 +86,9 @@ export default function LocationMap({
   const mapRef = useRef<L.Map | null>(null);
   const markersRef = useRef<Map<string, L.Marker>>(new Map());
   const userMarkerRef = useRef<L.Marker | null>(null);
+  // Keep a ref so callbacks always read the latest sheetHeight without re-creating
+  const sheetHeightRef = useRef(sheetHeight);
+  useEffect(() => { sheetHeightRef.current = sheetHeight; }, [sheetHeight]);
 
   const [locating, setLocating] = useState(false);
   const [locateError, setLocateError] = useState<string | null>(null);
@@ -168,7 +171,12 @@ export default function LocationMap({
       const bounds = L.latLngBounds(
         locations.map((l) => [l.coordinates.lat, l.coordinates.lng])
       );
-      map.fitBounds(bounds, { padding: [50, 50], maxZoom: 10 });
+      // Offset bottom padding so the visible center accounts for the sheet
+      map.fitBounds(bounds, {
+        paddingTopLeft: L.point(50, 50),
+        paddingBottomRight: L.point(50, Math.max(50, sheetHeightRef.current)),
+        maxZoom: 10,
+      });
     }
   }, [locations, onMarkerClick, onMarkerHover]);
 
@@ -218,7 +226,18 @@ export default function LocationMap({
             .bindPopup("You are here");
 
           userMarkerRef.current = userMarker;
-          map.setView([lat, lng], 12);
+
+          // Center in the visible area above the sheet
+          const zoom = 12;
+          const sh = sheetHeightRef.current;
+          if (sh > 0) {
+            const targetPoint = map.project([lat, lng], zoom);
+            targetPoint.y += sh / 2;
+            const adjusted = map.unproject(targetPoint, zoom);
+            map.setView(adjusted, zoom);
+          } else {
+            map.setView([lat, lng], zoom);
+          }
         }
 
         onUserLocation?.({ lat, lng });
@@ -253,14 +272,15 @@ export default function LocationMap({
 
   return (
     <div className="relative h-full w-full">
-      <div ref={mapContainerRef} className="h-full w-full" />
+      <div ref={mapContainerRef} className="h-full w-full isolate" />
 
       {/* Locate me button — positioned above mobile bottom sheet */}
       <button
         onClick={handleLocateMe}
         disabled={locating}
         aria-label="Show my location"
-        className="absolute right-4 z-[1000] flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-lg border border-gray-200 hover:bg-gray-50 active:bg-gray-100 transition-all disabled:opacity-60"
+        data-testid="locate-button"
+        className="absolute right-4 z-50 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-lg border border-gray-200 hover:bg-gray-50 active:bg-gray-100 transition-all disabled:opacity-60"
         style={{ bottom: Math.max(16, sheetHeight + 16) }}
       >
         <Crosshair className={`w-5 h-5 text-blue-600 ${locating ? "animate-spin" : ""}`} />
@@ -269,7 +289,7 @@ export default function LocationMap({
       {/* Error toast */}
       {locateError && (
         <div
-          className="absolute right-4 z-[1000] rounded-lg bg-red-50 border border-red-200 px-3 py-2 text-sm text-red-700 shadow-md"
+          className="absolute right-4 z-50 rounded-lg bg-red-50 border border-red-200 px-3 py-2 text-sm text-red-700 shadow-md"
           style={{ bottom: Math.max(16, sheetHeight + 16) + 48 }}
         >
           {locateError}

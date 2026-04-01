@@ -139,3 +139,33 @@ test("markers are visible on the map", async ({ page }) => {
   const count = await markers.count();
   expect(count).toBeGreaterThanOrEqual(3);
 });
+
+test("locate button is visible and clickable above the bottom sheet on mobile", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+  await page.waitForSelector(".leaflet-marker-icon", { timeout: 10_000 });
+
+  const locateBtn = page.getByTestId("locate-button");
+  await expect(locateBtn).toBeVisible();
+
+  // Button must be above the bottom sheet (sheet has rounded-t-2xl class)
+  const btnBox = await locateBtn.boundingBox();
+  const sheet = page.locator(".rounded-t-2xl").first();
+  const sheetBox = await sheet.boundingBox();
+  expect(btnBox).toBeTruthy();
+  expect(sheetBox).toBeTruthy();
+  // Button bottom edge should be above (or at) the sheet top edge
+  expect(btnBox!.y + btnBox!.height).toBeLessThanOrEqual(sheetBox!.y + 2);
+
+  // Button should be clickable (not blocked by sheet z-index)
+  const clicked = await page.evaluate(() => {
+    const btn = document.querySelector('[data-testid="locate-button"]');
+    if (!btn) return false;
+    const rect = btn.getBoundingClientRect();
+    const topEl = document.elementFromPoint(rect.x + rect.width / 2, rect.y + rect.height / 2);
+    return btn === topEl || btn.contains(topEl);
+  });
+  expect(clicked).toBe(true);
+});

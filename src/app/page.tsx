@@ -114,7 +114,7 @@ export default function HomePage() {
       {/* Desktop layout: side-by-side */}
       <div className="flex-1 flex overflow-hidden">
         {/* Map — leave room for collapsed bottom sheet on mobile */}
-        <div className="flex-1 relative pb-[140px] lg:pb-0 overflow-hidden z-0">
+        <div className="flex-1 relative overflow-hidden">
           <LocationMap
             locations={filteredLocations}
             highlightedSlug={highlightedSlug}

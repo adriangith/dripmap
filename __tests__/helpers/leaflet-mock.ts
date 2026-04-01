@@ -34,6 +34,7 @@ export function createLeafletMock() {
     marker: vi.fn().mockReturnValue(mockMarker),
     divIcon: vi.fn().mockReturnValue(mockDivIcon),
     latLngBounds: vi.fn().mockReturnValue(mockBounds),
+    point: vi.fn((x: number, y: number) => ({ x, y })),
     control: {
       zoom: vi.fn().mockReturnValue(mockZoomControl),
     },
