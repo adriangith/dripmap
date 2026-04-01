@@ -6,6 +6,7 @@ interface LocationListProps {
   highlightedSlug: string | null;
   onHover: (slug: string | null) => void;
   userLocation?: Coordinates | null;
+  onCardClick?: (slug: string) => void;
 }
 
 export default function LocationList({
@@ -13,6 +14,7 @@ export default function LocationList({
   highlightedSlug,
   onHover,
   userLocation,
+  onCardClick,
 }: LocationListProps) {
   if (locations.length === 0) {
     return (
@@ -31,6 +33,7 @@ export default function LocationList({
           onHover={onHover}
           isHighlighted={loc.slug === highlightedSlug}
           userLocation={userLocation}
+          onCardClick={onCardClick}
         />
       ))}
     </div>

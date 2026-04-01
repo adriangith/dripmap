@@ -35,24 +35,74 @@ test("hovering a map marker opens a popup with the location name", async ({
   await expect(popup).toHaveText(/.+/);
 });
 
-test("clicking a map marker shows a preview card instead of navigating", async ({
+test("clicking a map marker opens detail in bottom sheet on mobile", async ({
   page,
 }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
-  // Filter to waterfall type using chip button
-  await page.locator('[data-filter-chip="waterfall"]').first().click();
+
+  // Wait for markers to load
   const markers = page.locator(".leaflet-marker-icon");
   await expect(markers.first()).toBeVisible({ timeout: 10_000 });
 
-  await markers.first().click({ force: true });
+  // Zoom into Australia (where most locations are) via Leaflet API
+  await page.evaluate(() => {
+    const container = document.querySelector(".leaflet-container") as any;
+    if (!container) return;
+    // Leaflet stores the map instance on the DOM element
+    for (const key of Object.keys(container)) {
+      if (key.startsWith("_leaflet")) {
+        const mapInstance = (window as any).L?.Map?._maps;
+        break;
+      }
+    }
+    // Use leaflet-container's internal reference
+    const mapId = container._leaflet_id;
+    if (mapId != null) {
+      // Access L map through eachLayer hack
+      const L = (window as any).L;
+      if (L) {
+        // Find the map by iterating over all map instances
+        const mapContainer = container;
+        // Leaflet stores map ref directly
+        let map: any = null;
+        for (const key of Object.getOwnPropertyNames(container)) {
+          const val = container[key];
+          if (val && typeof val === "object" && typeof val.setView === "function") {
+            map = val;
+            break;
+          }
+        }
+        if (!map) {
+          // Alternative: access via _leaflet_map
+          map = container._leaflet_map;
+        }
+        if (map) {
+          map.setView([-37.8, 145], 8);
+        }
+      }
+    }
+  });
+  await page.waitForTimeout(1500);
 
-  // Should show preview card, NOT navigate away
-  const previewCard = page.locator('[data-testid="map-preview-card"]');
-  await expect(previewCard).toBeVisible({ timeout: 5_000 });
-  // Should still be on homepage
+  // Find and click a marker in viewport
+  const clicked = await page.evaluate(() => {
+    const icons = document.querySelectorAll(".leaflet-marker-icon");
+    for (const icon of icons) {
+      const rect = icon.getBoundingClientRect();
+      if (rect.x >= 0 && rect.y >= 0 && rect.x < 390 && rect.y < 700 && rect.width > 0) {
+        (icon as HTMLElement).click();
+        return true;
+      }
+    }
+    return false;
+  });
+  expect(clicked).toBe(true);
+
+  // Should show detail panel with "Back to list" in the bottom sheet
+  const backButton = page.getByText("Back to list");
+  await expect(backButton).toBeVisible({ timeout: 5_000 });
   await expect(page).toHaveURL(/\/$/);
-  // Preview card should have a "View Details" link
-  await expect(previewCard.getByText("View Details →")).toBeVisible();
 });
 
 test("filtering by type hides non-matching cards", async ({ page }) => {

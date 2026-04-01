@@ -9,6 +9,7 @@ interface LocationCardProps {
   onHover?: (slug: string | null) => void;
   isHighlighted?: boolean;
   userLocation?: Coordinates | null;
+  onCardClick?: (slug: string) => void;
 }
 
 export default function LocationCard({
@@ -16,23 +17,21 @@ export default function LocationCard({
   onHover,
   isHighlighted,
   userLocation,
+  onCardClick,
 }: LocationCardProps) {
   const distance =
     userLocation
       ? formatDistance(haversineDistanceKm(userLocation, location.coordinates))
       : null;
 
-  return (
-    <Link
-      href={`/location/${location.slug}`}
-      className={`block rounded-lg border p-3 transition-all duration-100 active:scale-[0.98] active:shadow-none ${
-        isHighlighted
-          ? "border-blue-400 bg-blue-50 shadow-md"
-          : "border-gray-200 bg-white shadow-sm hover:shadow-md"
-      }`}
-      onMouseEnter={() => onHover?.(location.slug)}
-      onMouseLeave={() => onHover?.(null)}
-    >
+  const cardClassName = `block rounded-lg border p-3 transition-all duration-100 active:scale-[0.98] active:shadow-none ${
+    isHighlighted
+      ? "border-blue-400 bg-blue-50 shadow-md"
+      : "border-gray-200 bg-white shadow-sm hover:shadow-md"
+  }`;
+
+  const cardContent = (
+    <>
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0 flex-1">
           <h3 className="font-semibold text-gray-900 truncate">{location.name}</h3>
@@ -67,6 +66,32 @@ export default function LocationCard({
           ))}
         </div>
       )}
+    </>
+  );
+
+  // When onCardClick is provided, render as button (mobile sheet mode)
+  if (onCardClick) {
+    return (
+      <button
+        className={`${cardClassName} w-full text-left`}
+        onClick={() => onCardClick(location.slug)}
+        onMouseEnter={() => onHover?.(location.slug)}
+        onMouseLeave={() => onHover?.(null)}
+      >
+        {cardContent}
+      </button>
+    );
+  }
+
+  // Default: render as link (desktop sidebar)
+  return (
+    <Link
+      href={`/location/${location.slug}`}
+      className={cardClassName}
+      onMouseEnter={() => onHover?.(location.slug)}
+      onMouseLeave={() => onHover?.(null)}
+    >
+      {cardContent}
     </Link>
   );
 }

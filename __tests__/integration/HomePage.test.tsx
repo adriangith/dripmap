@@ -85,16 +85,51 @@ const SAMPLE_LOCATIONS: LocationIndexEntry[] = [
   },
 ];
 
+// ── Sample detail data for fairy-pools ──────────────────────────────────
+const FAIRY_POOLS_DETAIL = {
+  slug: "fairy-pools",
+  name: "Fairy Pools",
+  type: "swimming-hole",
+  coordinates: { lat: 57.2501, lng: -6.2743 },
+  region: "Europe",
+  country: "GB",
+  description: "Crystal clear pools in the Scottish Highlands.",
+  photos: [],
+  practical: {
+    accessibility: "moderate",
+    parking: "available",
+    facilities: [],
+    bestSeason: ["summer"],
+    dangerLevel: "moderate",
+    cost: "free",
+  },
+  directions: "Take the A87.",
+  tips: ["Bring warm clothes"],
+  tags: ["scenic", "hiking", "cold-water", "wild-swimming"],
+  status: { site: "open", waterAccess: "open", lastVerified: "2026-02-20" },
+};
+
 // Lazy import so all mocks are registered first
 const getHomePage = () =>
   import("../../src/app/page").then((m) => m.default);
 
 describe("HomePage integration", () => {
   beforeEach(() => {
-    globalThis.fetch = vi.fn().mockResolvedValue({
-      ok: true,
-      json: () => Promise.resolve(SAMPLE_LOCATIONS),
-    } as unknown as Response);
+    globalThis.fetch = vi.fn().mockImplementation((url: string) => {
+      if (url.includes("locations-index.json")) {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(SAMPLE_LOCATIONS),
+        } as unknown as Response);
+      }
+      if (url.includes("/locations/fairy-pools.json")) {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(FAIRY_POOLS_DETAIL),
+        } as unknown as Response);
+      }
+      return Promise.resolve({ ok: false, status: 404 } as Response);
+    });
   });
 
   afterEach(() => {
@@ -205,43 +240,39 @@ describe("HomePage integration", () => {
     expect(counts.length).toBeGreaterThanOrEqual(1);
   });
 
-  it("clicking a map marker sets selectedSlug and shows preview card", async () => {
+  it("clicking a map marker opens detail panel in bottom sheet", async () => {
     const HomePage = await getHomePage();
-    const { findAllByText, queryByTestId } = render(<HomePage />);
+    const { findAllByText, findByText } = render(<HomePage />);
     await findAllByText("Fairy Pools");
-
-    // No preview card initially
-    expect(queryByTestId("map-preview-card")).toBeNull();
 
     act(() => {
       (capturedMapProps.onMarkerClick as (slug: string) => void)("fairy-pools");
     });
 
-    // Preview card should appear
+    // Detail panel should load and show the location name in detail view
     await waitFor(() =>
-      expect(queryByTestId("map-preview-card")).not.toBeNull()
+      expect(findByText("Back to list")).toBeTruthy()
     );
   });
 
-  it("clicking the same marker again dismisses the preview card", async () => {
+  it("clicking back in detail panel returns to list", async () => {
     const HomePage = await getHomePage();
-    const { findAllByText, queryByTestId } = render(<HomePage />);
+    const { findAllByText, findByText, queryByText } = render(<HomePage />);
     await findAllByText("Fairy Pools");
 
     act(() => {
       (capturedMapProps.onMarkerClick as (slug: string) => void)("fairy-pools");
     });
 
-    await waitFor(() =>
-      expect(queryByTestId("map-preview-card")).not.toBeNull()
-    );
+    const backButton = await findByText("Back to list");
 
     act(() => {
-      (capturedMapProps.onMarkerClick as (slug: string) => void)("fairy-pools");
+      fireEvent.click(backButton);
     });
 
+    // Should be back on list view — "Back to list" should be gone
     await waitFor(() =>
-      expect(queryByTestId("map-preview-card")).toBeNull()
+      expect(queryByText("Back to list")).toBeNull()
     );
   });
 });

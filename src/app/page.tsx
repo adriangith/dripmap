@@ -1,13 +1,14 @@
 "use client";
 
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import dynamic from "next/dynamic";
 import Header from "@/components/Header";
 import FilterBar from "@/components/FilterBar";
 import LocationList from "@/components/LocationList";
-import BottomSheet from "@/components/BottomSheet";
-import MapPreviewCard from "@/components/MapPreviewCard";
+import LocationDetailPanel from "@/components/LocationDetailPanel";
+import BottomSheet, { SNAP_PEEK, SNAP_HALF } from "@/components/BottomSheet";
 import { filterLocations } from "@/lib/filters";
+import { haversineDistanceKm } from "@/lib/useCurrentLocation";
 import type { LocationIndexEntry, Filters, Coordinates } from "@/lib/types";
 
 const LocationMap = dynamic(() => import("@/components/LocationMap"), {
@@ -32,11 +33,16 @@ export default function HomePage() {
   const [allLocations, setAllLocations] = useState<LocationIndexEntry[]>([]);
   const [filters, setFilters] = useState<Filters>(emptyFilters);
   const [highlightedSlug, setHighlightedSlug] = useState<string | null>(null);
-  const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
   const [showSearch, setShowSearch] = useState(false);
   const [userLocation, setUserLocation] = useState<Coordinates | null>(null);
-
   const [loadError, setLoadError] = useState(false);
+
+  // Apple Maps-style sheet state
+  const [sheetView, setSheetView] = useState<"list" | "detail">("list");
+  const [detailSlug, setDetailSlug] = useState<string | null>(null);
+  const [sheetHeight, setSheetHeight] = useState(SNAP_PEEK);
+  const [snapTarget, setSnapTarget] = useState<number | null>(null);
+  const listScrollRef = useRef<number>(0);
 
   useEffect(() => {
     fetch("/generated/locations-index.json")
@@ -51,22 +57,34 @@ export default function HomePage() {
       });
   }, []);
 
-  const filteredLocations = useMemo(
-    () => filterLocations(allLocations, filters),
-    [allLocations, filters]
-  );
+  const filteredLocations = useMemo(() => {
+    const filtered = filterLocations(allLocations, filters);
+    if (!userLocation) return filtered;
+    return [...filtered].sort(
+      (a, b) =>
+        haversineDistanceKm(userLocation, a.coordinates) -
+        haversineDistanceKm(userLocation, b.coordinates),
+    );
+  }, [allLocations, filters, userLocation]);
 
-  const selectedLocation = useMemo(
-    () =>
-      selectedSlug
-        ? filteredLocations.find((l) => l.slug === selectedSlug) ?? null
-        : null,
-    [selectedSlug, filteredLocations]
-  );
+  // Open detail view in the sheet (from pin tap or card tap)
+  const handleOpenDetail = useCallback((slug: string) => {
+    setDetailSlug(slug);
+    setSheetView("detail");
+    // Snap to half position
+    const halfHeight = window.innerHeight * SNAP_HALF;
+    setSnapTarget(halfHeight);
+  }, []);
+
+  const handleBackToList = useCallback(() => {
+    setSheetView("list");
+    setDetailSlug(null);
+    setHighlightedSlug(null);
+  }, []);
 
   const handleMarkerClick = useCallback((slug: string) => {
-    setSelectedSlug((prev) => (prev === slug ? null : slug));
-  }, []);
+    handleOpenDetail(slug);
+  }, [handleOpenDetail]);
 
   const handleMarkerHover = useCallback((slug: string | null) => {
     setHighlightedSlug(slug);
@@ -83,6 +101,12 @@ export default function HomePage() {
     setUserLocation(coords);
   }, []);
 
+  const handleSheetHeightChange = useCallback((height: number) => {
+    setSheetHeight(height);
+    // Clear snap target after animation to avoid re-triggering
+    setSnapTarget(null);
+  }, []);
+
   return (
     <div className="h-screen flex flex-col overflow-hidden">
       <Header onSearchClick={handleToggleSearch} showSearch />
@@ -97,15 +121,8 @@ export default function HomePage() {
             onMarkerClick={handleMarkerClick}
             onMarkerHover={handleMarkerHover}
             onUserLocation={handleUserLocation}
+            sheetHeight={sheetHeight}
           />
-
-          {/* Preview card on marker tap */}
-          {selectedLocation && (
-            <MapPreviewCard
-              location={selectedLocation}
-              onClose={() => setSelectedSlug(null)}
-            />
-          )}
         </div>
 
         {/* Desktop sidebar (hidden on mobile) */}
@@ -134,25 +151,39 @@ export default function HomePage() {
       </div>
 
       {/* Mobile bottom sheet */}
-      <BottomSheet>
-        <FilterBar
-          filters={filters}
-          onChange={setFilters}
-          resultCount={filteredLocations.length}
-          showSearch={showSearch}
-          onToggleSearch={handleToggleSearch}
-        />
-        {loadError && (
-          <div className="mx-3 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
-            Failed to load locations. Please try refreshing the page.
-          </div>
+      <BottomSheet
+        snapTo={snapTarget}
+        onHeightChange={handleSheetHeightChange}
+      >
+        {sheetView === "detail" && detailSlug ? (
+          <LocationDetailPanel
+            slug={detailSlug}
+            onBack={handleBackToList}
+            userLocation={userLocation}
+          />
+        ) : (
+          <>
+            <FilterBar
+              filters={filters}
+              onChange={setFilters}
+              resultCount={filteredLocations.length}
+              showSearch={showSearch}
+              onToggleSearch={handleToggleSearch}
+            />
+            {loadError && (
+              <div className="mx-3 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
+                Failed to load locations. Please try refreshing the page.
+              </div>
+            )}
+            <LocationList
+              locations={filteredLocations}
+              highlightedSlug={highlightedSlug}
+              onHover={setHighlightedSlug}
+              userLocation={userLocation}
+              onCardClick={handleOpenDetail}
+            />
+          </>
         )}
-        <LocationList
-          locations={filteredLocations}
-          highlightedSlug={highlightedSlug}
-          onHover={setHighlightedSlug}
-          userLocation={userLocation}
-        />
       </BottomSheet>
     </div>
   );

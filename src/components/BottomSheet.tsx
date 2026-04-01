@@ -2,13 +2,9 @@
 
 import { useRef, useState, useCallback, useEffect } from "react";
 
-interface BottomSheetProps {
-  children: React.ReactNode;
-}
-
-const SNAP_PEEK = 140;     // collapsed: shows drag handle + a bit of content
-const SNAP_HALF = 0.5;     // fraction of viewport
-const SNAP_FULL = 0.9;     // fraction of viewport
+export const SNAP_PEEK = 140;
+export const SNAP_HALF = 0.5;
+export const SNAP_FULL = 0.92;
 
 // Damped harmonic oscillator spring animation
 function springAnimate(
@@ -50,7 +46,13 @@ function springAnimate(
   return () => cancelAnimationFrame(rafId);
 }
 
-export default function BottomSheet({ children }: BottomSheetProps) {
+interface BottomSheetProps {
+  children: React.ReactNode;
+  snapTo?: number | null;
+  onHeightChange?: (height: number) => void;
+}
+
+export default function BottomSheet({ children, snapTo, onHeightChange }: BottomSheetProps) {
   const sheetRef = useRef<HTMLDivElement>(null);
   const [sheetHeight, setSheetHeight] = useState(SNAP_PEEK);
   const [isDragging, setIsDragging] = useState(false);
@@ -64,26 +66,22 @@ export default function BottomSheet({ children }: BottomSheetProps) {
   const lastTouchTime = useRef(0);
   const velocityRef = useRef(0);
 
-  const getSnapPoints = useCallback(() => {
+  const getSnaps = useCallback(() => {
     const vh = window.innerHeight;
     return [SNAP_PEEK, vh * SNAP_HALF, vh * SNAP_FULL];
   }, []);
 
   const snapToNearest = useCallback((height: number, velocity: number) => {
-    const vh = window.innerHeight;
-    const snaps = [SNAP_PEEK, vh * SNAP_HALF, vh * SNAP_FULL];
+    const snaps = getSnaps();
 
     // Velocity threshold: 0.5px/ms
     if (Math.abs(velocity) > 0.5) {
-      // Upward swipe (negative velocity = finger moving up = sheet grows)
       if (velocity < 0) {
-        // Find next snap above current
         for (const snap of snaps) {
           if (snap > height + 10) return snap;
         }
         return snaps[snaps.length - 1];
       } else {
-        // Downward swipe - find next snap below current
         for (let i = snaps.length - 1; i >= 0; i--) {
           if (snaps[i] < height - 10) return snaps[i];
         }
@@ -91,7 +89,6 @@ export default function BottomSheet({ children }: BottomSheetProps) {
       }
     }
 
-    // No velocity - snap to nearest
     let nearest = snaps[0];
     let minDist = Math.abs(height - snaps[0]);
     for (let i = 1; i < snaps.length; i++) {
@@ -102,11 +99,28 @@ export default function BottomSheet({ children }: BottomSheetProps) {
       }
     }
     return nearest;
-  }, []);
+  }, [getSnaps]);
+
+  // Programmatic snap via prop
+  useEffect(() => {
+    if (snapTo == null || isDragging) return;
+    cancelSpring.current?.();
+    setIsAnimating(true);
+    cancelSpring.current = springAnimate(
+      sheetHeight,
+      snapTo,
+      (v) => {
+        setSheetHeight(v);
+        onHeightChange?.(v);
+      },
+      () => setIsAnimating(false),
+    );
+  // Only trigger when snapTo changes, not on every sheetHeight change
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [snapTo]);
 
   const handleDragStart = useCallback(
     (clientY: number) => {
-      // Cancel any running spring animation
       cancelSpring.current?.();
       cancelSpring.current = null;
       setIsAnimating(false);
@@ -125,7 +139,6 @@ export default function BottomSheet({ children }: BottomSheetProps) {
     (clientY: number) => {
       if (!isDragging) return;
 
-      // Track velocity (px/ms, positive = downward)
       const now = Date.now();
       const dt = now - lastTouchTime.current;
       if (dt > 0) {
@@ -140,8 +153,9 @@ export default function BottomSheet({ children }: BottomSheetProps) {
         Math.min(window.innerHeight * SNAP_FULL, dragStartHeight.current + delta)
       );
       setSheetHeight(newHeight);
+      onHeightChange?.(newHeight);
     },
-    [isDragging]
+    [isDragging, onHeightChange]
   );
 
   const handleDragEnd = useCallback(() => {
@@ -151,10 +165,13 @@ export default function BottomSheet({ children }: BottomSheetProps) {
     cancelSpring.current = springAnimate(
       sheetHeight,
       target,
-      (v) => setSheetHeight(v),
+      (v) => {
+        setSheetHeight(v);
+        onHeightChange?.(v);
+      },
       () => setIsAnimating(false),
     );
-  }, [snapToNearest, sheetHeight]);
+  }, [snapToNearest, sheetHeight, onHeightChange]);
 
   useEffect(() => {
     if (!isDragging) return;
@@ -180,7 +197,6 @@ export default function BottomSheet({ children }: BottomSheetProps) {
     };
   }, [isDragging, handleDragMove, handleDragEnd]);
 
-  // Cleanup spring on unmount
   useEffect(() => {
     return () => cancelSpring.current?.();
   }, []);

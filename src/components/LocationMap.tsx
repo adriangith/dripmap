@@ -71,6 +71,7 @@ interface LocationMapProps {
   onMarkerClick: (slug: string) => void;
   onMarkerHover: (slug: string | null) => void;
   onUserLocation?: (coords: Coordinates) => void;
+  sheetHeight?: number;
 }
 
 export default function LocationMap({
@@ -79,6 +80,7 @@ export default function LocationMap({
   onMarkerClick,
   onMarkerHover,
   onUserLocation,
+  sheetHeight = 0,
 }: LocationMapProps) {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<L.Map | null>(null);
@@ -258,14 +260,18 @@ export default function LocationMap({
         onClick={handleLocateMe}
         disabled={locating}
         aria-label="Show my location"
-        className="absolute bottom-4 right-4 z-[1000] flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-lg border border-gray-200 hover:bg-gray-50 active:bg-gray-100 transition-colors disabled:opacity-60"
+        className="absolute right-4 z-[1000] flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-lg border border-gray-200 hover:bg-gray-50 active:bg-gray-100 transition-all disabled:opacity-60"
+        style={{ bottom: Math.max(16, sheetHeight + 16) }}
       >
         <Crosshair className={`w-5 h-5 text-blue-600 ${locating ? "animate-spin" : ""}`} />
       </button>
 
       {/* Error toast */}
       {locateError && (
-        <div className="absolute bottom-16 right-4 z-[1000] rounded-lg bg-red-50 border border-red-200 px-3 py-2 text-sm text-red-700 shadow-md">
+        <div
+          className="absolute right-4 z-[1000] rounded-lg bg-red-50 border border-red-200 px-3 py-2 text-sm text-red-700 shadow-md"
+          style={{ bottom: Math.max(16, sheetHeight + 16) + 48 }}
+        >
           {locateError}
         </div>
       )}
