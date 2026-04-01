@@ -1,14 +1,21 @@
-import { render, fireEvent, cleanup, waitFor } from "@testing-library/react";
+import { render, fireEvent, cleanup, waitFor, act } from "@testing-library/react";
 import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
 import type { LocationIndexEntry } from "../../src/lib/types";
 
 // ── LocationMap stub ───────────────────────────────────────────────────────
-// The unit tests for LocationMap already verify Leaflet calls.
-// Here we just need to confirm HomePage passes the right locations to the map.
+// Captures props so tests can invoke callbacks (e.g. onMarkerClick).
+let capturedMapProps: Record<string, unknown> = {};
 vi.mock("../../src/components/LocationMap", () => ({
-  default: ({ locations }: { locations: LocationIndexEntry[] }) => (
-    <div data-testid="location-map" data-count={String(locations.length)} />
-  ),
+  default: (props: Record<string, unknown>) => {
+    capturedMapProps = props;
+    return (
+      <div
+        data-testid="location-map"
+        data-count={String((props.locations as unknown[]).length)}
+        data-highlighted={String(props.highlightedSlug ?? "")}
+      />
+    );
+  },
 }));
 
 // ── next/dynamic — use React.lazy so Suspense resolves async imports ───────
@@ -190,5 +197,52 @@ describe("HomePage integration", () => {
     await findAllByText("Fairy Pools");
     const counts = await findAllByText("3 locations");
     expect(counts.length).toBeGreaterThanOrEqual(1);
+  });
+
+  it("clicking a map marker highlights the corresponding card", async () => {
+    const HomePage = await getHomePage();
+    const { findAllByText, container } = render(<HomePage />);
+    await findAllByText("Fairy Pools");
+
+    // Simulate a marker click via the captured onMarkerClick callback
+    act(() => {
+      (capturedMapProps.onMarkerClick as (slug: string) => void)("fairy-pools");
+    });
+
+    // The card for fairy-pools should now have highlight styling
+    const fairyLink = container.querySelector("a[href='/location/fairy-pools']")!;
+    expect(fairyLink.className).toContain("border-blue-400");
+    expect(fairyLink.className).toContain("bg-blue-50");
+
+    // Other cards should NOT be highlighted
+    const niagaraLink = container.querySelector("a[href='/location/niagara-falls']")!;
+    expect(niagaraLink.className).not.toContain("border-blue-400");
+  });
+
+  it("clicking a different marker moves the highlight", async () => {
+    const HomePage = await getHomePage();
+    const { findAllByText, container } = render(<HomePage />);
+    await findAllByText("Fairy Pools");
+
+    // Highlight fairy-pools first
+    act(() => {
+      (capturedMapProps.onMarkerClick as (slug: string) => void)("fairy-pools");
+    });
+    expect(
+      container.querySelector("a[href='/location/fairy-pools']")!.className
+    ).toContain("border-blue-400");
+
+    // Now click niagara-falls marker
+    act(() => {
+      (capturedMapProps.onMarkerClick as (slug: string) => void)("niagara-falls");
+    });
+
+    // Niagara should be highlighted, Fairy Pools should not
+    expect(
+      container.querySelector("a[href='/location/niagara-falls']")!.className
+    ).toContain("border-blue-400");
+    expect(
+      container.querySelector("a[href='/location/fairy-pools']")!.className
+    ).not.toContain("border-blue-400");
   });
 });
