@@ -1,0 +1,40 @@
+slug: ovens-river-porepunkah
+name: Ovens River at Porepunkah Riverside Park
+type: swimming-hole
+coordinates:
+  lat: -36.697
+  lng: 146.907
+region: Victoria, Australia
+country: AU
+description: >
+  A small weir backs up the flow of water to create a long, deep river pool for swimming in the Ovens River at Porepunkah. Features a seasonal lifesaving service and a toddler pool in the playground. Great for lap swimming against the current in a beautiful alpine valley setting.
+photos:
+  - url: /images/placeholder.jpg
+    alt: Ovens River at Porepunkah Riverside Park swimming hole in Victoria, Australia
+practical:
+  accessibility: easy
+  parking: available
+  facilities:
+    - restrooms
+    - playground
+    - picnic-tables
+  bestSeason:
+    - summer
+  dangerLevel: low
+  cost: free
+directions: >
+  Located in Porepunkah, near Bright. The Riverside Park is in the centre of town, easily accessible from the main road. Parking available at the park.
+tips:
+  - Try lap swimming against the gentle current for a workout
+  - Toddler pool in the playground for young children
+  - Seasonal lifesaving patrol for added safety
+  - Combine with a visit to nearby Bright
+tags:
+  - river
+  - family-friendly
+  - weir-pool
+  - lap-swimming
+status:
+  site: open
+  waterAccess: open
+  lastVerified: "2026-04-01"

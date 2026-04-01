@@ -1,0 +1,41 @@
+slug: quarry-reserve-ferntree-gully
+name: Quarry Reserve, Ferntree Gully
+type: swimming-hole
+coordinates:
+  lat: -37.88
+  lng: 145.28
+region: Victoria, Australia
+country: AU
+description: >
+  A former quarry that has been converted into a recreational lake, set deep in the earth with an adventure playground and barbecue facilities above. The sizeable water body below is popular with swimmers, though it can sometimes be affected by harmful algae.
+photos:
+  - url: /images/placeholder.jpg
+    alt: Quarry Reserve, Ferntree Gully swimming hole in Victoria, Australia
+practical:
+  accessibility: moderate
+  parking: available
+  facilities:
+    - restrooms
+    - barbecues
+    - playground
+  bestSeason:
+    - spring
+    - summer
+  dangerLevel: moderate
+  cost: free
+directions: >
+  Located in Ferntree Gully in Melbourne's eastern suburbs. Access via the Quarry Reserve car park. Walk down the path from the playground area to reach the water.
+tips:
+  - Check for algal bloom warnings before swimming
+  - Adventure playground and barbecues available for families
+  - The walk down to the water is steep — wear appropriate footwear
+  - Visibility in the water can be limited
+tags:
+  - quarry
+  - family-friendly
+  - urban
+status:
+  site: open
+  waterAccess: seasonal
+  note: "Sometimes prone to harmful algae"
+  lastVerified: "2026-04-01"

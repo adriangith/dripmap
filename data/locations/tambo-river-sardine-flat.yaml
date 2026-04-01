@@ -1,0 +1,38 @@
+slug: tambo-river-sardine-flat
+name: Tambo River at Sardine Flat
+type: swimming-hole
+coordinates:
+  lat: -37.81
+  lng: 147.9
+region: Victoria, Australia
+country: AU
+description: >
+  A roadside picnic area on the way to Metung in the Gippsland Lakes offering deep water swimming in a wide, open section of the Tambo River with expansive views upstream and downstream, and picnic tables nearby for a relaxing riverside lunch.
+photos:
+  - url: /images/placeholder.jpg
+    alt: Tambo River at Sardine Flat swimming hole in Victoria, Australia
+practical:
+  accessibility: easy
+  parking: available
+  facilities:
+    - picnic-tables
+  bestSeason:
+    - summer
+  dangerLevel: moderate
+  cost: free
+directions: >
+  Located on the road between Bruthen and Metung. The roadside picnic area and swimming spot are clearly visible from the road, with easy pull-over parking.
+tips:
+  - Roadside location makes it an easy stop on the way to Metung
+  - Deep water — suitable for confident swimmers
+  - Picnic tables available for a riverside lunch
+  - Wide, open views up and down the river
+tags:
+  - river
+  - roadside
+  - picnic
+  - open-water
+status:
+  site: open
+  waterAccess: open
+  lastVerified: "2026-04-01"

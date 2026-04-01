@@ -1,0 +1,40 @@
+slug: blue-rock-lake
+name: Blue Rock Lake
+type: swimming-hole
+coordinates:
+  lat: -37.98
+  lng: 146.03
+region: Victoria, Australia
+country: AU
+description: >
+  A reservoir in the Latrobe Valley with a designated swimming area at the western picnic area featuring calm, clear water, mountain views and an easy, gradual entry into the water. Relaxing during quiet times but also great fun for noisier daytime picnics.
+photos:
+  - url: /images/placeholder.jpg
+    alt: Blue Rock Lake swimming hole in Victoria, Australia
+practical:
+  accessibility: easy
+  parking: available
+  facilities:
+    - restrooms
+    - picnic-tables
+    - barbecues
+  bestSeason:
+    - summer
+  dangerLevel: low
+  cost: free
+directions: >
+  From Moe, head north towards Blue Rock Lake. The western picnic area with the designated swimming area is signposted. Follow Blue Rock Road to the lake.
+tips:
+  - The western picnic area has the best swimming access
+  - Gradual entry into the water — suitable for families
+  - Mountain views from the swimming area
+  - Visit on weekdays for a quieter experience
+tags:
+  - lake
+  - family-friendly
+  - scenic
+  - picnic
+status:
+  site: open
+  waterAccess: open
+  lastVerified: "2026-04-01"

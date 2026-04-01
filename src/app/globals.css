@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+:root {
+  --color-water: #3b82f6;
+  --color-water-dark: #1d4ed8;
+  --color-water-light: #dbeafe;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+/* Leaflet container needs explicit height */
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+}
+
+/* Pulsing ring for the user-location blue dot */
+@keyframes user-location-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+.user-location-ring {
+  animation: user-location-pulse 2s ease-out infinite;
+}
+
+/* Hide scrollbar for filter chips */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}

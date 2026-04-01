@@ -1,0 +1,41 @@
+slug: vaughan-springs
+name: Vaughan Springs
+type: swimming-hole
+coordinates:
+  lat: -37.15
+  lng: 144.21
+region: Victoria, Australia
+country: AU
+description: >
+  Part of a bold vision for public health tourism in the first half of the 20th century, Vaughan Springs features a river pool formed by a wall across the upper Loddon River, and an adjoining toddler pool that fills when the river is running high.
+photos:
+  - url: /images/placeholder.jpg
+    alt: Vaughan Springs swimming hole in Victoria, Australia
+practical:
+  accessibility: easy
+  parking: available
+  facilities:
+    - restrooms
+    - picnic-tables
+    - barbecues
+  bestSeason:
+    - spring
+    - summer
+  dangerLevel: low
+  cost: free
+directions: >
+  Located in Vaughan, near Castlemaine in central Victoria. From Castlemaine, head south-east to Vaughan. The springs and swimming area are in the Vaughan Springs Reserve.
+tips:
+  - Historic mineral springs complex with river swimming
+  - Toddler pool fills when river is running high — great for families
+  - Visit the mineral springs while you are there
+  - Best after good winter and spring rains
+tags:
+  - river
+  - historic
+  - mineral-springs
+  - family-friendly
+status:
+  site: open
+  waterAccess: seasonal
+  lastVerified: "2026-04-01"

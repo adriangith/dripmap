@@ -1,0 +1,39 @@
+slug: rocky-valley-reservoir
+name: Rocky Valley Reservoir
+type: swimming-hole
+coordinates:
+  lat: -36.86
+  lng: 147.27
+region: Victoria, Australia
+country: AU
+description: >
+  On the mountain plain near Falls Creek alpine resort, this is swimming with nothing over your head except the roof of the world. The water is cold — very cold — but it is the closest Victoria has to high altitude swimming, and was home to Australia's first official ice mile swim.
+photos:
+  - url: /images/placeholder.jpg
+    alt: Rocky Valley Reservoir swimming hole in Victoria, Australia
+practical:
+  accessibility: moderate
+  parking: available
+  facilities: []
+  bestSeason:
+    - summer
+  dangerLevel: high
+  cost: free
+directions: >
+  From Falls Creek alpine resort, drive or walk to Rocky Valley Dam. The reservoir is accessible via the road to Falls Creek during summer months.
+tips:
+  - Water is extremely cold — wetsuits highly recommended
+  - Spectacular high-altitude scenery
+  - Best visited in summer when the road is accessible
+  - Home of Australia's first official ice mile swim
+tags:
+  - alpine
+  - cold-water
+  - scenic
+  - remote
+  - open-water
+status:
+  site: open
+  waterAccess: seasonal
+  note: "Extremely cold water — experienced cold-water swimmers only"
+  lastVerified: "2026-04-01"

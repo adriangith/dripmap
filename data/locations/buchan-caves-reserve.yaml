@@ -1,0 +1,41 @@
+slug: buchan-caves-reserve
+name: Buchan Caves Reserve
+type: swimming-hole
+coordinates:
+  lat: -37.5
+  lng: 148.17
+region: Victoria, Australia
+country: AU
+description: >
+  An icy cold swimming pool within the Buchan Caves Reserve that fills from a natural underground stream at the Dukes Cave outlet. Not for the faint-hearted except on the hottest of days. Camp by night with the kangaroos and swim by day at this unique natural pool.
+photos:
+  - url: /images/placeholder.jpg
+    alt: Buchan Caves Reserve swimming hole in Victoria, Australia
+practical:
+  accessibility: easy
+  parking: available
+  facilities:
+    - restrooms
+    - camping
+    - picnic-tables
+  bestSeason:
+    - summer
+  dangerLevel: low
+  cost: free
+directions: >
+  From Bairnsdale, take the Princes Highway east, then turn north at Nowa Nowa onto the Buchan Road. Follow signs to Buchan Caves Reserve. The swimming pool is within the reserve grounds.
+tips:
+  - Water is icy cold — only bearable on the hottest days
+  - Combine with a guided cave tour at Buchan Caves
+  - Camping available in the reserve — kangaroos are common
+  - One of the most unique swimming experiences in Victoria
+tags:
+  - cave-pool
+  - cold-water
+  - camping
+  - unique
+status:
+  site: open
+  waterAccess: open
+  note: "Extremely cold water from underground stream"
+  lastVerified: "2026-04-01"
