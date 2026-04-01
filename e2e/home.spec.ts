@@ -131,13 +131,15 @@ test("detail page renders mini map without errors", async ({ page }) => {
   expect(errors).toHaveLength(0);
 });
 
-test("markers are visible on the map", async ({ page }) => {
+test("markers and clusters are visible on the map", async ({ page }) => {
   await page.goto("/");
-  const markers = page.locator(".leaflet-marker-icon");
-  // Should have at least 3 markers (may have more with additional locations)
-  await expect(markers.first()).toBeVisible({ timeout: 10_000 });
-  const count = await markers.count();
-  expect(count).toBeGreaterThanOrEqual(3);
+  // Either individual markers or cluster icons should be visible
+  const mapElements = page.locator(
+    ".leaflet-marker-icon, .marker-cluster"
+  );
+  await expect(mapElements.first()).toBeVisible({ timeout: 10_000 });
+  const count = await mapElements.count();
+  expect(count).toBeGreaterThanOrEqual(1);
 });
 
 test("locate button is visible and clickable above the bottom sheet on mobile", async ({
