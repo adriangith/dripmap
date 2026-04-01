@@ -19,15 +19,14 @@ test("detail page has a back link to the map", async ({ page }) => {
   await expect(backLink).toBeVisible();
   await backLink.click();
   await expect(page).toHaveURL(/\/$/);
-
 });
 
 test("hovering a map marker opens a popup with the location name", async ({
   page,
 }) => {
   await page.goto("/");
-  // Filter to waterfall type to reduce marker density
-  await page.locator("select").first().selectOption("waterfall");
+  // Filter to waterfall type using chip button
+  await page.locator('[data-filter-chip="waterfall"]').first().click();
   const marker = page.locator(".leaflet-marker-icon").first();
   await expect(marker).toBeVisible({ timeout: 10_000 });
   await marker.hover({ force: true });
@@ -36,25 +35,32 @@ test("hovering a map marker opens a popup with the location name", async ({
   await expect(popup).toHaveText(/.+/);
 });
 
-test("clicking a map marker navigates to the detail page", async ({
+test("clicking a map marker shows a preview card instead of navigating", async ({
   page,
 }) => {
   await page.goto("/");
-  // Filter to waterfall type to reduce marker density
-  await page.locator("select").first().selectOption("waterfall");
+  // Filter to waterfall type using chip button
+  await page.locator('[data-filter-chip="waterfall"]').first().click();
   const markers = page.locator(".leaflet-marker-icon");
   await expect(markers.first()).toBeVisible({ timeout: 10_000 });
 
   await markers.first().click({ force: true });
 
-  await expect(page).toHaveURL(/\/location\//);
+  // Should show preview card, NOT navigate away
+  const previewCard = page.locator('[data-testid="map-preview-card"]');
+  await expect(previewCard).toBeVisible({ timeout: 5_000 });
+  // Should still be on homepage
+  await expect(page).toHaveURL(/\/$/);
+  // Preview card should have a "View Details" link
+  await expect(previewCard.getByText("View Details →")).toBeVisible();
 });
 
 test("filtering by type hides non-matching cards", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByText("Fairy Pools").first()).toBeVisible();
 
-  await page.locator("select").first().selectOption("waterfall");
+  // Click the waterfall chip
+  await page.locator('[data-filter-chip="waterfall"]').first().click();
 
   await expect(page.getByText("Niagara Falls").first()).toBeVisible();
   await expect(page.getByText("Fairy Pools")).not.toBeVisible();

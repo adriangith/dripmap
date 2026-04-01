@@ -6,6 +6,7 @@ import Header from "@/components/Header";
 import FilterBar from "@/components/FilterBar";
 import LocationList from "@/components/LocationList";
 import BottomSheet from "@/components/BottomSheet";
+import MapPreviewCard from "@/components/MapPreviewCard";
 import { filterLocations } from "@/lib/filters";
 import type { LocationIndexEntry, Filters, Coordinates } from "@/lib/types";
 
@@ -31,6 +32,7 @@ export default function HomePage() {
   const [allLocations, setAllLocations] = useState<LocationIndexEntry[]>([]);
   const [filters, setFilters] = useState<Filters>(emptyFilters);
   const [highlightedSlug, setHighlightedSlug] = useState<string | null>(null);
+  const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
   const [showSearch, setShowSearch] = useState(false);
   const [userLocation, setUserLocation] = useState<Coordinates | null>(null);
 
@@ -54,8 +56,16 @@ export default function HomePage() {
     [allLocations, filters]
   );
 
+  const selectedLocation = useMemo(
+    () =>
+      selectedSlug
+        ? filteredLocations.find((l) => l.slug === selectedSlug) ?? null
+        : null,
+    [selectedSlug, filteredLocations]
+  );
+
   const handleMarkerClick = useCallback((slug: string) => {
-    window.location.href = `/location/${slug}`;
+    setSelectedSlug((prev) => (prev === slug ? null : slug));
   }, []);
 
   const handleMarkerHover = useCallback((slug: string | null) => {
@@ -88,6 +98,14 @@ export default function HomePage() {
             onMarkerHover={handleMarkerHover}
             onUserLocation={handleUserLocation}
           />
+
+          {/* Preview card on marker tap */}
+          {selectedLocation && (
+            <MapPreviewCard
+              location={selectedLocation}
+              onClose={() => setSelectedSlug(null)}
+            />
+          )}
         </div>
 
         {/* Desktop sidebar (hidden on mobile) */}

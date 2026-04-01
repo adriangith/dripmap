@@ -25,10 +25,10 @@ export default function LocationCard({
   return (
     <Link
       href={`/location/${location.slug}`}
-      className={`block rounded-lg border p-3 transition-all hover:shadow-md ${
+      className={`block rounded-lg border p-3 transition-all duration-100 active:scale-[0.98] active:shadow-none ${
         isHighlighted
           ? "border-blue-400 bg-blue-50 shadow-md"
-          : "border-gray-200 bg-white"
+          : "border-gray-200 bg-white shadow-sm hover:shadow-md"
       }`}
       onMouseEnter={() => onHover?.(location.slug)}
       onMouseLeave={() => onHover?.(null)}

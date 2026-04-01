@@ -139,9 +139,9 @@ describe("HomePage integration", () => {
     // Wait for data
     await findAllByText("Fairy Pools");
 
-    // First <select> in DOM is the type filter in the desktop FilterBar
-    const typeSelect = container.querySelector("select")!;
-    fireEvent.change(typeSelect, { target: { value: "waterfall" } });
+    // Click the "Waterfall" filter chip
+    const waterfallChip = container.querySelector('[data-filter-chip="waterfall"]')!;
+    fireEvent.click(waterfallChip);
 
     // Only Niagara Falls is a waterfall; swimming-holes should vanish from both lists
     expect(queryAllByText("Niagara Falls").length).toBeGreaterThanOrEqual(1);
@@ -160,9 +160,9 @@ describe("HomePage integration", () => {
       ).toBe("3")
     );
 
-    // Filter to waterfall only (1 result)
-    const typeSelect = container.querySelector("select")!;
-    fireEvent.change(typeSelect, { target: { value: "waterfall" } });
+    // Click the "Waterfall" filter chip (1 result)
+    const waterfallChip = container.querySelector('[data-filter-chip="waterfall"]')!;
+    fireEvent.click(waterfallChip);
 
     const map = await findByTestId("location-map");
     await waitFor(() =>
@@ -205,38 +205,43 @@ describe("HomePage integration", () => {
     expect(counts.length).toBeGreaterThanOrEqual(1);
   });
 
-  it("clicking a map marker navigates to the detail page", async () => {
-    // jsdom doesn't implement navigation; mock location.href
-    const origLocation = window.location;
-    const mockLocation = { ...origLocation, href: origLocation.href };
-    Object.defineProperty(window, "location", { value: mockLocation, writable: true });
-
+  it("clicking a map marker sets selectedSlug and shows preview card", async () => {
     const HomePage = await getHomePage();
-    const { findAllByText } = render(<HomePage />);
+    const { findAllByText, queryByTestId } = render(<HomePage />);
+    await findAllByText("Fairy Pools");
+
+    // No preview card initially
+    expect(queryByTestId("map-preview-card")).toBeNull();
+
+    act(() => {
+      (capturedMapProps.onMarkerClick as (slug: string) => void)("fairy-pools");
+    });
+
+    // Preview card should appear
+    await waitFor(() =>
+      expect(queryByTestId("map-preview-card")).not.toBeNull()
+    );
+  });
+
+  it("clicking the same marker again dismisses the preview card", async () => {
+    const HomePage = await getHomePage();
+    const { findAllByText, queryByTestId } = render(<HomePage />);
     await findAllByText("Fairy Pools");
 
     act(() => {
       (capturedMapProps.onMarkerClick as (slug: string) => void)("fairy-pools");
     });
 
-    expect(mockLocation.href).toBe("/location/fairy-pools");
-    Object.defineProperty(window, "location", { value: origLocation, writable: true });
-  });
-
-  it("clicking a different marker navigates to that detail page", async () => {
-    const origLocation = window.location;
-    const mockLocation = { ...origLocation, href: origLocation.href };
-    Object.defineProperty(window, "location", { value: mockLocation, writable: true });
-
-    const HomePage = await getHomePage();
-    const { findAllByText } = render(<HomePage />);
-    await findAllByText("Fairy Pools");
+    await waitFor(() =>
+      expect(queryByTestId("map-preview-card")).not.toBeNull()
+    );
 
     act(() => {
-      (capturedMapProps.onMarkerClick as (slug: string) => void)("niagara-falls");
+      (capturedMapProps.onMarkerClick as (slug: string) => void)("fairy-pools");
     });
 
-    expect(mockLocation.href).toBe("/location/niagara-falls");
-    Object.defineProperty(window, "location", { value: origLocation, writable: true });
+    await waitFor(() =>
+      expect(queryByTestId("map-preview-card")).toBeNull()
+    );
   });
 });

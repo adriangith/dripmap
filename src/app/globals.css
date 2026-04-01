@@ -33,3 +33,12 @@ body {
 .user-location-ring {
   animation: user-location-pulse 2s ease-out infinite;
 }
+
+/* Hide scrollbar for filter chips */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}

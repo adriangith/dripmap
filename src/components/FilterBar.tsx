@@ -3,7 +3,7 @@
 import { Search, X } from "lucide-react";
 import type { Filters, LocationType, SiteStatus } from "@/lib/types";
 
-const TYPE_OPTIONS: { value: LocationType; label: string }[] = [
+const TYPE_CHIPS: { value: LocationType; label: string }[] = [
   { value: "waterfall", label: "Waterfall" },
   { value: "swimming-hole", label: "Swimming Hole" },
   { value: "splash-pad", label: "Splash Pad" },
@@ -11,9 +11,8 @@ const TYPE_OPTIONS: { value: LocationType; label: string }[] = [
   { value: "creek", label: "Creek" },
 ];
 
-const STATUS_OPTIONS: { value: SiteStatus; label: string }[] = [
+const STATUS_CHIPS: { value: SiteStatus; label: string }[] = [
   { value: "open", label: "Open" },
-  { value: "closed", label: "Closed" },
   { value: "seasonal", label: "Seasonal" },
 ];
 
@@ -57,42 +56,54 @@ export default function FilterBar({
           </button>
         </div>
       )}
-      <div className="flex items-center gap-2 px-3 py-2 overflow-x-auto">
-        <select
-          value={filters.type ?? ""}
-          onChange={(e) =>
-            onChange({
-              ...filters,
-              type: (e.target.value as LocationType) || null,
-            })
-          }
-          className="text-sm border border-gray-300 rounded-md px-2 py-1 bg-white"
-        >
-          <option value="">All Types</option>
-          {TYPE_OPTIONS.map((opt) => (
-            <option key={opt.value} value={opt.value}>
-              {opt.label}
-            </option>
-          ))}
-        </select>
+      <div className="flex items-center gap-2 px-3 py-2 overflow-x-auto scrollbar-hide">
+        {TYPE_CHIPS.map((chip) => {
+          const isActive = filters.type === chip.value;
+          return (
+            <button
+              key={chip.value}
+              onClick={() =>
+                onChange({
+                  ...filters,
+                  type: isActive ? null : chip.value,
+                })
+              }
+              className={`shrink-0 px-3 py-1 text-sm rounded-full border transition-colors ${
+                isActive
+                  ? "bg-blue-600 text-white border-blue-600"
+                  : "bg-white text-gray-700 border-gray-300 hover:border-gray-400"
+              }`}
+              data-filter-chip={chip.value}
+            >
+              {chip.label}
+            </button>
+          );
+        })}
 
-        <select
-          value={filters.siteStatus ?? ""}
-          onChange={(e) =>
-            onChange({
-              ...filters,
-              siteStatus: (e.target.value as SiteStatus) || null,
-            })
-          }
-          className="text-sm border border-gray-300 rounded-md px-2 py-1 bg-white"
-        >
-          <option value="">Any Status</option>
-          {STATUS_OPTIONS.map((opt) => (
-            <option key={opt.value} value={opt.value}>
-              {opt.label}
-            </option>
-          ))}
-        </select>
+        <div className="w-px h-5 bg-gray-200 shrink-0" />
+
+        {STATUS_CHIPS.map((chip) => {
+          const isActive = filters.siteStatus === chip.value;
+          return (
+            <button
+              key={chip.value}
+              onClick={() =>
+                onChange({
+                  ...filters,
+                  siteStatus: isActive ? null : chip.value,
+                })
+              }
+              className={`shrink-0 px-3 py-1 text-sm rounded-full border transition-colors ${
+                isActive
+                  ? "bg-blue-600 text-white border-blue-600"
+                  : "bg-white text-gray-700 border-gray-300 hover:border-gray-400"
+              }`}
+              data-filter-chip={chip.value}
+            >
+              {chip.label}
+            </button>
+          );
+        })}
 
         {hasActiveFilters && (
           <button
@@ -106,13 +117,14 @@ export default function FilterBar({
                 search: "",
               })
             }
-            className="text-xs text-blue-600 hover:text-blue-800 whitespace-nowrap"
+            className="shrink-0 px-3 py-1 text-sm rounded-full border border-gray-300 text-blue-600 hover:bg-blue-50 transition-colors"
+            data-filter-chip="clear"
           >
             Clear all
           </button>
         )}
 
-        <span className="text-xs text-gray-500 ml-auto whitespace-nowrap">
+        <span className="text-xs text-gray-500 ml-auto whitespace-nowrap shrink-0">
           {resultCount} location{resultCount !== 1 ? "s" : ""}
         </span>
       </div>
