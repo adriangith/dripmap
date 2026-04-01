@@ -56,6 +56,12 @@ if (process.argv[1] === __filename) {
       console.error(`Error parsing ${file}: ${(e as Error).message}`);
       process.exit(1);
     }
+
+    if (!/^[a-z0-9][a-z0-9-]*$/.test(data.slug)) {
+      console.error(`Invalid slug "${data.slug}" in ${file}`);
+      process.exit(1);
+    }
+
     locations.push(data);
 
     const detail = buildDetail(data);

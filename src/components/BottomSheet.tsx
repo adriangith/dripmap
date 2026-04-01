@@ -56,7 +56,8 @@ export default function BottomSheet({ children, snapTo, onHeightChange }: Bottom
   const sheetRef = useRef<HTMLDivElement>(null);
   const [sheetHeight, setSheetHeight] = useState(SNAP_PEEK);
   const [isDragging, setIsDragging] = useState(false);
-  const [isAnimating, setIsAnimating] = useState(false);
+  const animatingRef = useRef(false);
+
   const dragStartY = useRef(0);
   const dragStartHeight = useRef(0);
   const cancelSpring = useRef<(() => void) | null>(null);
@@ -105,7 +106,7 @@ export default function BottomSheet({ children, snapTo, onHeightChange }: Bottom
   useEffect(() => {
     if (snapTo == null || isDragging) return;
     cancelSpring.current?.();
-    setIsAnimating(true);
+    animatingRef.current = true;
     cancelSpring.current = springAnimate(
       sheetHeight,
       snapTo,
@@ -113,7 +114,7 @@ export default function BottomSheet({ children, snapTo, onHeightChange }: Bottom
         setSheetHeight(v);
         onHeightChange?.(v);
       },
-      () => setIsAnimating(false),
+      () => animatingRef.current = false,
     );
   // Only trigger when snapTo changes, not on every sheetHeight change
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -123,7 +124,7 @@ export default function BottomSheet({ children, snapTo, onHeightChange }: Bottom
     (clientY: number) => {
       cancelSpring.current?.();
       cancelSpring.current = null;
-      setIsAnimating(false);
+      animatingRef.current = false;
 
       setIsDragging(true);
       dragStartY.current = clientY;
@@ -161,7 +162,7 @@ export default function BottomSheet({ children, snapTo, onHeightChange }: Bottom
   const handleDragEnd = useCallback(() => {
     setIsDragging(false);
     const target = snapToNearest(sheetHeight, velocityRef.current);
-    setIsAnimating(true);
+    animatingRef.current = true;
     cancelSpring.current = springAnimate(
       sheetHeight,
       target,
@@ -169,7 +170,7 @@ export default function BottomSheet({ children, snapTo, onHeightChange }: Bottom
         setSheetHeight(v);
         onHeightChange?.(v);
       },
-      () => setIsAnimating(false),
+      () => animatingRef.current = false,
     );
   }, [snapToNearest, sheetHeight, onHeightChange]);
 

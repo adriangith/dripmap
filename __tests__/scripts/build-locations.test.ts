@@ -47,7 +47,7 @@ describe("buildIndex", () => {
 
   it("excludes description, photos, practical, directions, tips from index", () => {
     const index = buildIndex([sampleLocation]);
-    const entry = index[0] as Record<string, unknown>;
+    const entry = index[0] as unknown as Record<string, unknown>;
     expect(entry).not.toHaveProperty("description");
     expect(entry).not.toHaveProperty("photos");
     expect(entry).not.toHaveProperty("practical");

@@ -46,6 +46,7 @@ export default function LocationDetailPanel({
       return;
     }
 
+    let aborted = false;
     setLoading(true);
     setError(null);
 
@@ -55,6 +56,7 @@ export default function LocationDetailPanel({
         return res.json();
       })
       .then((data: Location) => {
+        if (aborted) return;
         cache.current.set(slug, data);
         // Keep cache small
         if (cache.current.size > 5) {
@@ -63,8 +65,10 @@ export default function LocationDetailPanel({
         }
         setLocation(data);
       })
-      .catch(() => setError("Failed to load location details"))
-      .finally(() => setLoading(false));
+      .catch(() => { if (!aborted) setError("Failed to load location details"); })
+      .finally(() => { if (!aborted) setLoading(false); });
+
+    return () => { aborted = true; };
   }, [slug]);
 
   if (loading) {

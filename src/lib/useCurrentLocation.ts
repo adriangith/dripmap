@@ -40,12 +40,14 @@ export function useCurrentLocation(): CurrentLocationState {
 
   // On mount, silently check if permission was already granted
   useEffect(() => {
+    let mounted = true;
     if (typeof navigator === "undefined" || !navigator.permissions) return;
     navigator.permissions.query({ name: "geolocation" }).then((result) => {
-      if (result.state === "granted") {
+      if (result.state === "granted" && mounted) {
         navigator.geolocation.getCurrentPosition(
-          (pos) =>
-            setCoordinates({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
+          (pos) => {
+            if (mounted) setCoordinates({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+          },
           () => {
             /* silent fail on auto-check */
           },
@@ -54,6 +56,7 @@ export function useCurrentLocation(): CurrentLocationState {
     }).catch(() => {
       /* permissions API not supported — do nothing */
     });
+    return () => { mounted = false; };
   }, []);
 
   const requestLocation = useCallback(() => {

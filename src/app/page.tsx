@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useMemo, useRef } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import dynamic from "next/dynamic";
 import Header from "@/components/Header";
 import FilterBar from "@/components/FilterBar";
@@ -42,7 +42,6 @@ export default function HomePage() {
   const [detailSlug, setDetailSlug] = useState<string | null>(null);
   const [sheetHeight, setSheetHeight] = useState(SNAP_PEEK);
   const [snapTarget, setSnapTarget] = useState<number | null>(null);
-  const listScrollRef = useRef<number>(0);
 
   useEffect(() => {
     fetch("/generated/locations-index.json")
