@@ -18,6 +18,9 @@ vi.mock("leaflet", () => ({
 }));
 
 vi.mock("leaflet/dist/leaflet.css", () => ({}));
+vi.mock("leaflet.markercluster", () => ({}));
+vi.mock("leaflet.markercluster/dist/MarkerCluster.css", () => ({}));
+vi.mock("leaflet.markercluster/dist/MarkerCluster.Default.css", () => ({}));
 
 // Lazy import so the mock is set up first
 const getLocationMap = () =>
