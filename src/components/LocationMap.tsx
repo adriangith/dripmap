@@ -3,6 +3,9 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import "leaflet.markercluster";
+import "leaflet.markercluster/dist/MarkerCluster.css";
+import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import { Crosshair } from "lucide-react";
 
 import type { LocationIndexEntry, LocationType, Coordinates } from "@/lib/types";
@@ -85,6 +88,7 @@ export default function LocationMap({
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<L.Map | null>(null);
   const markersRef = useRef<Map<string, L.Marker>>(new Map());
+  const clusterGroupRef = useRef<L.MarkerClusterGroup | null>(null);
   const userMarkerRef = useRef<L.Marker | null>(null);
   // Keep a ref so callbacks always read the latest sheetHeight without re-creating
   const sheetHeightRef = useRef(sheetHeight);
@@ -121,11 +125,22 @@ export default function LocationMap({
 
     L.control.zoom({ position: "topright" }).addTo(map);
 
+    const clusterGroup = L.markerClusterGroup({
+      maxClusterRadius: 50,
+      spiderfyOnMaxZoom: true,
+      showCoverageOnHover: false,
+      zoomToBoundsOnClick: true,
+      chunkedLoading: true,
+    });
+    clusterGroup.addTo(map);
+    clusterGroupRef.current = clusterGroup;
+
     mapRef.current = map;
 
     return () => {
       map.remove();
       mapRef.current = null;
+      clusterGroupRef.current = null;
     };
   }, []);
 
@@ -135,7 +150,8 @@ export default function LocationMap({
     if (!map) return;
 
     // Clear old markers
-    markersRef.current.forEach((marker) => marker.remove());
+    const clusterGroup = clusterGroupRef.current;
+    if (clusterGroup) clusterGroup.clearLayers();
     markersRef.current.clear();
 
     // Add new markers
@@ -150,9 +166,9 @@ export default function LocationMap({
 
       const marker = L.marker([loc.coordinates.lat, loc.coordinates.lng], {
         icon: createPinIcon(loc.type),
-      })
-        .addTo(map)
-        .bindPopup(popupContent, { autoClose: true, closeOnClick: true });
+      }).bindPopup(popupContent, { autoClose: true, closeOnClick: true });
+
+      if (clusterGroup) clusterGroup.addLayer(marker);
 
       // Show popup on hover, navigate on click
       marker.on("click", () => onMarkerClick(loc.slug));
