@@ -59,8 +59,13 @@ export default function LocationMap({
     delete (L.Icon.Default.prototype as unknown as Record<string, unknown>)._getIconUrl;
     L.Icon.Default.mergeOptions({ iconUrl: "", iconRetinaUrl: "", shadowUrl: "" });
 
+    const worldBounds = L.latLngBounds([-90, -180], [90, 180]);
+
     const map = L.map(mapContainerRef.current, {
       zoomControl: false,
+      minZoom: 2,
+      maxBounds: worldBounds,
+      maxBoundsViscosity: 1.0,
     }).setView([20, 0], 2);
 
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
