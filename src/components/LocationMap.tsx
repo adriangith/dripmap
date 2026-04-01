@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback, useMemo } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { Crosshair } from "lucide-react";
@@ -227,16 +227,11 @@ export default function LocationMap({
 
           userMarkerRef.current = userMarker;
 
-          // Center in the visible area above the sheet
-          const zoom = 12;
+          // Center user in visible area above the sheet
           const sh = sheetHeightRef.current;
+          map.setView([lat, lng], 12, { animate: false });
           if (sh > 0) {
-            const targetPoint = map.project([lat, lng], zoom);
-            targetPoint.y += sh / 2;
-            const adjusted = map.unproject(targetPoint, zoom);
-            map.setView(adjusted, zoom);
-          } else {
-            map.setView([lat, lng], zoom);
+            map.panBy([0, sh / 2], { animate: true });
           }
         }
 

@@ -13,6 +13,7 @@ export function createLeafletMock() {
   const mockMap = {
     setView: vi.fn().mockReturnThis(),
     fitBounds: vi.fn().mockReturnThis(),
+    panBy: vi.fn().mockReturnThis(),
     remove: vi.fn(),
     closePopup: vi.fn(),
   };
