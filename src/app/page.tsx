@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useCallback, useMemo } from "react";
 import dynamic from "next/dynamic";
-import Header from "@/components/Header";
+import Link from "next/link";
+import { Droplets } from "lucide-react";
 import FilterBar from "@/components/FilterBar";
 import LocationList from "@/components/LocationList";
 import LocationDetailPanel from "@/components/LocationDetailPanel";
@@ -33,7 +34,6 @@ export default function HomePage() {
   const [allLocations, setAllLocations] = useState<LocationIndexEntry[]>([]);
   const [filters, setFilters] = useState<Filters>(emptyFilters);
   const [highlightedSlug, setHighlightedSlug] = useState<string | null>(null);
-  const [showSearch, setShowSearch] = useState(false);
   const [userLocation, setUserLocation] = useState<Coordinates | null>(null);
   const [loadError, setLoadError] = useState(false);
 
@@ -89,13 +89,6 @@ export default function HomePage() {
     setHighlightedSlug(slug);
   }, []);
 
-  const handleToggleSearch = useCallback(() => {
-    setShowSearch((prev) => {
-      if (prev) setFilters((f) => ({ ...f, search: "" }));
-      return !prev;
-    });
-  }, []);
-
   const handleUserLocation = useCallback((coords: Coordinates) => {
     setUserLocation(coords);
   }, []);
@@ -107,16 +100,22 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div className="h-screen flex flex-col overflow-hidden">
-      <Header onSearchClick={handleToggleSearch} showSearch />
-
+    <div className="fixed inset-0 overflow-hidden">
       {/* Desktop layout: side-by-side */}
-      <div className="flex-1 flex overflow-hidden">
+      <div className="h-full flex overflow-hidden">
         {/* Map — leave room for collapsed bottom sheet on mobile */}
         <div className="flex-1 relative overflow-hidden">
+          {/* Faded logo overlay */}
+          <div className="absolute left-3 z-10 pointer-events-none" style={{ top: "calc(0.75rem + env(safe-area-inset-top))" }}>
+            <Link href="/" className="flex items-center gap-1.5 opacity-40 pointer-events-auto">
+              <Droplets className="w-5 h-5 text-blue-600" />
+              <span className="font-bold text-blue-700 text-sm">dripmap</span>
+            </Link>
+          </div>
           <LocationMap
             locations={filteredLocations}
             highlightedSlug={highlightedSlug}
+            focusedSlug={detailSlug}
             onMarkerClick={handleMarkerClick}
             onMarkerHover={handleMarkerHover}
             onUserLocation={handleUserLocation}
@@ -130,8 +129,6 @@ export default function HomePage() {
             filters={filters}
             onChange={setFilters}
             resultCount={filteredLocations.length}
-            showSearch={showSearch}
-            onToggleSearch={handleToggleSearch}
           />
           <div className="flex-1 overflow-y-auto">
             {loadError && (
@@ -166,8 +163,6 @@ export default function HomePage() {
               filters={filters}
               onChange={setFilters}
               resultCount={filteredLocations.length}
-              showSearch={showSearch}
-              onToggleSearch={handleToggleSearch}
             />
             {loadError && (
               <div className="mx-3 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">

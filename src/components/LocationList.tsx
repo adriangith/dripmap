@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { LocationIndexEntry, Coordinates } from "@/lib/types";
 import LocationCard from "./LocationCard";
 
@@ -36,6 +37,11 @@ export default function LocationList({
           onCardClick={onCardClick}
         />
       ))}
+      <div className="pt-2 pb-1 text-center">
+        <Link href="/about" className="text-xs text-gray-400 hover:text-gray-600 transition-colors">
+          About dripmap
+        </Link>
+      </div>
     </div>
   );
 }

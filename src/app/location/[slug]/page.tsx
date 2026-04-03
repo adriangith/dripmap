@@ -2,7 +2,6 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, MapPin, Car, Shield, DollarSign, Calendar, AlertTriangle, Navigation, ExternalLink } from "lucide-react";
 import { getLocationDetailStatic, getAllLocationSlugs } from "@/lib/locations";
-import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import StatusBadge from "@/components/StatusBadge";
 import TypeBadge from "@/components/TypeBadge";
@@ -46,8 +45,6 @@ export default async function LocationPage({ params }: PageProps) {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header showSearch={false} />
-
       <main className="flex-1">
         {/* Hero area */}
         <div className="bg-blue-50 h-48 flex items-center justify-center">

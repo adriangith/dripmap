@@ -1,6 +1,6 @@
 "use client";
 
-import { Search, X } from "lucide-react";
+import { Search } from "lucide-react";
 import type { Filters, LocationType, SiteStatus } from "@/lib/types";
 
 const TYPE_CHIPS: { value: LocationType; label: string }[] = [
@@ -20,42 +20,28 @@ interface FilterBarProps {
   filters: Filters;
   onChange: (filters: Filters) => void;
   resultCount: number;
-  showSearch: boolean;
-  onToggleSearch: () => void;
 }
 
 export default function FilterBar({
   filters,
   onChange,
   resultCount,
-  showSearch,
-  onToggleSearch,
 }: FilterBarProps) {
   const hasActiveFilters =
     filters.type || filters.siteStatus || filters.search;
 
   return (
     <div className="border-b border-gray-200 bg-white">
-      {showSearch && (
-        <div className="flex items-center gap-2 px-3 py-2 border-b border-gray-100">
-          <Search className="w-4 h-4 text-gray-400 shrink-0" />
-          <input
-            type="text"
-            placeholder="Search locations..."
-            value={filters.search}
-            onChange={(e) => onChange({ ...filters, search: e.target.value })}
-            className="flex-1 text-sm outline-none bg-transparent"
-            autoFocus
-          />
-          <button
-            onClick={onToggleSearch}
-            className="p-1 text-gray-400 hover:text-gray-600"
-            aria-label="Close search"
-          >
-            <X className="w-4 h-4" />
-          </button>
-        </div>
-      )}
+      <div className="flex items-center gap-2 px-3 py-2 border-b border-gray-100">
+        <Search className="w-4 h-4 text-gray-400 shrink-0" />
+        <input
+          type="text"
+          placeholder="Search locations..."
+          value={filters.search}
+          onChange={(e) => onChange({ ...filters, search: e.target.value })}
+          className="flex-1 text-sm outline-none bg-transparent"
+        />
+      </div>
       <div className="flex items-center gap-2 px-3 py-2 overflow-x-auto scrollbar-hide">
         {TYPE_CHIPS.map((chip) => {
           const isActive = filters.type === chip.value;

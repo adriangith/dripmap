@@ -68,9 +68,16 @@ function createUserLocationIcon(): L.DivIcon {
   });
 }
 
+function panAboveSheet(map: L.Map, latLng: L.LatLng, sheetHeight: number) {
+  const point = map.latLngToContainerPoint(latLng);
+  const targetY = (map.getSize().y - sheetHeight) / 2;
+  map.panBy([0, point.y - targetY], { animate: true });
+}
+
 interface LocationMapProps {
   locations: LocationIndexEntry[];
   highlightedSlug: string | null;
+  focusedSlug?: string | null;
   onMarkerClick: (slug: string) => void;
   onMarkerHover: (slug: string | null) => void;
   onUserLocation?: (coords: Coordinates) => void;
@@ -80,6 +87,7 @@ interface LocationMapProps {
 export default function LocationMap({
   locations,
   highlightedSlug,
+  focusedSlug,
   onMarkerClick,
   onMarkerHover,
   onUserLocation,
@@ -199,19 +207,29 @@ export default function LocationMap({
     skipFitBoundsRef.current = false;
   }, [locations, onMarkerClick, onMarkerHover]);
 
-  // Highlight effect
+  // Highlight effect — pan to pin and open popup
   useEffect(() => {
     if (!highlightedSlug) return;
-
+    const map = mapRef.current;
     const marker = markersRef.current.get(highlightedSlug);
-    if (marker) {
+    if (map && marker) {
+      panAboveSheet(map, marker.getLatLng(), sheetHeightRef.current);
       marker.openPopup();
     }
-
     return () => {
       mapRef.current?.closePopup();
     };
   }, [highlightedSlug]);
+
+  // Focus effect — pan to pin accounting for half-screen detail sheet
+  useEffect(() => {
+    if (!focusedSlug) return;
+    const map = mapRef.current;
+    const marker = markersRef.current.get(focusedSlug);
+    if (map && marker) {
+      panAboveSheet(map, marker.getLatLng(), window.innerHeight * 0.5);
+    }
+  }, [focusedSlug]);
 
   const handleLocateMe = useCallback(() => {
     if (!window.isSecureContext) {
