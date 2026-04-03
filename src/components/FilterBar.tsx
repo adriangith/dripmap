@@ -39,6 +39,7 @@ export default function FilterBar({
           placeholder="Search locations..."
           value={filters.search}
           onChange={(e) => onChange({ ...filters, search: e.target.value })}
+          aria-label="Search locations"
           className="flex-1 text-sm outline-none bg-transparent"
         />
       </div>

@@ -227,7 +227,7 @@ export default function LocationMap({
     const map = mapRef.current;
     const marker = markersRef.current.get(focusedSlug);
     if (map && marker) {
-      panAboveSheet(map, marker.getLatLng(), window.innerHeight * 0.5);
+      panAboveSheet(map, marker.getLatLng(), sheetHeightRef.current);
     }
   }, [focusedSlug]);
 
