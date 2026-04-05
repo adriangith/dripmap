@@ -10,6 +10,31 @@ import { Crosshair } from "lucide-react";
 
 import type { LocationIndexEntry, LocationType, Coordinates } from "@/lib/types";
 
+/**
+ * Sets the map view so that `latLng` appears centered in the visible area
+ * above the bottom sheet, at the given zoom level. Computes the adjusted
+ * center in a single step to avoid jarring two-phase animation.
+ */
+function setViewAboveSheet(map: L.Map, latLng: L.LatLng | [number, number], zoom: number, sheetHeight: number) {
+  // Save current view so we can restore it before animating
+  const origCenter = map.getCenter();
+  const origZoom = map.getZoom();
+
+  // Temporarily jump to target to get coordinate mapping at the target zoom
+  map.setView(latLng, zoom, { animate: false });
+  let target = L.latLng(latLng);
+  if (sheetHeight > 0) {
+    const pinPoint = map.latLngToContainerPoint(target);
+    target = map.containerPointToLatLng(
+      L.point(pinPoint.x, pinPoint.y + sheetHeight / 2)
+    );
+  }
+
+  // Restore original view, then smoothly fly to the computed target
+  map.setView(origCenter, origZoom, { animate: false });
+  map.flyTo(target, zoom, { duration: 0.8 });
+}
+
 const PIN_COLORS: Record<LocationType, string> = {
   waterfall: "#2563eb",
   "swimming-hole": "#0891b2",
@@ -68,12 +93,6 @@ function createUserLocationIcon(): L.DivIcon {
   });
 }
 
-function panAboveSheet(map: L.Map, latLng: L.LatLng, sheetHeight: number) {
-  const point = map.latLngToContainerPoint(latLng);
-  const targetY = (map.getSize().y - sheetHeight) / 2;
-  map.panBy([0, point.y - targetY], { animate: true });
-}
-
 interface LocationMapProps {
   locations: LocationIndexEntry[];
   highlightedSlug: string | null;
@@ -82,6 +101,7 @@ interface LocationMapProps {
   onMarkerHover: (slug: string | null) => void;
   onUserLocation?: (coords: Coordinates) => void;
   sheetHeight?: number;
+  focusSheetHeight?: number;
 }
 
 export default function LocationMap({
@@ -92,6 +112,7 @@ export default function LocationMap({
   onMarkerHover,
   onUserLocation,
   sheetHeight = 0,
+  focusSheetHeight,
 }: LocationMapProps) {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<L.Map | null>(null);
@@ -144,6 +165,8 @@ export default function LocationMap({
     clusterGroupRef.current = clusterGroup;
 
     mapRef.current = map;
+    // Expose for E2E tests
+    (window as any).__leafletMap = map;
 
     return () => {
       map.remove();
@@ -207,13 +230,11 @@ export default function LocationMap({
     skipFitBoundsRef.current = false;
   }, [locations, onMarkerClick, onMarkerHover]);
 
-  // Highlight effect — pan to pin and open popup
+  // Highlight effect — open popup on hover (no panning to avoid jarring movement)
   useEffect(() => {
     if (!highlightedSlug) return;
-    const map = mapRef.current;
     const marker = markersRef.current.get(highlightedSlug);
-    if (map && marker) {
-      panAboveSheet(map, marker.getLatLng(), sheetHeightRef.current);
+    if (marker) {
       marker.openPopup();
     }
     return () => {
@@ -221,15 +242,16 @@ export default function LocationMap({
     };
   }, [highlightedSlug]);
 
-  // Focus effect — pan to pin accounting for half-screen detail sheet
+  // Focus effect — zoom to pin and center in visible area above sheet
   useEffect(() => {
     if (!focusedSlug) return;
     const map = mapRef.current;
     const marker = markersRef.current.get(focusedSlug);
     if (map && marker) {
-      panAboveSheet(map, marker.getLatLng(), sheetHeightRef.current);
+      const sh = focusSheetHeight ?? sheetHeightRef.current;
+      setViewAboveSheet(map, marker.getLatLng(), 12, sh);
     }
-  }, [focusedSlug]);
+  }, [focusedSlug, focusSheetHeight]);
 
   const handleLocateMe = useCallback(() => {
     if (!window.isSecureContext) {
@@ -269,11 +291,7 @@ export default function LocationMap({
           skipFitBoundsRef.current = true;
 
           // Center user in visible area above the sheet
-          const sh = sheetHeightRef.current;
-          map.setView([lat, lng], 12, { animate: false });
-          if (sh > 0) {
-            map.panBy([0, sh / 2], { animate: true });
-          }
+          setViewAboveSheet(map, [lat, lng], 12, sheetHeightRef.current);
         }
 
         onUserLocation?.({ lat, lng });

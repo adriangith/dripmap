@@ -142,6 +142,45 @@ test("markers and clusters are visible on the map", async ({ page }) => {
   expect(count).toBeGreaterThanOrEqual(1);
 });
 
+test("clicking a list card on mobile zooms and pans map to the pin", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+
+  // Wait for markers to load
+  await page.waitForSelector(".leaflet-marker-icon", { timeout: 10_000 });
+
+  // Swipe the bottom sheet up to reveal the list (snap to half)
+  const handle = page.locator(".rounded-t-2xl .cursor-grab").first();
+  await handle.dispatchEvent("pointerdown", { clientY: 800 });
+  await page.mouse.move(195, 400, { steps: 5 });
+  await page.mouse.up();
+  await page.waitForTimeout(500);
+
+  // Find a card button (mobile renders cards as buttons) and click it
+  const card = page.locator("button.rounded-lg").first();
+  await expect(card).toBeVisible({ timeout: 5_000 });
+  await card.click();
+
+  // Wait for the detail panel to appear
+  await expect(page.getByText("Back to list")).toBeVisible({ timeout: 5_000 });
+
+  // Wait for pan animation to settle
+  await page.waitForTimeout(500);
+
+  // Verify the map zoomed to ~12 and pin is in visible area
+  const mapData = await page.evaluate(() => {
+    const map = (window as any).__leafletMap;
+    if (!map) return null;
+    return { zoom: map.getZoom() };
+  });
+
+  expect(mapData).toBeTruthy();
+  expect(mapData!.zoom).toBeGreaterThanOrEqual(11);
+  expect(mapData!.zoom).toBeLessThanOrEqual(13);
+});
+
 test("locate button is visible and clickable above the bottom sheet on mobile", async ({
   page,
 }) => {

@@ -42,6 +42,7 @@ export default function HomePage() {
   const [detailSlug, setDetailSlug] = useState<string | null>(null);
   const [sheetHeight, setSheetHeight] = useState(SNAP_PEEK);
   const [snapTarget, setSnapTarget] = useState<number | null>(null);
+  const [focusSheetHeight, setFocusSheetHeight] = useState<number | undefined>();
 
   useEffect(() => {
     fetch("/generated/locations-index.json")
@@ -73,12 +74,14 @@ export default function HomePage() {
     // Snap to half position
     const halfHeight = window.innerHeight * SNAP_HALF;
     setSnapTarget(halfHeight);
+    setFocusSheetHeight(halfHeight);
   }, []);
 
   const handleBackToList = useCallback(() => {
     setSheetView("list");
     setDetailSlug(null);
     setHighlightedSlug(null);
+    setFocusSheetHeight(undefined);
   }, []);
 
   const handleMarkerClick = useCallback((slug: string) => {
@@ -116,6 +119,7 @@ export default function HomePage() {
             locations={filteredLocations}
             highlightedSlug={highlightedSlug}
             focusedSlug={detailSlug}
+            focusSheetHeight={focusSheetHeight}
             onMarkerClick={handleMarkerClick}
             onMarkerHover={handleMarkerHover}
             onUserLocation={handleUserLocation}
