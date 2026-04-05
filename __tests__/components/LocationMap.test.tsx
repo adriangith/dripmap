@@ -18,6 +18,9 @@ vi.mock("leaflet", () => ({
 }));
 
 vi.mock("leaflet/dist/leaflet.css", () => ({}));
+vi.mock("leaflet.markercluster", () => ({}));
+vi.mock("leaflet.markercluster/dist/MarkerCluster.css", () => ({}));
+vi.mock("leaflet.markercluster/dist/MarkerCluster.Default.css", () => ({}));
 
 // Lazy import so the mock is set up first
 const getLocationMap = () =>
@@ -198,5 +201,64 @@ describe("LocationMap", () => {
     );
     unmount();
     expect(leafletMock.mockMap.remove).toHaveBeenCalled();
+  });
+
+  it("creates a MarkerClusterGroup and adds it to the map", async () => {
+    const LocationMap = await getLocationMap();
+    render(
+      <LocationMap
+        locations={[]}
+        highlightedSlug={null}
+        onMarkerClick={vi.fn()}
+        onMarkerHover={vi.fn()}
+      />
+    );
+    expect(leafletMock.L.markerClusterGroup).toHaveBeenCalled();
+    expect(leafletMock.mockClusterGroup.addTo).toHaveBeenCalledWith(
+      leafletMock.mockMap
+    );
+  });
+
+  it("adds markers to the cluster group instead of directly to the map", async () => {
+    const LocationMap = await getLocationMap();
+    const locations = [
+      makeLocation("falls-a", 43.0, -79.0),
+      makeLocation("pool-b", 30.3, -98.1),
+    ];
+    render(
+      <LocationMap
+        locations={locations}
+        highlightedSlug={null}
+        onMarkerClick={vi.fn()}
+        onMarkerHover={vi.fn()}
+      />
+    );
+
+    expect(leafletMock.mockClusterGroup.addLayer).toHaveBeenCalledTimes(2);
+    expect(leafletMock.mockMarker.addTo).not.toHaveBeenCalled();
+  });
+
+  it("clears the cluster group when locations change", async () => {
+    const LocationMap = await getLocationMap();
+    const locations = [makeLocation("a", 10, 20)];
+    const { rerender } = render(
+      <LocationMap
+        locations={locations}
+        highlightedSlug={null}
+        onMarkerClick={vi.fn()}
+        onMarkerHover={vi.fn()}
+      />
+    );
+
+    rerender(
+      <LocationMap
+        locations={[makeLocation("b", 30, 40)]}
+        highlightedSlug={null}
+        onMarkerClick={vi.fn()}
+        onMarkerHover={vi.fn()}
+      />
+    );
+
+    expect(leafletMock.mockClusterGroup.clearLayers).toHaveBeenCalled();
   });
 });

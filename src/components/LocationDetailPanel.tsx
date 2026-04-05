@@ -13,6 +13,8 @@ import {
   ExternalLink,
 } from "lucide-react";
 import type { Location, Coordinates } from "@/lib/types";
+import { fetchDrivingInfo, formatDriveTime, formatDriveDistance } from "@/lib/osrm";
+import type { DrivingInfo } from "@/lib/osrm";
 import StatusBadge from "./StatusBadge";
 import TypeBadge from "./TypeBadge";
 import BookmarkButton from "./BookmarkButton";
@@ -33,6 +35,8 @@ export default function LocationDetailPanel({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const cache = useRef<Map<string, Location>>(new Map());
+  const [drivingInfo, setDrivingInfo] = useState<DrivingInfo | null>(null);
+  const drivingCache = useRef<Map<string, DrivingInfo>>(new Map());
 
   useEffect(() => {
     if (!slug) return;
@@ -70,6 +74,35 @@ export default function LocationDetailPanel({
 
     return () => { aborted = true; };
   }, [slug]);
+
+  useEffect(() => {
+    let aborted = false;
+
+    const key = userLocation && location
+      ? `${userLocation.lat.toFixed(3)},${userLocation.lng.toFixed(3)},${location.slug}`
+      : null;
+
+    const resolve = (): Promise<DrivingInfo | null> => {
+      if (!userLocation || !location || !key) return Promise.resolve(null);
+      const cached = drivingCache.current.get(key);
+      if (cached) return Promise.resolve(cached);
+      return fetchDrivingInfo(userLocation, location.coordinates);
+    };
+
+    resolve().then((info) => {
+      if (aborted) return;
+      if (info && key) {
+        drivingCache.current.set(key, info);
+        if (drivingCache.current.size > 20) {
+          const oldest = drivingCache.current.keys().next().value;
+          if (oldest) drivingCache.current.delete(oldest);
+        }
+      }
+      setDrivingInfo(info);
+    });
+
+    return () => { aborted = true; };
+  }, [userLocation, location]);
 
   if (loading) {
     return (
@@ -262,7 +295,20 @@ export default function LocationDetailPanel({
         </div>
       )}
 
-      {/* Navigation buttons */}
+      {/* Getting There + Navigation */}
+      {drivingInfo && (
+        <div className="mb-2">
+          <h3 className="text-base font-semibold text-gray-900 mb-1.5">
+            Getting There
+          </h3>
+          <div className="flex items-center gap-2 text-sm text-gray-700">
+            <Car className="w-4 h-4 text-gray-400 shrink-0" />
+            <span>
+              {formatDriveTime(drivingInfo.duration)} · {formatDriveDistance(drivingInfo.distance)} driving
+            </span>
+          </div>
+        </div>
+      )}
       <div className="flex gap-3 mb-4">
         <a
           href={`https://www.google.com/maps/dir/?api=1&destination=${location.coordinates.lat},${location.coordinates.lng}`}

@@ -26,6 +26,14 @@ export function createLeafletMock() {
     addTo: vi.fn().mockReturnThis(),
   };
 
+  const mockClusterGroup = {
+    addTo: vi.fn().mockReturnThis(),
+    addLayer: vi.fn().mockReturnThis(),
+    clearLayers: vi.fn().mockReturnThis(),
+    getLayers: vi.fn().mockReturnValue([]),
+    removeFrom: vi.fn().mockReturnThis(),
+  };
+
   const mockDivIcon = {};
   const mockBounds = {};
 
@@ -45,7 +53,8 @@ export function createLeafletMock() {
         mergeOptions: vi.fn(),
       },
     },
+    markerClusterGroup: vi.fn().mockReturnValue(mockClusterGroup),
   };
 
-  return { L, mockMap, mockTileLayer, mockMarker, mockZoomControl };
+  return { L, mockMap, mockTileLayer, mockMarker, mockZoomControl, mockClusterGroup };
 }

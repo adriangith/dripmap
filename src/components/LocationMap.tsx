@@ -3,9 +3,37 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import "leaflet.markercluster";
+import "leaflet.markercluster/dist/MarkerCluster.css";
+import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import { Crosshair } from "lucide-react";
 
 import type { LocationIndexEntry, LocationType, Coordinates } from "@/lib/types";
+
+/**
+ * Sets the map view so that `latLng` appears centered in the visible area
+ * above the bottom sheet, at the given zoom level. Computes the adjusted
+ * center in a single step to avoid jarring two-phase animation.
+ */
+function setViewAboveSheet(map: L.Map, latLng: L.LatLng | [number, number], zoom: number, sheetHeight: number) {
+  // Save current view so we can restore it before animating
+  const origCenter = map.getCenter();
+  const origZoom = map.getZoom();
+
+  // Temporarily jump to target to get coordinate mapping at the target zoom
+  map.setView(latLng, zoom, { animate: false });
+  let target = L.latLng(latLng);
+  if (sheetHeight > 0) {
+    const pinPoint = map.latLngToContainerPoint(target);
+    target = map.containerPointToLatLng(
+      L.point(pinPoint.x, pinPoint.y + sheetHeight / 2)
+    );
+  }
+
+  // Restore original view, then smoothly fly to the computed target
+  map.setView(origCenter, origZoom, { animate: false });
+  map.flyTo(target, zoom, { duration: 0.8 });
+}
 
 const PIN_COLORS: Record<LocationType, string> = {
   waterfall: "#2563eb",
@@ -68,23 +96,28 @@ function createUserLocationIcon(): L.DivIcon {
 interface LocationMapProps {
   locations: LocationIndexEntry[];
   highlightedSlug: string | null;
+  focusedSlug?: string | null;
   onMarkerClick: (slug: string) => void;
   onMarkerHover: (slug: string | null) => void;
   onUserLocation?: (coords: Coordinates) => void;
   sheetHeight?: number;
+  focusSheetHeight?: number;
 }
 
 export default function LocationMap({
   locations,
   highlightedSlug,
+  focusedSlug,
   onMarkerClick,
   onMarkerHover,
   onUserLocation,
   sheetHeight = 0,
+  focusSheetHeight,
 }: LocationMapProps) {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<L.Map | null>(null);
   const markersRef = useRef<Map<string, L.Marker>>(new Map());
+  const clusterGroupRef = useRef<L.MarkerClusterGroup | null>(null);
   const userMarkerRef = useRef<L.Marker | null>(null);
   // Keep a ref so callbacks always read the latest sheetHeight without re-creating
   const sheetHeightRef = useRef(sheetHeight);
@@ -121,11 +154,24 @@ export default function LocationMap({
 
     L.control.zoom({ position: "topright" }).addTo(map);
 
+    const clusterGroup = L.markerClusterGroup({
+      maxClusterRadius: 50,
+      spiderfyOnMaxZoom: true,
+      showCoverageOnHover: false,
+      zoomToBoundsOnClick: true,
+      chunkedLoading: true,
+    });
+    clusterGroup.addTo(map);
+    clusterGroupRef.current = clusterGroup;
+
     mapRef.current = map;
+    // Expose for E2E tests
+    (window as any).__leafletMap = map;
 
     return () => {
       map.remove();
       mapRef.current = null;
+      clusterGroupRef.current = null;
     };
   }, []);
 
@@ -135,7 +181,8 @@ export default function LocationMap({
     if (!map) return;
 
     // Clear old markers
-    markersRef.current.forEach((marker) => marker.remove());
+    const clusterGroup = clusterGroupRef.current;
+    if (clusterGroup) clusterGroup.clearLayers();
     markersRef.current.clear();
 
     // Add new markers
@@ -150,9 +197,9 @@ export default function LocationMap({
 
       const marker = L.marker([loc.coordinates.lat, loc.coordinates.lng], {
         icon: createPinIcon(loc.type),
-      })
-        .addTo(map)
-        .bindPopup(popupContent, { autoClose: true, closeOnClick: true });
+      }).bindPopup(popupContent, { autoClose: true, closeOnClick: true });
+
+      if (clusterGroup) clusterGroup.addLayer(marker);
 
       // Show popup on hover, navigate on click
       marker.on("click", () => onMarkerClick(loc.slug));
@@ -183,19 +230,28 @@ export default function LocationMap({
     skipFitBoundsRef.current = false;
   }, [locations, onMarkerClick, onMarkerHover]);
 
-  // Highlight effect
+  // Highlight effect — open popup on hover (no panning to avoid jarring movement)
   useEffect(() => {
     if (!highlightedSlug) return;
-
     const marker = markersRef.current.get(highlightedSlug);
     if (marker) {
       marker.openPopup();
     }
-
     return () => {
       mapRef.current?.closePopup();
     };
   }, [highlightedSlug]);
+
+  // Focus effect — zoom to pin and center in visible area above sheet
+  useEffect(() => {
+    if (!focusedSlug) return;
+    const map = mapRef.current;
+    const marker = markersRef.current.get(focusedSlug);
+    if (map && marker) {
+      const sh = focusSheetHeight ?? sheetHeightRef.current;
+      setViewAboveSheet(map, marker.getLatLng(), 12, sh);
+    }
+  }, [focusedSlug, focusSheetHeight]);
 
   const handleLocateMe = useCallback(() => {
     if (!window.isSecureContext) {
@@ -235,11 +291,7 @@ export default function LocationMap({
           skipFitBoundsRef.current = true;
 
           // Center user in visible area above the sheet
-          const sh = sheetHeightRef.current;
-          map.setView([lat, lng], 12, { animate: false });
-          if (sh > 0) {
-            map.panBy([0, sh / 2], { animate: true });
-          }
+          setViewAboveSheet(map, [lat, lng], 12, sheetHeightRef.current);
         }
 
         onUserLocation?.({ lat, lng });
