@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import { WeatherProvider } from "@/lib/weather/WeatherProvider";
 
 export const metadata: Metadata = {
   title: "dripmap — Find Water Play Locations",
@@ -36,7 +37,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="h-full text-gray-900 antialiased">
-        {children}
+        <WeatherProvider>{children}</WeatherProvider>
       </body>
     </html>
   );
