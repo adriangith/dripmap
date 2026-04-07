@@ -8,6 +8,7 @@ import FilterBar from "@/components/FilterBar";
 import LocationList from "@/components/LocationList";
 import LocationDetailPanel from "@/components/LocationDetailPanel";
 import BottomSheet, { SNAP_PEEK, SNAP_HALF } from "@/components/BottomSheet";
+import WeatherBanner from "@/components/WeatherBanner";
 import { filterLocations } from "@/lib/filters";
 import { haversineDistanceKm } from "@/lib/useCurrentLocation";
 import type { LocationIndexEntry, Filters, Coordinates } from "@/lib/types";
@@ -129,6 +130,7 @@ export default function HomePage() {
 
         {/* Desktop sidebar (hidden on mobile) */}
         <div className="hidden lg:flex lg:flex-col lg:w-96 lg:border-l lg:border-gray-200">
+          <WeatherBanner />
           <FilterBar
             filters={filters}
             onChange={setFilters}
@@ -163,6 +165,7 @@ export default function HomePage() {
           />
         ) : (
           <>
+            <WeatherBanner />
             <FilterBar
               filters={filters}
               onChange={setFilters}

@@ -1,6 +1,7 @@
 import { render, fireEvent, cleanup, waitFor, act } from "@testing-library/react";
 import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
 import type { LocationIndexEntry } from "../../src/lib/types";
+import { WeatherProvider } from "../../src/lib/weather/WeatherProvider";
 
 // ── LocationMap stub ───────────────────────────────────────────────────────
 // Captures props so tests can invoke callbacks (e.g. onMarkerClick).
@@ -139,7 +140,11 @@ describe("HomePage integration", () => {
 
   it("renders all 3 location cards after fetch", async () => {
     const HomePage = await getHomePage();
-    const { findAllByText } = render(<HomePage />);
+    const { findAllByText } = render(
+      <WeatherProvider>
+        <HomePage />
+      </WeatherProvider>
+    );
     // Desktop sidebar + mobile BottomSheet both render LocationList,
     // so each card name appears twice — findAllByText handles that.
     expect((await findAllByText("Fairy Pools")).length).toBeGreaterThanOrEqual(1);
@@ -149,7 +154,11 @@ describe("HomePage integration", () => {
 
   it("passes all 3 locations to the map", async () => {
     const HomePage = await getHomePage();
-    const { findByTestId } = render(<HomePage />);
+    const { findByTestId } = render(
+      <WeatherProvider>
+        <HomePage />
+      </WeatherProvider>
+    );
     // Wait for fetch → state update → LocationMap stub to receive locations
     const map = await findByTestId("location-map");
     await waitFor(() =>
@@ -159,7 +168,11 @@ describe("HomePage integration", () => {
 
   it("cards link to correct detail pages", async () => {
     const HomePage = await getHomePage();
-    const { findAllByText, getAllByRole } = render(<HomePage />);
+    const { findAllByText, getAllByRole } = render(
+      <WeatherProvider>
+        <HomePage />
+      </WeatherProvider>
+    );
     // Wait for cards to load before collecting links
     await findAllByText("Fairy Pools");
     const hrefs = getAllByRole("link").map((l) => l.getAttribute("href"));
@@ -170,7 +183,11 @@ describe("HomePage integration", () => {
 
   it("filtering by type narrows displayed cards", async () => {
     const HomePage = await getHomePage();
-    const { findAllByText, queryAllByText, container } = render(<HomePage />);
+    const { findAllByText, queryAllByText, container } = render(
+      <WeatherProvider>
+        <HomePage />
+      </WeatherProvider>
+    );
     // Wait for data
     await findAllByText("Fairy Pools");
 
@@ -186,7 +203,11 @@ describe("HomePage integration", () => {
 
   it("map data-count updates when filter is applied", async () => {
     const HomePage = await getHomePage();
-    const { findByTestId, findAllByText, container } = render(<HomePage />);
+    const { findByTestId, findAllByText, container } = render(
+      <WeatherProvider>
+        <HomePage />
+      </WeatherProvider>
+    );
     // Wait for initial render with 3 locations
     await findAllByText("Fairy Pools");
     await waitFor(() =>
@@ -207,7 +228,11 @@ describe("HomePage integration", () => {
 
   it("does not reset map location count when hovering a card", async () => {
     const HomePage = await getHomePage();
-    const { findAllByText, container } = render(<HomePage />);
+    const { findAllByText, container } = render(
+      <WeatherProvider>
+        <HomePage />
+      </WeatherProvider>
+    );
     await findAllByText("Fairy Pools");
     await waitFor(() =>
       expect(
@@ -232,7 +257,11 @@ describe("HomePage integration", () => {
 
   it("shows result count in filter bar", async () => {
     const HomePage = await getHomePage();
-    const { findAllByText } = render(<HomePage />);
+    const { findAllByText } = render(
+      <WeatherProvider>
+        <HomePage />
+      </WeatherProvider>
+    );
     // Wait for data then confirm FilterBar renders "3 locations"
     // Two FilterBars exist (desktop + mobile), so findAllByText is appropriate
     await findAllByText("Fairy Pools");
@@ -242,7 +271,11 @@ describe("HomePage integration", () => {
 
   it("clicking a map marker opens detail panel in bottom sheet", async () => {
     const HomePage = await getHomePage();
-    const { findAllByText, findByText } = render(<HomePage />);
+    const { findAllByText, findByText } = render(
+      <WeatherProvider>
+        <HomePage />
+      </WeatherProvider>
+    );
     await findAllByText("Fairy Pools");
 
     act(() => {
@@ -257,7 +290,11 @@ describe("HomePage integration", () => {
 
   it("clicking back in detail panel returns to list", async () => {
     const HomePage = await getHomePage();
-    const { findAllByText, findByText, queryByText } = render(<HomePage />);
+    const { findAllByText, findByText, queryByText } = render(
+      <WeatherProvider>
+        <HomePage />
+      </WeatherProvider>
+    );
     await findAllByText("Fairy Pools");
 
     act(() => {
