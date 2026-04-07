@@ -127,6 +127,38 @@ async function main() {
           },
         },
       },
+      // Open-Meteo weather forecasts
+      {
+        urlPattern: /^https:\/\/api\.open-meteo\.com\/.*/i,
+        handler: "NetworkFirst",
+        options: {
+          cacheName: "weather-api",
+          networkTimeoutSeconds: 5,
+          expiration: {
+            maxEntries: 5,
+            maxAgeSeconds: 60 * 60,
+          },
+          cacheableResponse: {
+            statuses: [0, 200],
+          },
+        },
+      },
+      // IP geolocation
+      {
+        urlPattern: /^https:\/\/ipapi\.co\/.*/i,
+        handler: "NetworkFirst",
+        options: {
+          cacheName: "ip-geo",
+          networkTimeoutSeconds: 4,
+          expiration: {
+            maxEntries: 1,
+            maxAgeSeconds: 60 * 60 * 24,
+          },
+          cacheableResponse: {
+            statuses: [0, 200],
+          },
+        },
+      },
     ],
   });
 
