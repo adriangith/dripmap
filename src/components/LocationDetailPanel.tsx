@@ -18,6 +18,7 @@ import type { DrivingInfo } from "@/lib/osrm";
 import StatusBadge from "./StatusBadge";
 import TypeBadge from "./TypeBadge";
 import BookmarkButton from "./BookmarkButton";
+import WeatherSection from "./WeatherSection";
 import { haversineDistanceKm, formatDistance } from "@/lib/useCurrentLocation";
 
 interface LocationDetailPanelProps {
@@ -183,6 +184,12 @@ export default function LocationDetailPanel({
           <p className="text-sm text-amber-700 ml-1">{location.status.note}</p>
         )}
       </div>
+
+      {/* Weather */}
+      <WeatherSection
+        locationType={location.type}
+        driveSeconds={drivingInfo?.duration ?? null}
+      />
 
       {/* Description */}
       <p className="text-gray-700 leading-relaxed text-sm mb-4">

@@ -9,6 +9,7 @@ vi.mock("../../src/lib/osrm", () => ({
 
 import { fetchDrivingInfo } from "../../src/lib/osrm";
 import type { Location } from "../../src/lib/types";
+import { WeatherContext } from "../../src/lib/weather/WeatherProvider";
 
 const mockLocation: Location = {
   slug: "test-falls",
@@ -60,11 +61,13 @@ describe("LocationDetailPanel driving info", () => {
 
     const LocationDetailPanel = await getPanel();
     render(
-      <LocationDetailPanel
-        slug="test-falls"
-        onBack={vi.fn()}
-        userLocation={{ lat: 51.5, lng: -0.12 }}
-      />
+      <WeatherContext.Provider value={{ location: null, forecast: null, loading: false, error: null, refresh: () => {} }}>
+        <LocationDetailPanel
+          slug="test-falls"
+          onBack={vi.fn()}
+          userLocation={{ lat: 51.5, lng: -0.12 }}
+        />
+      </WeatherContext.Provider>,
     );
 
     await waitFor(() => {
@@ -76,11 +79,13 @@ describe("LocationDetailPanel driving info", () => {
   it("does not show driving info when userLocation is null", async () => {
     const LocationDetailPanel = await getPanel();
     render(
-      <LocationDetailPanel
-        slug="test-falls"
-        onBack={vi.fn()}
-        userLocation={null}
-      />
+      <WeatherContext.Provider value={{ location: null, forecast: null, loading: false, error: null, refresh: () => {} }}>
+        <LocationDetailPanel
+          slug="test-falls"
+          onBack={vi.fn()}
+          userLocation={null}
+        />
+      </WeatherContext.Provider>,
     );
 
     await waitFor(() => {
@@ -94,11 +99,13 @@ describe("LocationDetailPanel driving info", () => {
 
     const LocationDetailPanel = await getPanel();
     render(
-      <LocationDetailPanel
-        slug="test-falls"
-        onBack={vi.fn()}
-        userLocation={{ lat: 51.5, lng: -0.12 }}
-      />
+      <WeatherContext.Provider value={{ location: null, forecast: null, loading: false, error: null, refresh: () => {} }}>
+        <LocationDetailPanel
+          slug="test-falls"
+          onBack={vi.fn()}
+          userLocation={{ lat: 51.5, lng: -0.12 }}
+        />
+      </WeatherContext.Provider>,
     );
 
     await waitFor(() => {
