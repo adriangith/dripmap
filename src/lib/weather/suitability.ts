@@ -26,11 +26,11 @@ function ruleSwimmingHole(w: WeatherSnapshot): Suitability {
 }
 
 function ruleSplashPad(w: WeatherSnapshot): Suitability {
-  if (isStormy(w)) return { rating: "poor", reason: "Storm — splash pads usually closed" };
-  if (isRaining(w)) return { rating: "poor", reason: "Raining — no point in a splash pad" };
+  if (isStormy(w)) return { rating: "poor", reason: "Storm — facility likely closed" };
+  if (isRaining(w)) return { rating: "poor", reason: "Raining — not worth the trip" };
   if (w.temperatureC < 16) return { rating: "poor", reason: "Too cold for outdoor water play" };
   if (w.temperatureC < 22) return { rating: "fair", reason: "Mild — bring towels for warmth after" };
-  return { rating: "good", reason: "Warm and sunny — perfect splash pad weather" };
+  return { rating: "good", reason: "Warm and sunny — perfect conditions" };
 }
 
 function ruleWaterfall(w: WeatherSnapshot): Suitability {
@@ -50,11 +50,11 @@ function ruleSpring(w: WeatherSnapshot): Suitability {
 }
 
 function ruleCreek(w: WeatherSnapshot): Suitability {
-  if (isStormy(w)) return { rating: "poor", reason: "Storm — flash flood risk in creeks" };
-  if (isRaining(w)) return { rating: "poor", reason: "Raining — creek may rise quickly" };
-  if (w.temperatureC < 14) return { rating: "poor", reason: "Too cold to enjoy a creek" };
+  if (isStormy(w)) return { rating: "poor", reason: "Storm — flash flood risk" };
+  if (isRaining(w)) return { rating: "poor", reason: "Raining — water level may rise quickly" };
+  if (w.temperatureC < 14) return { rating: "poor", reason: "Too cold for water play" };
   if (w.temperatureC < 20) return { rating: "fair", reason: "Mild — water will feel chilly" };
-  return { rating: "good", reason: "Warm and dry — great creek weather" };
+  return { rating: "good", reason: "Warm and dry — ideal conditions" };
 }
 
 const RULES: Record<LocationType, (w: WeatherSnapshot) => Suitability> = {
