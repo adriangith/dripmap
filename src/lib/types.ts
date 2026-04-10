@@ -1,33 +1,25 @@
-export type LocationType =
+// ── Shared enums ──────────────────────────────────────────────
+
+export type PlaceType =
+  | "swim"
+  | "beach"
+  | "event"
+  | "bushwalk"
+  | "lookout"
   | "waterfall"
-  | "swimming-hole"
-  | "splash-pad"
-  | "spring"
-  | "creek";
+  | "cave"
+  | "wildlife"
+  | "pool"
+  | "cycling"
+  | "fishing";
 
-export type AccessibilityLevel =
-  | "wheelchair-accessible"
-  | "easy"
-  | "moderate"
-  | "difficult"
-  | "extreme";
-
-export type ParkingType = "available" | "limited" | "none" | "street";
-
-export type DangerLevel = "low" | "moderate" | "high" | "extreme";
-
-export type CostType = "free" | "paid" | "donation";
+export type CostLevel = "free" | "$" | "$$" | "$$$";
 
 export type SiteStatus = "open" | "closed" | "seasonal" | "unknown";
 
-export type WaterAccessStatus =
-  | "open"
-  | "closed"
-  | "seasonal"
-  | "restricted"
-  | "unknown";
-
 export type Season = "spring" | "summer" | "fall" | "winter";
+
+// ── Shared value objects ──────────────────────────────────────
 
 export interface Coordinates {
   lat: number;
@@ -40,54 +32,123 @@ export interface Photo {
   credit?: string;
 }
 
-export interface PracticalInfo {
-  accessibility: AccessibilityLevel;
-  parking: ParkingType;
-  facilities: string[];
-  bestSeason: Season[];
-  dangerLevel: DangerLevel;
-  cost: CostType;
+export interface AgeSuitability {
+  minAge: number | null;
+  ideal: string[];
 }
 
-export interface LocationStatus {
+export interface PlaceStatus {
   site: SiteStatus;
-  waterAccess: WaterAccessStatus;
-  note?: string;
-  /** ISO 8601 date string, e.g. "2026-03-15" */
   lastVerified: string;
+  note?: string;
 }
 
-export interface Location {
+// ── Type-specific details ─────────────────────────────────────
+
+export interface SwimDetails {
+  dangerLevel: "low" | "moderate" | "high" | "extreme";
+  waterAccess: "open" | "closed" | "seasonal" | "restricted" | "unknown";
+  depth: string | null;
+}
+
+export interface BeachDetails {
+  beachType: "surf" | "bay" | "rock-pools" | "river" | "estuary";
+  patrolled: { seasonal: boolean; months: string[]; hours: string | null };
+  dogPolicy: "allowed" | "seasonal-offleash" | "prohibited";
+  waveExposure: "sheltered" | "moderate" | "exposed";
+  waterHazards: string[];
+  crowdLevel: "quiet" | "moderate" | "busy";
+}
+
+export type Recurrence =
+  | { type: "once"; date: string; startTime?: string; endTime?: string }
+  | { type: "range"; startDate: string; endDate: string; days?: string[]; startTime?: string; endTime?: string }
+  | { type: "weekly"; days: string[]; season?: string; startTime?: string; endTime?: string }
+  | { type: "annual"; month: number; typicalWeek?: number; duration?: string };
+
+export interface EventDetails {
+  recurrence: Recurrence;
+  confirmedDates: { year: number; startDate: string; endDate: string } | null;
+  venue: string;
+  venueType: "outdoor" | "indoor" | "mixed";
+  bookingRequired: boolean;
+  bookingUrl: string | null;
+  organiser: string;
+  organiserUrl: string | null;
+}
+
+// ── Discriminated union ───────────────────────────────────────
+
+interface PlaceBase {
   slug: string;
   name: string;
-  type: LocationType;
   coordinates: Coordinates;
   region: string;
   country: string;
   description: string;
   photos: Photo[];
-  practical: PracticalInfo;
+  highlights: string[];
+  cost: CostLevel;
+  ageSuitability: AgeSuitability;
+  accessibility: string;
+  parking: string;
+  facilities: string[];
+  bestSeason: Season[];
   directions: string;
   tips: string[];
   tags: string[];
-  status: LocationStatus;
+  status: PlaceStatus;
 }
 
-export interface LocationIndexEntry {
+export interface SwimPlace extends PlaceBase {
+  type: "swim";
+  details: SwimDetails;
+}
+
+export interface BeachPlace extends PlaceBase {
+  type: "beach";
+  details: BeachDetails;
+}
+
+export interface EventPlace extends PlaceBase {
+  type: "event";
+  details: EventDetails;
+}
+
+export type Place = SwimPlace | BeachPlace | EventPlace;
+
+// ── Index entry (lightweight, used in list/map) ───────────────
+
+export interface PlaceIndexEntry {
   slug: string;
   name: string;
-  type: LocationType;
+  type: PlaceType;
   coordinates: Coordinates;
+  region: string;
   country: string;
-  status: LocationStatus;
+  cost: CostLevel;
+  highlights: string[];
+  status: PlaceStatus;
   tags: string[];
 }
 
+// ── Filters (updated for new types) ──────────────────────────
+
 export interface Filters {
-  type: LocationType | null;
-  accessibility: AccessibilityLevel | null;
-  season: Season | null;
-  cost: CostType | null;
+  type: PlaceType | null;
   siteStatus: SiteStatus | null;
   search: string;
 }
+
+// ── Legacy re-exports for migration ──────────────────────────
+// These aliases keep existing code compiling during the transition.
+// Remove once all consumers are migrated.
+
+/** @deprecated Use PlaceType */
+export type LocationType = PlaceType;
+/** @deprecated Use Place */
+export type Location = Place;
+/** @deprecated Use PlaceIndexEntry */
+export type LocationIndexEntry = PlaceIndexEntry;
+/** @deprecated Use PlaceStatus */
+export type LocationStatus = PlaceStatus;
