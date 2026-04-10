@@ -7,6 +7,7 @@ import StatusBadge from "@/components/StatusBadge";
 import TypeBadge from "@/components/TypeBadge";
 import BookmarkButton from "@/components/BookmarkButton";
 import MiniMapWrapper from "@/components/MiniMapWrapper";
+import WeatherSection from "@/components/WeatherSection";
 import type { Metadata } from "next";
 
 interface PageProps {
@@ -97,6 +98,9 @@ export default async function LocationPage({ params }: PageProps) {
               </p>
             )}
           </div>
+
+          {/* Weather */}
+          <WeatherSection locationType={location.type} driveSeconds={null} />
 
           {/* Description */}
           <section className="mb-6">

@@ -57,10 +57,7 @@ test.describe("weather feature", () => {
   test("weather banner renders and expands on home", async ({ page }) => {
     await page.goto("/");
 
-    const banner = page.getByRole("region", { name: /weather/i }).or(
-      page.locator('[data-testid="weather-banner"]')
-    );
-    // Fallback: find via temperature text
+    // Banner shows current temperature from mocked forecast
     await expect(page.getByText(/26°C/).first()).toBeVisible({
       timeout: 10_000,
     });
