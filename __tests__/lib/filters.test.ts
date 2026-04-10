@@ -1,43 +1,49 @@
 import { describe, it, expect } from "vitest";
 import { filterLocations } from "../../src/lib/filters";
-import type { LocationIndexEntry, Filters } from "../../src/lib/types";
+import type { PlaceIndexEntry, Filters } from "../../src/lib/types";
 
 const emptyFilters: Filters = {
   type: null,
-  accessibility: null,
-  season: null,
-  cost: null,
   siteStatus: null,
   search: "",
 };
 
-const locations: LocationIndexEntry[] = [
+const locations: PlaceIndexEntry[] = [
   {
     slug: "niagara-falls",
     name: "Niagara Falls",
-    type: "waterfall",
+    type: "swim",
     coordinates: { lat: 43.0, lng: -79.0 },
+    region: "North America",
     country: "CA",
-    status: { site: "open", waterAccess: "open", lastVerified: "2026-01-01" },
+    cost: "free",
+    highlights: ["Massive waterfall"],
+    status: { site: "open", lastVerified: "2026-01-01" },
     tags: ["family-friendly", "iconic"],
   },
   {
-    slug: "hamilton-pool",
-    name: "Hamilton Pool",
-    type: "swimming-hole",
-    coordinates: { lat: 30.3, lng: -98.1 },
-    country: "US",
-    status: { site: "open", waterAccess: "seasonal", lastVerified: "2026-01-01" },
-    tags: ["scenic"],
+    slug: "test-beach",
+    name: "Test Beach",
+    type: "beach",
+    coordinates: { lat: -38.3, lng: 144.6 },
+    region: "Victoria, Australia",
+    country: "AU",
+    cost: "free",
+    highlights: ["Rock pools"],
+    status: { site: "open", lastVerified: "2026-01-01" },
+    tags: ["adventure"],
   },
   {
-    slug: "closed-creek",
-    name: "Closed Creek",
-    type: "creek",
-    coordinates: { lat: 0, lng: 0 },
+    slug: "night-market",
+    name: "Night Market",
+    type: "event",
+    coordinates: { lat: -37.8, lng: 144.9 },
+    region: "Victoria, Australia",
     country: "AU",
-    status: { site: "closed", waterAccess: "closed", lastVerified: "2026-01-01" },
-    tags: [],
+    cost: "$",
+    highlights: ["Street food"],
+    status: { site: "seasonal", lastVerified: "2026-01-01" },
+    tags: ["food", "market"],
   },
 ];
 
@@ -48,27 +54,26 @@ describe("filterLocations", () => {
   });
 
   it("filters by type", () => {
-    const result = filterLocations(locations, { ...emptyFilters, type: "waterfall" });
+    const result = filterLocations(locations, { ...emptyFilters, type: "beach" });
     expect(result).toHaveLength(1);
-    expect(result[0].slug).toBe("niagara-falls");
+    expect(result[0].slug).toBe("test-beach");
   });
 
   it("filters by site status", () => {
-    const result = filterLocations(locations, { ...emptyFilters, siteStatus: "closed" });
+    const result = filterLocations(locations, { ...emptyFilters, siteStatus: "seasonal" });
     expect(result).toHaveLength(1);
-    expect(result[0].slug).toBe("closed-creek");
+    expect(result[0].slug).toBe("night-market");
   });
 
   it("searches by name (case-insensitive)", () => {
-    const result = filterLocations(locations, { ...emptyFilters, search: "hamilton" });
+    const result = filterLocations(locations, { ...emptyFilters, search: "night" });
     expect(result).toHaveLength(1);
-    expect(result[0].slug).toBe("hamilton-pool");
+    expect(result[0].slug).toBe("night-market");
   });
 
-  it("searches by country code", () => {
-    const result = filterLocations(locations, { ...emptyFilters, search: "AU" });
-    expect(result).toHaveLength(1);
-    expect(result[0].slug).toBe("closed-creek");
+  it("searches by region", () => {
+    const result = filterLocations(locations, { ...emptyFilters, search: "victoria" });
+    expect(result).toHaveLength(2);
   });
 
   it("searches by tag", () => {
@@ -77,14 +82,15 @@ describe("filterLocations", () => {
     expect(result[0].slug).toBe("niagara-falls");
   });
 
-  it("combines type filter with search", () => {
-    const result = filterLocations(locations, {
-      ...emptyFilters,
-      type: "waterfall",
-      search: "niagara",
-    });
+  it("searches by highlight", () => {
+    const result = filterLocations(locations, { ...emptyFilters, search: "rock pools" });
     expect(result).toHaveLength(1);
-    expect(result[0].slug).toBe("niagara-falls");
+    expect(result[0].slug).toBe("test-beach");
+  });
+
+  it("combines type filter with search", () => {
+    const result = filterLocations(locations, { ...emptyFilters, type: "swim", search: "niagara" });
+    expect(result).toHaveLength(1);
   });
 
   it("returns empty when no match", () => {
