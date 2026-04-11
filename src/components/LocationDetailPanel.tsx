@@ -12,7 +12,8 @@ import {
   Navigation,
   ExternalLink,
 } from "lucide-react";
-import type { Location, Coordinates } from "@/lib/types";
+import { Droplets, Waves } from "lucide-react";
+import type { Place, SwimPlace, BeachPlace, EventPlace, Coordinates } from "@/lib/types";
 import { fetchDrivingInfo, formatDriveTime, formatDriveDistance } from "@/lib/osrm";
 import type { DrivingInfo } from "@/lib/osrm";
 import StatusBadge from "./StatusBadge";
@@ -26,15 +27,144 @@ interface LocationDetailPanelProps {
   userLocation?: Coordinates | null;
 }
 
+function SwimDetailsSection({ details }: { details: SwimPlace["details"] }) {
+  return (
+    <div className="grid grid-cols-2 gap-2.5">
+      <div className="flex items-center gap-2">
+        <AlertTriangle className="w-4 h-4 text-gray-400 shrink-0" />
+        <div>
+          <p className="text-xs text-gray-500">Danger Level</p>
+          <p className="text-sm font-medium capitalize">{details.dangerLevel}</p>
+        </div>
+      </div>
+      <div className="flex items-center gap-2">
+        <Droplets className="w-4 h-4 text-gray-400 shrink-0" />
+        <div>
+          <p className="text-xs text-gray-500">Water Access</p>
+          <p className="text-sm font-medium capitalize">{details.waterAccess}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function BeachDetailsSection({ details }: { details: BeachPlace["details"] }) {
+  return (
+    <div className="grid grid-cols-2 gap-2.5">
+      <div className="flex items-center gap-2">
+        <Waves className="w-4 h-4 text-gray-400 shrink-0" />
+        <div>
+          <p className="text-xs text-gray-500">Beach Type</p>
+          <p className="text-sm font-medium capitalize">{details.beachType.replace("-", " ")}</p>
+        </div>
+      </div>
+      <div className="flex items-center gap-2">
+        <Shield className="w-4 h-4 text-gray-400 shrink-0" />
+        <div>
+          <p className="text-xs text-gray-500">Wave Exposure</p>
+          <p className="text-sm font-medium capitalize">{details.waveExposure}</p>
+        </div>
+      </div>
+      <div className="flex items-center gap-2">
+        <AlertTriangle className="w-4 h-4 text-gray-400 shrink-0" />
+        <div>
+          <p className="text-xs text-gray-500">Patrolled</p>
+          <p className="text-sm font-medium">
+            {details.patrolled.seasonal
+              ? `${details.patrolled.months.join(", ")} ${details.patrolled.hours || ""}`
+              : "No"}
+          </p>
+        </div>
+      </div>
+      <div className="flex items-center gap-2">
+        <span className="w-4 h-4 text-gray-400 shrink-0 text-center text-xs">🐕</span>
+        <div>
+          <p className="text-xs text-gray-500">Dogs</p>
+          <p className="text-sm font-medium capitalize">{details.dogPolicy.replace("-", " ")}</p>
+        </div>
+      </div>
+      {details.waterHazards.length > 0 && (
+        <div className="col-span-2">
+          <p className="text-xs text-gray-500 mb-1">Hazards</p>
+          <div className="flex flex-wrap gap-1">
+            {details.waterHazards.map((h) => (
+              <span key={h} className="px-2 py-0.5 text-xs bg-red-50 text-red-700 rounded capitalize">
+                {h.replace("-", " ")}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function EventDetailsSection({ details }: { details: EventPlace["details"] }) {
+  const rec = details.recurrence;
+  let schedule = "";
+  switch (rec.type) {
+    case "once":
+      schedule = rec.date;
+      break;
+    case "range":
+      schedule = `${rec.startDate} – ${rec.endDate}`;
+      break;
+    case "weekly":
+      schedule = `Every ${rec.days.join(", ")}${rec.season ? ` (${rec.season})` : ""}`;
+      break;
+    case "annual":
+      schedule = `Annual — typically month ${rec.month}`;
+      break;
+  }
+
+  return (
+    <div className="space-y-2.5">
+      <div className="flex items-center gap-2">
+        <Calendar className="w-4 h-4 text-gray-400 shrink-0" />
+        <div>
+          <p className="text-xs text-gray-500">Schedule</p>
+          <p className="text-sm font-medium">{schedule}</p>
+          {rec.type !== "annual" && "startTime" in rec && rec.startTime && (
+            <p className="text-xs text-gray-500">{rec.startTime}{rec.endTime ? ` – ${rec.endTime}` : ""}</p>
+          )}
+        </div>
+      </div>
+      <div className="flex items-center gap-2">
+        <MapPin className="w-4 h-4 text-gray-400 shrink-0" />
+        <div>
+          <p className="text-xs text-gray-500">Venue</p>
+          <p className="text-sm font-medium">{details.venue} ({details.venueType})</p>
+        </div>
+      </div>
+      {details.bookingRequired && (
+        <div className="flex items-center gap-2">
+          <ExternalLink className="w-4 h-4 text-gray-400 shrink-0" />
+          <div>
+            <p className="text-xs text-gray-500">Booking</p>
+            {details.bookingUrl ? (
+              <a href={details.bookingUrl} target="_blank" rel="noopener noreferrer"
+                 className="text-sm text-blue-600 hover:underline">
+                Book tickets
+              </a>
+            ) : (
+              <p className="text-sm font-medium">Required</p>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function LocationDetailPanel({
   slug,
   onBack,
   userLocation,
 }: LocationDetailPanelProps) {
-  const [location, setLocation] = useState<Location | null>(null);
+  const [location, setLocation] = useState<Place | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const cache = useRef<Map<string, Location>>(new Map());
+  const cache = useRef<Map<string, Place>>(new Map());
   const [drivingInfo, setDrivingInfo] = useState<DrivingInfo | null>(null);
   const drivingCache = useRef<Map<string, DrivingInfo>>(new Map());
 
@@ -59,7 +189,7 @@ export default function LocationDetailPanel({
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();
       })
-      .then((data: Location) => {
+      .then((data: Place) => {
         if (aborted) return;
         cache.current.set(slug, data);
         // Keep cache small
@@ -138,7 +268,6 @@ export default function LocationDetailPanel({
     );
   }
 
-  const p = location.practical;
   const distance = userLocation
     ? formatDistance(haversineDistanceKm(userLocation, location.coordinates))
     : null;
@@ -171,14 +300,13 @@ export default function LocationDetailPanel({
 
       {/* Status */}
       <div className="flex items-center gap-2 mb-4">
-        <StatusBadge
-          status={location.status.site}
-          label={`Site: ${location.status.site}`}
-        />
-        <StatusBadge
-          status={location.status.waterAccess}
-          label={`Water: ${location.status.waterAccess}`}
-        />
+        <StatusBadge status={location.status.site} label={`Site: ${location.status.site}`} />
+        {location.type === "swim" && (
+          <StatusBadge
+            status={location.details.waterAccess}
+            label={`Water: ${location.details.waterAccess}`}
+          />
+        )}
         {location.status.note && (
           <p className="text-sm text-amber-700 ml-1">{location.status.note}</p>
         )}
@@ -189,62 +317,52 @@ export default function LocationDetailPanel({
         {location.description}
       </p>
 
-      {/* Practical info */}
+      {/* Type-specific details */}
       <section className="mb-4">
-        <h3 className="text-base font-semibold text-gray-900 mb-2">
-          Practical Info
-        </h3>
+        <h3 className="text-base font-semibold text-gray-900 mb-2">Details</h3>
+        {location.type === "swim" && <SwimDetailsSection details={location.details} />}
+        {location.type === "beach" && <BeachDetailsSection details={location.details} />}
+        {location.type === "event" && <EventDetailsSection details={location.details} />}
+      </section>
+
+      {/* Common info */}
+      <section className="mb-4">
         <div className="grid grid-cols-2 gap-2.5">
           <div className="flex items-center gap-2">
             <Shield className="w-4 h-4 text-gray-400 shrink-0" />
             <div>
               <p className="text-xs text-gray-500">Accessibility</p>
-              <p className="text-sm font-medium capitalize">
-                {p.accessibility.replaceAll("-", " ")}
-              </p>
+              <p className="text-sm font-medium capitalize">{location.accessibility}</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
             <Car className="w-4 h-4 text-gray-400 shrink-0" />
             <div>
               <p className="text-xs text-gray-500">Parking</p>
-              <p className="text-sm font-medium capitalize">{p.parking}</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <AlertTriangle className="w-4 h-4 text-gray-400 shrink-0" />
-            <div>
-              <p className="text-xs text-gray-500">Danger Level</p>
-              <p className="text-sm font-medium capitalize">{p.dangerLevel}</p>
+              <p className="text-sm font-medium capitalize">{location.parking}</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
             <DollarSign className="w-4 h-4 text-gray-400 shrink-0" />
             <div>
               <p className="text-xs text-gray-500">Cost</p>
-              <p className="text-sm font-medium capitalize">{p.cost}</p>
+              <p className="text-sm font-medium capitalize">{location.cost}</p>
             </div>
           </div>
-          <div className="flex items-center gap-2 col-span-2">
+          <div className="flex items-center gap-2">
             <Calendar className="w-4 h-4 text-gray-400 shrink-0" />
             <div>
               <p className="text-xs text-gray-500">Best Season</p>
-              <p className="text-sm font-medium capitalize">
-                {p.bestSeason.join(", ")}
-              </p>
+              <p className="text-sm font-medium capitalize">{location.bestSeason.join(", ")}</p>
             </div>
           </div>
         </div>
-
-        {p.facilities.length > 0 && (
+        {location.facilities.length > 0 && (
           <div className="mt-2.5">
             <p className="text-xs text-gray-500 mb-1">Facilities</p>
             <div className="flex flex-wrap gap-1">
-              {p.facilities.map((f) => (
-                <span
-                  key={f}
-                  className="px-2 py-0.5 text-xs bg-gray-100 text-gray-700 rounded capitalize"
-                >
+              {location.facilities.map((f) => (
+                <span key={f} className="px-2 py-0.5 text-xs bg-gray-100 text-gray-700 rounded capitalize">
                   {f.replaceAll("-", " ")}
                 </span>
               ))}
