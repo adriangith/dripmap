@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, MapPin, Car, Shield, DollarSign, Calendar, AlertTriangle, Navigation, ExternalLink } from "lucide-react";
+import { ArrowLeft, MapPin, Car, Shield, DollarSign, Calendar, AlertTriangle, Navigation, ExternalLink, Droplets, Waves } from "lucide-react";
 import { getLocationDetailStatic, getAllLocationSlugs } from "@/lib/locations";
 import Footer from "@/components/Footer";
 import StatusBadge from "@/components/StatusBadge";
@@ -8,6 +8,7 @@ import TypeBadge from "@/components/TypeBadge";
 import BookmarkButton from "@/components/BookmarkButton";
 import MiniMapWrapper from "@/components/MiniMapWrapper";
 import type { Metadata } from "next";
+import type { Place, SwimPlace, BeachPlace, EventPlace } from "@/lib/types";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -34,14 +35,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function LocationPage({ params }: PageProps) {
   const { slug } = await params;
 
-  let location;
+  let location: Place;
   try {
-    location = getLocationDetailStatic(slug);
+    location = getLocationDetailStatic(slug) as Place;
   } catch {
     notFound();
   }
-
-  const p = location.practical;
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -87,22 +86,110 @@ export default async function LocationPage({ params }: PageProps) {
           {/* Status */}
           <div className="flex items-center gap-2 mb-6">
             <StatusBadge status={location.status.site} label={`Site: ${location.status.site}`} />
-            <StatusBadge
-              status={location.status.waterAccess}
-              label={`Water: ${location.status.waterAccess}`}
-            />
+            {location.type === "swim" && (
+              <StatusBadge
+                status={(location as SwimPlace).details.waterAccess}
+                label={`Water: ${(location as SwimPlace).details.waterAccess}`}
+              />
+            )}
             {location.status.note && (
-              <p className="text-sm text-amber-700 ml-2">
-                {location.status.note}
-              </p>
+              <p className="text-sm text-amber-700 ml-2">{location.status.note}</p>
             )}
           </div>
+
+          {/* Highlights */}
+          {location.highlights.length > 0 && (
+            <div className="flex flex-wrap gap-1.5 mb-4">
+              {location.highlights.map((h) => (
+                <span key={h} className="px-2.5 py-1 text-sm bg-blue-50 text-blue-700 rounded-full font-medium">
+                  {h}
+                </span>
+              ))}
+            </div>
+          )}
 
           {/* Description */}
           <section className="mb-6">
             <p className="text-gray-700 leading-relaxed">
               {location.description}
             </p>
+          </section>
+
+          {/* Type-specific details */}
+          <section className="mb-6">
+            <h2 className="text-lg font-semibold text-gray-900 mb-3">Details</h2>
+            {location.type === "swim" && (
+              <div className="grid grid-cols-2 gap-3">
+                <div className="flex items-center gap-2">
+                  <AlertTriangle className="w-4 h-4 text-gray-400" />
+                  <div>
+                    <p className="text-xs text-gray-500">Danger Level</p>
+                    <p className="text-sm font-medium capitalize">{(location as SwimPlace).details.dangerLevel}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Droplets className="w-4 h-4 text-gray-400" />
+                  <div>
+                    <p className="text-xs text-gray-500">Water Access</p>
+                    <p className="text-sm font-medium capitalize">{(location as SwimPlace).details.waterAccess}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+            {location.type === "beach" && (
+              <div className="grid grid-cols-2 gap-3">
+                <div className="flex items-center gap-2">
+                  <Waves className="w-4 h-4 text-gray-400" />
+                  <div>
+                    <p className="text-xs text-gray-500">Beach Type</p>
+                    <p className="text-sm font-medium capitalize">{(location as BeachPlace).details.beachType.replace("-", " ")}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Shield className="w-4 h-4 text-gray-400" />
+                  <div>
+                    <p className="text-xs text-gray-500">Wave Exposure</p>
+                    <p className="text-sm font-medium capitalize">{(location as BeachPlace).details.waveExposure}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <AlertTriangle className="w-4 h-4 text-gray-400" />
+                  <div>
+                    <p className="text-xs text-gray-500">Patrolled</p>
+                    <p className="text-sm font-medium">
+                      {(location as BeachPlace).details.patrolled.seasonal
+                        ? `${(location as BeachPlace).details.patrolled.months.join(", ")} ${(location as BeachPlace).details.patrolled.hours || ""}`
+                        : "No"}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="w-4 h-4 text-gray-400 text-center text-xs">🐕</span>
+                  <div>
+                    <p className="text-xs text-gray-500">Dogs</p>
+                    <p className="text-sm font-medium capitalize">{(location as BeachPlace).details.dogPolicy.replace("-", " ")}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+            {location.type === "event" && (
+              <div className="space-y-2.5">
+                <div className="flex items-center gap-2">
+                  <Calendar className="w-4 h-4 text-gray-400" />
+                  <div>
+                    <p className="text-xs text-gray-500">Venue</p>
+                    <p className="text-sm font-medium">{(location as EventPlace).details.venue} ({(location as EventPlace).details.venueType})</p>
+                  </div>
+                </div>
+                {(location as EventPlace).details.bookingRequired && (location as EventPlace).details.bookingUrl && (
+                  <div className="flex items-center gap-2">
+                    <ExternalLink className="w-4 h-4 text-gray-400" />
+                    <a href={(location as EventPlace).details.bookingUrl ?? undefined} target="_blank" rel="noopener noreferrer"
+                       className="text-sm text-blue-600 hover:underline">Book tickets</a>
+                  </div>
+                )}
+              </div>
+            )}
           </section>
 
           {/* Practical info */}
@@ -115,54 +202,37 @@ export default async function LocationPage({ params }: PageProps) {
                 <Shield className="w-4 h-4 text-gray-400" />
                 <div>
                   <p className="text-xs text-gray-500">Accessibility</p>
-                  <p className="text-sm font-medium capitalize">
-                    {p.accessibility.replaceAll("-", " ")}
-                  </p>
+                  <p className="text-sm font-medium capitalize">{location.accessibility}</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
                 <Car className="w-4 h-4 text-gray-400" />
                 <div>
                   <p className="text-xs text-gray-500">Parking</p>
-                  <p className="text-sm font-medium capitalize">{p.parking}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <AlertTriangle className="w-4 h-4 text-gray-400" />
-                <div>
-                  <p className="text-xs text-gray-500">Danger Level</p>
-                  <p className="text-sm font-medium capitalize">
-                    {p.dangerLevel}
-                  </p>
+                  <p className="text-sm font-medium capitalize">{location.parking}</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
                 <DollarSign className="w-4 h-4 text-gray-400" />
                 <div>
                   <p className="text-xs text-gray-500">Cost</p>
-                  <p className="text-sm font-medium capitalize">{p.cost}</p>
+                  <p className="text-sm font-medium capitalize">{location.cost}</p>
                 </div>
               </div>
               <div className="flex items-center gap-2 col-span-2">
                 <Calendar className="w-4 h-4 text-gray-400" />
                 <div>
                   <p className="text-xs text-gray-500">Best Season</p>
-                  <p className="text-sm font-medium capitalize">
-                    {p.bestSeason.join(", ")}
-                  </p>
+                  <p className="text-sm font-medium capitalize">{location.bestSeason.join(", ")}</p>
                 </div>
               </div>
             </div>
-
-            {p.facilities.length > 0 && (
+            {location.facilities.length > 0 && (
               <div className="mt-3">
                 <p className="text-xs text-gray-500 mb-1">Facilities</p>
                 <div className="flex flex-wrap gap-1">
-                  {p.facilities.map((f) => (
-                    <span
-                      key={f}
-                      className="px-2 py-0.5 text-xs bg-gray-100 text-gray-700 rounded capitalize"
-                    >
+                  {location.facilities.map((f) => (
+                    <span key={f} className="px-2 py-0.5 text-xs bg-gray-100 text-gray-700 rounded capitalize">
                       {f.replaceAll("-", " ")}
                     </span>
                   ))}
