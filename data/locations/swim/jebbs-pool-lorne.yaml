@@ -1,0 +1,51 @@
+slug: jebbs-pool-lorne
+name: Jebbs Pool, Lorne
+type: swim
+coordinates:
+  lat: -38.56
+  lng: 143.96
+region: Victoria, Australia
+country: AU
+description: >
+  Cross the Cumberland River on stepping stones to reach this bush pool in the Great Otway National Park, only a
+  kilometre inland from the Great Ocean Road. A must-visit for those staying at the nearby campground, featuring a tight
+  little rock slide into the pool.
+photos:
+  - url: /images/placeholder.jpg
+    alt: Jebbs Pool, Lorne swimming hole in Victoria, Australia
+highlights:
+  - Only a kilometre from the Great Ocean Road — easy side trip
+  - Rock slide into the pool adds fun for adventurous swimmers
+cost: free
+ageSuitability:
+  minAge: null
+  ideal:
+    - toddlers
+    - primary
+    - teens
+    - adults
+accessibility: moderate
+parking: available
+facilities: []
+bestSeason:
+  - summer
+directions: >
+  From Lorne, head west along the Great Ocean Road to the Cumberland River campground area. Cross the river on stepping
+  stones to reach Jebbs Pool, about 1 km from the road.
+tips:
+  - Only a kilometre from the Great Ocean Road — easy side trip
+  - Rock slide into the pool adds fun for adventurous swimmers
+  - Cross the river on stepping stones — can be tricky after rain
+  - Popular with campers from the nearby campground
+tags:
+  - rock-pool
+  - rock-slide
+  - otways
+  - bush-setting
+status:
+  site: open
+  lastVerified: '2026-04-01'
+details:
+  dangerLevel: moderate
+  waterAccess: seasonal
+  depth: null

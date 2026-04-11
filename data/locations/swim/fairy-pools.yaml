@@ -1,0 +1,51 @@
+slug: fairy-pools
+name: Fairy Pools
+type: swim
+coordinates:
+  lat: 57.2501
+  lng: -6.2743
+region: Europe
+country: GB
+description: >
+  A series of crystal-clear blue and green pools formed by waterfalls on the Allt Coir' a' Mhadaidh river at the foot of
+  the Black Cuillins on the Isle of Skye, Scotland. The pools are famous for their clarity and colour.
+photos:
+  - url: /images/locations/fairy-pools/hero.jpg
+    alt: Crystal clear blue pools with mountain backdrop
+    credit: Visit Scotland
+highlights:
+  - Wear waterproof hiking boots — the trail is often muddy
+  - Water is cold year-round, even in summer — wetsuits recommended for swimming
+cost: free
+ageSuitability:
+  minAge: null
+  ideal:
+    - toddlers
+    - primary
+    - teens
+    - adults
+accessibility: moderate
+parking: available
+facilities: []
+bestSeason:
+  - summer
+directions: >
+  From the Glenbrittle road car park on the Isle of Skye, follow the well-marked trail along the river. The walk is
+  about 1.2 miles each way over uneven terrain.
+tips:
+  - Wear waterproof hiking boots — the trail is often muddy
+  - Water is cold year-round, even in summer — wetsuits recommended for swimming
+  - Visit on a sunny day for the best colour in the pools
+  - Midges can be fierce in summer — bring repellent
+tags:
+  - scenic
+  - hiking
+  - cold-water
+  - wild-swimming
+status:
+  site: open
+  lastVerified: '2026-02-20'
+details:
+  dangerLevel: moderate
+  waterAccess: open
+  depth: null

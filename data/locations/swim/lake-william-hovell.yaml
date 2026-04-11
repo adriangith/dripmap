@@ -1,0 +1,53 @@
+slug: lake-william-hovell
+name: Lake William Hovell
+type: swim
+coordinates:
+  lat: -37.033
+  lng: 146.317
+region: Victoria, Australia
+country: AU
+description: >
+  A jet-ski and motor boat free lake at the top of the King River Valley, offering uncomplicated swimming with plenty of
+  clear water for long-distance swimming in any direction. Surrounded by bush shores with a shallow beach and lawn area
+  for family picnics.
+photos:
+  - url: /images/placeholder.jpg
+    alt: Lake William Hovell swimming hole in Victoria, Australia
+highlights:
+  - No jet skis or motor boats — peaceful swimming guaranteed
+  - Great for long-distance open water swimming
+cost: free
+ageSuitability:
+  minAge: null
+  ideal:
+    - toddlers
+    - primary
+    - teens
+    - adults
+accessibility: easy
+parking: available
+facilities:
+  - picnic-tables
+  - barbecues
+bestSeason:
+  - summer
+directions: >
+  From Whitfield, head south along the King Valley Highway. Lake William Hovell is signposted. The main swimming and
+  picnic area is at the northern end of the lake.
+tips:
+  - No jet skis or motor boats — peaceful swimming guaranteed
+  - Great for long-distance open water swimming
+  - Shallow beach area suitable for families
+  - Bush camping available nearby
+tags:
+  - lake
+  - quiet
+  - open-water
+  - family-friendly
+status:
+  site: open
+  lastVerified: '2026-04-01'
+details:
+  dangerLevel: low
+  waterAccess: open
+  depth: null

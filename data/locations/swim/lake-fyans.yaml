@@ -1,0 +1,56 @@
+slug: lake-fyans
+name: Lake Fyans
+type: swim
+coordinates:
+  lat: -37.14
+  lng: 142.63
+region: Victoria, Australia
+country: AU
+description: >
+  Lake Fyans has two main swimming beaches with gently sloping, sandy shores and warm tea-coloured water, all set
+  against the backdrop of the southern Grampians mountain range. Swim out to the inflated rubber ring and take in the
+  spectacular view.
+photos:
+  - url: /images/placeholder.jpg
+    alt: Lake Fyans swimming hole in Victoria, Australia
+highlights:
+  - Two swimming beaches with sandy shores
+  - Warm tea-coloured water from the surrounding bushland
+cost: free
+ageSuitability:
+  minAge: null
+  ideal:
+    - toddlers
+    - primary
+    - teens
+    - adults
+accessibility: easy
+parking: available
+facilities:
+  - restrooms
+  - picnic-tables
+  - barbecues
+bestSeason:
+  - spring
+  - summer
+directions: >
+  From Halls Gap in the Grampians, head east towards Lake Fyans. The swimming beaches are signposted. Main access is
+  from the Lake Fyans Holiday Park area.
+tips:
+  - Two swimming beaches with sandy shores
+  - Warm tea-coloured water from the surrounding bushland
+  - Spectacular Grampians mountain backdrop
+  - Swim out to the inflated rubber ring in the lake
+tags:
+  - lake
+  - beach
+  - grampians
+  - scenic
+  - family-friendly
+status:
+  site: open
+  lastVerified: '2026-04-01'
+details:
+  dangerLevel: low
+  waterAccess: open
+  depth: null

@@ -1,0 +1,52 @@
+slug: the-blowhole-hepburn-springs
+name: The Blowhole, Hepburn Springs
+type: swim
+coordinates:
+  lat: -37.32
+  lng: 144.13
+region: Victoria, Australia
+country: AU
+description: >
+  The window for swimming at The Blowhole is slim, so timing is all important. Step into the pool as the tunnel trickles
+  slowly overhead at this fascinating gold mining relic. The pool needs to be not too turbulent, not too dry, but just
+  right for a dip.
+photos:
+  - url: /images/placeholder.jpg
+    alt: The Blowhole, Hepburn Springs swimming hole in Victoria, Australia
+highlights:
+  - Timing is everything — the pool needs to be just right for swimming
+  - Visit after moderate rain when water flow is gentle
+cost: free
+ageSuitability:
+  minAge: null
+  ideal:
+    - toddlers
+    - primary
+    - teens
+    - adults
+accessibility: moderate
+parking: limited
+facilities: []
+bestSeason:
+  - spring
+directions: >
+  Located in Hepburn Springs, near Daylesford. From Hepburn Springs, follow walking tracks to The Blowhole. The site is
+  a former gold mining tunnel with a pool beneath.
+tips:
+  - Timing is everything — the pool needs to be just right for swimming
+  - Visit after moderate rain when water flow is gentle
+  - Fascinating gold mining history at this unique site
+  - Not suitable when water is too turbulent or too dry
+tags:
+  - historic
+  - unique
+  - gold-mining
+  - rock-pool
+status:
+  site: open
+  lastVerified: '2026-04-01'
+  note: Very narrow window of ideal swimming conditions
+details:
+  dangerLevel: moderate
+  waterAccess: seasonal
+  depth: null

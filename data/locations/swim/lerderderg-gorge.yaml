@@ -1,0 +1,53 @@
+slug: lerderderg-gorge
+name: Lerderderg Gorge at Grahams Dam
+type: swim
+coordinates:
+  lat: -37.565
+  lng: 144.38
+region: Victoria, Australia
+country: AU
+description: >
+  The Lerderderg River runs through a dramatic gorge on the western fringe of Melbourne, creating two excellent swimming
+  spots near Grahams Dam. The river flows at its best in springtime and early summer before typically drying up in late
+  summer or early autumn.
+photos:
+  - url: /images/placeholder.jpg
+    alt: Lerderderg Gorge at Grahams Dam swimming hole in Victoria, Australia
+highlights:
+  - Visit in spring or early summer when water levels are highest
+  - The river can dry up in late summer — check conditions before visiting
+cost: free
+ageSuitability:
+  minAge: null
+  ideal:
+    - toddlers
+    - primary
+    - teens
+    - adults
+accessibility: moderate
+parking: available
+facilities: []
+bestSeason:
+  - spring
+  - summer
+directions: >
+  From Melbourne, head west on the Western Freeway towards Bacchus Marsh. Turn off at the Lerderderg Gorge Road exit and
+  follow signs to the gorge. Grahams Dam area has a car park and walking trails along the river.
+tips:
+  - Visit in spring or early summer when water levels are highest
+  - The river can dry up in late summer — check conditions before visiting
+  - Wear sturdy walking shoes for the rocky terrain
+  - Bring sun protection as shade is limited near the water
+tags:
+  - gorge
+  - river
+  - scenic
+  - bush-walking
+status:
+  site: open
+  lastVerified: '2026-04-01'
+  note: River typically dries up in late summer or early autumn
+details:
+  dangerLevel: moderate
+  waterAccess: seasonal
+  depth: null

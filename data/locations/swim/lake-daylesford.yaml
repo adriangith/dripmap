@@ -1,0 +1,54 @@
+slug: lake-daylesford
+name: Lake Daylesford
+type: swim
+coordinates:
+  lat: -37.35
+  lng: 144.14
+region: Victoria, Australia
+country: AU
+description: >
+  A popular family picnic spot in the heart of spa country with wonderfully calm and clear water to swim in. Lake
+  Daylesford has been a long-frequented swimming spot, with change rooms built lakeside back in the 1940s. Mineral
+  springs add to the charm.
+photos:
+  - url: /images/placeholder.jpg
+    alt: Lake Daylesford swimming hole in Victoria, Australia
+highlights:
+  - Calm, clear water ideal for family swimming
+  - Historic change rooms from the 1940s still in use
+cost: free
+ageSuitability:
+  minAge: null
+  ideal:
+    - toddlers
+    - primary
+    - teens
+    - adults
+accessibility: easy
+parking: available
+facilities:
+  - restrooms
+  - picnic-tables
+bestSeason:
+  - spring
+  - summer
+directions: >
+  Located in Daylesford, an easy drive from Melbourne via the Western Freeway. The lake is in the centre of town with
+  parking available at several points around the shoreline.
+tips:
+  - Calm, clear water ideal for family swimming
+  - Historic change rooms from the 1940s still in use
+  - Visit the nearby mineral springs for a unique experience
+  - Combine with exploring Daylesford's cafes and shops
+tags:
+  - lake
+  - family-friendly
+  - historic
+  - spa-country
+status:
+  site: open
+  lastVerified: '2026-04-01'
+details:
+  dangerLevel: low
+  waterAccess: open
+  depth: null

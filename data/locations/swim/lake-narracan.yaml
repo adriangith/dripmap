@@ -1,0 +1,54 @@
+slug: lake-narracan
+name: Lake Narracan
+type: swim
+coordinates:
+  lat: -38.23
+  lng: 146.18
+region: Victoria, Australia
+country: AU
+description: >
+  Lake Narracan on the Latrobe River has a designated swimming area directly in front of the caravan park on the
+  southern side of the lake. The swimming area features a small sandy beach, a long curved jetty and a grassy hill under
+  the gum trees.
+photos:
+  - url: /images/placeholder.jpg
+    alt: Lake Narracan swimming hole in Victoria, Australia
+highlights:
+  - Designated swimming area near the caravan park is the best spot
+  - Sandy beach with gradual entry suitable for families
+cost: free
+ageSuitability:
+  minAge: null
+  ideal:
+    - toddlers
+    - primary
+    - teens
+    - adults
+accessibility: easy
+parking: available
+facilities:
+  - restrooms
+  - picnic-tables
+  - barbecues
+bestSeason:
+  - summer
+directions: >
+  From Moe, head south to Lake Narracan. The designated swimming area is on the southern side of the lake, near the
+  caravan park. Well signposted from the main road.
+tips:
+  - Designated swimming area near the caravan park is the best spot
+  - Sandy beach with gradual entry suitable for families
+  - Curved jetty provides a unique swimming experience
+  - Caravan park nearby for overnight stays
+tags:
+  - lake
+  - beach
+  - family-friendly
+  - jetty
+status:
+  site: open
+  lastVerified: '2026-04-01'
+details:
+  dangerLevel: low
+  waterAccess: open
+  depth: null

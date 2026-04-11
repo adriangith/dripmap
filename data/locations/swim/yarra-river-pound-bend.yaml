@@ -1,0 +1,53 @@
+slug: yarra-river-pound-bend
+name: Yarra River at Pound Bend
+type: swim
+coordinates:
+  lat: -37.75
+  lng: 145.13
+region: Victoria, Australia
+country: AU
+description: >
+  A fascinating part of Melbourne's gold mining history, the Pound Bend Tunnel outlet is a popular spot for swimming in
+  the Yarra River. Visitors can swim in the shallow rock pool or dangle their feet from the rock ledge that juts out
+  into the stream.
+photos:
+  - url: /images/placeholder.jpg
+    alt: Yarra River at Pound Bend swimming hole in Victoria, Australia
+highlights:
+  - Explore the historic mining tunnel while visiting
+  - The rock pool is great for wading and shallow swimming
+cost: free
+ageSuitability:
+  minAge: null
+  ideal:
+    - toddlers
+    - primary
+    - teens
+    - adults
+accessibility: easy
+parking: available
+facilities:
+  - restrooms
+  - picnic-tables
+bestSeason:
+  - summer
+directions: >
+  Located in Warrandyte, north-east of Melbourne. Access via Pound Bend Road into Warrandyte State Park. Park at the
+  Pound Bend car park and follow the walking track to the tunnel outlet and river.
+tips:
+  - Explore the historic mining tunnel while visiting
+  - The rock pool is great for wading and shallow swimming
+  - Popular spot on warm days — arrive early for parking
+  - Walking tracks around the bend offer scenic views
+tags:
+  - river
+  - historic
+  - rock-pool
+  - family-friendly
+status:
+  site: open
+  lastVerified: '2026-04-01'
+details:
+  dangerLevel: low
+  waterAccess: open
+  depth: null
