@@ -1,0 +1,66 @@
+slug: queen-vic-night-market
+name: Queen Victoria Night Market
+type: event
+coordinates:
+  lat: -37.8076
+  lng: 144.9568
+region: Victoria, Australia
+country: AU
+description: >
+  Melbourne's iconic night market transforms the historic Queen Vic sheds into
+  a buzzing street food and live music destination every Wednesday evening in
+  summer. Over 40 food stalls from Melbourne's best restaurants and pop-ups,
+  plus bars, DJs, and a rotating lineup of live acts.
+photos:
+  - url: /images/placeholder.jpg
+    alt: Queen Victoria Night Market food stalls
+highlights:
+  - 40+ street food stalls from Melbourne's best
+  - Live music and DJs every week
+  - Covered sheds — rain or shine
+cost: free
+ageSuitability:
+  minAge: null
+  ideal:
+    - primary
+    - teens
+    - adults
+accessibility: wheelchair-accessible
+parking: available
+facilities:
+  - restrooms
+  - food
+  - bars
+bestSeason:
+  - summer
+directions: >
+  Queen Victoria Market, corner of Elizabeth and Victoria Streets, Melbourne CBD.
+  Tram routes 19, 57, 58, 59 stop at the market. Parking available in the
+  market's multi-storey car park.
+tips:
+  - Get there by 6pm to avoid the longest food queues
+  - Bring a blanket to sit on the grass area near the stage
+  - Food stalls are cash and card — bars are card only
+tags:
+  - market
+  - food
+  - live-music
+  - melbourne-cbd
+status:
+  site: seasonal
+  lastVerified: "2026-04-10"
+details:
+  recurrence:
+    type: weekly
+    days:
+      - wed
+    season: summer
+    startTime: "17:00"
+    endTime: "22:00"
+  confirmedDates: null
+  venue: Queen Victoria Market
+  venueType: outdoor
+  bookingRequired: false
+  bookingUrl: null
+  organiser: Queen Victoria Market
+  organiserUrl: null

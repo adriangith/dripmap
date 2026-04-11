@@ -1,0 +1,64 @@
+slug: portsea-back-beach
+name: Portsea Back Beach
+type: beach
+coordinates:
+  lat: -38.3128
+  lng: 144.7153
+region: Victoria, Australia
+country: AU
+description: >
+  A dramatic ocean beach at the tip of the Mornington Peninsula known for its
+  cliff jumping platform and powerful surf. The limestone cliffs frame a stunning
+  stretch of wild coast — this is where locals come for adventure, not sunbathing.
+photos:
+  - url: /images/placeholder.jpg
+    alt: Portsea Back Beach cliff jumping platform
+highlights:
+  - Cliff jumping from the rock platform
+  - Powerful surf break
+  - Dramatic limestone cliff scenery
+cost: free
+ageSuitability:
+  minAge: 12
+  ideal:
+    - teens
+    - adults
+accessibility: moderate
+parking: available
+facilities:
+  - restrooms
+  - lifeguard-seasonal
+bestSeason:
+  - summer
+directions: >
+  Drive to the end of the Mornington Peninsula via the Nepean Highway. Portsea
+  Back Beach has its own car park signposted from the main road.
+tips:
+  - Cliff jumping is from the rock platform on the western end
+  - Strong rips — only swim between the flags when patrolled
+  - Arrive early in summer as parking fills quickly
+tags:
+  - cliff-jumping
+  - surf
+  - adventure
+  - mornington-peninsula
+status:
+  site: open
+  lastVerified: "2026-04-10"
+details:
+  beachType: surf
+  patrolled:
+    seasonal: true
+    months:
+      - dec
+      - jan
+      - feb
+      - mar
+    hours: 10am-6pm
+  dogPolicy: prohibited
+  waveExposure: exposed
+  waterHazards:
+    - rips
+    - rocks
+    - strong-swell
+  crowdLevel: busy
