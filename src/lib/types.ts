@@ -140,3 +140,21 @@ export interface Filters {
   search: string;
 }
 
+// ── Constraints (discovery context) ─────────────────────────
+
+export type DistanceThreshold = "30min" | "1hr" | "2hr" | "daytrip" | "any";
+export type CostFilter = "free" | "free-$" | "$$-under" | "any";
+export type GroupType = "solo" | "adults" | "family-young" | "family-older" | "friends" | null;
+
+export type DateMode =
+  | { mode: "specific"; date: Date }
+  | { mode: "recurring"; days: number[] }  // 0=Sun, 1=Mon, ..., 6=Sat
+  | null;
+
+export interface Constraints {
+  distance: DistanceThreshold;
+  date: DateMode;
+  cost: CostFilter;
+  group: GroupType;
+}
+
