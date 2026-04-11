@@ -10,7 +10,7 @@ import LocationDetailPanel from "@/components/LocationDetailPanel";
 import BottomSheet, { SNAP_PEEK, SNAP_HALF } from "@/components/BottomSheet";
 import { filterLocations } from "@/lib/filters";
 import { haversineDistanceKm } from "@/lib/useCurrentLocation";
-import type { LocationIndexEntry, Filters, Coordinates } from "@/lib/types";
+import type { PlaceIndexEntry, Filters, Coordinates } from "@/lib/types";
 
 const LocationMap = dynamic(() => import("@/components/LocationMap"), {
   ssr: false,
@@ -28,7 +28,7 @@ const emptyFilters: Filters = {
 };
 
 export default function HomePage() {
-  const [allLocations, setAllLocations] = useState<LocationIndexEntry[]>([]);
+  const [allLocations, setAllLocations] = useState<PlaceIndexEntry[]>([]);
   const [filters, setFilters] = useState<Filters>(emptyFilters);
   const [highlightedSlug, setHighlightedSlug] = useState<string | null>(null);
   const [userLocation, setUserLocation] = useState<Coordinates | null>(null);
@@ -47,7 +47,7 @@ export default function HomePage() {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();
       })
-      .then((data: LocationIndexEntry[]) => setAllLocations(data))
+      .then((data: PlaceIndexEntry[]) => setAllLocations(data))
       .catch(() => {
         setAllLocations([]);
         setLoadError(true);
