@@ -60,6 +60,17 @@ export default function BottomSheet({ children, header, snapTo, onHeightChange }
   const [isDragging, setIsDragging] = useState(false);
   const animatingRef = useRef(false);
 
+  // Keep CSS custom property in sync so siblings (e.g. locate button) can
+  // track the sheet height without a React-state round-trip lag.
+  const syncCSSHeight = useCallback((h: number) => {
+    document.documentElement.style.setProperty("--sheet-height", `${h}px`);
+  }, []);
+
+  // Set initial value
+  useEffect(() => {
+    syncCSSHeight(SNAP_PEEK);
+  }, [syncCSSHeight]);
+
   const dragStartY = useRef(0);
   const dragStartHeight = useRef(0);
   const cancelSpring = useRef<(() => void) | null>(null);
@@ -114,6 +125,7 @@ export default function BottomSheet({ children, header, snapTo, onHeightChange }
       snapTo,
       (v) => {
         setSheetHeight(v);
+        syncCSSHeight(v);
         onHeightChange?.(v);
       },
       () => animatingRef.current = false,
@@ -156,9 +168,10 @@ export default function BottomSheet({ children, header, snapTo, onHeightChange }
         Math.min(window.innerHeight * SNAP_FULL, dragStartHeight.current + delta)
       );
       setSheetHeight(newHeight);
+      syncCSSHeight(newHeight);
       onHeightChange?.(newHeight);
     },
-    [isDragging, onHeightChange]
+    [isDragging, onHeightChange, syncCSSHeight]
   );
 
   const handleDragEnd = useCallback(() => {
@@ -170,11 +183,12 @@ export default function BottomSheet({ children, header, snapTo, onHeightChange }
       target,
       (v) => {
         setSheetHeight(v);
+        syncCSSHeight(v);
         onHeightChange?.(v);
       },
       () => animatingRef.current = false,
     );
-  }, [snapToNearest, sheetHeight, onHeightChange]);
+  }, [snapToNearest, sheetHeight, onHeightChange, syncCSSHeight]);
 
   useEffect(() => {
     if (!isDragging) return;
