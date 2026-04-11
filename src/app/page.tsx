@@ -171,9 +171,8 @@ export default function HomePage() {
       <BottomSheet
         snapTo={snapTarget}
         onHeightChange={handleSheetHeightChange}
-      >
-        {sheetView === "detail" && detailSlug ? (
-          sheetHeight <= SNAP_PEEK + 20 ? (
+        header={
+          sheetView === "detail" && detailSlug ? (
             <div className="flex items-center gap-2 px-3 py-1">
               <button onClick={handleBackToList} className="shrink-0 p-1">
                 <ArrowLeft className="w-4 h-4 text-gray-500" />
@@ -183,65 +182,68 @@ export default function HomePage() {
               </span>
             </div>
           ) : (
-            <LocationDetailPanel
-              slug={detailSlug}
-              onBack={handleBackToList}
-              userLocation={userLocation}
-            />
-          )
-        ) : (
-          <>
-            {/* Search bar — always mounted so focus persists across peek/expand */}
-            <div className="flex items-center gap-2 px-3 py-1 border-b border-gray-100">
-              <Search className="w-4 h-4 text-gray-400 shrink-0" />
-              <input
-                type="text"
-                placeholder="Search places..."
-                value={filters.search}
-                onChange={(e) => setFilters({ ...filters, search: e.target.value })}
-                onFocus={() => {
-                  if (sheetHeight <= SNAP_PEEK + 20) {
-                    const halfHeight = window.innerHeight * SNAP_HALF;
-                    setSnapTarget(halfHeight);
-                  }
-                }}
-                className="flex-1 text-base outline-none bg-transparent"
-              />
-              <span className="text-xs text-gray-400 shrink-0">
-                {filteredLocations.length} place{filteredLocations.length !== 1 ? "s" : ""}
-              </span>
-            </div>
-            {/* Rest of content hidden at peek height */}
-            {sheetHeight > SNAP_PEEK + 20 && (
-              <>
+            <>
+              <div className="flex items-center gap-2 px-3 py-1 border-b border-gray-100">
+                <Search className="w-4 h-4 text-gray-400 shrink-0" />
+                <input
+                  type="text"
+                  placeholder="Search places..."
+                  value={filters.search}
+                  onChange={(e) => setFilters({ ...filters, search: e.target.value })}
+                  onFocus={() => {
+                    if (sheetHeight <= SNAP_PEEK + 20) {
+                      const halfHeight = window.innerHeight * SNAP_HALF;
+                      setSnapTarget(halfHeight);
+                    }
+                  }}
+                  className="flex-1 text-base outline-none bg-transparent"
+                />
+                <span className="text-xs text-gray-400 shrink-0">
+                  {filteredLocations.length} place{filteredLocations.length !== 1 ? "s" : ""}
+                </span>
+              </div>
+              {sheetHeight > SNAP_PEEK + 20 && (
                 <ContextBar
                   constraints={constraints}
                   onConstraintsChange={setConstraints}
                   hasLocation={userLocation !== null}
                   onRequestLocation={handleRequestLocation}
                 />
-                <FilterBar
-                  filters={filters}
-                  onChange={setFilters}
-                  resultCount={filteredLocations.length}
-                  hideSearch
-                />
-                {loadError && (
-                  <div className="mx-3 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
-                    Failed to load locations. Please try refreshing the page.
-                  </div>
-                )}
-                <LocationList
-                  locations={filteredLocations}
-                  highlightedSlug={highlightedSlug}
-                  onHover={setHighlightedSlug}
-                  userLocation={userLocation}
-                  onCardClick={handleOpenDetail}
-                />
-              </>
+              )}
+            </>
+          )
+        }
+      >
+        {sheetView === "detail" && detailSlug ? (
+          sheetHeight > SNAP_PEEK + 20 ? (
+            <LocationDetailPanel
+              slug={detailSlug}
+              onBack={handleBackToList}
+              userLocation={userLocation}
+            />
+          ) : null
+        ) : sheetHeight > SNAP_PEEK + 20 ? (
+          <>
+            <FilterBar
+              filters={filters}
+              onChange={setFilters}
+              resultCount={filteredLocations.length}
+              hideSearch
+            />
+            {loadError && (
+              <div className="mx-3 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
+                Failed to load locations. Please try refreshing the page.
+              </div>
             )}
+            <LocationList
+              locations={filteredLocations}
+              highlightedSlug={highlightedSlug}
+              onHover={setHighlightedSlug}
+              userLocation={userLocation}
+              onCardClick={handleOpenDetail}
+            />
           </>
-        )}
+        ) : null}
       </BottomSheet>
     </div>
   );

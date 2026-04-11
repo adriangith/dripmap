@@ -48,11 +48,13 @@ function springAnimate(
 
 interface BottomSheetProps {
   children: React.ReactNode;
+  /** Content rendered above the scrollable area — not clipped by overflow */
+  header?: React.ReactNode;
   snapTo?: number | null;
   onHeightChange?: (height: number) => void;
 }
 
-export default function BottomSheet({ children, snapTo, onHeightChange }: BottomSheetProps) {
+export default function BottomSheet({ children, header, snapTo, onHeightChange }: BottomSheetProps) {
   const sheetRef = useRef<HTMLDivElement>(null);
   const [sheetHeight, setSheetHeight] = useState(SNAP_PEEK);
   const [isDragging, setIsDragging] = useState(false);
@@ -220,6 +222,13 @@ export default function BottomSheet({ children, snapTo, onHeightChange }: Bottom
       >
         <div className="w-10 h-1 rounded-full bg-gray-300" />
       </div>
+
+      {/* Header — outside scroll, popovers can overflow visibly */}
+      {header && (
+        <div className="shrink-0 relative z-10 overflow-visible">
+          {header}
+        </div>
+      )}
 
       {/* Scrollable content */}
       <div className="flex-1 overflow-y-auto overscroll-contain">
