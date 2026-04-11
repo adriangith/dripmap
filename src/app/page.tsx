@@ -87,6 +87,12 @@ export default function HomePage() {
   }, []);
 
   const handleMarkerClick = useCallback((slug: string) => {
+    // Desktop (lg breakpoint): navigate to detail page
+    if (typeof window !== "undefined" && window.innerWidth >= 1024) {
+      window.location.assign("/location/" + slug);
+      return;
+    }
+    // Mobile: open in-sheet detail
     handleOpenDetail(slug);
   }, [handleOpenDetail]);
 
