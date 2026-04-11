@@ -1,11 +1,11 @@
 import Link from "next/link";
-import type { LocationIndexEntry, Coordinates } from "@/lib/types";
+import type { PlaceIndexEntry, Coordinates } from "@/lib/types";
 import { haversineDistanceKm, formatDistance } from "@/lib/useCurrentLocation";
 import TypeBadge from "./TypeBadge";
 import StatusBadge from "./StatusBadge";
 
 interface LocationCardProps {
-  location: LocationIndexEntry;
+  location: PlaceIndexEntry;
   onHover?: (slug: string | null) => void;
   isHighlighted?: boolean;
   userLocation?: Coordinates | null;
@@ -41,31 +41,28 @@ export default function LocationCard({
             {distance && (
               <span className="text-xs text-blue-600 font-medium">{distance}</span>
             )}
+            {location.cost && location.cost !== "free" && (
+              <span className="text-xs text-gray-500">{location.cost}</span>
+            )}
           </div>
         </div>
         <div className="flex flex-col items-end gap-1 shrink-0">
           <StatusBadge status={location.status.site} />
-          {location.status.site === "open" &&
-            location.status.waterAccess !== "open" && (
-              <StatusBadge
-                status={location.status.waterAccess}
-                label={`Water: ${location.status.waterAccess}`}
-              />
-            )}
         </div>
       </div>
-      {location.tags.length > 0 && (
+      {location.highlights.length > 0 ? (
+        <p className="text-sm text-gray-600 mt-1.5 line-clamp-1">
+          {location.highlights[0]}
+        </p>
+      ) : location.tags.length > 0 ? (
         <div className="flex flex-wrap gap-1 mt-2">
           {location.tags.slice(0, 3).map((tag) => (
-            <span
-              key={tag}
-              className="px-1.5 py-0.5 text-xs bg-gray-100 text-gray-600 rounded"
-            >
+            <span key={tag} className="px-1.5 py-0.5 text-xs bg-gray-100 text-gray-600 rounded">
               {tag}
             </span>
           ))}
         </div>
-      )}
+      ) : null}
     </>
   );
 
