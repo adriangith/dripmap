@@ -130,6 +130,7 @@ export interface PlaceIndexEntry {
   highlights: string[];
   status: PlaceStatus;
   tags: string[];
+  recurrence?: Recurrence; // only present for event type
 }
 
 // ── Filters (updated for new types) ──────────────────────────

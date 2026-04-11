@@ -1,5 +1,6 @@
-import type { PlaceIndexEntry, Constraints, Coordinates } from "./types";
+import type { PlaceIndexEntry, Constraints, Coordinates, DateMode } from "./types";
 import { haversineDistanceKm } from "./useCurrentLocation";
+import { isEventOnDate, isEventOnDayOfWeek } from "./event-dates";
 
 const ROAD_FACTOR = 1.4;
 const AVG_SPEED_KMH = 60;
@@ -59,6 +60,20 @@ function groupScore(place: PlaceIndexEntry, group: string | null): number {
   return 0;
 }
 
+function passesDateFilter(place: PlaceIndexEntry, date: DateMode): boolean {
+  if (!date) return true;
+  // Non-event types always pass date filtering
+  if (place.type !== "event" || !place.recurrence) return true;
+
+  if (date.mode === "specific") {
+    return isEventOnDate(place.recurrence, date.date);
+  }
+  if (date.mode === "recurring") {
+    return isEventOnDayOfWeek(place.recurrence, date.days);
+  }
+  return true;
+}
+
 export interface ScoredPlace extends PlaceIndexEntry {
   _score: number;
   _driveMinutes: number | null;
@@ -74,6 +89,9 @@ export function applyConstraints(
   for (const place of places) {
     // Hard filter: distance
     if (!passesDistanceFilter(place, constraints.distance, userLocation)) continue;
+
+    // Hard filter: date (for events)
+    if (!passesDateFilter(place, constraints.date)) continue;
 
     // Compute drive time for sorting
     const driveMin = userLocation
