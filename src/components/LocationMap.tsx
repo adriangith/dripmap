@@ -8,7 +8,7 @@ import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import { Crosshair } from "lucide-react";
 
-import type { LocationIndexEntry, LocationType, Coordinates } from "@/lib/types";
+import type { PlaceIndexEntry, PlaceType, Coordinates } from "@/lib/types";
 
 /**
  * Sets the map view so that `latLng` appears centered in the visible area
@@ -35,15 +35,21 @@ function setViewAboveSheet(map: L.Map, latLng: L.LatLng | [number, number], zoom
   map.flyTo(target, zoom, { duration: 0.8 });
 }
 
-const PIN_COLORS: Record<LocationType, string> = {
-  waterfall: "#2563eb",
-  "swimming-hole": "#0891b2",
-  "splash-pad": "#7c3aed",
-  spring: "#059669",
-  creek: "#0d9488",
+const PIN_COLORS: Record<PlaceType, string> = {
+  swim: "#0891b2",
+  beach: "#3b82f6",
+  event: "#db2777",
+  bushwalk: "#15803d",
+  lookout: "#d97706",
+  waterfall: "#1d4ed8",
+  cave: "#4b5563",
+  wildlife: "#ea580c",
+  pool: "#7c3aed",
+  cycling: "#65a30d",
+  fishing: "#0d9488",
 };
 
-function createPinIcon(type: LocationType): L.DivIcon {
+function createPinIcon(type: PlaceType): L.DivIcon {
   const color = PIN_COLORS[type];
   return L.divIcon({
     className: "",
@@ -94,7 +100,7 @@ function createUserLocationIcon(): L.DivIcon {
 }
 
 interface LocationMapProps {
-  locations: LocationIndexEntry[];
+  locations: PlaceIndexEntry[];
   highlightedSlug: string | null;
   focusedSlug?: string | null;
   onMarkerClick: (slug: string) => void;
