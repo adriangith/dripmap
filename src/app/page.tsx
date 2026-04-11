@@ -205,7 +205,7 @@ export default function HomePage() {
                     setSnapTarget(halfHeight);
                   }
                 }}
-                className="flex-1 text-sm outline-none bg-transparent"
+                className="flex-1 text-base outline-none bg-transparent"
               />
               <span className="text-xs text-gray-400 shrink-0">
                 {filteredLocations.length} place{filteredLocations.length !== 1 ? "s" : ""}
