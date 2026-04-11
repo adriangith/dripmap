@@ -1,6 +1,6 @@
 import { render, fireEvent, cleanup, waitFor, act } from "@testing-library/react";
 import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
-import type { LocationIndexEntry } from "../../src/lib/types";
+import type { PlaceIndexEntry } from "../../src/lib/types";
 
 // ── LocationMap stub ───────────────────────────────────────────────────────
 // Captures props so tests can invoke callbacks (e.g. onMarkerClick).
@@ -55,23 +55,29 @@ vi.mock("next/navigation", () => ({
 }));
 
 // ── Sample data (matches public/generated/locations-index.json) ───────────
-const SAMPLE_LOCATIONS: LocationIndexEntry[] = [
+const SAMPLE_LOCATIONS: PlaceIndexEntry[] = [
   {
     slug: "fairy-pools",
     name: "Fairy Pools",
-    type: "swimming-hole",
+    type: "swim",
     coordinates: { lat: 57.2501, lng: -6.2743 },
+    region: "Scotland, UK",
     country: "GB",
-    status: { site: "open", waterAccess: "open", lastVerified: "2026-02-20" },
+    cost: "free",
+    highlights: ["Crystal clear pools"],
+    status: { site: "open", lastVerified: "2026-02-20" },
     tags: ["scenic", "hiking", "cold-water", "wild-swimming"],
   },
   {
     slug: "hamilton-pool",
     name: "Hamilton Pool Preserve",
-    type: "swimming-hole",
+    type: "swim",
     coordinates: { lat: 30.3427, lng: -98.1266 },
+    region: "Texas, USA",
     country: "US",
-    status: { site: "open", waterAccess: "seasonal", lastVerified: "2026-03-10" },
+    cost: "$$",
+    highlights: ["Natural grotto"],
+    status: { site: "open", lastVerified: "2026-03-10" },
     tags: ["scenic", "reservation-required", "swimming"],
   },
   {
@@ -79,8 +85,11 @@ const SAMPLE_LOCATIONS: LocationIndexEntry[] = [
     name: "Niagara Falls",
     type: "waterfall",
     coordinates: { lat: 43.0962, lng: -79.0377 },
+    region: "Ontario, Canada",
     country: "CA",
-    status: { site: "open", waterAccess: "open", lastVerified: "2026-03-15" },
+    cost: "free",
+    highlights: ["World-famous waterfall"],
+    status: { site: "open", lastVerified: "2026-03-15" },
     tags: ["family-friendly", "iconic", "accessible", "free"],
   },
 ];
@@ -89,24 +98,24 @@ const SAMPLE_LOCATIONS: LocationIndexEntry[] = [
 const FAIRY_POOLS_DETAIL = {
   slug: "fairy-pools",
   name: "Fairy Pools",
-  type: "swimming-hole",
+  type: "swim",
   coordinates: { lat: 57.2501, lng: -6.2743 },
-  region: "Europe",
+  region: "Scotland, UK",
   country: "GB",
   description: "Crystal clear pools in the Scottish Highlands.",
   photos: [],
-  practical: {
-    accessibility: "moderate",
-    parking: "available",
-    facilities: [],
-    bestSeason: ["summer"],
-    dangerLevel: "moderate",
-    cost: "free",
-  },
+  highlights: ["Crystal clear pools"],
+  cost: "free",
+  ageSuitability: { minAge: null, ideal: ["adults"] },
+  accessibility: "moderate",
+  parking: "available",
+  facilities: [],
+  bestSeason: ["summer"],
   directions: "Take the A87.",
   tips: ["Bring warm clothes"],
   tags: ["scenic", "hiking", "cold-water", "wild-swimming"],
-  status: { site: "open", waterAccess: "open", lastVerified: "2026-02-20" },
+  status: { site: "open", lastVerified: "2026-02-20" },
+  details: { dangerLevel: "moderate", waterAccess: "open", depth: null },
 };
 
 // Lazy import so all mocks are registered first
@@ -236,7 +245,7 @@ describe("HomePage integration", () => {
     // Wait for data then confirm FilterBar renders "3 locations"
     // Two FilterBars exist (desktop + mobile), so findAllByText is appropriate
     await findAllByText("Fairy Pools");
-    const counts = await findAllByText("3 locations");
+    const counts = await findAllByText("3 places");
     expect(counts.length).toBeGreaterThanOrEqual(1);
   });
 
