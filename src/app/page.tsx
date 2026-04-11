@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { Compass, Search, ArrowLeft } from "lucide-react";
@@ -50,6 +50,7 @@ export default function HomePage() {
   const [sheetHeight, setSheetHeight] = useState(SNAP_PEEK);
   const [snapTarget, setSnapTarget] = useState<number | null>(null);
   const [focusSheetHeight, setFocusSheetHeight] = useState<number | undefined>();
+  const listScrollRef = useRef(0);
 
   useEffect(() => {
     fetch("/generated/locations-index.json")
@@ -71,6 +72,10 @@ export default function HomePage() {
 
   // Open detail view in the sheet (from pin tap or card tap)
   const handleOpenDetail = useCallback((slug: string) => {
+    // Save list scroll position before switching to detail
+    const scrollEl = document.querySelector(".fixed.bottom-0 .overflow-y-auto");
+    if (scrollEl) listScrollRef.current = scrollEl.scrollTop;
+
     setDetailSlug(slug);
     setSheetView("detail");
     // Snap to half position
@@ -84,6 +89,11 @@ export default function HomePage() {
     setDetailSlug(null);
     setHighlightedSlug(null);
     setFocusSheetHeight(undefined);
+    // Restore list scroll position after React re-renders the list
+    requestAnimationFrame(() => {
+      const scrollEl = document.querySelector(".fixed.bottom-0 .overflow-y-auto");
+      if (scrollEl) scrollEl.scrollTop = listScrollRef.current;
+    });
   }, []);
 
   const handleMarkerClick = useCallback((slug: string) => {
