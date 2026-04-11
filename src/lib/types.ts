@@ -140,15 +140,3 @@ export interface Filters {
   search: string;
 }
 
-// ── Legacy re-exports for migration ──────────────────────────
-// These aliases keep existing code compiling during the transition.
-// Remove once all consumers are migrated.
-
-/** @deprecated Use PlaceType */
-export type LocationType = PlaceType;
-/** @deprecated Use Place */
-export type Location = Place;
-/** @deprecated Use PlaceIndexEntry */
-export type LocationIndexEntry = PlaceIndexEntry;
-/** @deprecated Use PlaceStatus */
-export type LocationStatus = PlaceStatus;
