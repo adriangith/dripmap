@@ -2,7 +2,7 @@
 
 import { useRef, useState, useCallback, useEffect } from "react";
 
-export const SNAP_PEEK = 140;
+export const SNAP_PEEK = 96;
 export const SNAP_HALF = 0.5;
 export const SNAP_FULL = 0.92;
 

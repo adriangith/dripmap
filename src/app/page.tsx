@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { Compass } from "lucide-react";
+import { Compass, Search, ArrowLeft } from "lucide-react";
 import FilterBar from "@/components/FilterBar";
 import ContextBar from "@/components/ContextBar";
 import LocationList from "@/components/LocationList";
@@ -172,7 +172,38 @@ export default function HomePage() {
         snapTo={snapTarget}
         onHeightChange={handleSheetHeightChange}
       >
-        {sheetView === "detail" && detailSlug ? (
+        {sheetHeight <= SNAP_PEEK + 20 ? (
+          // Compact peek: just search bar or place name
+          sheetView === "detail" && detailSlug ? (
+            <div className="flex items-center gap-2 px-3 py-1">
+              <button onClick={handleBackToList} className="shrink-0 p-1">
+                <ArrowLeft className="w-4 h-4 text-gray-500" />
+              </button>
+              <span className="text-sm font-semibold text-gray-900 truncate">
+                {allLocations.find((l) => l.slug === detailSlug)?.name ?? "Details"}
+              </span>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2 px-3 py-1">
+              <Search className="w-4 h-4 text-gray-400 shrink-0" />
+              <input
+                type="text"
+                placeholder="Search places..."
+                value={filters.search}
+                onChange={(e) => setFilters({ ...filters, search: e.target.value })}
+                onFocus={() => {
+                  // Expand sheet when user taps search
+                  const halfHeight = window.innerHeight * SNAP_HALF;
+                  setSnapTarget(halfHeight);
+                }}
+                className="flex-1 text-sm outline-none bg-transparent"
+              />
+              <span className="text-xs text-gray-400 shrink-0">
+                {filteredLocations.length} place{filteredLocations.length !== 1 ? "s" : ""}
+              </span>
+            </div>
+          )
+        ) : sheetView === "detail" && detailSlug ? (
           <LocationDetailPanel
             slug={detailSlug}
             onBack={handleBackToList}
