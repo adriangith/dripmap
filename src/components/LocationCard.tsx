@@ -5,7 +5,7 @@ import TypeBadge from "./TypeBadge";
 import StatusBadge from "./StatusBadge";
 
 interface LocationCardProps {
-  location: PlaceIndexEntry;
+  location: PlaceIndexEntry & { _driveMinutes?: number | null };
   onHover?: (slug: string | null) => void;
   isHighlighted?: boolean;
   userLocation?: Coordinates | null;
@@ -19,8 +19,10 @@ export default function LocationCard({
   userLocation,
   onCardClick,
 }: LocationCardProps) {
-  const distance =
-    userLocation
+  const driveMinutes = (location as { _driveMinutes?: number | null })._driveMinutes;
+  const distance = driveMinutes != null
+    ? `~${Math.round(driveMinutes)} min`
+    : userLocation
       ? formatDistance(haversineDistanceKm(userLocation, location.coordinates))
       : null;
 

@@ -5,12 +5,14 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { Compass } from "lucide-react";
 import FilterBar from "@/components/FilterBar";
+import ContextBar from "@/components/ContextBar";
 import LocationList from "@/components/LocationList";
 import LocationDetailPanel from "@/components/LocationDetailPanel";
 import BottomSheet, { SNAP_PEEK, SNAP_HALF } from "@/components/BottomSheet";
 import { filterLocations } from "@/lib/filters";
-import { haversineDistanceKm } from "@/lib/useCurrentLocation";
-import type { PlaceIndexEntry, Filters, Coordinates } from "@/lib/types";
+import { applyConstraints } from "@/lib/constraints";
+import type { PlaceIndexEntry, Filters, Coordinates, Constraints } from "@/lib/types";
+import type { ScoredPlace } from "@/lib/constraints";
 
 const LocationMap = dynamic(() => import("@/components/LocationMap"), {
   ssr: false,
@@ -27,9 +29,17 @@ const emptyFilters: Filters = {
   search: "",
 };
 
+const defaultConstraints: Constraints = {
+  distance: "any",
+  date: null,
+  cost: "any",
+  group: null,
+};
+
 export default function HomePage() {
   const [allLocations, setAllLocations] = useState<PlaceIndexEntry[]>([]);
   const [filters, setFilters] = useState<Filters>(emptyFilters);
+  const [constraints, setConstraints] = useState<Constraints>(defaultConstraints);
   const [highlightedSlug, setHighlightedSlug] = useState<string | null>(null);
   const [userLocation, setUserLocation] = useState<Coordinates | null>(null);
   const [loadError, setLoadError] = useState(false);
@@ -54,15 +64,10 @@ export default function HomePage() {
       });
   }, []);
 
-  const filteredLocations = useMemo(() => {
+  const filteredLocations: ScoredPlace[] = useMemo(() => {
     const filtered = filterLocations(allLocations, filters);
-    if (!userLocation) return filtered;
-    return [...filtered].sort(
-      (a, b) =>
-        haversineDistanceKm(userLocation, a.coordinates) -
-        haversineDistanceKm(userLocation, b.coordinates),
-    );
-  }, [allLocations, filters, userLocation]);
+    return applyConstraints(filtered, constraints, userLocation);
+  }, [allLocations, filters, constraints, userLocation]);
 
   // Open detail view in the sheet (from pin tap or card tap)
   const handleOpenDetail = useCallback((slug: string) => {
@@ -91,6 +96,15 @@ export default function HomePage() {
 
   const handleUserLocation = useCallback((coords: Coordinates) => {
     setUserLocation(coords);
+  }, []);
+
+  const handleRequestLocation = useCallback(() => {
+    if (typeof navigator === "undefined" || !navigator.geolocation) return;
+    navigator.geolocation.getCurrentPosition(
+      (pos) => setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
+      () => {},
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 },
+    );
   }, []);
 
   const handleSheetHeightChange = useCallback((height: number) => {
@@ -126,6 +140,12 @@ export default function HomePage() {
 
         {/* Desktop sidebar (hidden on mobile) */}
         <div className="hidden lg:flex lg:flex-col lg:w-96 lg:border-l lg:border-gray-200">
+          <ContextBar
+            constraints={constraints}
+            onConstraintsChange={setConstraints}
+            hasLocation={userLocation !== null}
+            onRequestLocation={handleRequestLocation}
+          />
           <FilterBar
             filters={filters}
             onChange={setFilters}
@@ -160,6 +180,12 @@ export default function HomePage() {
           />
         ) : (
           <>
+            <ContextBar
+              constraints={constraints}
+              onConstraintsChange={setConstraints}
+              hasLocation={userLocation !== null}
+              onRequestLocation={handleRequestLocation}
+            />
             <FilterBar
               filters={filters}
               onChange={setFilters}
