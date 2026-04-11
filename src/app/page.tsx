@@ -23,9 +23,6 @@ const LocationMap = dynamic(() => import("@/components/LocationMap"), {
 
 const emptyFilters: Filters = {
   type: null,
-  accessibility: null,
-  season: null,
-  cost: null,
   siteStatus: null,
   search: "",
 };
