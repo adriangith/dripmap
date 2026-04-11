@@ -70,9 +70,9 @@ function dateLabel(d: DateMode): string {
   return d.days.map((n) => DAY_LABELS[n]).join(", ");
 }
 
-// ── Popover wrapper ──────────────────────────────────────────
+// ── Popover wrapper (renders below chip scroll area) ─────────
 
-function Popover({
+function PopoverPanel({
   open,
   onClose,
   children,
@@ -85,13 +85,17 @@ function Popover({
 
   useEffect(() => {
     if (!open) return;
-    function handleClick(e: MouseEvent) {
+    function handleClick(e: MouseEvent | TouchEvent) {
       if (ref.current && !ref.current.contains(e.target as Node)) {
         onClose();
       }
     }
     document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
+    document.addEventListener("touchstart", handleClick);
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+      document.removeEventListener("touchstart", handleClick);
+    };
   }, [open, onClose]);
 
   if (!open) return null;
@@ -99,7 +103,7 @@ function Popover({
   return (
     <div
       ref={ref}
-      className="absolute top-full left-0 right-0 sm:left-auto sm:right-auto sm:min-w-56 mt-1 z-50 bg-white rounded-xl shadow-lg border border-gray-200 p-3"
+      className="relative z-50 bg-white rounded-xl shadow-lg border border-gray-200 p-3 mx-3 mt-1"
     >
       {children}
     </div>
@@ -160,224 +164,208 @@ export default function ContextBar({
   );
 
   return (
-    <div className="bg-gray-50 border-b border-gray-200 px-3 py-2">
-      <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
-        {/* Location chip */}
-        <div className="relative shrink-0">
-          <Chip
-            icon={<MapPin className="w-3.5 h-3.5" />}
-            label={hasLocation ? "Near you" : "Location"}
-            active={hasLocation}
-            onClick={() => {
-              if (!hasLocation) {
-                onRequestLocation();
-              } else {
-                toggle("location");
-              }
-            }}
-          />
-          <Popover open={openPopover === "location"} onClose={close}>
-            <p className="text-xs text-gray-500 mb-2">Location is active</p>
+    <div className="bg-gray-50 border-b border-gray-200">
+      {/* Scrollable chip row */}
+      <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide px-3 py-2">
+        <Chip
+          icon={<MapPin className="w-3.5 h-3.5" />}
+          label={hasLocation ? "Near you" : "Location"}
+          active={hasLocation}
+          onClick={() => {
+            if (!hasLocation) {
+              onRequestLocation();
+            } else {
+              toggle("location");
+            }
+          }}
+        />
+        <Chip
+          icon={<Clock className="w-3.5 h-3.5" />}
+          label={distanceLabel(constraints.distance)}
+          active={constraints.distance !== "any"}
+          onClick={() => toggle("distance")}
+        />
+        <Chip
+          icon={<CalendarDays className="w-3.5 h-3.5" />}
+          label={dateLabel(constraints.date)}
+          active={constraints.date !== null}
+          onClick={() => toggle("date")}
+        />
+        <Chip
+          icon={<DollarSign className="w-3.5 h-3.5" />}
+          label={costLabel(constraints.cost)}
+          active={constraints.cost !== "any"}
+          onClick={() => toggle("cost")}
+        />
+        <Chip
+          icon={<Users className="w-3.5 h-3.5" />}
+          label={groupLabel(constraints.group)}
+          active={constraints.group !== null}
+          onClick={() => toggle("group")}
+        />
+      </div>
+
+      {/* Popover panels — rendered outside scroll container so they're not clipped */}
+      <PopoverPanel open={openPopover === "location"} onClose={close}>
+        <p className="text-xs text-gray-500 mb-2">Location is active</p>
+        <button
+          onClick={() => { onRequestLocation(); close(); }}
+          className="w-full text-left text-sm px-2 py-1.5 rounded hover:bg-gray-50"
+        >
+          📍 Update location
+        </button>
+      </PopoverPanel>
+
+      <PopoverPanel open={openPopover === "distance"} onClose={close}>
+        <div className="flex flex-col gap-1">
+          {DISTANCE_OPTIONS.map((opt) => (
             <button
-              onClick={() => { onRequestLocation(); close(); }}
-              className="w-full text-left text-sm px-2 py-1.5 rounded hover:bg-gray-50"
+              key={opt.value}
+              onClick={() => { update({ distance: opt.value }); close(); }}
+              className={`text-left text-sm px-2 py-1.5 rounded transition-colors ${
+                constraints.distance === opt.value
+                  ? "bg-blue-50 text-blue-700"
+                  : "hover:bg-gray-50"
+              }`}
             >
-              📍 Update location
+              {opt.label}
             </button>
-          </Popover>
+          ))}
         </div>
+      </PopoverPanel>
 
-        {/* Distance chip */}
-        <div className="relative shrink-0">
-          <Chip
-            icon={<Clock className="w-3.5 h-3.5" />}
-            label={distanceLabel(constraints.distance)}
-            active={constraints.distance !== "any"}
-            onClick={() => toggle("distance")}
-          />
-          <Popover open={openPopover === "distance"} onClose={close}>
-            <div className="flex flex-col gap-1">
-              {DISTANCE_OPTIONS.map((opt) => (
+      <PopoverPanel open={openPopover === "date"} onClose={close}>
+        <div className="space-y-3">
+          <div>
+            <p className="text-xs text-gray-500 mb-1.5 font-medium">Quick picks</p>
+            <div className="flex flex-wrap gap-1.5">
+              {QUICK_PICKS.map((qp) => (
                 <button
-                  key={opt.value}
-                  onClick={() => { update({ distance: opt.value }); close(); }}
-                  className={`text-left text-sm px-2 py-1.5 rounded transition-colors ${
-                    constraints.distance === opt.value
-                      ? "bg-blue-50 text-blue-700"
-                      : "hover:bg-gray-50"
-                  }`}
-                >
-                  {opt.label}
-                </button>
-              ))}
-            </div>
-          </Popover>
-        </div>
-
-        {/* Date chip */}
-        <div className="relative shrink-0">
-          <Chip
-            icon={<CalendarDays className="w-3.5 h-3.5" />}
-            label={dateLabel(constraints.date)}
-            active={constraints.date !== null}
-            onClick={() => toggle("date")}
-          />
-          <Popover open={openPopover === "date"} onClose={close}>
-            <div className="space-y-3">
-              {/* Quick picks */}
-              <div>
-                <p className="text-xs text-gray-500 mb-1.5 font-medium">Quick picks</p>
-                <div className="flex flex-wrap gap-1.5">
-                  {QUICK_PICKS.map((qp) => (
-                    <button
-                      key={qp.label}
-                      onClick={() => {
-                        if (qp.days.length === 0) {
-                          update({ date: null });
-                        } else {
-                          update({ date: { mode: "recurring", days: qp.days } });
-                        }
-                        close();
-                      }}
-                      className="px-2 py-1 text-xs rounded-full border border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-colors"
-                    >
-                      {qp.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Specific date */}
-              <div>
-                <p className="text-xs text-gray-500 mb-1.5 font-medium">Specific date</p>
-                <input
-                  type="date"
-                  onChange={(e) => {
-                    if (e.target.value) {
-                      update({ date: { mode: "specific", date: new Date(e.target.value + "T00:00:00") } });
-                      close();
-                    }
-                  }}
-                  className="w-full text-sm border border-gray-200 rounded-lg px-2 py-1.5"
-                />
-              </div>
-
-              {/* Recurring days */}
-              <div>
-                <p className="text-xs text-gray-500 mb-1.5 font-medium">Recurring days</p>
-                <div className="flex gap-1">
-                  {DAY_LABELS.map((label, i) => {
-                    const isActive =
-                      constraints.date?.mode === "recurring" &&
-                      constraints.date.days.includes(i);
-                    return (
-                      <button
-                        key={label}
-                        onClick={() => {
-                          const current =
-                            constraints.date?.mode === "recurring"
-                              ? constraints.date.days
-                              : [];
-                          const next = isActive
-                            ? current.filter((d) => d !== i)
-                            : [...current, i].sort();
-                          update({
-                            date: next.length > 0
-                              ? { mode: "recurring", days: next }
-                              : null,
-                          });
-                        }}
-                        className={`w-8 h-8 text-xs rounded-full border transition-colors ${
-                          isActive
-                            ? "bg-blue-600 text-white border-blue-600"
-                            : "border-gray-200 hover:border-blue-300"
-                        }`}
-                      >
-                        {label.slice(0, 2)}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Clear */}
-              {constraints.date && (
-                <button
-                  onClick={() => { update({ date: null }); close(); }}
-                  className="text-xs text-blue-600 hover:text-blue-800"
-                >
-                  Clear date
-                </button>
-              )}
-            </div>
-          </Popover>
-        </div>
-
-        {/* Cost chip */}
-        <div className="relative shrink-0">
-          <Chip
-            icon={<DollarSign className="w-3.5 h-3.5" />}
-            label={costLabel(constraints.cost)}
-            active={constraints.cost !== "any"}
-            onClick={() => toggle("cost")}
-          />
-          <Popover open={openPopover === "cost"} onClose={close}>
-            <div className="flex flex-col gap-1">
-              {COST_OPTIONS.map((opt) => (
-                <button
-                  key={opt.value}
-                  onClick={() => { update({ cost: opt.value }); close(); }}
-                  className={`text-left text-sm px-2 py-1.5 rounded transition-colors ${
-                    constraints.cost === opt.value
-                      ? "bg-blue-50 text-blue-700"
-                      : "hover:bg-gray-50"
-                  }`}
-                >
-                  {opt.label}
-                </button>
-              ))}
-            </div>
-          </Popover>
-        </div>
-
-        {/* Group chip */}
-        <div className="relative shrink-0">
-          <Chip
-            icon={<Users className="w-3.5 h-3.5" />}
-            label={groupLabel(constraints.group)}
-            active={constraints.group !== null}
-            onClick={() => toggle("group")}
-          />
-          <Popover open={openPopover === "group"} onClose={close}>
-            <div className="flex flex-col gap-1">
-              {GROUP_OPTIONS.map((opt) => (
-                <button
-                  key={opt.value}
+                  key={qp.label}
                   onClick={() => {
-                    update({ group: constraints.group === opt.value ? null : opt.value });
+                    if (qp.days.length === 0) {
+                      update({ date: null });
+                    } else {
+                      update({ date: { mode: "recurring", days: qp.days } });
+                    }
                     close();
                   }}
-                  className={`text-left text-sm px-2 py-1.5 rounded transition-colors ${
-                    constraints.group === opt.value
-                      ? "bg-blue-50 text-blue-700"
-                      : "hover:bg-gray-50"
-                  }`}
+                  className="px-2 py-1 text-xs rounded-full border border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-colors"
                 >
-                  {opt.emoji} {opt.label}
+                  {qp.label}
                 </button>
               ))}
-              {constraints.group && (
-                <button
-                  onClick={() => { update({ group: null }); close(); }}
-                  className="text-xs text-blue-600 hover:text-blue-800 mt-1"
-                >
-                  Clear group
-                </button>
-              )}
             </div>
-          </Popover>
+          </div>
+
+          <div>
+            <p className="text-xs text-gray-500 mb-1.5 font-medium">Specific date</p>
+            <input
+              type="date"
+              onChange={(e) => {
+                if (e.target.value) {
+                  update({ date: { mode: "specific", date: new Date(e.target.value + "T00:00:00") } });
+                  close();
+                }
+              }}
+              className="w-full text-base border border-gray-200 rounded-lg px-2 py-1.5"
+            />
+          </div>
+
+          <div>
+            <p className="text-xs text-gray-500 mb-1.5 font-medium">Recurring days</p>
+            <div className="flex gap-1">
+              {DAY_LABELS.map((label, i) => {
+                const isActive =
+                  constraints.date?.mode === "recurring" &&
+                  constraints.date.days.includes(i);
+                return (
+                  <button
+                    key={label}
+                    onClick={() => {
+                      const current =
+                        constraints.date?.mode === "recurring"
+                          ? constraints.date.days
+                          : [];
+                      const next = isActive
+                        ? current.filter((d) => d !== i)
+                        : [...current, i].sort();
+                      update({
+                        date: next.length > 0
+                          ? { mode: "recurring", days: next }
+                          : null,
+                      });
+                    }}
+                    className={`w-8 h-8 text-xs rounded-full border transition-colors ${
+                      isActive
+                        ? "bg-blue-600 text-white border-blue-600"
+                        : "border-gray-200 hover:border-blue-300"
+                    }`}
+                  >
+                    {label.slice(0, 2)}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {constraints.date && (
+            <button
+              onClick={() => { update({ date: null }); close(); }}
+              className="text-xs text-blue-600 hover:text-blue-800"
+            >
+              Clear date
+            </button>
+          )}
         </div>
-      </div>
+      </PopoverPanel>
+
+      <PopoverPanel open={openPopover === "cost"} onClose={close}>
+        <div className="flex flex-col gap-1">
+          {COST_OPTIONS.map((opt) => (
+            <button
+              key={opt.value}
+              onClick={() => { update({ cost: opt.value }); close(); }}
+              className={`text-left text-sm px-2 py-1.5 rounded transition-colors ${
+                constraints.cost === opt.value
+                  ? "bg-blue-50 text-blue-700"
+                  : "hover:bg-gray-50"
+              }`}
+            >
+              {opt.label}
+            </button>
+          ))}
+        </div>
+      </PopoverPanel>
+
+      <PopoverPanel open={openPopover === "group"} onClose={close}>
+        <div className="flex flex-col gap-1">
+          {GROUP_OPTIONS.map((opt) => (
+            <button
+              key={opt.value}
+              onClick={() => {
+                update({ group: constraints.group === opt.value ? null : opt.value });
+                close();
+              }}
+              className={`text-left text-sm px-2 py-1.5 rounded transition-colors ${
+                constraints.group === opt.value
+                  ? "bg-blue-50 text-blue-700"
+                  : "hover:bg-gray-50"
+              }`}
+            >
+              {opt.emoji} {opt.label}
+            </button>
+          ))}
+          {constraints.group && (
+            <button
+              onClick={() => { update({ group: null }); close(); }}
+              className="text-xs text-blue-600 hover:text-blue-800 mt-1"
+            >
+              Clear group
+            </button>
+          )}
+        </div>
+      </PopoverPanel>
     </div>
   );
 }
