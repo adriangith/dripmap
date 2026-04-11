@@ -1,14 +1,20 @@
 "use client";
 
 import { Search } from "lucide-react";
-import type { Filters, LocationType, SiteStatus } from "@/lib/types";
+import type { Filters, PlaceType, SiteStatus } from "@/lib/types";
 
-const TYPE_CHIPS: { value: LocationType; label: string }[] = [
-  { value: "waterfall", label: "Waterfall" },
-  { value: "swimming-hole", label: "Swimming Hole" },
-  { value: "splash-pad", label: "Splash Pad" },
-  { value: "spring", label: "Spring" },
-  { value: "creek", label: "Creek" },
+const TYPE_CHIPS: { value: PlaceType; label: string }[] = [
+  { value: "swim", label: "Swims" },
+  { value: "beach", label: "Beaches" },
+  { value: "event", label: "Events" },
+  { value: "bushwalk", label: "Bushwalks" },
+  { value: "lookout", label: "Lookouts" },
+  { value: "waterfall", label: "Waterfalls" },
+  { value: "cave", label: "Caves" },
+  { value: "wildlife", label: "Wildlife" },
+  { value: "pool", label: "Pools" },
+  { value: "cycling", label: "Cycling" },
+  { value: "fishing", label: "Fishing" },
 ];
 
 const STATUS_CHIPS: { value: SiteStatus; label: string }[] = [
@@ -36,10 +42,10 @@ export default function FilterBar({
         <Search className="w-4 h-4 text-gray-400 shrink-0" />
         <input
           type="text"
-          placeholder="Search locations..."
+          placeholder="Search places..."
           value={filters.search}
           onChange={(e) => onChange({ ...filters, search: e.target.value })}
-          aria-label="Search locations"
+          aria-label="Search places"
           className="flex-1 text-sm outline-none bg-transparent"
         />
       </div>
@@ -97,9 +103,6 @@ export default function FilterBar({
             onClick={() =>
               onChange({
                 type: null,
-                accessibility: null,
-                season: null,
-                cost: null,
                 siteStatus: null,
                 search: "",
               })
@@ -112,7 +115,7 @@ export default function FilterBar({
         )}
 
         <span className="text-xs text-gray-500 ml-auto whitespace-nowrap shrink-0">
-          {resultCount} location{resultCount !== 1 ? "s" : ""}
+          {resultCount} place{resultCount !== 1 ? "s" : ""}
         </span>
       </div>
     </div>
