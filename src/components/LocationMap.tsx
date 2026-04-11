@@ -12,26 +12,22 @@ import type { PlaceIndexEntry, PlaceType, Coordinates } from "@/lib/types";
 
 /**
  * Sets the map view so that `latLng` appears centered in the visible area
- * above the bottom sheet, at the given zoom level. Computes the adjusted
- * center in a single step to avoid jarring two-phase animation.
+ * above the bottom sheet, at the given zoom level.  The adjusted centre is
+ * computed purely with CRS projection math so the map view is never
+ * temporarily moved (which caused a visible flash).
  */
 function setViewAboveSheet(map: L.Map, latLng: L.LatLng | [number, number], zoom: number, sheetHeight: number) {
-  // Save current view so we can restore it before animating
-  const origCenter = map.getCenter();
-  const origZoom = map.getZoom();
-
-  // Temporarily jump to target to get coordinate mapping at the target zoom
-  map.setView(latLng, zoom, { animate: false });
   let target = L.latLng(latLng);
+
   if (sheetHeight > 0) {
-    const pinPoint = map.latLngToContainerPoint(target);
-    target = map.containerPointToLatLng(
-      L.point(pinPoint.x, pinPoint.y + sheetHeight / 2)
-    );
+    // project() / unproject() work at any zoom without changing the view
+    const point = map.project(target, zoom);
+    // Shift the centre down by half the sheet height so the pin sits in the
+    // visible area above the sheet
+    const adjusted = L.point(point.x, point.y + sheetHeight / 2);
+    target = map.unproject(adjusted, zoom);
   }
 
-  // Restore original view, then smoothly fly to the computed target
-  map.setView(origCenter, origZoom, { animate: false });
   map.flyTo(target, zoom, { duration: 0.8 });
 }
 
