@@ -172,9 +172,8 @@ export default function HomePage() {
         snapTo={snapTarget}
         onHeightChange={handleSheetHeightChange}
       >
-        {sheetHeight <= SNAP_PEEK + 20 ? (
-          // Compact peek: just search bar or place name
-          sheetView === "detail" && detailSlug ? (
+        {sheetView === "detail" && detailSlug ? (
+          sheetHeight <= SNAP_PEEK + 20 ? (
             <div className="flex items-center gap-2 px-3 py-1">
               <button onClick={handleBackToList} className="shrink-0 p-1">
                 <ArrowLeft className="w-4 h-4 text-gray-500" />
@@ -184,7 +183,16 @@ export default function HomePage() {
               </span>
             </div>
           ) : (
-            <div className="flex items-center gap-2 px-3 py-1">
+            <LocationDetailPanel
+              slug={detailSlug}
+              onBack={handleBackToList}
+              userLocation={userLocation}
+            />
+          )
+        ) : (
+          <>
+            {/* Search bar — always mounted so focus persists across peek/expand */}
+            <div className="flex items-center gap-2 px-3 py-1 border-b border-gray-100">
               <Search className="w-4 h-4 text-gray-400 shrink-0" />
               <input
                 type="text"
@@ -192,9 +200,10 @@ export default function HomePage() {
                 value={filters.search}
                 onChange={(e) => setFilters({ ...filters, search: e.target.value })}
                 onFocus={() => {
-                  // Expand sheet when user taps search
-                  const halfHeight = window.innerHeight * SNAP_HALF;
-                  setSnapTarget(halfHeight);
+                  if (sheetHeight <= SNAP_PEEK + 20) {
+                    const halfHeight = window.innerHeight * SNAP_HALF;
+                    setSnapTarget(halfHeight);
+                  }
                 }}
                 className="flex-1 text-sm outline-none bg-transparent"
               />
@@ -202,38 +211,35 @@ export default function HomePage() {
                 {filteredLocations.length} place{filteredLocations.length !== 1 ? "s" : ""}
               </span>
             </div>
-          )
-        ) : sheetView === "detail" && detailSlug ? (
-          <LocationDetailPanel
-            slug={detailSlug}
-            onBack={handleBackToList}
-            userLocation={userLocation}
-          />
-        ) : (
-          <>
-            <ContextBar
-              constraints={constraints}
-              onConstraintsChange={setConstraints}
-              hasLocation={userLocation !== null}
-              onRequestLocation={handleRequestLocation}
-            />
-            <FilterBar
-              filters={filters}
-              onChange={setFilters}
-              resultCount={filteredLocations.length}
-            />
-            {loadError && (
-              <div className="mx-3 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
-                Failed to load locations. Please try refreshing the page.
-              </div>
+            {/* Rest of content hidden at peek height */}
+            {sheetHeight > SNAP_PEEK + 20 && (
+              <>
+                <ContextBar
+                  constraints={constraints}
+                  onConstraintsChange={setConstraints}
+                  hasLocation={userLocation !== null}
+                  onRequestLocation={handleRequestLocation}
+                />
+                <FilterBar
+                  filters={filters}
+                  onChange={setFilters}
+                  resultCount={filteredLocations.length}
+                  hideSearch
+                />
+                {loadError && (
+                  <div className="mx-3 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
+                    Failed to load locations. Please try refreshing the page.
+                  </div>
+                )}
+                <LocationList
+                  locations={filteredLocations}
+                  highlightedSlug={highlightedSlug}
+                  onHover={setHighlightedSlug}
+                  userLocation={userLocation}
+                  onCardClick={handleOpenDetail}
+                />
+              </>
             )}
-            <LocationList
-              locations={filteredLocations}
-              highlightedSlug={highlightedSlug}
-              onHover={setHighlightedSlug}
-              userLocation={userLocation}
-              onCardClick={handleOpenDetail}
-            />
           </>
         )}
       </BottomSheet>

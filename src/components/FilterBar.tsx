@@ -26,29 +26,33 @@ interface FilterBarProps {
   filters: Filters;
   onChange: (filters: Filters) => void;
   resultCount: number;
+  hideSearch?: boolean;
 }
 
 export default function FilterBar({
   filters,
   onChange,
   resultCount,
+  hideSearch,
 }: FilterBarProps) {
   const hasActiveFilters =
     filters.type || filters.siteStatus || filters.search;
 
   return (
     <div className="border-b border-gray-200 bg-white">
-      <div className="flex items-center gap-2 px-3 py-2 border-b border-gray-100">
-        <Search className="w-4 h-4 text-gray-400 shrink-0" />
-        <input
-          type="text"
-          placeholder="Search places..."
-          value={filters.search}
-          onChange={(e) => onChange({ ...filters, search: e.target.value })}
-          aria-label="Search places"
-          className="flex-1 text-sm outline-none bg-transparent"
-        />
-      </div>
+      {!hideSearch && (
+        <div className="flex items-center gap-2 px-3 py-2 border-b border-gray-100">
+          <Search className="w-4 h-4 text-gray-400 shrink-0" />
+          <input
+            type="text"
+            placeholder="Search places..."
+            value={filters.search}
+            onChange={(e) => onChange({ ...filters, search: e.target.value })}
+            aria-label="Search places"
+            className="flex-1 text-sm outline-none bg-transparent"
+          />
+        </div>
+      )}
       <div className="flex items-center gap-2 px-3 py-2 overflow-x-auto scrollbar-hide">
         {TYPE_CHIPS.map((chip) => {
           const isActive = filters.type === chip.value;
