@@ -150,7 +150,7 @@ export default function LocationMap({
       minZoom: 2,
       maxBounds: worldBounds,
       maxBoundsViscosity: 1.0,
-    }).setView([20, 0], 2);
+    }).setView([-37.8, 145.0], 7); // Default: Victoria, Australia
 
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution:
@@ -174,11 +174,66 @@ export default function LocationMap({
     // Expose for E2E tests
     (window as any).__leafletMap = map;
 
+    // Determine initial position: prefer browser geolocation if already
+    // granted, otherwise fall back to IP-based geolocation.
+    const setInitialLocation = (lat: number, lng: number, zoom: number) => {
+      if (!mapRef.current) return;
+      mapRef.current.setView([lat, lng], zoom, { animate: false });
+      onUserLocation?.({ lat, lng });
+
+      // Place blue dot
+      if (userMarkerRef.current) userMarkerRef.current.remove();
+      userMarkerRef.current = L.marker([lat, lng], {
+        icon: createUserLocationIcon(),
+        zIndexOffset: 1000,
+      }).addTo(mapRef.current).bindPopup("You are here");
+
+      skipFitBoundsRef.current = true;
+    };
+
+    // Try browser geolocation first (silent — only if already granted)
+    let usedBrowserLocation = false;
+    const geoPromise = new Promise<void>((resolve) => {
+      if (typeof navigator === "undefined" || !navigator.permissions) {
+        resolve();
+        return;
+      }
+      navigator.permissions.query({ name: "geolocation" }).then((perm) => {
+        if (perm.state === "granted") {
+          navigator.geolocation.getCurrentPosition(
+            (pos) => {
+              usedBrowserLocation = true;
+              setInitialLocation(pos.coords.latitude, pos.coords.longitude, 10);
+              resolve();
+            },
+            () => resolve(),
+            { enableHighAccuracy: true, timeout: 5000, maximumAge: 60000 },
+          );
+        } else {
+          resolve();
+        }
+      }).catch(() => resolve());
+    });
+
+    // If browser geolocation wasn't available, try IP-based
+    geoPromise.then(() => {
+      if (usedBrowserLocation) return;
+      fetch("https://ipapi.co/json/")
+        .then((res) => res.ok ? res.json() : null)
+        .then((data) => {
+          if (data?.latitude && data?.longitude && mapRef.current) {
+            mapRef.current.setView([data.latitude, data.longitude], 8, { animate: true });
+          }
+        })
+        .catch(() => { /* keep default Victoria view */ });
+    });
+
     return () => {
       map.remove();
       mapRef.current = null;
       clusterGroupRef.current = null;
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Update markers when locations change
