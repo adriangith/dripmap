@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { Droplets } from "lucide-react";
+import { Compass } from "lucide-react";
 import FilterBar from "@/components/FilterBar";
 import LocationList from "@/components/LocationList";
 import LocationDetailPanel from "@/components/LocationDetailPanel";
@@ -111,8 +111,8 @@ export default function HomePage() {
           {/* Faded logo overlay */}
           <div className="absolute left-3 z-10 pointer-events-none" style={{ top: "calc(0.75rem + env(safe-area-inset-top))" }}>
             <Link href="/" className="flex items-center gap-1.5 opacity-40 pointer-events-auto">
-              <Droplets className="w-5 h-5 text-blue-600" />
-              <span className="font-bold text-blue-700 text-sm">dripmap</span>
+              <Compass className="w-5 h-5 text-blue-600" />
+              <span className="font-bold text-blue-700 text-sm">Drift</span>
             </Link>
           </div>
           <LocationMap

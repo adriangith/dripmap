@@ -2,13 +2,13 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "dripmap — Find Water Play Locations",
-  description: "Discover waterfalls, swimming holes, splash pads, and more worldwide.",
+  title: "Drift — Discover Summer Activities",
+  description: "Discover beaches, events, swims, and more across Victoria.",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "dripmap",
+    title: "Drift",
   },
   other: {
     // Next.js 15+ emits mobile-web-app-capable instead of the Apple-specific

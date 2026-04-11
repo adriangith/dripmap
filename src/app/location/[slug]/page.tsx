@@ -23,11 +23,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   try {
     const location = getLocationDetailStatic(slug);
     return {
-      title: `${location.name} — dripmap`,
+      title: `${location.name} — Drift`,
       description: location.description.slice(0, 160),
     };
   } catch {
-    return { title: "Location not found — dripmap" };
+    return { title: "Location not found — Drift" };
   }
 }
 
