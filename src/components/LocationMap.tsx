@@ -395,7 +395,7 @@ export default function LocationMap({
         disabled={locating}
         aria-label="Show my location"
         data-testid="locate-button"
-        className="absolute right-4 z-50 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-lg border border-gray-200 hover:bg-gray-50 active:bg-gray-100 transition-all disabled:opacity-60 lg:bottom-4"
+        className="absolute right-4 z-50 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-lg border border-gray-200 hover:bg-gray-50 active:bg-gray-100 transition-colors disabled:opacity-60 lg:bottom-4"
         style={{ bottom: `calc(var(--sheet-height, ${sheetHeight}px) + 16px)` }}
       >
         <Crosshair className={`w-5 h-5 text-blue-600 ${locating ? "animate-spin" : ""}`} />
