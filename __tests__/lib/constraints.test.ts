@@ -2,12 +2,15 @@ import { describe, it, expect } from "vitest";
 import { applyConstraints, estimateDriveMinutes } from "../../src/lib/constraints";
 import type { PlaceIndexEntry, Constraints } from "../../src/lib/types";
 
+import { DEFAULT_PRIORITY } from "../../src/lib/types";
+
 const noConstraints: Constraints = {
   distance: "any",
   date: null,
   cost: "any",
   duration: "any",
   group: null,
+  priority: [...DEFAULT_PRIORITY],
 };
 
 const swim: PlaceIndexEntry = {

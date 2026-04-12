@@ -110,19 +110,24 @@ export function applyConstraints(
       ? estimateDriveMinutes(userLocation, place.coordinates)
       : null;
 
-    // Soft scoring
+    // Soft scoring — weighted by priority order
     let score = 0;
+    const priorityWeights = constraints.priority.reduce<Record<string, number>>((acc, dim, i) => {
+      acc[dim] = Math.max(1, 6 - i); // 6,5,4,3,2,1
+      return acc;
+    }, {});
 
-    // Proximity bonus (closer = higher score, max 20 points)
+    // Proximity bonus (closer = higher score)
     if (driveMin !== null) {
-      score += Math.max(0, 20 - driveMin / 6);
+      const base = Math.max(0, 20 - driveMin / 6);
+      score += base * (priorityWeights["distance"] ?? 1);
     }
 
     // Cost score
-    score += costScore(place.cost, constraints.cost);
+    score += costScore(place.cost, constraints.cost) * (priorityWeights["cost"] ?? 1);
 
     // Group score
-    score += groupScore(place, constraints.group);
+    score += groupScore(place, constraints.group) * (priorityWeights["group"] ?? 1);
 
     scored.push({ ...place, _score: score, _driveMinutes: driveMin });
   }

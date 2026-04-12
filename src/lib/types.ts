@@ -157,11 +157,16 @@ export type DateMode =
   | { mode: "recurring"; days: number[] }  // 0=Sun, 1=Mon, ..., 6=Sat
   | null;
 
+export type FilterDimension = "type" | "distance" | "date" | "cost" | "duration" | "group";
+
+export const DEFAULT_PRIORITY: FilterDimension[] = ["type", "distance", "date", "cost", "duration", "group"];
+
 export interface Constraints {
   distance: DistanceThreshold;
   date: DateMode;
   cost: CostFilter;
   duration: DurationFilter;
   group: GroupType;
+  priority: FilterDimension[];
 }
 

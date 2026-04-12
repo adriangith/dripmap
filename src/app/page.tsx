@@ -5,13 +5,15 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { Compass, Search, ArrowLeft } from "lucide-react";
 import FilterBar from "@/components/FilterBar";
-import SentenceFilter from "@/components/SentenceFilter";
+import FilterButton from "@/components/FilterButton";
+import PreferencePanel from "@/components/PreferencePanel";
 import LocationList from "@/components/LocationList";
 import LocationDetailPanel from "@/components/LocationDetailPanel";
 import BottomSheet, { SNAP_HALF } from "@/components/BottomSheet";
 import { filterLocations } from "@/lib/filters";
 import { applyConstraints } from "@/lib/constraints";
 import type { PlaceIndexEntry, Filters, Coordinates, Constraints } from "@/lib/types";
+import { DEFAULT_PRIORITY } from "@/lib/types";
 import type { ScoredPlace } from "@/lib/constraints";
 
 const LocationMap = dynamic(() => import("@/components/LocationMap"), {
@@ -35,6 +37,7 @@ const defaultConstraints: Constraints = {
   cost: "any",
   duration: "any",
   group: null,
+  priority: [...DEFAULT_PRIORITY],
 };
 
 export default function HomePage() {
@@ -44,6 +47,7 @@ export default function HomePage() {
   const [highlightedSlug, setHighlightedSlug] = useState<string | null>(null);
   const [userLocation, setUserLocation] = useState<Coordinates | null>(null);
   const [loadError, setLoadError] = useState(false);
+  const [prefsOpen, setPrefsOpen] = useState(false);
 
   // Apple Maps-style sheet state
   const [sheetView, setSheetView] = useState<"list" | "detail">("list");
@@ -155,18 +159,15 @@ export default function HomePage() {
             onMarkerHover={handleMarkerHover}
             onUserLocation={handleUserLocation}
           />
-          {/* Floating sentence filter — above the sheet on mobile, hidden on desktop */}
+          {/* Floating filter button — above the sheet on mobile, hidden on desktop */}
           <div
-            className="absolute left-3 right-3 z-20 lg:hidden transition-opacity"
+            className="absolute left-3 z-20 lg:hidden transition-opacity"
             style={{ bottom: "calc(var(--sheet-height, 96px) + 12px)" }}
           >
-            <SentenceFilter
+            <FilterButton
               filters={filters}
               constraints={constraints}
-              onFiltersChange={setFilters}
-              onConstraintsChange={setConstraints}
-              hasLocation={userLocation !== null}
-              onRequestLocation={handleRequestLocation}
+              onClick={() => setPrefsOpen(true)}
             />
           </div>
         </div>
@@ -174,13 +175,10 @@ export default function HomePage() {
         {/* Desktop sidebar (hidden on mobile) */}
         <div className="hidden lg:flex lg:flex-col lg:w-96 lg:border-l lg:border-gray-200 dark:lg:border-gray-700 dark:bg-gray-900">
           <div className="p-3 border-b border-gray-200 dark:border-gray-700">
-            <SentenceFilter
+            <FilterButton
               filters={filters}
               constraints={constraints}
-              onFiltersChange={setFilters}
-              onConstraintsChange={setConstraints}
-              hasLocation={userLocation !== null}
-              onRequestLocation={handleRequestLocation}
+              onClick={() => setPrefsOpen(true)}
             />
           </div>
           <FilterBar
@@ -275,6 +273,18 @@ export default function HomePage() {
           </>
         ) : null}
       </BottomSheet>
+
+      {/* Preference panel (modal overlay) */}
+      <PreferencePanel
+        open={prefsOpen}
+        onClose={() => setPrefsOpen(false)}
+        filters={filters}
+        constraints={constraints}
+        onFiltersChange={setFilters}
+        onConstraintsChange={setConstraints}
+        hasLocation={userLocation !== null}
+        onRequestLocation={handleRequestLocation}
+      />
     </div>
   );
 }
