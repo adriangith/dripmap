@@ -41,7 +41,6 @@ const DIMENSIONS: DimensionMeta[] = [
 // ── Value options ───────────────────────────────────────────
 
 const DISTANCE_OPTIONS: { value: DistanceThreshold; label: string }[] = [
-  { value: "any", label: "Anywhere" },
   { value: "30min", label: "Close by" },
   { value: "1hr", label: "Within an hour" },
   { value: "2hr", label: "Within 2 hours" },
@@ -49,21 +48,18 @@ const DISTANCE_OPTIONS: { value: DistanceThreshold; label: string }[] = [
 ];
 
 const COST_OPTIONS: { value: CostFilter; label: string }[] = [
-  { value: "any", label: "Any budget" },
   { value: "free", label: "Free" },
   { value: "free-$", label: "Cheap" },
   { value: "$$-under", label: "Budget-friendly" },
 ];
 
 const DURATION_OPTIONS: { value: DurationFilter; label: string }[] = [
-  { value: "any", label: "Any length" },
   { value: "quick", label: "Quick visit" },
   { value: "half-day", label: "Half day" },
   { value: "full-day", label: "Full day" },
 ];
 
 const GROUP_OPTIONS: { value: GroupType; label: string }[] = [
-  { value: null, label: "Anyone" },
   { value: "solo", label: "Solo" },
   { value: "adults", label: "Adults" },
   { value: "family-young", label: "Little kids" },
@@ -78,10 +74,12 @@ const DAY_LABELS = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 function getValueLabel(dim: FilterDimension, filters: Filters, constraints: Constraints): string {
   switch (dim) {
     case "distance":
-      return DISTANCE_OPTIONS.find((o) => o.value === constraints.distance)?.label ?? "Anywhere";
+      return constraints.distance === "any"
+        ? "No preference"
+        : DISTANCE_OPTIONS.find((o) => o.value === constraints.distance)?.label ?? "No preference";
     case "date": {
       const d = constraints.date;
-      if (!d) return "Anytime";
+      if (!d) return "No preference";
       if (d.mode === "specific") {
         return d.date.toLocaleDateString("en-AU", { weekday: "short", month: "short", day: "numeric" });
       }
@@ -90,11 +88,17 @@ function getValueLabel(dim: FilterDimension, filters: Filters, constraints: Cons
       return d.days.map((n) => DAY_LABELS[n]).join(", ");
     }
     case "cost":
-      return COST_OPTIONS.find((o) => o.value === constraints.cost)?.label ?? "Any budget";
+      return constraints.cost === "any"
+        ? "No preference"
+        : COST_OPTIONS.find((o) => o.value === constraints.cost)?.label ?? "No preference";
     case "duration":
-      return DURATION_OPTIONS.find((o) => o.value === constraints.duration)?.label ?? "Any length";
+      return constraints.duration === "any"
+        ? "No preference"
+        : DURATION_OPTIONS.find((o) => o.value === constraints.duration)?.label ?? "No preference";
     case "group":
-      return GROUP_OPTIONS.find((o) => o.value === constraints.group)?.label ?? "Anyone";
+      return constraints.group === null
+        ? "No preference"
+        : GROUP_OPTIONS.find((o) => o.value === constraints.group)?.label ?? "No preference";
   }
 }
 
@@ -135,8 +139,9 @@ function ValuePicker({
             <button
               key={opt.value}
               onClick={() => {
-                if (opt.value !== "any" && !hasLocation) onRequestLocation();
-                onConstraintsChange({ ...constraints, distance: opt.value });
+                const next = constraints.distance === opt.value ? "any" : opt.value;
+                if (next !== "any" && !hasLocation) onRequestLocation();
+                onConstraintsChange({ ...constraints, distance: next });
               }}
               className={`px-2.5 py-1 text-xs rounded-full border transition-colors ${
                 constraints.distance === opt.value
@@ -155,7 +160,7 @@ function ValuePicker({
           {COST_OPTIONS.map((opt) => (
             <button
               key={opt.value}
-              onClick={() => onConstraintsChange({ ...constraints, cost: opt.value })}
+              onClick={() => onConstraintsChange({ ...constraints, cost: constraints.cost === opt.value ? "any" : opt.value })}
               className={`px-2.5 py-1 text-xs rounded-full border transition-colors ${
                 constraints.cost === opt.value
                   ? "bg-blue-600 text-white border-blue-600"
@@ -173,7 +178,7 @@ function ValuePicker({
           {DURATION_OPTIONS.map((opt) => (
             <button
               key={opt.value}
-              onClick={() => onConstraintsChange({ ...constraints, duration: opt.value })}
+              onClick={() => onConstraintsChange({ ...constraints, duration: constraints.duration === opt.value ? "any" : opt.value })}
               className={`px-2.5 py-1 text-xs rounded-full border transition-colors ${
                 constraints.duration === opt.value
                   ? "bg-blue-600 text-white border-blue-600"
@@ -191,7 +196,7 @@ function ValuePicker({
           {GROUP_OPTIONS.map((opt) => (
             <button
               key={opt.value ?? "any"}
-              onClick={() => onConstraintsChange({ ...constraints, group: opt.value })}
+              onClick={() => onConstraintsChange({ ...constraints, group: constraints.group === opt.value ? null : opt.value })}
               className={`px-2.5 py-1 text-xs rounded-full border transition-colors ${
                 constraints.group === opt.value
                   ? "bg-blue-600 text-white border-blue-600"
@@ -203,29 +208,29 @@ function ValuePicker({
           ))}
         </div>
       );
-    case "date":
+    case "date": {
+      const isWeekends =
+        constraints.date?.mode === "recurring" &&
+        constraints.date.days.length === 2 &&
+        constraints.date.days.includes(0) &&
+        constraints.date.days.includes(6);
+      const isWeekdays =
+        constraints.date?.mode === "recurring" &&
+        constraints.date.days.length === 5 &&
+        !constraints.date.days.includes(0) &&
+        !constraints.date.days.includes(6);
       return (
         <div className="space-y-2">
           <div className="flex flex-wrap gap-1.5">
             <button
-              onClick={() => onConstraintsChange({ ...constraints, date: null })}
-              className={`px-2.5 py-1 text-xs rounded-full border transition-colors ${
-                !constraints.date
-                  ? "bg-blue-600 text-white border-blue-600"
-                  : "border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-blue-300"
-              }`}
-            >
-              Anytime
-            </button>
-            <button
               onClick={() =>
-                onConstraintsChange({ ...constraints, date: { mode: "recurring", days: [0, 6] } })
+                onConstraintsChange({
+                  ...constraints,
+                  date: isWeekends ? null : { mode: "recurring", days: [0, 6] },
+                })
               }
               className={`px-2.5 py-1 text-xs rounded-full border transition-colors ${
-                constraints.date?.mode === "recurring" &&
-                constraints.date.days.length === 2 &&
-                constraints.date.days.includes(0) &&
-                constraints.date.days.includes(6)
+                isWeekends
                   ? "bg-blue-600 text-white border-blue-600"
                   : "border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-blue-300"
               }`}
@@ -236,14 +241,11 @@ function ValuePicker({
               onClick={() =>
                 onConstraintsChange({
                   ...constraints,
-                  date: { mode: "recurring", days: [1, 2, 3, 4, 5] },
+                  date: isWeekdays ? null : { mode: "recurring", days: [1, 2, 3, 4, 5] },
                 })
               }
               className={`px-2.5 py-1 text-xs rounded-full border transition-colors ${
-                constraints.date?.mode === "recurring" &&
-                constraints.date.days.length === 5 &&
-                !constraints.date.days.includes(0) &&
-                !constraints.date.days.includes(6)
+                isWeekdays
                   ? "bg-blue-600 text-white border-blue-600"
                   : "border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-blue-300"
               }`}
@@ -294,6 +296,7 @@ function ValuePicker({
           />
         </div>
       );
+    }
   }
 }
 
