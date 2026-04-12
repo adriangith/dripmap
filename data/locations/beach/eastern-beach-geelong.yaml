@@ -1,0 +1,76 @@
+slug: eastern-beach-geelong
+name: Eastern Beach Reserve
+type: beach
+coordinates:
+  lat: -38.1472
+  lng: 144.3639
+region: Victoria, Australia
+country: AU
+description: A beautifully restored 1930s seaside precinct on the Geelong waterfront featuring a massive enclosed seawater pool.
+  A long wooden promenade encircles the swimming area, complete with shark-proof netting that creates a safe, calm bathing
+  environment. The pool includes a multi-level diving tower and floating platforms in the centre. The surrounding Art Deco
+  reserve features manicured lawns, a separate children's pool, a vintage carousel, and sweeping views across Corio Bay. It
+  is one of the finest examples of inter-war seaside architecture in Australia.
+photos:
+- url: /images/placeholder.jpg
+  alt: Eastern Beach seawater pool and Art Deco promenade
+highlights:
+- Enclosed 1930s seawater pool with shark-proof netting
+- Multi-level diving tower and floating platforms
+- Art Deco promenade and restored architecture
+- Vintage carousel and children's pool
+cost: free
+duration: half-day
+ageSuitability:
+  minAge: null
+  ideal:
+  - toddlers
+  - primary
+  - teens
+  - adults
+accessibility: easy
+parking: available
+facilities:
+- restrooms
+- changing-rooms
+- parking
+- bbq
+- picnic-area
+- playground
+- cafe
+bestSeason:
+- summer
+- spring
+directions: Located on the Geelong waterfront along Eastern Beach Road, about 75km southwest of Melbourne. Easily accessible
+  via the Princes Freeway. Follow signs to the Geelong waterfront and Eastern Beach. Ample parking along the foreshore.
+tips:
+- The enclosed pool is free to swim in all year round
+- The diving tower is open in summer — check council notices for availability
+- The vintage carousel operates on weekends and school holidays
+- Combine with a walk along the Geelong waterfront bollard trail
+- Plenty of cafes and restaurants along the waterfront nearby
+- The children's pool is separate and very shallow — perfect for toddlers
+tags:
+- art-deco
+- family-friendly
+- heritage
+- diving-tower
+- geelong
+- sea-pool
+status:
+  site: open
+  lastVerified: '2026-04-12'
+details:
+  beachType: bay
+  patrolled:
+    seasonal: true
+    months:
+    - dec
+    - jan
+    - feb
+    - mar
+    hours: 10am-6pm
+  dogPolicy: prohibited
+  waveExposure: sheltered
+  waterHazards: []
+  crowdLevel: busy

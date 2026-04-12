@@ -1,0 +1,70 @@
+slug: half-moon-bay-black-rock
+name: Half Moon Bay
+type: beach
+coordinates:
+  lat: -37.9726
+  lng: 145.0138
+region: Victoria, Australia
+country: AU
+description: A crescent-shaped bay in Black Rock offering a rare chance to swim near the HMVS Cerberus, a 19th-century warship
+  that was deliberately sunk in 1926 to serve as a breakwater. The rusted hull of the Cerberus provides a dramatic centrepiece
+  to the sheltered bay, making it one of Melbourne's most photographed beaches. The calm, shallow waters are popular with families
+  and snorkellers, who explore the marine life around the wreck and the nearby jetty. The bay is well-sheltered by the Cerberus
+  and the surrounding cliffs, making it calm even on windy days.
+photos:
+- url: /images/placeholder.jpg
+  alt: HMVS Cerberus shipwreck at Half Moon Bay
+highlights:
+- HMVS Cerberus 19th-century shipwreck as breakwater
+- Sheltered crescent-shaped bay ideal for families
+- Snorkelling around the wreck and jetty
+- Only 20km from Melbourne CBD
+cost: free
+duration: half-day
+ageSuitability:
+  minAge: null
+  ideal:
+  - toddlers
+  - primary
+  - teens
+  - adults
+accessibility: easy
+parking: available
+facilities:
+- restrooms
+- parking
+- bbq
+- picnic-area
+bestSeason:
+- summer
+- spring
+- fall
+directions: Drive to Black Rock via Beach Road or the Nepean Highway. Half Moon Bay has a car park accessible from Beach Road.
+  The beach is a short walk down the cliff path from the car park, or accessible via the boat ramp. About 20km southeast of
+  Melbourne CBD.
+tips:
+- The Cerberus wreck is slowly deteriorating — admire from a distance, do not climb on it
+- Excellent snorkelling around the wreck and jetty pylons
+- The cliff-top walking path offers spectacular views of the bay
+- Combine with a walk along the Bay Trail to Red Bluff or Sandringham
+- Local cafes and restaurants in the Black Rock village nearby
+- One of Melbourne's most accessible and photogenic beaches
+tags:
+- shipwreck
+- family-friendly
+- snorkelling
+- photography
+- bayside
+status:
+  site: open
+  lastVerified: '2026-04-12'
+details:
+  beachType: bay
+  patrolled:
+    seasonal: false
+    months: []
+    hours: null
+  dogPolicy: allowed
+  waveExposure: sheltered
+  waterHazards: []
+  crowdLevel: moderate

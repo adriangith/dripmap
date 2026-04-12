@@ -1,0 +1,71 @@
+slug: number-16-beach-rye
+name: Number Sixteen Beach
+type: beach
+coordinates:
+  lat: -38.3878
+  lng: 144.8196
+region: Victoria, Australia
+country: AU
+description: A rugged "back beach" near Rye on the Mornington Peninsula, known for its intricate rock shelf and dramatic
+  "waterfalls" created by waves crashing over the reef platform. At low tide, a series of sea caves and deep rock pools are
+  revealed along the shoreline, making it a paradise for exploration. The nearby Dragon's Head rock formation is a famous
+  landmark with its distinctive shape and the way water flows through and around it. Much quieter and wilder than the calm
+  bay-side beaches, Number Sixteen offers a raw, untouched coastal experience with some of the peninsula's most dramatic
+  geological formations.
+photos:
+- url: /images/placeholder.jpg
+  alt: Rock shelf and wave waterfalls at Number Sixteen Beach
+highlights:
+- Wave-created "waterfalls" over the rock shelf
+- Sea caves and deep rock pools at low tide
+- Dragon's Head rock formation nearby
+- Raw and wild coastal experience
+cost: free
+duration: half-day
+ageSuitability:
+  minAge: 8
+  ideal:
+  - primary
+  - teens
+  - adults
+accessibility: moderate
+parking: available
+facilities:
+- parking
+- restrooms
+bestSeason:
+- summer
+- spring
+- fall
+directions: Drive to Rye on the Mornington Peninsula. Number Sixteen Beach is signposted along the Nepean Highway with its
+  own car park. Walk down the track to the beach. About 95km south of Melbourne via the Mornington Peninsula Freeway.
+tips:
+- Time your visit for low tide to explore the rock pools and sea caves
+- Walk south along the rock shelf to find the Dragon's Head formation
+- Wear reef shoes — the rocks are very slippery when wet
+- Not a swimming beach — the ocean-side surf is strong and unpredictable
+- The "waterfall" effect over the rock shelf is most dramatic at mid-tide
+- Bring a camera — the geology here is extraordinary
+tags:
+- rock-pools
+- sea-caves
+- photography
+- geology
+- mornington-peninsula
+- wild-coast
+status:
+  site: open
+  lastVerified: '2026-04-12'
+details:
+  beachType: rock-pools
+  patrolled:
+    seasonal: false
+    months: []
+    hours: null
+  dogPolicy: allowed
+  waveExposure: exposed
+  waterHazards:
+  - strong-swell
+  - slippery-rocks
+  - rips
+  crowdLevel: quiet
