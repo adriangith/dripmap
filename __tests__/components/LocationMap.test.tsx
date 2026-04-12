@@ -89,7 +89,7 @@ describe("LocationMap", () => {
       />
     );
     expect(leafletMock.L.tileLayer).toHaveBeenCalledWith(
-      expect.stringContaining("openstreetmap.org"),
+      expect.stringContaining("cartocdn.com"),
       expect.any(Object)
     );
   });

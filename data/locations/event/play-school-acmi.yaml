@@ -1,0 +1,68 @@
+slug: play-school-acmi
+name: Play School at ACMI
+type: event
+coordinates:
+  lat: -37.8180
+  lng: 144.9685
+region: Victoria, Australia
+country: AU
+description: >
+  ACMI (Australian Centre for the Moving Image) at Federation Square hosts
+  a beloved Play School exhibition where little ones can step inside the
+  iconic Play School set. Kids can play with the rocket clock, look through
+  the windows, dress up, and interact with hands-on activities inspired by
+  the classic ABC show.
+photos:
+  - url: /images/placeholder.jpg
+    alt: Play School exhibition at ACMI Melbourne
+highlights:
+  - Step inside the iconic Play School set
+  - Interactive play areas for toddlers and preschoolers
+  - Free entry to ACMI's permanent exhibitions
+cost: "$$"
+ageSuitability:
+  minAge: 1
+  ideal:
+    - preschool
+    - primary
+accessibility: wheelchair-accessible
+parking: available
+facilities:
+  - restrooms
+  - food
+  - gift-shop
+bestSeason:
+  - spring
+  - summer
+  - fall
+  - winter
+directions: >
+  ACMI, Federation Square, corner of Swanston Street and Flinders Street,
+  Melbourne CBD. Directly opposite Flinders Street Station. Multiple tram
+  routes stop nearby.
+tips:
+  - Book timed entry tickets online to avoid queues
+  - Best for ages 1-7 — older kids may find it too young
+  - Combine with the free ACMI permanent gallery on level 1
+tags:
+  - museum
+  - indoor
+  - preschool
+  - family
+  - melbourne-cbd
+status:
+  site: open
+  lastVerified: "2026-06-01"
+details:
+  recurrence:
+    type: annual
+    season: all
+    startTime: "10:00"
+    endTime: "17:00"
+  confirmedDates: null
+  venue: ACMI
+  venueType: indoor
+  bookingRequired: true
+  bookingUrl: https://www.acmi.net.au
+  organiser: ACMI
+  organiserUrl: https://www.acmi.net.au

@@ -1,0 +1,68 @@
+slug: ngv-kids-lets-party
+name: "Let's Party! Fashion for Kids — NGV"
+type: event
+coordinates:
+  lat: -37.8226
+  lng: 144.9689
+region: Victoria, Australia
+country: AU
+description: >
+  The National Gallery of Victoria's kids exhibition "Let's Party! Fashion
+  for Kids" is a vibrant, interactive experience exploring fashion, colour,
+  and creativity. Kids can dress up, design outfits, and explore playful
+  installations inspired by fashion and celebration. The NGV regularly runs
+  free family programs alongside its exhibitions.
+photos:
+  - url: /images/placeholder.jpg
+    alt: NGV Kids fashion exhibition
+highlights:
+  - Interactive dress-up and design activities
+  - Free entry to NGV Australia
+  - Creative installations for all ages
+cost: free
+ageSuitability:
+  minAge: 2
+  ideal:
+    - preschool
+    - primary
+accessibility: wheelchair-accessible
+parking: limited
+facilities:
+  - restrooms
+  - food
+  - gift-shop
+bestSeason:
+  - spring
+  - summer
+  - fall
+  - winter
+directions: >
+  NGV International, 180 St Kilda Road, Melbourne. Tram routes 1, 3, 5, 6,
+  16, 64, 67, 72 stop on St Kilda Road. Some paid parking available nearby.
+tips:
+  - Free entry to most NGV exhibitions including kids programs
+  - Check the NGV website for current exhibition dates
+  - The NGV Garden is a lovely spot for a break with kids
+tags:
+  - gallery
+  - art
+  - indoor
+  - free
+  - family
+  - melbourne-cbd
+status:
+  site: open
+  lastVerified: "2026-06-01"
+details:
+  recurrence:
+    type: annual
+    season: all
+    startTime: "10:00"
+    endTime: "17:00"
+  confirmedDates: null
+  venue: National Gallery of Victoria
+  venueType: indoor
+  bookingRequired: false
+  bookingUrl: https://www.ngv.vic.gov.au
+  organiser: NGV
+  organiserUrl: https://www.ngv.vic.gov.au

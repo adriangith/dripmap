@@ -1,0 +1,68 @@
+slug: fed-square-school-holidays
+name: Fed Square School Holiday Fun
+type: event
+coordinates:
+  lat: -37.8180
+  lng: 144.9691
+region: Victoria, Australia
+country: AU
+description: >
+  Federation Square runs free family activities during every school holiday
+  period. Programs typically include arts and crafts workshops, live
+  performances, interactive installations, and cultural activities in the
+  central plaza and surrounding venues. It's a great free option in the
+  heart of the city.
+photos:
+  - url: /images/placeholder.jpg
+    alt: Federation Square school holiday activities
+highlights:
+  - Free activities in the central plaza
+  - Arts, crafts, and live performances
+  - Right in the heart of Melbourne CBD
+cost: free
+ageSuitability:
+  minAge: 2
+  ideal:
+    - preschool
+    - primary
+    - teens
+accessibility: wheelchair-accessible
+parking: available
+facilities:
+  - restrooms
+  - food
+bestSeason:
+  - spring
+  - summer
+  - fall
+  - winter
+directions: >
+  Corner of Swanston Street and Flinders Street, Melbourne CBD. Directly
+  opposite Flinders Street Station. Multiple tram routes stop on Swanston
+  Street and Flinders Street.
+tips:
+  - Check the Fed Square website for the specific holiday program schedule
+  - Most activities are drop-in — no booking needed
+  - Combine with a visit to ACMI or the Koorie Heritage Trust nearby
+tags:
+  - free
+  - outdoor
+  - school-holidays
+  - family
+  - melbourne-cbd
+status:
+  site: open
+  lastVerified: "2026-06-01"
+details:
+  recurrence:
+    type: annual
+    season: all
+    startTime: "10:00"
+    endTime: "16:00"
+  confirmedDates: null
+  venue: Federation Square
+  venueType: outdoor
+  bookingRequired: false
+  bookingUrl: https://fedsquare.com/events
+  organiser: Fed Square
+  organiserUrl: https://fedsquare.com

@@ -1,0 +1,66 @@
+slug: dinos-at-the-zoo
+name: Dinos at the Zoo
+type: event
+coordinates:
+  lat: -37.9322
+  lng: 144.6671
+region: Victoria, Australia
+country: AU
+description: >
+  Werribee Open Range Zoo hosts Dinos at the Zoo, an immersive experience
+  featuring life-sized animatronic dinosaurs scattered throughout the zoo
+  grounds. Kids can explore the dinosaur trail alongside the zoo's African
+  animals, join fossil-digging activities, and learn about prehistoric
+  creatures through interactive displays.
+photos:
+  - url: /images/placeholder.jpg
+    alt: Animatronic dinosaurs at Werribee Open Range Zoo
+highlights:
+  - Life-sized animatronic dinosaurs on safari trail
+  - Fossil-digging activities for kids
+  - Combined with regular zoo animals
+cost: "$$"
+ageSuitability:
+  minAge: 2
+  ideal:
+    - preschool
+    - primary
+    - teens
+accessibility: easy
+parking: available
+facilities:
+  - restrooms
+  - food
+  - gift-shop
+bestSeason:
+  - fall
+directions: >
+  K Road, Werribee South. About 30 minutes from Melbourne CBD via the
+  Princes Freeway. Free parking on site. The zoo is also accessible via
+  bus from Werribee station.
+tips:
+  - The safari bus tour is included in entry and shouldn't be missed
+  - Allow a full day to see both dinosaurs and animals
+  - Bring sunscreen and hats — much of the zoo is open and exposed
+tags:
+  - zoo
+  - dinosaurs
+  - outdoor
+  - school-holidays
+  - family
+status:
+  site: seasonal
+  lastVerified: "2026-06-01"
+details:
+  recurrence:
+    type: annual
+    season: fall
+    startTime: "09:00"
+    endTime: "17:00"
+  confirmedDates: null
+  venue: Werribee Open Range Zoo
+  venueType: outdoor
+  bookingRequired: true
+  bookingUrl: https://www.zoo.org.au/werribee
+  organiser: Zoos Victoria
+  organiserUrl: https://www.zoo.org.au
