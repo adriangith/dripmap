@@ -75,11 +75,11 @@ function getValueLabel(dim: FilterDimension, filters: Filters, constraints: Cons
   switch (dim) {
     case "distance":
       return constraints.distance === "any"
-        ? "No preference"
-        : DISTANCE_OPTIONS.find((o) => o.value === constraints.distance)?.label ?? "No preference";
+        ? "Flexible"
+        : DISTANCE_OPTIONS.find((o) => o.value === constraints.distance)?.label ?? "Flexible";
     case "date": {
       const d = constraints.date;
-      if (!d) return "No preference";
+      if (!d) return "Flexible";
       if (d.mode === "specific") {
         return d.date.toLocaleDateString("en-AU", { weekday: "short", month: "short", day: "numeric" });
       }
@@ -89,16 +89,16 @@ function getValueLabel(dim: FilterDimension, filters: Filters, constraints: Cons
     }
     case "cost":
       return constraints.cost === "any"
-        ? "No preference"
-        : COST_OPTIONS.find((o) => o.value === constraints.cost)?.label ?? "No preference";
+        ? "Flexible"
+        : COST_OPTIONS.find((o) => o.value === constraints.cost)?.label ?? "Flexible";
     case "duration":
       return constraints.duration === "any"
-        ? "No preference"
-        : DURATION_OPTIONS.find((o) => o.value === constraints.duration)?.label ?? "No preference";
+        ? "Flexible"
+        : DURATION_OPTIONS.find((o) => o.value === constraints.duration)?.label ?? "Flexible";
     case "group":
       return constraints.group === null
-        ? "No preference"
-        : GROUP_OPTIONS.find((o) => o.value === constraints.group)?.label ?? "No preference";
+        ? "Flexible"
+        : GROUP_OPTIONS.find((o) => o.value === constraints.group)?.label ?? "Flexible";
   }
 }
 
