@@ -150,11 +150,28 @@ export default function LocationMap({
       maxBoundsViscosity: 1.0,
     }).setView([-37.8, 145.0], 7); // Default: Victoria, Australia
 
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
+    // Choose tile style based on system color scheme
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const tileUrl = prefersDark
+      ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+      : "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png";
+
+    const tileLayer = L.tileLayer(tileUrl, {
       attribution:
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>',
       maxZoom: 19,
     }).addTo(map);
+
+    // Switch tiles when system theme changes
+    const mql = window.matchMedia("(prefers-color-scheme: dark)");
+    const onThemeChange = (e: MediaQueryListEvent) => {
+      tileLayer.setUrl(
+        e.matches
+          ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+          : "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+      );
+    };
+    mql.addEventListener("change", onThemeChange);
 
     L.control.zoom({ position: "topright" }).addTo(map);
 
@@ -236,6 +253,7 @@ export default function LocationMap({
     });
 
     return () => {
+      mql.removeEventListener("change", onThemeChange);
       map.remove();
       mapRef.current = null;
       clusterGroupRef.current = null;
@@ -416,7 +434,7 @@ export default function LocationMap({
         disabled={locating}
         aria-label="Show my location"
         data-testid="locate-button"
-        className="absolute right-4 z-50 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-lg border border-gray-200 hover:bg-gray-50 active:bg-gray-100 transition-colors disabled:opacity-60 lg:bottom-4"
+        className="absolute right-4 z-50 flex h-10 w-10 items-center justify-center rounded-full bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 active:bg-gray-100 dark:active:bg-gray-600 transition-colors disabled:opacity-60 lg:bottom-4"
         style={{ bottom: `calc(var(--sheet-height, 96px) + 84px)` }}
       >
         <Crosshair className={`w-5 h-5 text-blue-600 ${locating ? "animate-spin" : ""}`} />
@@ -425,7 +443,7 @@ export default function LocationMap({
       {/* Error toast */}
       {locateError && (
         <div
-          className="absolute right-4 z-50 rounded-lg bg-red-50 border border-red-200 px-3 py-2 text-sm text-red-700 shadow-md lg:bottom-16"
+          className="absolute right-4 z-50 rounded-lg bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 px-3 py-2 text-sm text-red-700 dark:text-red-300 shadow-md lg:bottom-16"
           style={{ bottom: `calc(var(--sheet-height, 96px) + 132px)` }}
         >
           {locateError}

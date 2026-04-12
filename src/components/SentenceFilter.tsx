@@ -164,7 +164,7 @@ function Popover({
     <div
       ref={ref}
       className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-50
-                 bg-white rounded-xl shadow-lg border border-gray-200 p-2
+                 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-2
                  min-w-[160px] max-w-[280px]"
     >
       {children}
@@ -196,9 +196,9 @@ function Token({
         onClick={onTap}
         className={`font-semibold transition-colors border-b-2 pb-0.5 ${
           active
-            ? "text-blue-700 border-blue-500"
-            : "text-gray-800 border-gray-300 border-dashed"
-        } ${popoverOpen ? "text-blue-600 border-blue-400" : ""}`}
+            ? "text-blue-700 dark:text-blue-400 border-blue-500 dark:border-blue-400"
+            : "text-gray-800 dark:text-gray-200 border-gray-300 dark:border-gray-600 border-dashed"
+        } ${popoverOpen ? "text-blue-600 dark:text-blue-400 border-blue-400" : ""}`}
       >
         {label}
       </button>
@@ -224,7 +224,7 @@ function OptionButton({
     <button
       onClick={onClick}
       className={`w-full text-left text-sm px-3 py-1.5 rounded-lg transition-colors ${
-        selected ? "bg-blue-50 text-blue-700 font-medium" : "hover:bg-gray-50"
+        selected ? "bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 font-medium" : "hover:bg-gray-50 dark:hover:bg-gray-700 dark:text-gray-200"
       }`}
     >
       {label}
@@ -294,10 +294,10 @@ export default function SentenceFilter({
 
   return (
     <div
-      className="backdrop-blur-md bg-white/80 rounded-2xl shadow-lg border border-white/60
+      className="backdrop-blur-md bg-white/80 dark:bg-gray-900/80 rounded-2xl shadow-lg border border-white/60 dark:border-gray-700/60
                  px-4 py-3 text-[15px] leading-relaxed"
     >
-      <span className="text-gray-500">Show me </span>
+      <span className="text-gray-500 dark:text-gray-400">Show me </span>
 
       {/* Type token */}
       <Token
@@ -399,7 +399,7 @@ export default function SentenceFilter({
               setOpenToken(null);
             }}
           />
-          <div className="border-t border-gray-100 pt-2">
+          <div className="border-t border-gray-100 dark:border-gray-700 pt-2">
             <p className="text-xs text-gray-400 mb-1 px-3">Pick days</p>
             <div className="flex gap-1 px-2">
               {DAY_LABELS.map((label, i) => {
@@ -427,7 +427,7 @@ export default function SentenceFilter({
                     className={`w-7 h-7 text-xs rounded-full border transition-colors ${
                       isActive
                         ? "bg-blue-600 text-white border-blue-600"
-                        : "border-gray-200 hover:border-blue-300"
+                        : "border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:text-gray-300"
                     }`}
                   >
                     {label.slice(0, 2)}
@@ -436,7 +436,7 @@ export default function SentenceFilter({
               })}
             </div>
           </div>
-          <div className="border-t border-gray-100 pt-2 px-2">
+          <div className="border-t border-gray-100 dark:border-gray-700 pt-2 px-2">
             <input
               type="date"
               onChange={(e) => {
@@ -450,7 +450,7 @@ export default function SentenceFilter({
                   setOpenToken(null);
                 }
               }}
-              className="w-full text-sm border border-gray-200 rounded-lg px-2 py-1.5"
+              className="w-full text-sm border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-lg px-2 py-1.5"
             />
           </div>
         </div>

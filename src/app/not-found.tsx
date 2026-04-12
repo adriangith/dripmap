@@ -4,9 +4,9 @@ import { Compass, ArrowLeft } from "lucide-react";
 export default function NotFound() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4 text-center">
-      <Compass className="w-16 h-16 text-blue-300 mb-4" />
-      <h1 className="text-2xl font-bold text-gray-900 mb-2">Page not found</h1>
-      <p className="text-gray-500 mb-6 max-w-sm">
+      <Compass className="w-16 h-16 text-blue-300 dark:text-blue-500 mb-4" />
+      <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">Page not found</h1>
+      <p className="text-gray-500 dark:text-gray-400 mb-6 max-w-sm">
         The page you&apos;re looking for doesn&apos;t exist or may have been moved.
       </p>
       <Link

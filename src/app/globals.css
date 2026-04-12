@@ -19,6 +19,20 @@ body {
   width: 100%;
 }
 
+/* Leaflet popups — dark mode */
+@media (prefers-color-scheme: dark) {
+  .leaflet-popup-content-wrapper {
+    background: #1e293b;
+    color: #e2e8f0;
+  }
+  .leaflet-popup-tip {
+    background: #1e293b;
+  }
+  .leaflet-popup-close-button {
+    color: #94a3b8 !important;
+  }
+}
+
 /* Pulsing ring for the user-location blue dot */
 @keyframes user-location-pulse {
   0% {
@@ -84,6 +98,13 @@ body {
   pointer-events: none;
   opacity: 0 !important;
   transition: opacity 0.3s ease;
+}
+@media (prefers-color-scheme: dark) {
+  .poi-label {
+    background: rgba(30, 41, 59, 0.9);
+    color: #e2e8f0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  }
 }
 .show-poi-labels .poi-label {
   opacity: 0.9 !important;

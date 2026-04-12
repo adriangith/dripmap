@@ -17,7 +17,7 @@ import type { ScoredPlace } from "@/lib/constraints";
 const LocationMap = dynamic(() => import("@/components/LocationMap"), {
   ssr: false,
   loading: () => (
-    <div className="h-full w-full bg-blue-50 flex items-center justify-center">
+    <div className="h-full w-full bg-blue-50 dark:bg-gray-900 flex items-center justify-center">
       <p className="text-blue-400">Loading map...</p>
     </div>
   ),
@@ -172,8 +172,8 @@ export default function HomePage() {
         </div>
 
         {/* Desktop sidebar (hidden on mobile) */}
-        <div className="hidden lg:flex lg:flex-col lg:w-96 lg:border-l lg:border-gray-200">
-          <div className="p-3 border-b border-gray-200">
+        <div className="hidden lg:flex lg:flex-col lg:w-96 lg:border-l lg:border-gray-200 dark:lg:border-gray-700 dark:bg-gray-900">
+          <div className="p-3 border-b border-gray-200 dark:border-gray-700">
             <SentenceFilter
               filters={filters}
               constraints={constraints}
@@ -190,7 +190,7 @@ export default function HomePage() {
           />
           <div className="flex-1 overflow-y-auto">
             {loadError && (
-              <div className="mx-3 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
+              <div className="mx-3 mt-2 p-3 bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 rounded-lg text-sm text-red-700 dark:text-red-300">
                 Failed to load locations. Please try refreshing the page.
               </div>
             )}
@@ -213,16 +213,16 @@ export default function HomePage() {
           sheetView === "detail" && detailSlug ? (
             <div className="flex items-center gap-2 px-3 py-1">
               <button onClick={handleBackToList} className="shrink-0 p-1">
-                <ArrowLeft className="w-4 h-4 text-gray-500" />
+                <ArrowLeft className="w-4 h-4 text-gray-500 dark:text-gray-400" />
               </button>
-              <span className="text-sm font-semibold text-gray-900 truncate">
+              <span className="text-sm font-semibold text-gray-900 dark:text-gray-100 truncate">
                 {allLocations.find((l) => l.slug === detailSlug)?.name ?? "Details"}
               </span>
             </div>
           ) : (
             <>
-              <div className="flex items-center gap-2 px-3 py-1 border-b border-gray-100">
-                <Search className="w-4 h-4 text-gray-400 shrink-0" />
+              <div className="flex items-center gap-2 px-3 py-1 border-b border-gray-100 dark:border-gray-800">
+                <Search className="w-4 h-4 text-gray-400 dark:text-gray-500 shrink-0" />
                 <input
                   type="text"
                   placeholder="Search places..."
@@ -235,9 +235,9 @@ export default function HomePage() {
                       setSnapTarget(halfHeight);
                     }
                   }}
-                  className="flex-1 text-base outline-none bg-transparent"
+                  className="flex-1 text-base outline-none bg-transparent dark:text-gray-100 dark:placeholder:text-gray-500"
                 />
-                <span className="text-xs text-gray-400 shrink-0">
+                <span className="text-xs text-gray-400 dark:text-gray-500 shrink-0">
                   {filteredLocations.length} place{filteredLocations.length !== 1 ? "s" : ""}
                 </span>
               </div>
@@ -261,7 +261,7 @@ export default function HomePage() {
               hideSearch
             />
             {loadError && (
-              <div className="mx-3 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
+              <div className="mx-3 mt-2 p-3 bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 rounded-lg text-sm text-red-700 dark:text-red-300">
                 Failed to load locations. Please try refreshing the page.
               </div>
             )}

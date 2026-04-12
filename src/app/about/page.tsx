@@ -13,24 +13,24 @@ export default function AboutPage() {
       <main className="flex-1 max-w-2xl mx-auto px-4 py-12">
         <Link
           href="/"
-          className="inline-flex items-center gap-1 text-sm text-blue-600 hover:text-blue-800 mb-8"
+          className="inline-flex items-center gap-1 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 mb-8"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to map
         </Link>
 
         <div className="flex items-center gap-3 mb-6">
-          <Compass className="w-10 h-10 text-blue-600" />
-          <h1 className="text-3xl font-bold text-gray-900">About Drift</h1>
+          <Compass className="w-10 h-10 text-blue-600 dark:text-blue-400" />
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">About Drift</h1>
         </div>
 
-        <div className="space-y-4 text-gray-700 leading-relaxed">
+        <div className="space-y-4 text-gray-700 dark:text-gray-300 leading-relaxed">
           <p>
             Drift helps you discover water play locations around the world —
             waterfalls, swimming holes, splash pads, springs, and creeks.
           </p>
 
-          <h2 className="text-xl font-semibold text-gray-900 pt-4">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 pt-4">
             How it works
           </h2>
           <p>
@@ -39,7 +39,7 @@ export default function AboutPage() {
             you can plan your visit with confidence.
           </p>
 
-          <h2 className="text-xl font-semibold text-gray-900 pt-4">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 pt-4">
             Offline access
           </h2>
           <p>
@@ -49,7 +49,7 @@ export default function AboutPage() {
             waterfalls and backcountry swimming holes.
           </p>
 
-          <h2 className="text-xl font-semibold text-gray-900 pt-4">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 pt-4">
             Suggest a location
           </h2>
           <p>
