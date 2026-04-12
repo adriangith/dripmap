@@ -8,7 +8,7 @@ import FilterBar from "@/components/FilterBar";
 import ContextBar from "@/components/ContextBar";
 import LocationList from "@/components/LocationList";
 import LocationDetailPanel from "@/components/LocationDetailPanel";
-import BottomSheet, { SNAP_PEEK, SNAP_HALF } from "@/components/BottomSheet";
+import BottomSheet, { SNAP_HALF } from "@/components/BottomSheet";
 import { filterLocations } from "@/lib/filters";
 import { applyConstraints } from "@/lib/constraints";
 import type { PlaceIndexEntry, Filters, Coordinates, Constraints } from "@/lib/types";
@@ -47,7 +47,7 @@ export default function HomePage() {
   // Apple Maps-style sheet state
   const [sheetView, setSheetView] = useState<"list" | "detail">("list");
   const [detailSlug, setDetailSlug] = useState<string | null>(null);
-  const [sheetHeight, setSheetHeight] = useState(SNAP_PEEK);
+  const [isSheetExpanded, setIsSheetExpanded] = useState(false);
   const [snapTarget, setSnapTarget] = useState<number | null>(null);
   const [focusSheetHeight, setFocusSheetHeight] = useState<number | undefined>();
   const listScrollRef = useRef(0);
@@ -123,10 +123,13 @@ export default function HomePage() {
     );
   }, []);
 
-  const handleSheetHeightChange = useCallback((height: number) => {
-    setSheetHeight(height);
+  const handleSheetHeightChange = useCallback((_height: number) => {
     // Clear snap target after animation to avoid re-triggering
-    setSnapTarget(null);
+    setSnapTarget((prev) => prev !== null ? null : prev);
+  }, []);
+
+  const handleSheetExpandedChange = useCallback((expanded: boolean) => {
+    setIsSheetExpanded(expanded);
   }, []);
 
   return (
@@ -150,7 +153,6 @@ export default function HomePage() {
             onMarkerClick={handleMarkerClick}
             onMarkerHover={handleMarkerHover}
             onUserLocation={handleUserLocation}
-            sheetHeight={sheetHeight}
           />
         </div>
 
@@ -187,6 +189,7 @@ export default function HomePage() {
       <BottomSheet
         snapTo={snapTarget}
         onHeightChange={handleSheetHeightChange}
+        onExpandedChange={handleSheetExpandedChange}
         header={
           sheetView === "detail" && detailSlug ? (
             <div className="flex items-center gap-2 px-3 py-1">
@@ -207,7 +210,7 @@ export default function HomePage() {
                   value={filters.search}
                   onChange={(e) => setFilters({ ...filters, search: e.target.value })}
                   onFocus={() => {
-                    if (sheetHeight <= SNAP_PEEK + 20) {
+                    if (!isSheetExpanded) {
                       const halfHeight = window.innerHeight * SNAP_HALF;
                       setSnapTarget(halfHeight);
                     }
@@ -218,7 +221,7 @@ export default function HomePage() {
                   {filteredLocations.length} place{filteredLocations.length !== 1 ? "s" : ""}
                 </span>
               </div>
-              {sheetHeight > SNAP_PEEK + 20 && (
+              {isSheetExpanded && (
                 <ContextBar
                   constraints={constraints}
                   onConstraintsChange={setConstraints}
@@ -231,14 +234,14 @@ export default function HomePage() {
         }
       >
         {sheetView === "detail" && detailSlug ? (
-          sheetHeight > SNAP_PEEK + 20 ? (
+          isSheetExpanded ? (
             <LocationDetailPanel
               slug={detailSlug}
               onBack={handleBackToList}
               userLocation={userLocation}
             />
           ) : null
-        ) : sheetHeight > SNAP_PEEK + 20 ? (
+        ) : isSheetExpanded ? (
           <>
             <FilterBar
               filters={filters}

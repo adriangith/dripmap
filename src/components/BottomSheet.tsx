@@ -52,24 +52,17 @@ interface BottomSheetProps {
   header?: React.ReactNode;
   snapTo?: number | null;
   onHeightChange?: (height: number) => void;
+  /** Fires only when crossing the expanded/collapsed threshold */
+  onExpandedChange?: (expanded: boolean) => void;
 }
 
-export default function BottomSheet({ children, header, snapTo, onHeightChange }: BottomSheetProps) {
+export default function BottomSheet({ children, header, snapTo, onHeightChange, onExpandedChange }: BottomSheetProps) {
   const sheetRef = useRef<HTMLDivElement>(null);
-  const [sheetHeight, setSheetHeight] = useState(SNAP_PEEK);
-  const [isDragging, setIsDragging] = useState(false);
+  // React state only used for content-visibility threshold — NOT updated per pixel
+  const [, setIsExpanded] = useState(false);
+  const heightRef = useRef(SNAP_PEEK);
+  const draggingRef = useRef(false);
   const animatingRef = useRef(false);
-
-  // Keep CSS custom property in sync so siblings (e.g. locate button) can
-  // track the sheet height without a React-state round-trip lag.
-  const syncCSSHeight = useCallback((h: number) => {
-    document.documentElement.style.setProperty("--sheet-height", `${h}px`);
-  }, []);
-
-  // Set initial value
-  useEffect(() => {
-    syncCSSHeight(SNAP_PEEK);
-  }, [syncCSSHeight]);
 
   const dragStartY = useRef(0);
   const dragStartHeight = useRef(0);
@@ -79,6 +72,27 @@ export default function BottomSheet({ children, header, snapTo, onHeightChange }
   const lastTouchY = useRef(0);
   const lastTouchTime = useRef(0);
   const velocityRef = useRef(0);
+
+  // Write height directly to the DOM — no React re-render
+  const applyHeight = useCallback((h: number) => {
+    heightRef.current = h;
+    if (sheetRef.current) sheetRef.current.style.height = `${h}px`;
+    document.documentElement.style.setProperty("--sheet-height", `${h}px`);
+    // Only toggle React state when crossing the visibility threshold
+    const expanded = h > SNAP_PEEK + 20;
+    setIsExpanded(prev => {
+      if (prev !== expanded) {
+        onExpandedChange?.(expanded);
+        return expanded;
+      }
+      return prev;
+    });
+  }, [onExpandedChange]);
+
+  // Set initial value
+  useEffect(() => {
+    applyHeight(SNAP_PEEK);
+  }, [applyHeight]);
 
   const getSnaps = useCallback(() => {
     const vh = window.innerHeight;
@@ -117,20 +131,19 @@ export default function BottomSheet({ children, header, snapTo, onHeightChange }
 
   // Programmatic snap via prop
   useEffect(() => {
-    if (snapTo == null || isDragging) return;
+    if (snapTo == null || draggingRef.current) return;
     cancelSpring.current?.();
     animatingRef.current = true;
     cancelSpring.current = springAnimate(
-      sheetHeight,
+      heightRef.current,
       snapTo,
       (v) => {
-        setSheetHeight(v);
-        syncCSSHeight(v);
+        applyHeight(v);
         onHeightChange?.(v);
       },
-      () => animatingRef.current = false,
+      () => { animatingRef.current = false; },
     );
-  // Only trigger when snapTo changes, not on every sheetHeight change
+  // Only trigger when snapTo changes
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [snapTo]);
 
@@ -140,19 +153,19 @@ export default function BottomSheet({ children, header, snapTo, onHeightChange }
       cancelSpring.current = null;
       animatingRef.current = false;
 
-      setIsDragging(true);
+      draggingRef.current = true;
       dragStartY.current = clientY;
-      dragStartHeight.current = sheetHeight;
+      dragStartHeight.current = heightRef.current;
       lastTouchY.current = clientY;
       lastTouchTime.current = Date.now();
       velocityRef.current = 0;
     },
-    [sheetHeight]
+    []
   );
 
   const handleDragMove = useCallback(
     (clientY: number) => {
-      if (!isDragging) return;
+      if (!draggingRef.current) return;
 
       const now = Date.now();
       const dt = now - lastTouchTime.current;
@@ -167,39 +180,36 @@ export default function BottomSheet({ children, header, snapTo, onHeightChange }
         SNAP_PEEK,
         Math.min(window.innerHeight * SNAP_FULL, dragStartHeight.current + delta)
       );
-      setSheetHeight(newHeight);
-      syncCSSHeight(newHeight);
+      applyHeight(newHeight);
       onHeightChange?.(newHeight);
     },
-    [isDragging, onHeightChange, syncCSSHeight]
+    [onHeightChange, applyHeight]
   );
 
   const handleDragEnd = useCallback(() => {
-    setIsDragging(false);
-    const target = snapToNearest(sheetHeight, velocityRef.current);
+    draggingRef.current = false;
+    const target = snapToNearest(heightRef.current, velocityRef.current);
     animatingRef.current = true;
     cancelSpring.current = springAnimate(
-      sheetHeight,
+      heightRef.current,
       target,
       (v) => {
-        setSheetHeight(v);
-        syncCSSHeight(v);
+        applyHeight(v);
         onHeightChange?.(v);
       },
-      () => animatingRef.current = false,
+      () => { animatingRef.current = false; },
     );
-  }, [snapToNearest, sheetHeight, onHeightChange, syncCSSHeight]);
+  }, [snapToNearest, onHeightChange, applyHeight]);
 
   useEffect(() => {
-    if (!isDragging) return;
-
     const onMouseMove = (e: MouseEvent) => handleDragMove(e.clientY);
-    const onMouseUp = () => handleDragEnd();
+    const onMouseUp = () => { if (draggingRef.current) handleDragEnd(); };
     const onTouchMove = (e: TouchEvent) => {
+      if (!draggingRef.current) return;
       e.preventDefault();
       handleDragMove(e.touches[0].clientY);
     };
-    const onTouchEnd = () => handleDragEnd();
+    const onTouchEnd = () => { if (draggingRef.current) handleDragEnd(); };
 
     window.addEventListener("mousemove", onMouseMove);
     window.addEventListener("mouseup", onMouseUp);
@@ -212,7 +222,7 @@ export default function BottomSheet({ children, header, snapTo, onHeightChange }
       window.removeEventListener("touchmove", onTouchMove);
       window.removeEventListener("touchend", onTouchEnd);
     };
-  }, [isDragging, handleDragMove, handleDragEnd]);
+  }, [handleDragMove, handleDragEnd]);
 
   useEffect(() => {
     return () => cancelSpring.current?.();
@@ -222,7 +232,7 @@ export default function BottomSheet({ children, header, snapTo, onHeightChange }
     <div
       ref={sheetRef}
       className="fixed bottom-0 left-0 right-0 bg-white rounded-t-2xl shadow-[0_-2px_16px_rgba(0,0,0,0.12)] z-40 flex flex-col lg:hidden"
-      style={{ height: sheetHeight }}
+      style={{ height: SNAP_PEEK }}
     >
       {/* Drag handle — enlarged 48px hit target */}
       <div

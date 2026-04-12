@@ -106,6 +106,12 @@ interface LocationMapProps {
   focusSheetHeight?: number;
 }
 
+/** Read the current sheet height from the CSS custom property (set by BottomSheet). */
+function getSheetHeight(): number {
+  if (typeof document === "undefined") return 0;
+  return parseInt(getComputedStyle(document.documentElement).getPropertyValue("--sheet-height")) || 0;
+}
+
 export default function LocationMap({
   locations,
   highlightedSlug,
@@ -113,7 +119,6 @@ export default function LocationMap({
   onMarkerClick,
   onMarkerHover,
   onUserLocation,
-  sheetHeight = 0,
   focusSheetHeight,
 }: LocationMapProps) {
   const mapContainerRef = useRef<HTMLDivElement>(null);
@@ -121,9 +126,6 @@ export default function LocationMap({
   const markersRef = useRef<Map<string, L.Marker>>(new Map());
   const clusterGroupRef = useRef<L.MarkerClusterGroup | null>(null);
   const userMarkerRef = useRef<L.Marker | null>(null);
-  // Keep a ref so callbacks always read the latest sheetHeight without re-creating
-  const sheetHeightRef = useRef(sheetHeight);
-  useEffect(() => { sheetHeightRef.current = sheetHeight; }, [sheetHeight]);
   // Skip fitBounds after locate so the centering isn't overridden by re-sort
   const skipFitBoundsRef = useRef(false);
 
@@ -280,7 +282,7 @@ export default function LocationMap({
       // Offset bottom padding so the visible center accounts for the sheet
       map.fitBounds(bounds, {
         paddingTopLeft: L.point(50, 50),
-        paddingBottomRight: L.point(50, Math.max(50, sheetHeightRef.current)),
+        paddingBottomRight: L.point(50, Math.max(50, getSheetHeight())),
         maxZoom: 10,
       });
     }
@@ -305,7 +307,7 @@ export default function LocationMap({
     const map = mapRef.current;
     const marker = markersRef.current.get(focusedSlug);
     if (map && marker) {
-      const sh = focusSheetHeight ?? sheetHeightRef.current;
+      const sh = focusSheetHeight ?? getSheetHeight();
       setViewAboveSheet(map, marker.getLatLng(), 12, sh);
     }
   }, [focusedSlug, focusSheetHeight]);
@@ -348,7 +350,7 @@ export default function LocationMap({
           skipFitBoundsRef.current = true;
 
           // Center user in visible area above the sheet
-          setViewAboveSheet(map, [lat, lng], 12, sheetHeightRef.current);
+          setViewAboveSheet(map, [lat, lng], 12, getSheetHeight());
         }
 
         onUserLocation?.({ lat, lng });
@@ -392,7 +394,7 @@ export default function LocationMap({
         aria-label="Show my location"
         data-testid="locate-button"
         className="absolute right-4 z-50 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-lg border border-gray-200 hover:bg-gray-50 active:bg-gray-100 transition-colors disabled:opacity-60 lg:bottom-4"
-        style={{ bottom: `calc(var(--sheet-height, ${sheetHeight}px) + 16px)` }}
+        style={{ bottom: `calc(var(--sheet-height, 96px) + 16px)` }}
       >
         <Crosshair className={`w-5 h-5 text-blue-600 ${locating ? "animate-spin" : ""}`} />
       </button>
@@ -401,7 +403,7 @@ export default function LocationMap({
       {locateError && (
         <div
           className="absolute right-4 z-50 rounded-lg bg-red-50 border border-red-200 px-3 py-2 text-sm text-red-700 shadow-md lg:bottom-16"
-          style={{ bottom: `calc(var(--sheet-height, ${sheetHeight}px) + 64px)` }}
+          style={{ bottom: `calc(var(--sheet-height, 96px) + 64px)` }}
         >
           {locateError}
         </div>
