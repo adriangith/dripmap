@@ -11,6 +11,7 @@ import {
   Navigation,
   ExternalLink,
   Clock,
+  Users,
 } from "lucide-react";
 import { Droplets, Waves } from "lucide-react";
 import type { Place, SwimPlace, BeachPlace, EventPlace, Coordinates, Duration } from "@/lib/types";
@@ -354,6 +355,22 @@ export default function LocationDetailPanel({
             </div>
           )}
         </div>
+        {(location.ageSuitability.ideal.length > 0 || location.ageSuitability.minAge !== null) && (
+          <div className="flex items-start gap-2 mt-2.5">
+            <Users className="w-4 h-4 text-gray-400 dark:text-gray-500 shrink-0 mt-0.5" />
+            <div>
+              <p className="text-xs text-gray-500 dark:text-gray-400">Age Suitability</p>
+              <p className="text-sm font-medium capitalize">
+                {location.ageSuitability.ideal.join(", ")}
+              </p>
+              {location.ageSuitability.minAge !== null && (
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                  Min age: {location.ageSuitability.minAge}+
+                </p>
+              )}
+            </div>
+          </div>
+        )}
         {location.facilities.length > 0 && (
           <div className="mt-2.5">
             <p className="text-xs text-gray-500 mb-1">Facilities</p>

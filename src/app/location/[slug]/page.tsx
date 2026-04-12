@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, MapPin, Car, Shield, DollarSign, Calendar, Clock, AlertTriangle, Navigation, ExternalLink, Droplets, Waves } from "lucide-react";
+import { ArrowLeft, MapPin, Car, Shield, DollarSign, Calendar, Clock, AlertTriangle, Navigation, ExternalLink, Droplets, Waves, Users } from "lucide-react";
 import { getLocationDetailStatic, getAllLocationSlugs } from "@/lib/locations";
 import Footer from "@/components/Footer";
 import StatusBadge from "@/components/StatusBadge";
@@ -242,6 +242,22 @@ export default async function LocationPage({ params }: PageProps) {
                 </div>
               )}
             </div>
+            {(location.ageSuitability.ideal.length > 0 || location.ageSuitability.minAge !== null) && (
+              <div className="flex items-start gap-2 mt-3">
+                <Users className="w-4 h-4 text-gray-400 dark:text-gray-500 mt-0.5" />
+                <div>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">Age Suitability</p>
+                  <p className="text-sm font-medium capitalize">
+                    {location.ageSuitability.ideal.join(", ")}
+                  </p>
+                  {location.ageSuitability.minAge !== null && (
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                      Min age: {location.ageSuitability.minAge}+
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
             {location.facilities.length > 0 && (
               <div className="mt-3">
                 <p className="text-xs text-gray-500 mb-1">Facilities</p>
