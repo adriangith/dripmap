@@ -6,44 +6,52 @@ coordinates:
   lng: 144.38
 region: Victoria, Australia
 country: AU
-description: >
-  The Lerderderg River runs through a dramatic gorge on the western fringe of Melbourne, creating two excellent swimming
-  spots near Grahams Dam. The river flows at its best in springtime and early summer before typically drying up in late
-  summer or early autumn.
+description: The Lerderderg River has carved a deep and picturesque gorge through this rugged state park, just an hour's drive
+  from Melbourne near Bacchus Marsh and Ballarat. Despite its proximity to the city, many areas feel truly remote. Swim in
+  the river at popular spots like Mackenzies Flat or O'Briens Crossing, then follow old water races and hike part of the Great
+  Dividing Trail.
 photos:
-  - url: /images/placeholder.jpg
-    alt: Lerderderg Gorge at Grahams Dam swimming hole in Victoria, Australia
+- url: /images/placeholder.jpg
+  alt: Lerderderg Gorge at Grahams Dam swimming hole in Victoria, Australia
 highlights:
-  - Visit in spring or early summer when water levels are highest
-  - The river can dry up in late summer — check conditions before visiting
+- Deep picturesque gorge just an hour from Melbourne
+- Feels truly remote despite proximity to city
+- Multiple swimming spots along the Lerderderg River
+- Part of the Great Dividing Trail hiking network
 cost: free
 duration: half-day
 ageSuitability:
   minAge: null
   ideal:
-    - toddlers
-    - primary
-    - teens
-    - adults
+  - toddlers
+  - primary
+  - teens
+  - adults
 accessibility: moderate
 parking: available
-facilities: []
+facilities:
+- restrooms
+- picnic-tables
+- bbq
+- camping
 bestSeason:
-  - spring
-  - summer
-directions: >
-  From Melbourne, head west on the Western Freeway towards Bacchus Marsh. Turn off at the Lerderderg Gorge Road exit and
-  follow signs to the gorge. Grahams Dam area has a car park and walking trails along the river.
+- spring
+- summer
+directions: 'From Melbourne, head west on the Western Freeway towards Bacchus Marsh. Turn off at the Lerderderg Gorge Road
+  exit and follow signs to the gorge. Grahams Dam area has a car park and walking trails along the river.
+
+  '
 tips:
-  - Visit in spring or early summer when water levels are highest
-  - The river can dry up in late summer — check conditions before visiting
-  - Wear sturdy walking shoes for the rocky terrain
-  - Bring sun protection as shade is limited near the water
+- Mackenzies Flat has electric BBQs, toilets, and picnic tables
+- O'Briens Crossing has several walks for different fitness levels
+- The East Walk and Cowan Track Loop is a challenging but rewarding day hike
+- Camping available at Lerderderg Campground near O'Briens Crossing
+- River levels drop in late summer — best swimming in spring/early summer
 tags:
-  - gorge
-  - river
-  - scenic
-  - bush-walking
+- gorge
+- river
+- scenic
+- bush-walking
 status:
   site: open
   lastVerified: '2026-04-01'
@@ -51,4 +59,4 @@ status:
 details:
   dangerLevel: moderate
   waterAccess: seasonal
-  depth: null
+  depth: Varies with river level, typically 1-3m in pools

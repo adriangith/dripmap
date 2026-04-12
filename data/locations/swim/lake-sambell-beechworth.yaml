@@ -6,44 +6,45 @@ coordinates:
   lng: 146.692
 region: Victoria, Australia
 country: AU
-description: >
-  An ornamental lake on the outskirts of the historic gold mining town of Beechworth in north-east Victoria. Lake
-  Sambell has two designated beaches for swimming, set in a picturesque parkland setting with views of the surrounding
-  countryside.
+description: 'An ornamental lake on the outskirts of the historic gold mining town of Beechworth in north-east Victoria. Lake
+  Sambell has two designated beaches for swimming, set in a picturesque parkland setting with views of the surrounding countryside.
+
+  '
 photos:
-  - url: /images/placeholder.jpg
-    alt: Lake Sambell, Beechworth swimming hole in Victoria, Australia
+- url: /images/placeholder.jpg
+  alt: Lake Sambell, Beechworth swimming hole in Victoria, Australia
 highlights:
-  - Two designated swimming beaches to choose from
-  - Check current conditions as the lake has been drawn down for dam repairs
+- Two designated swimming beaches to choose from
+- Check current conditions as the lake has been drawn down for dam repairs
 cost: free
 duration: quick
 ageSuitability:
   minAge: null
   ideal:
-    - toddlers
-    - primary
-    - teens
-    - adults
+  - toddlers
+  - primary
+  - teens
+  - adults
 accessibility: easy
 parking: available
 facilities:
-  - restrooms
-  - picnic-tables
+- restrooms
+- picnic-tables
 bestSeason:
-  - summer
-directions: >
-  Located on the outskirts of Beechworth. From the town centre, follow signs to Lake Sambell. Two designated swimming
+- summer
+directions: 'Located on the outskirts of Beechworth. From the town centre, follow signs to Lake Sambell. Two designated swimming
   beaches are accessible from the lakeside car parks and walking paths.
+
+  '
 tips:
-  - Two designated swimming beaches to choose from
-  - Check current conditions as the lake has been drawn down for dam repairs
-  - Combine with a visit to historic Beechworth township
-  - Walking tracks around the lake offer pleasant strolls
+- Two designated swimming beaches to choose from
+- Check current conditions as the lake has been drawn down for dam repairs
+- Combine with a visit to historic Beechworth township
+- Walking tracks around the lake offer pleasant strolls
 tags:
-  - lake
-  - historic-town
-  - beach
+- lake
+- historic-town
+- beach
 status:
   site: open
   lastVerified: '2026-04-01'
@@ -51,4 +52,4 @@ status:
 details:
   dangerLevel: low
   waterAccess: seasonal
-  depth: null
+  depth: Shallow lake, typically 1-3m

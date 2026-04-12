@@ -6,44 +6,46 @@ coordinates:
   lng: 144.27
 region: Victoria, Australia
 country: AU
-description: >
-  Swimmer's Cove is the designated swimming area at Pykes Creek Reservoir, west of Melbourne near Myrniong. The
-  reservoir offers a scenic picnic spot by the water, though jet skis and a history of algal blooms mean timing your
-  visit is important.
+description: 'Swimmer''s Cove is the designated swimming area at Pykes Creek Reservoir, west of Melbourne near Myrniong. The
+  reservoir offers a scenic picnic spot by the water, though jet skis and a history of algal blooms mean timing your visit
+  is important.
+
+  '
 photos:
-  - url: /images/placeholder.jpg
-    alt: Pykes Creek Reservoir swimming hole in Victoria, Australia
+- url: /images/placeholder.jpg
+  alt: Pykes Creek Reservoir swimming hole in Victoria, Australia
 highlights:
-  - Pick a quiet weekday to avoid jet ski noise
-  - Check for algal bloom warnings before visiting
+- Pick a quiet weekday to avoid jet ski noise
+- Check for algal bloom warnings before visiting
 cost: free
 duration: quick
 ageSuitability:
   minAge: null
   ideal:
-    - toddlers
-    - primary
-    - teens
-    - adults
+  - toddlers
+  - primary
+  - teens
+  - adults
 accessibility: easy
 parking: available
 facilities:
-  - picnic-tables
+- picnic-tables
 bestSeason:
-  - spring
-  - summer
-directions: >
-  From Melbourne, head west on the Western Freeway. Take the Myrniong exit and follow local roads to Pykes Creek
-  Reservoir. The swimming area at Swimmer's Cove is signposted.
+- spring
+- summer
+directions: 'From Melbourne, head west on the Western Freeway. Take the Myrniong exit and follow local roads to Pykes Creek
+  Reservoir. The swimming area at Swimmer''s Cove is signposted.
+
+  '
 tips:
-  - Pick a quiet weekday to avoid jet ski noise
-  - Check for algal bloom warnings before visiting
-  - Picnic facilities available near the swimming area
-  - Best visited in spring when water quality is typically better
+- Pick a quiet weekday to avoid jet ski noise
+- Check for algal bloom warnings before visiting
+- Picnic facilities available near the swimming area
+- Best visited in spring when water quality is typically better
 tags:
-  - reservoir
-  - picnic
-  - lake
+- reservoir
+- picnic
+- lake
 status:
   site: open
   lastVerified: '2026-04-01'
@@ -51,4 +53,4 @@ status:
 details:
   dangerLevel: low
   waterAccess: seasonal
-  depth: null
+  depth: Reservoir, depth varies with level

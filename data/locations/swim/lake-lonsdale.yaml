@@ -6,45 +6,47 @@ coordinates:
   lng: 142.62
 region: Victoria, Australia
 country: AU
-description: >
-  An isolated, lakeside bush camping experience near Stawell in western Victoria. Swimming is available when lake levels
-  cooperate, though timing your visit is important to avoid periods when submerged vegetation obscures the water. Can be
-  very shallow in parts.
+description: 'An isolated, lakeside bush camping experience near Stawell in western Victoria. Swimming is available when lake
+  levels cooperate, though timing your visit is important to avoid periods when submerged vegetation obscures the water. Can
+  be very shallow in parts.
+
+  '
 photos:
-  - url: /images/placeholder.jpg
-    alt: Lake Lonsdale swimming hole in Victoria, Australia
+- url: /images/placeholder.jpg
+  alt: Lake Lonsdale swimming hole in Victoria, Australia
 highlights:
-  - Time your visit for when lake levels are adequate
-  - Bush camping available at the lakeside — very peaceful
+- Time your visit for when lake levels are adequate
+- Bush camping available at the lakeside — very peaceful
 cost: free
 duration: quick
 ageSuitability:
   minAge: null
   ideal:
-    - toddlers
-    - primary
-    - teens
-    - adults
+  - toddlers
+  - primary
+  - teens
+  - adults
 accessibility: easy
 parking: available
 facilities:
-  - camping
+- camping
 bestSeason:
-  - spring
-  - summer
-directions: >
-  From Stawell, head north-west to Lake Lonsdale. The lake is accessible via local roads with bush camping areas
+- spring
+- summer
+directions: 'From Stawell, head north-west to Lake Lonsdale. The lake is accessible via local roads with bush camping areas
   signposted around the shoreline.
+
+  '
 tips:
-  - Time your visit for when lake levels are adequate
-  - Bush camping available at the lakeside — very peaceful
-  - Can be very shallow in parts — check conditions
-  - Submerged vegetation can be an issue at low water levels
+- Time your visit for when lake levels are adequate
+- Bush camping available at the lakeside — very peaceful
+- Can be very shallow in parts — check conditions
+- Submerged vegetation can be an issue at low water levels
 tags:
-  - lake
-  - camping
-  - remote
-  - bush-setting
+- lake
+- camping
+- remote
+- bush-setting
 status:
   site: open
   lastVerified: '2026-04-01'
@@ -52,4 +54,4 @@ status:
 details:
   dangerLevel: low
   waterAccess: seasonal
-  depth: null
+  depth: Shallow lake, typically 2-4m

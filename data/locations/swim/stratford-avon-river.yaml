@@ -6,49 +6,51 @@ coordinates:
   lng: 147.08
 region: Victoria, Australia
 country: AU
-description: >
-  The Avon River meanders through wide pebbly beaches either side of the Princes Highway at this Shakespearean-inspired
-  town. On your way between Melbourne and Bairnsdale, the riffles catch your eye from the bridge above as they glisten
-  in the sunlight.
+description: 'The Avon River meanders through wide pebbly beaches either side of the Princes Highway at this Shakespearean-inspired
+  town. On your way between Melbourne and Bairnsdale, the riffles catch your eye from the bridge above as they glisten in
+  the sunlight.
+
+  '
 photos:
-  - url: /images/placeholder.jpg
-    alt: Stratford upon Avon swimming hole in Victoria, Australia
+- url: /images/placeholder.jpg
+  alt: Stratford upon Avon swimming hole in Victoria, Australia
 highlights:
-  - Great rest stop on the drive between Melbourne and Bairnsdale
-  - Wide pebbly beaches for picnics and paddling
+- Great rest stop on the drive between Melbourne and Bairnsdale
+- Wide pebbly beaches for picnics and paddling
 cost: free
 duration: quick
 ageSuitability:
   minAge: null
   ideal:
-    - toddlers
-    - primary
-    - teens
-    - adults
+  - toddlers
+  - primary
+  - teens
+  - adults
 accessibility: easy
 parking: available
 facilities:
-  - restrooms
-  - picnic-tables
+- restrooms
+- picnic-tables
 bestSeason:
-  - summer
-directions: >
-  Located in Stratford on the Princes Highway between Melbourne and Bairnsdale. The river is accessible from both sides
-  of the highway bridge through the town centre.
+- summer
+directions: 'Located in Stratford on the Princes Highway between Melbourne and Bairnsdale. The river is accessible from both
+  sides of the highway bridge through the town centre.
+
+  '
 tips:
-  - Great rest stop on the drive between Melbourne and Bairnsdale
-  - Wide pebbly beaches for picnics and paddling
-  - The river riffles are beautiful in the sunlight
-  - Shallow water in many areas makes it family-friendly
+- Great rest stop on the drive between Melbourne and Bairnsdale
+- Wide pebbly beaches for picnics and paddling
+- The river riffles are beautiful in the sunlight
+- Shallow water in many areas makes it family-friendly
 tags:
-  - river
-  - beach
-  - roadside
-  - family-friendly
+- river
+- beach
+- roadside
+- family-friendly
 status:
   site: open
   lastVerified: '2026-04-01'
 details:
   dangerLevel: low
   waterAccess: open
-  depth: null
+  depth: River pools, typically 1-2m

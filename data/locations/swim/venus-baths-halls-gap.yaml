@@ -6,45 +6,49 @@ coordinates:
   lng: 142.52
 region: Victoria, Australia
 country: AU
-description: >
-  A series of weathered holes in a rock shelf along Stony Creek in the Grampians, providing waist-deep bathing relief
-  from the heat and the possibility of a short slide into the water. One of the most iconic natural attractions in the
-  Grampians National Park.
+description: A series of natural rock pools along Stony Creek in the Grampians (Gariwerd) National Park, accessible via a
+  gentle walk from the Halls Gap township. The Venus Baths are formed by water flowing over smooth sandstone ledges into clear
+  pools — a perfect refreshing dip on a warm day. The area is rich with Aboriginal rock art and native wildlife including
+  kangaroos and emus.
 photos:
-  - url: /images/placeholder.jpg
-    alt: Venus Baths, Halls Gap swimming hole in Victoria, Australia
+- url: /images/placeholder.jpg
+  alt: Venus Baths, Halls Gap swimming hole in Victoria, Australia
 highlights:
-  - Water can become stagnant in dry periods — visit after recent rain
-  - The natural rock slide is fun but be careful on the slippery surface
+- Natural rock pools in the Grampians (Gariwerd) National Park
+- Gentle walk from Halls Gap township
+- Rich Aboriginal cultural heritage
+- Kangaroos and emus commonly spotted
 cost: free
 duration: half-day
 ageSuitability:
   minAge: null
   ideal:
-    - toddlers
-    - primary
-    - teens
-    - adults
+  - toddlers
+  - primary
+  - teens
+  - adults
 accessibility: easy
 parking: available
 facilities:
-  - restrooms
+- walking-trails
 bestSeason:
-  - spring
-  - summer
-directions: >
-  From Halls Gap, follow the well-marked walking track to Venus Baths. The walk is approximately 2 km return along Stony
-  Creek through the bush.
+- spring
+- summer
+directions: 'From Halls Gap, follow the well-marked walking track to Venus Baths. The walk is approximately 2 km return along
+  Stony Creek through the bush.
+
+  '
 tips:
-  - Water can become stagnant in dry periods — visit after recent rain
-  - The natural rock slide is fun but be careful on the slippery surface
-  - Waist-deep pools — more bathing than swimming
-  - Popular tourist spot — visit early morning for fewer crowds
+- A gentle 30-minute walk from the Botanic Gardens car park in Halls Gap
+- Pools are shallow — suitable for wading and cooling off rather than deep swimming
+- Visit nearby Brambuk Aboriginal Cultural Centre to learn about Gariwerd's heritage
+- Kangaroos are commonly seen on the walk — especially morning and evening
+- Combine with other Grampians walks like the Pinnacle or Boroka Lookout
 tags:
-  - rock-pool
-  - grampians
-  - scenic
-  - natural-slide
+- rock-pool
+- grampians
+- scenic
+- natural-slide
 status:
   site: open
   lastVerified: '2026-04-01'
@@ -52,4 +56,4 @@ status:
 details:
   dangerLevel: low
   waterAccess: seasonal
-  depth: null
+  depth: Shallow pools, typically 0.5-1.5m

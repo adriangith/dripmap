@@ -6,43 +6,50 @@ coordinates:
   lng: 144.13
 region: Victoria, Australia
 country: AU
-description: >
-  The window for swimming at The Blowhole is slim, so timing is all important. Step into the pool as the tunnel trickles
-  slowly overhead at this fascinating gold mining relic. The pool needs to be not too turbulent, not too dry, but just
-  right for a dip.
+description: A unique natural mineral spring in the Hepburn Mineral Springs Reserve, where carbonated water bubbles up dramatically
+  through a small opening in the rock — creating a natural 'blowhole' effect. The surrounding reserve has multiple mineral
+  springs to taste, walking trails through native bushland, and the historic Hepburn Bathhouse & Spa nearby for a full spa
+  country experience.
 photos:
-  - url: /images/placeholder.jpg
-    alt: The Blowhole, Hepburn Springs swimming hole in Victoria, Australia
+- url: /images/placeholder.jpg
+  alt: The Blowhole, Hepburn Springs swimming hole in Victoria, Australia
 highlights:
-  - Timing is everything — the pool needs to be just right for swimming
-  - Visit after moderate rain when water flow is gentle
+- Naturally carbonated mineral water bubbling from rock
+- Multiple mineral springs to taste in the reserve
+- Near the historic Hepburn Bathhouse & Spa
+- Beautiful bushland walking trails
 cost: free
 duration: half-day
 ageSuitability:
   minAge: null
   ideal:
-    - toddlers
-    - primary
-    - teens
-    - adults
+  - toddlers
+  - primary
+  - teens
+  - adults
 accessibility: moderate
 parking: limited
-facilities: []
+facilities:
+- restrooms
+- picnic-tables
+- walking-trails
 bestSeason:
-  - spring
-directions: >
-  Located in Hepburn Springs, near Daylesford. From Hepburn Springs, follow walking tracks to The Blowhole. The site is
-  a former gold mining tunnel with a pool beneath.
+- spring
+directions: 'Located in Hepburn Springs, near Daylesford. From Hepburn Springs, follow walking tracks to The Blowhole. The
+  site is a former gold mining tunnel with a pool beneath.
+
+  '
 tips:
-  - Timing is everything — the pool needs to be just right for swimming
-  - Visit after moderate rain when water flow is gentle
-  - Fascinating gold mining history at this unique site
-  - Not suitable when water is too turbulent or too dry
+- Bring a bottle to collect mineral water from the various springs
+- Each spring has a subtly different mineral taste
+- The Hepburn Bathhouse & Spa is a short walk away for a full spa experience
+- Walk the Mineral Springs Walk to visit multiple springs
+- Combine with Lake Daylesford, just a few minutes' drive away
 tags:
-  - historic
-  - unique
-  - gold-mining
-  - rock-pool
+- historic
+- unique
+- gold-mining
+- rock-pool
 status:
   site: open
   lastVerified: '2026-04-01'
@@ -50,4 +57,4 @@ status:
 details:
   dangerLevel: moderate
   waterAccess: seasonal
-  depth: null
+  depth: Shallow spring pool, not for swimming — mineral springs tasting

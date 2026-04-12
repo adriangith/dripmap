@@ -6,50 +6,53 @@ coordinates:
   lng: 144.7381
 region: Victoria, Australia
 country: AU
-description: >
-  A hidden network of natural rock pools carved into the limestone shelf at
-  Sorrento's ocean side. At low tide, the pools fill with crystal-clear water
-  and are calm enough for young kids to splash in — while the ocean crashes
-  just metres away. One of the Peninsula's best-kept secrets.
+description: Natural rock pools along the rugged Bass Strait coastline at Sorrento, on the tip of the Mornington Peninsula.
+  At low tide, these pools become calm, sheltered swimming spots perfect for families with young children, while the surrounding
+  rock platforms offer excellent snorkelling opportunities. The pools are surrounded by dramatic coastal limestone formations.
 photos:
-  - url: /images/placeholder.jpg
-    alt: Sorrento rock pools at low tide
+- url: /images/placeholder.jpg
+  alt: Sorrento rock pools at low tide
 highlights:
-  - Natural rock pools safe for kids at low tide
-  - Snorkelling in the deeper pools
-  - Marine life — sea stars, anemones, crabs
+- Natural rock pools sheltered from Bass Strait surf
+- Perfect for families with young children at low tide
+- Excellent snorkelling in deeper pools
+- Dramatic coastal limestone formations
 cost: free
 duration: half-day
 ageSuitability:
   minAge: null
   ideal:
-    - toddlers
-    - primary
-    - teens
-    - adults
+  - toddlers
+  - primary
+  - teens
+  - adults
 accessibility: moderate
 parking: street
-facilities: []
+facilities:
+- restrooms
+- parking
 bestSeason:
-  - summer
-  - spring
-directions: >
-  Park along the Esplanade in Sorrento and walk down the track to the ocean
-  side. The rock pools are accessible at low tide — check tide times before
-  visiting.
+- summer
+- spring
+directions: 'Park along the Esplanade in Sorrento and walk down the track to the ocean side. The rock pools are accessible
+  at low tide — check tide times before visiting.
+
+  '
 tips:
-  - Only accessible at low tide — check Bureau of Meteorology tide charts
-  - Wear reef shoes on the limestone
-  - Bring a mesh bag for collecting shells (look, don't take)
+- Check tide times — rock pools are best at low tide
+- Wear reef shoes on the slippery rock platforms
+- Excellent snorkelling in the deeper pools
+- Combine with a walk along the coastal trail
+- Nearby Sorrento village has cafes, fish and chips, and the historic pier
 tags:
-  - rock-pools
-  - family-friendly
-  - snorkelling
-  - marine-life
-  - mornington-peninsula
+- rock-pools
+- family-friendly
+- snorkelling
+- marine-life
+- mornington-peninsula
 status:
   site: open
-  lastVerified: "2026-04-10"
+  lastVerified: '2026-04-10'
 details:
   beachType: rock-pools
   patrolled:
@@ -59,5 +62,5 @@ details:
   dogPolicy: allowed
   waveExposure: sheltered
   waterHazards:
-    - slippery-rocks
+  - slippery-rocks
   crowdLevel: quiet

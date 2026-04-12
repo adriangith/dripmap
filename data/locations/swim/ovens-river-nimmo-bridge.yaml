@@ -6,48 +6,51 @@ coordinates:
   lng: 146.733
 region: Victoria, Australia
 country: AU
-description: >
-  A dramatic swimming spot near Myrtleford where a long, diagonal chute of water cuts through a layer of jagged bedrock
-  before gushing out into a deep hole in the Ovens River. The river then opens into a wide, more tranquil pool for
+description: 'A dramatic swimming spot near Myrtleford where a long, diagonal chute of water cuts through a layer of jagged
+  bedrock before gushing out into a deep hole in the Ovens River. The river then opens into a wide, more tranquil pool for
   swimming, a legacy of a past mining mishap.
+
+  '
 photos:
-  - url: /images/placeholder.jpg
-    alt: Ovens River at Nimmo Bridge swimming hole in Victoria, Australia
+- url: /images/placeholder.jpg
+  alt: Ovens River at Nimmo Bridge swimming hole in Victoria, Australia
 highlights:
-  - The deep hole below the chute is exciting but be cautious of the current
-  - The wider pool downstream is calmer and better for relaxed swimming
+- The deep hole below the chute is exciting but be cautious of the current
+- The wider pool downstream is calmer and better for relaxed swimming
 cost: free
 duration: half-day
 ageSuitability:
   minAge: null
   ideal:
-    - toddlers
-    - primary
-    - teens
-    - adults
+  - toddlers
+  - primary
+  - teens
+  - adults
 accessibility: moderate
 parking: limited
-facilities: []
+facilities:
+- camping
 bestSeason:
-  - spring
-  - summer
-directions: >
-  From Myrtleford, head south along the Great Alpine Road. Nimmo Bridge is signposted. Park near the bridge and access
-  the river from the roadside.
+- spring
+- summer
+directions: 'From Myrtleford, head south along the Great Alpine Road. Nimmo Bridge is signposted. Park near the bridge and
+  access the river from the roadside.
+
+  '
 tips:
-  - The deep hole below the chute is exciting but be cautious of the current
-  - The wider pool downstream is calmer and better for relaxed swimming
-  - Rocky riverbed — wear water shoes
-  - Best after spring rains when water levels are good
+- The deep hole below the chute is exciting but be cautious of the current
+- The wider pool downstream is calmer and better for relaxed swimming
+- Rocky riverbed — wear water shoes
+- Best after spring rains when water levels are good
 tags:
-  - river
-  - rapids
-  - rock-pools
-  - scenic
+- river
+- rapids
+- rock-pools
+- scenic
 status:
   site: open
   lastVerified: '2026-04-01'
 details:
   dangerLevel: moderate
   waterAccess: open
-  depth: null
+  depth: River pools, typically 1-3m

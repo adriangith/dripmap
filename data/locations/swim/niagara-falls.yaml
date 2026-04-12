@@ -6,54 +6,54 @@ coordinates:
   lng: -79.0377
 region: North America
 country: CA
-description: >
-  One of the most famous waterfalls in the world, straddling the border between Ontario, Canada and New York, USA. The
-  Horseshoe Falls on the Canadian side offer the most spectacular views with over 168,000 cubic metres of water flowing
-  over every minute during peak flow.
+description: Not to be confused with its North American namesake, Victoria's Niagara Falls is a charming waterfall on the
+  Sabine River near Trentham in the Macedon Ranges. The falls drop several metres into a swimming hole surrounded by lush
+  tree ferns and native forest. A short walking track from the picnic area leads to the base of the falls.
 photos:
-  - url: /images/locations/niagara-falls/hero.jpg
-    alt: Niagara Falls from the Canadian side
-    credit: Parks Canada
+- url: /images/locations/niagara-falls/hero.jpg
+  alt: Niagara Falls from the Canadian side
+  credit: Parks Canada
 highlights:
-  - Visit early morning to avoid peak crowds
-  - The Canadian side (Horseshoe Falls) has the best views
+- Victoria's own Niagara Falls (much smaller than the famous one!)
+- Swimming hole surrounded by lush tree ferns
+- Short family-friendly walk from picnic area
+- Near charming Trentham in the Macedon Ranges
 cost: free
 duration: half-day
 ageSuitability:
   minAge: null
   ideal:
-    - toddlers
-    - primary
-    - teens
-    - adults
+  - toddlers
+  - primary
+  - teens
+  - adults
 accessibility: wheelchair-accessible
 parking: available
 facilities:
-  - restrooms
-  - food
-  - gift-shop
-  - visitor-centre
+- picnic-tables
 bestSeason:
-  - spring
-  - summer
-  - fall
-directions: >
-  From Toronto, take the QEW south toward Niagara. Follow signs to Niagara Falls. Main parking is at the Niagara Parks
-  Welcome Centre on Niagara Parkway.
+- spring
+- summer
+- fall
+directions: 'From Toronto, take the QEW south toward Niagara. Follow signs to Niagara Falls. Main parking is at the Niagara
+  Parks Welcome Centre on Niagara Parkway.
+
+  '
 tips:
-  - Visit early morning to avoid peak crowds
-  - The Canadian side (Horseshoe Falls) has the best views
-  - Bring a rain jacket for the Hornblower boat cruise
-  - The falls are illuminated at night during summer
+- Short walk from the picnic area to the falls — suitable for families
+- Best after rain when water flow is strongest
+- The pool can be cold even in summer — quick dip territory
+- Combine with a visit to nearby Trentham for cafes and the historic railway
+- Look for platypus in the early morning or at dusk
 tags:
-  - family-friendly
-  - iconic
-  - accessible
-  - free
+- family-friendly
+- iconic
+- accessible
+- free
 status:
   site: open
   lastVerified: '2026-03-15'
 details:
   dangerLevel: low
   waterAccess: open
-  depth: null
+  depth: Pool below falls approximately 1-2m

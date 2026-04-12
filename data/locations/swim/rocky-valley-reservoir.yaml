@@ -6,44 +6,47 @@ coordinates:
   lng: 147.27
 region: Victoria, Australia
 country: AU
-description: >
-  On the mountain plain near Falls Creek alpine resort, this is swimming with nothing over your head except the roof of
-  the world. The water is cold — very cold — but it is the closest Victoria has to high altitude swimming, and was home
-  to Australia's first official ice mile swim.
+description: 'On the mountain plain near Falls Creek alpine resort, this is swimming with nothing over your head except the
+  roof of the world. The water is cold — very cold — but it is the closest Victoria has to high altitude swimming, and was
+  home to Australia''s first official ice mile swim.
+
+  '
 photos:
-  - url: /images/placeholder.jpg
-    alt: Rocky Valley Reservoir swimming hole in Victoria, Australia
+- url: /images/placeholder.jpg
+  alt: Rocky Valley Reservoir swimming hole in Victoria, Australia
 highlights:
-  - Water is extremely cold — wetsuits highly recommended
-  - Spectacular high-altitude scenery
+- Water is extremely cold — wetsuits highly recommended
+- Spectacular high-altitude scenery
 cost: free
 duration: half-day
 ageSuitability:
   minAge: null
   ideal:
-    - toddlers
-    - primary
-    - teens
-    - adults
+  - toddlers
+  - primary
+  - teens
+  - adults
 accessibility: moderate
 parking: available
-facilities: []
+facilities:
+- walking-trails
 bestSeason:
-  - summer
-directions: >
-  From Falls Creek alpine resort, drive or walk to Rocky Valley Dam. The reservoir is accessible via the road to Falls
-  Creek during summer months.
+- summer
+directions: 'From Falls Creek alpine resort, drive or walk to Rocky Valley Dam. The reservoir is accessible via the road to
+  Falls Creek during summer months.
+
+  '
 tips:
-  - Water is extremely cold — wetsuits highly recommended
-  - Spectacular high-altitude scenery
-  - Best visited in summer when the road is accessible
-  - Home of Australia's first official ice mile swim
+- Water is extremely cold — wetsuits highly recommended
+- Spectacular high-altitude scenery
+- Best visited in summer when the road is accessible
+- Home of Australia's first official ice mile swim
 tags:
-  - alpine
-  - cold-water
-  - scenic
-  - remote
-  - open-water
+- alpine
+- cold-water
+- scenic
+- remote
+- open-water
 status:
   site: open
   lastVerified: '2026-04-01'
@@ -51,4 +54,4 @@ status:
 details:
   dangerLevel: high
   waterAccess: seasonal
-  depth: null
+  depth: Alpine reservoir, up to 20m

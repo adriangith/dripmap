@@ -6,42 +6,47 @@ coordinates:
   lng: 145.12
 region: Victoria, Australia
 country: AU
-description: >
-  A former quarry in bush parklands in Melbourne's north-east. The lake sits within Plenty Gorge Park and offers
-  swimming in a natural bush setting. Water quality can vary, with the lake sometimes turning green in summer due to
-  algae, but conditions are generally better during the cooler months.
+description: A striking blue-green lake in Plenty Gorge Park, just 25km north of Melbourne's CBD. The vivid colour comes from
+  minerals in the soil of this former quarry. The surrounding parkland is home to kangaroos, echidnas, and over 100 species
+  of birds. Walking and cycling trails wind through the gorge along the Plenty River.
 photos:
-  - url: /images/placeholder.jpg
-    alt: Blue Lake, Plenty Gorge swimming hole in Victoria, Australia
+- url: /images/placeholder.jpg
+  alt: Blue Lake, Plenty Gorge swimming hole in Victoria, Australia
 highlights:
-  - Water quality varies seasonally — visit during cooler months for clearer water
-  - Wear sturdy shoes for the walk in
+- Vivid blue-green water in a former quarry
+- Just 25km from Melbourne CBD
+- Kangaroos, echidnas, and 100+ bird species
+- Extensive walking and cycling trail network
 cost: free
 duration: quick
 ageSuitability:
   minAge: null
   ideal:
-    - toddlers
-    - primary
-    - teens
-    - adults
+  - toddlers
+  - primary
+  - teens
+  - adults
 accessibility: moderate
 parking: available
-facilities: []
+facilities:
+- walking-trails
+- cycling-trails
 bestSeason:
-  - spring
-directions: >
-  Located in Plenty Gorge Park in Melbourne's north-east. Access via Yan Yean Road or Plenty Road, then follow trails
-  into the gorge parklands. The lake is reached via walking tracks from several entry points.
+- spring
+directions: 'Located in Plenty Gorge Park in Melbourne''s north-east. Access via Yan Yean Road or Plenty Road, then follow
+  trails into the gorge parklands. The lake is reached via walking tracks from several entry points.
+
+  '
 tips:
-  - Water quality varies seasonally — visit during cooler months for clearer water
-  - Wear sturdy shoes for the walk in
-  - No facilities at the lake — bring your own supplies
-  - Check for algal bloom warnings before visiting
+- Swimming is not officially permitted — the lake is unfenced but steep-sided
+- Great for walking and wildlife spotting rather than swimming
+- Kangaroos are commonly seen in the early morning
+- Multiple trail options through the gorge for walking and mountain biking
+- Close to South Morang — accessible by train and a short walk/ride
 tags:
-  - quarry
-  - bush-setting
-  - urban-fringe
+- quarry
+- bush-setting
+- urban-fringe
 status:
   site: open
   lastVerified: '2026-04-01'
@@ -49,4 +54,4 @@ status:
 details:
   dangerLevel: moderate
   waterAccess: seasonal
-  depth: null
+  depth: Deep former quarry — exact depth unknown, estimated 5-10m+

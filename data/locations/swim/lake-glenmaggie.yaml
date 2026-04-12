@@ -6,44 +6,46 @@ coordinates:
   lng: 146.84
 region: Victoria, Australia
 country: AU
-description: >
-  Filled to the brim every spring, the water laps up against the sandy beaches amongst the flooded gum trees. You can
-  still swim in summer, but the lake can be drawn down considerably for irrigation. Multiple swimming areas around the
-  lake offer different experiences.
+description: 'Filled to the brim every spring, the water laps up against the sandy beaches amongst the flooded gum trees.
+  You can still swim in summer, but the lake can be drawn down considerably for irrigation. Multiple swimming areas around
+  the lake offer different experiences.
+
+  '
 photos:
-  - url: /images/placeholder.jpg
-    alt: Lake Glenmaggie swimming hole in Victoria, Australia
+- url: /images/placeholder.jpg
+  alt: Lake Glenmaggie swimming hole in Victoria, Australia
 highlights:
-  - Visit in spring when the lake is usually at its fullest
-  - Lake can be drawn down significantly in summer
+- Visit in spring when the lake is usually at its fullest
+- Lake can be drawn down significantly in summer
 cost: free
 duration: half-day
 ageSuitability:
   minAge: null
   ideal:
-    - toddlers
-    - primary
-    - teens
-    - adults
+  - toddlers
+  - primary
+  - teens
+  - adults
 accessibility: easy
 parking: available
 facilities:
-  - picnic-tables
+- picnic-tables
 bestSeason:
-  - spring
-  - summer
-directions: >
-  From Heyfield, head north-east towards Glenmaggie. The lake is signposted from the main road. Multiple access points
-  around the lake provide swimming opportunities.
+- spring
+- summer
+directions: 'From Heyfield, head north-east towards Glenmaggie. The lake is signposted from the main road. Multiple access
+  points around the lake provide swimming opportunities.
+
+  '
 tips:
-  - Visit in spring when the lake is usually at its fullest
-  - Lake can be drawn down significantly in summer
-  - Sandy beaches among flooded gum trees create unique scenery
-  - Check water levels before making the trip
+- Visit in spring when the lake is usually at its fullest
+- Lake can be drawn down significantly in summer
+- Sandy beaches among flooded gum trees create unique scenery
+- Check water levels before making the trip
 tags:
-  - lake
-  - beach
-  - scenic
+- lake
+- beach
+- scenic
 status:
   site: open
   lastVerified: '2026-04-01'
@@ -51,4 +53,4 @@ status:
 details:
   dangerLevel: low
   waterAccess: seasonal
-  depth: null
+  depth: Deep reservoir, up to 15m+

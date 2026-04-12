@@ -6,48 +6,51 @@ coordinates:
   lng: 143.94
 region: Victoria, Australia
 country: AU
-description: >
-  A refreshing waterfall pool in the Otways flanked by two waterfalls surrounded by open rock shelves sloping into the
-  water. For experienced walkers due to the multiple river crossings across sometimes wobbly stepping stones along the
-  track.
+description: 'A refreshing waterfall pool in the Otways flanked by two waterfalls surrounded by open rock shelves sloping
+  into the water. For experienced walkers due to the multiple river crossings across sometimes wobbly stepping stones along
+  the track.
+
+  '
 photos:
-  - url: /images/placeholder.jpg
-    alt: Cumberland Falls, Lorne swimming hole in Victoria, Australia
+- url: /images/placeholder.jpg
+  alt: Cumberland Falls, Lorne swimming hole in Victoria, Australia
 highlights:
-  - Multiple river crossings on the walk in — wear water-friendly footwear
-  - For experienced walkers only due to uneven terrain
+- Multiple river crossings on the walk in — wear water-friendly footwear
+- For experienced walkers only due to uneven terrain
 cost: free
 duration: half-day
 ageSuitability:
   minAge: null
   ideal:
-    - toddlers
-    - primary
-    - teens
-    - adults
+  - toddlers
+  - primary
+  - teens
+  - adults
 accessibility: difficult
 parking: available
-facilities: []
+facilities:
+- walking-trails
 bestSeason:
-  - spring
-  - summer
-directions: >
-  From Lorne on the Great Ocean Road, follow signs to the Cumberland River walking track. The falls are reached after a
-  bush walk involving multiple river crossings.
+- spring
+- summer
+directions: 'From Lorne on the Great Ocean Road, follow signs to the Cumberland River walking track. The falls are reached
+  after a bush walk involving multiple river crossings.
+
+  '
 tips:
-  - Multiple river crossings on the walk in — wear water-friendly footwear
-  - For experienced walkers only due to uneven terrain
-  - Two waterfalls flank the main pool
-  - Rock shelves provide natural platforms for relaxing
+- Multiple river crossings on the walk in — wear water-friendly footwear
+- For experienced walkers only due to uneven terrain
+- Two waterfalls flank the main pool
+- Rock shelves provide natural platforms for relaxing
 tags:
-  - waterfall
-  - hiking
-  - otways
-  - scenic
+- waterfall
+- hiking
+- otways
+- scenic
 status:
   site: open
   lastVerified: '2026-04-01'
 details:
   dangerLevel: moderate
   waterAccess: seasonal
-  depth: null
+  depth: Pool below falls, typically 1-3m

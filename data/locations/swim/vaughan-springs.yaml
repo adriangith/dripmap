@@ -6,51 +6,56 @@ coordinates:
   lng: 144.21
 region: Victoria, Australia
 country: AU
-description: >
-  Part of a bold vision for public health tourism in the first half of the 20th century, Vaughan Springs features a
-  river pool formed by a wall across the upper Loddon River, and an adjoining toddler pool that fills when the river is
-  running high.
+description: A peaceful mineral springs reserve along the Loddon River near the historic gold-mining village of Vaughan, in
+  central Victoria's goldfields region. The natural mineral springs bubble up from underground, and the river provides a refreshing
+  swimming spot in warmer months. The surrounding bushland is rich with gold-rush era history and remnants of the 1850s mining
+  settlement.
 photos:
-  - url: /images/placeholder.jpg
-    alt: Vaughan Springs swimming hole in Victoria, Australia
+- url: /images/placeholder.jpg
+  alt: Vaughan Springs swimming hole in Victoria, Australia
 highlights:
-  - Historic mineral springs complex with river swimming
-  - Toddler pool fills when river is running high — great for families
+- Natural mineral springs bubbling up from underground
+- Swimming in the Loddon River
+- Rich gold-rush era history and heritage
+- Chance to spot platypus at dawn and dusk
 cost: free
 duration: half-day
 ageSuitability:
   minAge: null
   ideal:
-    - toddlers
-    - primary
-    - teens
-    - adults
+  - toddlers
+  - primary
+  - teens
+  - adults
 accessibility: easy
 parking: available
 facilities:
-  - restrooms
-  - picnic-tables
-  - barbecues
+- restrooms
+- picnic-tables
+- bbq
+- camping
 bestSeason:
-  - spring
-  - summer
-directions: >
-  Located in Vaughan, near Castlemaine in central Victoria. From Castlemaine, head south-east to Vaughan. The springs
+- spring
+- summer
+directions: 'Located in Vaughan, near Castlemaine in central Victoria. From Castlemaine, head south-east to Vaughan. The springs
   and swimming area are in the Vaughan Springs Reserve.
+
+  '
 tips:
-  - Historic mineral springs complex with river swimming
-  - Toddler pool fills when river is running high — great for families
-  - Visit the mineral springs while you are there
-  - Best after good winter and spring rains
+- Taste the natural mineral water from the springs — each one is slightly different
+- Explore the nearby historic Vaughan village for gold-rush heritage
+- Camping available in the reserve
+- River swimming is best in spring and early summer before levels drop
+- Watch for platypus at dawn and dusk along the river
 tags:
-  - river
-  - historic
-  - mineral-springs
-  - family-friendly
+- river
+- historic
+- mineral-springs
+- family-friendly
 status:
   site: open
   lastVerified: '2026-04-01'
 details:
   dangerLevel: low
   waterAccess: seasonal
-  depth: null
+  depth: River pools vary, typically 1-2m

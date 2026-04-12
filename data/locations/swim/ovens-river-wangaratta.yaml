@@ -6,43 +6,47 @@ coordinates:
   lng: 146.31
 region: Victoria, Australia
 country: AU
-description: >
-  Two steep, sandy beaches leading down to deep, slow-moving water on two bends of the Ovens River within a bushland
-  reserve on the northern side of Wangaratta. Features some snags in the water and a few rope swings from overhanging
-  trees.
+description: 'Two steep, sandy beaches leading down to deep, slow-moving water on two bends of the Ovens River within a bushland
+  reserve on the northern side of Wangaratta. Features some snags in the water and a few rope swings from overhanging trees.
+
+  '
 photos:
-  - url: /images/placeholder.jpg
-    alt: Ovens River at Northern Beaches, Wangaratta swimming hole in Victoria, Australia
+- url: /images/placeholder.jpg
+  alt: Ovens River at Northern Beaches, Wangaratta swimming hole in Victoria, Australia
 highlights:
-  - Watch for submerged snags in the water
-  - Rope swings available from overhanging trees — use with caution
+- Watch for submerged snags in the water
+- Rope swings available from overhanging trees — use with caution
 cost: free
 duration: quick
 ageSuitability:
   minAge: null
   ideal:
-    - toddlers
-    - primary
-    - teens
-    - adults
+  - toddlers
+  - primary
+  - teens
+  - adults
 accessibility: moderate
 parking: available
-facilities: []
+facilities:
+- restrooms
+- picnic-tables
+- bbq
 bestSeason:
-  - summer
-directions: >
-  From Wangaratta, head north across the river. The Northern Beaches are located in the bushland reserve, signposted
+- summer
+directions: 'From Wangaratta, head north across the river. The Northern Beaches are located in the bushland reserve, signposted
   from local roads.
+
+  '
 tips:
-  - Watch for submerged snags in the water
-  - Rope swings available from overhanging trees — use with caution
-  - Two separate beaches to explore
-  - Deep water suitable for strong swimmers
+- Watch for submerged snags in the water
+- Rope swings available from overhanging trees — use with caution
+- Two separate beaches to explore
+- Deep water suitable for strong swimmers
 tags:
-  - river
-  - beach
-  - rope-swing
-  - bush-setting
+- river
+- beach
+- rope-swing
+- bush-setting
 status:
   site: open
   lastVerified: '2026-04-01'
@@ -50,4 +54,4 @@ status:
 details:
   dangerLevel: moderate
   waterAccess: open
-  depth: null
+  depth: River pools, typically 1-3m

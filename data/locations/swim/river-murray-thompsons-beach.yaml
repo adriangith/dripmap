@@ -6,50 +6,52 @@ coordinates:
   lng: 145.65
 region: Victoria, Australia
 country: AU
-description: >
-  The best of both worlds at Cobram, with a swim in the River Murray alongside a large beach with shallow entry at most
-  water levels, and shady gum trees at the back of the beach. A cafe on site provides refreshments after your swim.
+description: 'The best of both worlds at Cobram, with a swim in the River Murray alongside a large beach with shallow entry
+  at most water levels, and shady gum trees at the back of the beach. A cafe on site provides refreshments after your swim.
+
+  '
 photos:
-  - url: /images/placeholder.jpg
-    alt: River Murray at Thompsons Beach, Cobram swimming hole in Victoria, Australia
+- url: /images/placeholder.jpg
+  alt: River Murray at Thompsons Beach, Cobram swimming hole in Victoria, Australia
 highlights:
-  - Shallow entry makes it suitable for families
-  - Cafe on site for post-swim refreshments
+- Shallow entry makes it suitable for families
+- Cafe on site for post-swim refreshments
 cost: free
 duration: quick
 ageSuitability:
   minAge: null
   ideal:
-    - toddlers
-    - primary
-    - teens
-    - adults
+  - toddlers
+  - primary
+  - teens
+  - adults
 accessibility: easy
 parking: available
 facilities:
-  - restrooms
-  - cafe
-  - picnic-tables
+- restrooms
+- cafe
+- picnic-tables
 bestSeason:
-  - spring
-  - summer
-directions: >
-  From Cobram town centre, follow signs to Thompsons Beach on the River Murray. The beach is well signposted and has
-  good road access and parking.
+- spring
+- summer
+directions: 'From Cobram town centre, follow signs to Thompsons Beach on the River Murray. The beach is well signposted and
+  has good road access and parking.
+
+  '
 tips:
-  - Shallow entry makes it suitable for families
-  - Cafe on site for post-swim refreshments
-  - Shady gum trees provide good sun protection
-  - Be aware of river currents in deeper water
+- Shallow entry makes it suitable for families
+- Cafe on site for post-swim refreshments
+- Shady gum trees provide good sun protection
+- Be aware of river currents in deeper water
 tags:
-  - river
-  - beach
-  - family-friendly
-  - cafe
+- river
+- beach
+- family-friendly
+- cafe
 status:
   site: open
   lastVerified: '2026-04-01'
 details:
   dangerLevel: moderate
   waterAccess: open
-  depth: null
+  depth: River beach, typically 1-3m near shore

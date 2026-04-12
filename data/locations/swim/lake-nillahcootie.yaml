@@ -6,48 +6,50 @@ coordinates:
   lng: 146.033
 region: Victoria, Australia
 country: AU
-description: >
-  A flat, shallow, north-facing lake at relatively low elevation that heats up earlier in the year, making it a bit
-  warmer for swimming than most other large reservoirs in Victoria. Perfect for a springtime swim when venturing
-  outdoors into the water again after winter.
+description: 'A flat, shallow, north-facing lake at relatively low elevation that heats up earlier in the year, making it
+  a bit warmer for swimming than most other large reservoirs in Victoria. Perfect for a springtime swim when venturing outdoors
+  into the water again after winter.
+
+  '
 photos:
-  - url: /images/placeholder.jpg
-    alt: Lake Nillahcootie swimming hole in Victoria, Australia
+- url: /images/placeholder.jpg
+  alt: Lake Nillahcootie swimming hole in Victoria, Australia
 highlights:
-  - Warms up earlier than most Victorian reservoirs — great for spring swimming
-  - Shallow lake with gradual entry — suitable for families
+- Warms up earlier than most Victorian reservoirs — great for spring swimming
+- Shallow lake with gradual entry — suitable for families
 cost: free
 duration: quick
 ageSuitability:
   minAge: null
   ideal:
-    - toddlers
-    - primary
-    - teens
-    - adults
+  - toddlers
+  - primary
+  - teens
+  - adults
 accessibility: easy
 parking: available
 facilities:
-  - picnic-tables
+- picnic-tables
 bestSeason:
-  - spring
-  - summer
-directions: >
-  Located south of Benalla. From Benalla, head south on the Midland Highway, then turn east onto Lake Nillahcootie Road.
-  Swimming and picnic areas are signposted around the lake.
+- spring
+- summer
+directions: 'Located south of Benalla. From Benalla, head south on the Midland Highway, then turn east onto Lake Nillahcootie
+  Road. Swimming and picnic areas are signposted around the lake.
+
+  '
 tips:
-  - Warms up earlier than most Victorian reservoirs — great for spring swimming
-  - Shallow lake with gradual entry — suitable for families
-  - Water levels can vary with irrigation demand
-  - Good spot for an early season swim
+- Warms up earlier than most Victorian reservoirs — great for spring swimming
+- Shallow lake with gradual entry — suitable for families
+- Water levels can vary with irrigation demand
+- Good spot for an early season swim
 tags:
-  - lake
-  - family-friendly
-  - warm-water
+- lake
+- family-friendly
+- warm-water
 status:
   site: open
   lastVerified: '2026-04-01'
 details:
   dangerLevel: low
   waterAccess: open
-  depth: null
+  depth: Reservoir, depth varies with level

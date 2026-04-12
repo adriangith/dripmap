@@ -6,47 +6,54 @@ coordinates:
   lng: 145.31
 region: Victoria, Australia
 country: AU
-description: >
-  Arguably the best outdoor swimming venue within the Melbourne metropolitan area. Lysterfield Lake features two sandy
-  beaches, electric barbecues and large lawn areas perfect for family picnics. The lake is set within Lysterfield Park
-  with walking and cycling trails.
+description: A popular suburban lake in the foothills of the Dandenong Ranges, perfect for a quick escape from Melbourne.
+  Lysterfield Lake has two sandy beaches near Beach Carpark suitable for walk-in swimming. The surrounding park is home to
+  kangaroos and wallabies, 24km of mountain bike trails (including the 2006 Commonwealth Games venue), and a scenic 6km Lake
+  Circuit Trail.
 photos:
-  - url: /images/placeholder.jpg
-    alt: Lysterfield Lake swimming hole in Victoria, Australia
+- url: /images/placeholder.jpg
+  alt: Lysterfield Lake swimming hole in Victoria, Australia
 highlights:
-  - Arrive early on hot days as the car park fills up quickly
-  - Two beaches available — explore both to find your preferred spot
+- Two sandy swimming beaches close to Melbourne
+- Kangaroos and wallabies commonly spotted
+- 24km of mountain bike trails (2006 Commonwealth Games venue)
+- 6km Lake Circuit Trail for walking and jogging
 cost: $
 duration: quick
 ageSuitability:
   minAge: null
   ideal:
-    - toddlers
-    - primary
-    - teens
-    - adults
+  - toddlers
+  - primary
+  - teens
+  - adults
 accessibility: easy
 parking: available
 facilities:
-  - restrooms
-  - barbecues
-  - picnic-tables
+- restrooms
+- picnic-tables
+- bbq
+- walking-trails
+- mountain-bike-trails
+- playground
 bestSeason:
-  - spring
-  - summer
-directions: >
-  Located in Lysterfield Park in Melbourne's south-east. Access via Churchill National Park Drive off Wellington Road.
-  Follow signs to the lake beaches. Entry fees apply for vehicles.
+- spring
+- summer
+directions: 'Located in Lysterfield Park in Melbourne''s south-east. Access via Churchill National Park Drive off Wellington
+  Road. Follow signs to the lake beaches. Entry fees apply for vehicles.
+
+  '
 tips:
-  - Arrive early on hot days as the car park fills up quickly
-  - Two beaches available — explore both to find your preferred spot
-  - Electric barbecues are available free of charge
-  - Walking and mountain biking trails surround the lake
+- The lake is not patrolled — supervise children at all times
+- Walk or jog the 6km Lake Circuit Trail to spot kangaroos
+- Dogs are not allowed in the park to protect native wildlife
+- Mountain biking trails range from easy green to black diamond
+- Best swimming access is at the two beaches near Beach Carpark
 tags:
-  - family-friendly
-  - beach
-  - picnic
-  - lake
+- family-friendly
+- beach
+- picnic
+- lake
 status:
   site: open
   lastVerified: '2026-04-01'
@@ -54,4 +61,4 @@ status:
 details:
   dangerLevel: low
   waterAccess: open
-  depth: null
+  depth: Varies, typically 2-5m near beaches

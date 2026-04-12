@@ -6,46 +6,48 @@ coordinates:
   lng: 145.28
 region: Victoria, Australia
 country: AU
-description: >
-  A former quarry that has been converted into a recreational lake, set deep in the earth with an adventure playground
-  and barbecue facilities above. The sizeable water body below is popular with swimmers, though it can sometimes be
-  affected by harmful algae.
+description: 'A former quarry that has been converted into a recreational lake, set deep in the earth with an adventure playground
+  and barbecue facilities above. The sizeable water body below is popular with swimmers, though it can sometimes be affected
+  by harmful algae.
+
+  '
 photos:
-  - url: /images/placeholder.jpg
-    alt: Quarry Reserve, Ferntree Gully swimming hole in Victoria, Australia
+- url: /images/placeholder.jpg
+  alt: Quarry Reserve, Ferntree Gully swimming hole in Victoria, Australia
 highlights:
-  - Check for algal bloom warnings before swimming
-  - Adventure playground and barbecues available for families
+- Check for algal bloom warnings before swimming
+- Adventure playground and barbecues available for families
 cost: free
 duration: quick
 ageSuitability:
   minAge: null
   ideal:
-    - toddlers
-    - primary
-    - teens
-    - adults
+  - toddlers
+  - primary
+  - teens
+  - adults
 accessibility: moderate
 parking: available
 facilities:
-  - restrooms
-  - barbecues
-  - playground
+- restrooms
+- barbecues
+- playground
 bestSeason:
-  - spring
-  - summer
-directions: >
-  Located in Ferntree Gully in Melbourne's eastern suburbs. Access via the Quarry Reserve car park. Walk down the path
-  from the playground area to reach the water.
+- spring
+- summer
+directions: 'Located in Ferntree Gully in Melbourne''s eastern suburbs. Access via the Quarry Reserve car park. Walk down
+  the path from the playground area to reach the water.
+
+  '
 tips:
-  - Check for algal bloom warnings before swimming
-  - Adventure playground and barbecues available for families
-  - The walk down to the water is steep — wear appropriate footwear
-  - Visibility in the water can be limited
+- Check for algal bloom warnings before swimming
+- Adventure playground and barbecues available for families
+- The walk down to the water is steep — wear appropriate footwear
+- Visibility in the water can be limited
 tags:
-  - quarry
-  - family-friendly
-  - urban
+- quarry
+- family-friendly
+- urban
 status:
   site: open
   lastVerified: '2026-04-01'
@@ -53,4 +55,4 @@ status:
 details:
   dangerLevel: moderate
   waterAccess: seasonal
-  depth: null
+  depth: Former quarry, estimated 3-5m

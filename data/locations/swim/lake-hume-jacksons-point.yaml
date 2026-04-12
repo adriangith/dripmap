@@ -6,48 +6,56 @@ coordinates:
   lng: 147.03
 region: Victoria, Australia
 country: AU
-description: >
-  A rare cliff on Lake Hume at Bonegilla provides clean entry into deep water for experienced swimmers, from a lawn on
-  top of the point with panoramic views up both the Mitta Mitta arm and the Murray arm of the lake. The cliff face
-  provides access to the water when the lake is drawn down.
+description: Jackson's Point is a popular swimming and recreation area on the shores of Lake Hume, one of Australia's largest
+  inland reservoirs. The lake was created by the Hume Dam across the Murray River, completed in 1936 after 17 years of construction.
+  With a maximum depth of 40 metres and surface area of over 20,000 hectares when full, it offers vast open-water swimming,
+  boating, and fishing.
 photos:
-  - url: /images/placeholder.jpg
-    alt: Lake Hume at Jacksons Point swimming hole in Victoria, Australia
+- url: /images/placeholder.jpg
+  alt: Lake Hume at Jacksons Point swimming hole in Victoria, Australia
 highlights:
-  - Panoramic views of both arms of Lake Hume from the point
-  - Entry to water varies with lake levels — may need to climb down the cliff
+- One of Australia's largest inland reservoirs
+- Vast open-water swimming and boating
+- Spectacular sunset views across 20,000+ hectares
+- Free camping at various lakeside spots
 cost: free
 duration: quick
 ageSuitability:
   minAge: null
   ideal:
-    - toddlers
-    - primary
-    - teens
-    - adults
+  - toddlers
+  - primary
+  - teens
+  - adults
 accessibility: moderate
 parking: available
 facilities:
-  - picnic-tables
+- restrooms
+- picnic-tables
+- bbq
+- boat-ramp
+- camping
 bestSeason:
-  - summer
-directions: >
-  From Wodonga, head east to Bonegilla. Follow signs to Jacksons Point on Lake Hume. The point is accessible via a short
-  drive from the main road.
+- summer
+directions: 'From Wodonga, head east to Bonegilla. Follow signs to Jacksons Point on Lake Hume. The point is accessible via
+  a short drive from the main road.
+
+  '
 tips:
-  - Panoramic views of both arms of Lake Hume from the point
-  - Entry to water varies with lake levels — may need to climb down the cliff
-  - Best for experienced swimmers due to deep water entry
-  - Great lawn area on top for picnics
+- Water levels vary significantly by season — check before visiting
+- Popular with water-skiers and boaters — swim in designated areas
+- Combine with a visit to Albury-Wodonga for dining and supplies
+- Sunset views across the lake are spectacular
+- Free camping available at various spots around the lake
 tags:
-  - lake
-  - cliff
-  - scenic
-  - open-water
+- lake
+- cliff
+- scenic
+- open-water
 status:
   site: open
   lastVerified: '2026-04-01'
 details:
   dangerLevel: moderate
   waterAccess: open
-  depth: null
+  depth: Max 40m (average varies with water level)

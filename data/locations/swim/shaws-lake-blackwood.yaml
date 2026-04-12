@@ -6,46 +6,49 @@ coordinates:
   lng: 144.3
 region: Victoria, Australia
 country: AU
-description: >
-  Set in a dry and thinly forested section of the Lerderderg State Park, this constructed dam will test your ability to
-  keep your legs up while swimming. Warm on the surface but expect icy temperatures below your waist if you tread water.
+description: 'Set in a dry and thinly forested section of the Lerderderg State Park, this constructed dam will test your ability
+  to keep your legs up while swimming. Warm on the surface but expect icy temperatures below your waist if you tread water.
+
+  '
 photos:
-  - url: /images/placeholder.jpg
-    alt: Shaws Lake, Blackwood swimming hole in Victoria, Australia
+- url: /images/placeholder.jpg
+  alt: Shaws Lake, Blackwood swimming hole in Victoria, Australia
 highlights:
-  - Temperature layers — warm on surface, icy below
-  - Keep your legs up near the surface for warmth
+- Temperature layers — warm on surface, icy below
+- Keep your legs up near the surface for warmth
 cost: free
 duration: quick
 ageSuitability:
   minAge: null
   ideal:
-    - toddlers
-    - primary
-    - teens
-    - adults
+  - toddlers
+  - primary
+  - teens
+  - adults
 accessibility: moderate
 parking: limited
-facilities: []
+facilities:
+- picnic-tables
 bestSeason:
-  - summer
-directions: >
-  Located near Blackwood in the Lerderderg State Park, west of Melbourne. From Blackwood, follow local roads to Shaws
-  Lake. Access via walking tracks from the nearest road.
+- summer
+directions: 'Located near Blackwood in the Lerderderg State Park, west of Melbourne. From Blackwood, follow local roads to
+  Shaws Lake. Access via walking tracks from the nearest road.
+
+  '
 tips:
-  - Temperature layers — warm on surface, icy below
-  - Keep your legs up near the surface for warmth
-  - Bush setting in the Lerderderg State Park
-  - Quiet and secluded swimming experience
+- Temperature layers — warm on surface, icy below
+- Keep your legs up near the surface for warmth
+- Bush setting in the Lerderderg State Park
+- Quiet and secluded swimming experience
 tags:
-  - lake
-  - bush-setting
-  - cold-water
-  - quiet
+- lake
+- bush-setting
+- cold-water
+- quiet
 status:
   site: open
   lastVerified: '2026-04-01'
 details:
   dangerLevel: moderate
   waterAccess: open
-  depth: null
+  depth: Shallow lake, typically 1-3m

@@ -6,47 +6,50 @@ coordinates:
   lng: 144.55
 region: Victoria, Australia
 country: AU
-description: >
-  Affectionately known as 'The Res', this lake on the upper reaches of Riddells Creek boasts lakeside shade that
-  provides sun protection in and out of the water. Visibility in the water is naturally poor, but swims of several
-  hundred metres are possible.
+description: 'Affectionately known as ''The Res'', this lake on the upper reaches of Riddells Creek boasts lakeside shade
+  that provides sun protection in and out of the water. Visibility in the water is naturally poor, but swims of several hundred
+  metres are possible.
+
+  '
 photos:
-  - url: /images/placeholder.jpg
-    alt: Macedon Reservoir swimming hole in Victoria, Australia
+- url: /images/placeholder.jpg
+  alt: Macedon Reservoir swimming hole in Victoria, Australia
 highlights:
-  - Known locally as 'The Res'
-  - Lakeside shade keeps you cool in and out of the water
+- Known locally as 'The Res'
+- Lakeside shade keeps you cool in and out of the water
 cost: free
 duration: quick
 ageSuitability:
   minAge: null
   ideal:
-    - toddlers
-    - primary
-    - teens
-    - adults
+  - toddlers
+  - primary
+  - teens
+  - adults
 accessibility: moderate
 parking: available
-facilities: []
+facilities:
+- walking-trails
 bestSeason:
-  - summer
-directions: >
-  Located near Mount Macedon, north-west of Melbourne. From the Calder Freeway, take the Mount Macedon exit and follow
-  local roads to the reservoir. Parking available at the access point.
+- summer
+directions: 'Located near Mount Macedon, north-west of Melbourne. From the Calder Freeway, take the Mount Macedon exit and
+  follow local roads to the reservoir. Parking available at the access point.
+
+  '
 tips:
-  - Known locally as 'The Res'
-  - Lakeside shade keeps you cool in and out of the water
-  - Visibility is poor but the water is safe for swimming
-  - Long-distance swimming of several hundred metres possible
+- Known locally as 'The Res'
+- Lakeside shade keeps you cool in and out of the water
+- Visibility is poor but the water is safe for swimming
+- Long-distance swimming of several hundred metres possible
 tags:
-  - reservoir
-  - shaded
-  - open-water
-  - local-favourite
+- reservoir
+- shaded
+- open-water
+- local-favourite
 status:
   site: open
   lastVerified: '2026-04-01'
 details:
   dangerLevel: moderate
   waterAccess: open
-  depth: null
+  depth: Reservoir, depth varies with level

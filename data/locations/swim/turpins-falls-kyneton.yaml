@@ -6,48 +6,51 @@ coordinates:
   lng: 144.44
 region: Victoria, Australia
 country: AU
-description: >
-  A large waterfall pool with a high rock wall on three sides, larger than an Olympic swimming pool. Turpins Falls was
-  home to the Turpins Falls Swimming Club back in the 1930s before municipal swimming pools became popular. A dramatic
-  and historic swimming spot.
+description: A striking horseshoe-shaped waterfall on the Campaspe River near Kyneton, about 90 minutes north of Melbourne.
+  The falls drop around 15 metres into a deep swimming hole surrounded by basalt columns — a popular summer swimming spot
+  for locals. The area has significant Aboriginal heritage as a traditional meeting place.
 photos:
-  - url: /images/placeholder.jpg
-    alt: Turpins Falls, Kyneton swimming hole in Victoria, Australia
+- url: /images/placeholder.jpg
+  alt: Turpins Falls, Kyneton swimming hole in Victoria, Australia
 highlights:
-  - The pool is larger than an Olympic swimming pool
-  - High rock walls on three sides create a dramatic amphitheatre
+- Dramatic 15m horseshoe-shaped waterfall
+- Deep swimming hole surrounded by basalt columns
+- Popular local swimming spot in summer
+- About 90 minutes north of Melbourne
 cost: free
 duration: quick
 ageSuitability:
   minAge: null
   ideal:
-    - toddlers
-    - primary
-    - teens
-    - adults
+  - toddlers
+  - primary
+  - teens
+  - adults
 accessibility: moderate
 parking: available
 facilities: []
 bestSeason:
-  - spring
-  - summer
-directions: >
-  From Kyneton, head north-east following signs to Turpins Falls. Access is via a walking track from the car park area.
-  The falls are in a gorge — expect a steep descent.
+- spring
+- summer
+directions: 'From Kyneton, head north-east following signs to Turpins Falls. Access is via a walking track from the car park
+  area. The falls are in a gorge — expect a steep descent.
+
+  '
 tips:
-  - The pool is larger than an Olympic swimming pool
-  - High rock walls on three sides create a dramatic amphitheatre
-  - Historic swimming club operated here in the 1930s
-  - Steep descent to the falls — wear sturdy footwear
+- No facilities at the falls — bring everything you need
+- The walk down to the base is steep and can be slippery
+- Jump only from known safe spots — check water depth first
+- Water flow varies dramatically with rainfall
+- Combine with a visit to Kyneton's cafes and historic buildings
 tags:
-  - waterfall
-  - rock-pool
-  - historic
-  - scenic
+- waterfall
+- rock-pool
+- historic
+- scenic
 status:
   site: open
   lastVerified: '2026-04-01'
 details:
   dangerLevel: moderate
   waterAccess: seasonal
-  depth: null
+  depth: Deep pool below falls, estimated 3-5m

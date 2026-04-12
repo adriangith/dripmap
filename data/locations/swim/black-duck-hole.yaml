@@ -6,47 +6,50 @@ coordinates:
   lng: 147.47
 region: Victoria, Australia
 country: AU
-description: >
-  A broad swimming hole with a calm backwater on a sweeping elbow bend of the Mitta Mitta River, between Omeo and
-  Anglers Rest. This remote but rewarding swim offers panoramic views of the river valley around the rock headland it
+description: 'A broad swimming hole with a calm backwater on a sweeping elbow bend of the Mitta Mitta River, between Omeo
+  and Anglers Rest. This remote but rewarding swim offers panoramic views of the river valley around the rock headland it
   winds around.
+
+  '
 photos:
-  - url: /images/placeholder.jpg
-    alt: Black Duck Hole, Anglers Rest swimming hole in Victoria, Australia
+- url: /images/placeholder.jpg
+  alt: Black Duck Hole, Anglers Rest swimming hole in Victoria, Australia
 highlights:
-  - Remote location — let someone know your plans before visiting
-  - Calm backwater area is great for relaxed swimming
+- Remote location — let someone know your plans before visiting
+- Calm backwater area is great for relaxed swimming
 cost: free
 duration: quick
 ageSuitability:
   minAge: null
   ideal:
-    - toddlers
-    - primary
-    - teens
-    - adults
+  - toddlers
+  - primary
+  - teens
+  - adults
 accessibility: moderate
 parking: limited
-facilities: []
+facilities:
+- walking-trails
 bestSeason:
-  - summer
-directions: >
-  Located between Omeo and Anglers Rest in East Gippsland. From Omeo, head north on the Omeo Highway. Black Duck Hole is
-  accessible via a short walk from the road near Anglers Rest.
+- summer
+directions: 'Located between Omeo and Anglers Rest in East Gippsland. From Omeo, head north on the Omeo Highway. Black Duck
+  Hole is accessible via a short walk from the road near Anglers Rest.
+
+  '
 tips:
-  - Remote location — let someone know your plans before visiting
-  - Calm backwater area is great for relaxed swimming
-  - Stunning panoramic views of the river valley
-  - Combine with a visit to Anglers Rest
+- Remote location — let someone know your plans before visiting
+- Calm backwater area is great for relaxed swimming
+- Stunning panoramic views of the river valley
+- Combine with a visit to Anglers Rest
 tags:
-  - river
-  - remote
-  - scenic
-  - wild-swimming
+- river
+- remote
+- scenic
+- wild-swimming
 status:
   site: open
   lastVerified: '2026-04-01'
 details:
   dangerLevel: moderate
   waterAccess: open
-  depth: null
+  depth: Varies, typically 1-3m
