@@ -102,14 +102,16 @@ export default function BottomSheet({ children, header, snapTo, onHeightChange, 
   const snapToNearest = useCallback((height: number, velocity: number) => {
     const snaps = getSnaps();
 
-    // Velocity threshold: 0.5px/ms
+    // Velocity threshold: 0.5px/ms — fast flicks snap to the next point
     if (Math.abs(velocity) > 0.5) {
       if (velocity < 0) {
+        // Swiping up — next higher snap
         for (const snap of snaps) {
           if (snap > height + 10) return snap;
         }
         return snaps[snaps.length - 1];
       } else {
+        // Swiping down — next lower snap
         for (let i = snaps.length - 1; i >= 0; i--) {
           if (snaps[i] < height - 10) return snaps[i];
         }
@@ -117,16 +119,26 @@ export default function BottomSheet({ children, header, snapTo, onHeightChange, 
       }
     }
 
-    let nearest = snaps[0];
-    let minDist = Math.abs(height - snaps[0]);
-    for (let i = 1; i < snaps.length; i++) {
-      const dist = Math.abs(height - snaps[i]);
-      if (dist < minDist) {
-        minDist = dist;
-        nearest = snaps[i];
+    // Slow drag: bias toward the drag direction so the user only needs to
+    // move ~30% of the gap (instead of 50%) to commit to the next snap.
+    const dragDelta = height - dragStartHeight.current;
+    const bias = dragDelta !== 0 ? 0.3 : 0.5;
+
+    let best = snaps[0];
+    let bestScore = Infinity;
+    for (const snap of snaps) {
+      const dist = snap - height;
+      // Weight: if dist sign matches drag direction, use lower threshold
+      const sameDirection =
+        (dragDelta > 0 && dist > 0) || (dragDelta < 0 && dist < 0);
+      const weight = sameDirection ? bias : 1 - bias;
+      const score = Math.abs(dist) * weight;
+      if (score < bestScore) {
+        bestScore = score;
+        best = snap;
       }
     }
-    return nearest;
+    return best;
   }, [getSnaps]);
 
   // Programmatic snap via prop
