@@ -260,14 +260,20 @@ export default function LocationMap({
 
       if (clusterGroup) clusterGroup.addLayer(marker);
 
-      // Show popup on hover, navigate on click
-      marker.on("click", () => onMarkerClick(loc.slug));
-      marker.on("mouseover", () => {
+      // On click: open popup + notify parent
+      marker.on("click", () => {
         marker.openPopup();
+        onMarkerClick(loc.slug);
+      });
+
+      // Hover behaviour (desktop only — touch devices fire spurious
+      // mouseover/mouseout that would immediately close the popup)
+      marker.on("mouseover", () => {
+        if (window.matchMedia("(hover: hover)").matches) marker.openPopup();
         onMarkerHover(loc.slug);
       });
       marker.on("mouseout", () => {
-        marker.closePopup();
+        if (window.matchMedia("(hover: hover)").matches) marker.closePopup();
         onMarkerHover(null);
       });
 

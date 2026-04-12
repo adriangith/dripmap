@@ -42,6 +42,17 @@ const makeLocation = (slug: string, lat: number, lng: number): PlaceIndexEntry =
 describe("LocationMap", () => {
   beforeEach(() => {
     leafletMock = createLeafletMock();
+    // jsdom lacks matchMedia — stub it so hover-guard code works in tests
+    Object.defineProperty(window, "matchMedia", {
+      writable: true,
+      configurable: true,
+      value: vi.fn().mockImplementation((query: string) => ({
+        matches: query === "(hover: hover)",
+        media: query,
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+      })),
+    });
   });
 
   afterEach(() => {
