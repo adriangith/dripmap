@@ -400,7 +400,7 @@ export default function LocationMap({
         aria-label="Show my location"
         data-testid="locate-button"
         className="absolute right-4 z-50 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-lg border border-gray-200 hover:bg-gray-50 active:bg-gray-100 transition-colors disabled:opacity-60 lg:bottom-4"
-        style={{ bottom: `calc(var(--sheet-height, 96px) + 16px)` }}
+        style={{ bottom: `calc(var(--sheet-height, 96px) + 84px)` }}
       >
         <Crosshair className={`w-5 h-5 text-blue-600 ${locating ? "animate-spin" : ""}`} />
       </button>
@@ -409,7 +409,7 @@ export default function LocationMap({
       {locateError && (
         <div
           className="absolute right-4 z-50 rounded-lg bg-red-50 border border-red-200 px-3 py-2 text-sm text-red-700 shadow-md lg:bottom-16"
-          style={{ bottom: `calc(var(--sheet-height, 96px) + 64px)` }}
+          style={{ bottom: `calc(var(--sheet-height, 96px) + 132px)` }}
         >
           {locateError}
         </div>

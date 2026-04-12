@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { Compass, Search, ArrowLeft } from "lucide-react";
 import FilterBar from "@/components/FilterBar";
-import ContextBar from "@/components/ContextBar";
+import SentenceFilter from "@/components/SentenceFilter";
 import LocationList from "@/components/LocationList";
 import LocationDetailPanel from "@/components/LocationDetailPanel";
 import BottomSheet, { SNAP_HALF } from "@/components/BottomSheet";
@@ -154,16 +154,34 @@ export default function HomePage() {
             onMarkerHover={handleMarkerHover}
             onUserLocation={handleUserLocation}
           />
+          {/* Floating sentence filter — above the sheet on mobile, hidden on desktop */}
+          <div
+            className="absolute left-3 right-3 z-20 lg:hidden transition-opacity"
+            style={{ bottom: "calc(var(--sheet-height, 96px) + 12px)" }}
+          >
+            <SentenceFilter
+              filters={filters}
+              constraints={constraints}
+              onFiltersChange={setFilters}
+              onConstraintsChange={setConstraints}
+              hasLocation={userLocation !== null}
+              onRequestLocation={handleRequestLocation}
+            />
+          </div>
         </div>
 
         {/* Desktop sidebar (hidden on mobile) */}
         <div className="hidden lg:flex lg:flex-col lg:w-96 lg:border-l lg:border-gray-200">
-          <ContextBar
-            constraints={constraints}
-            onConstraintsChange={setConstraints}
-            hasLocation={userLocation !== null}
-            onRequestLocation={handleRequestLocation}
-          />
+          <div className="p-3 border-b border-gray-200">
+            <SentenceFilter
+              filters={filters}
+              constraints={constraints}
+              onFiltersChange={setFilters}
+              onConstraintsChange={setConstraints}
+              hasLocation={userLocation !== null}
+              onRequestLocation={handleRequestLocation}
+            />
+          </div>
           <FilterBar
             filters={filters}
             onChange={setFilters}
@@ -222,14 +240,6 @@ export default function HomePage() {
                   {filteredLocations.length} place{filteredLocations.length !== 1 ? "s" : ""}
                 </span>
               </div>
-              {isSheetExpanded && (
-                <ContextBar
-                  constraints={constraints}
-                  onConstraintsChange={setConstraints}
-                  hasLocation={userLocation !== null}
-                  onRequestLocation={handleRequestLocation}
-                />
-              )}
             </>
           )
         }
