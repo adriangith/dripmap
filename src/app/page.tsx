@@ -207,6 +207,7 @@ export default function HomePage() {
                 <input
                   type="text"
                   placeholder="Search places..."
+                  aria-label="Search places"
                   value={filters.search}
                   onChange={(e) => setFilters({ ...filters, search: e.target.value })}
                   onFocus={() => {
@@ -237,7 +238,6 @@ export default function HomePage() {
           isSheetExpanded ? (
             <LocationDetailPanel
               slug={detailSlug}
-              onBack={handleBackToList}
               userLocation={userLocation}
             />
           ) : null

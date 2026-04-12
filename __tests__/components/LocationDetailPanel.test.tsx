@@ -61,7 +61,6 @@ describe("LocationDetailPanel driving info", () => {
     render(
       <LocationDetailPanel
         slug="test-falls"
-        onBack={vi.fn()}
         userLocation={{ lat: 51.5, lng: -0.12 }}
       />
     );
@@ -77,7 +76,6 @@ describe("LocationDetailPanel driving info", () => {
     render(
       <LocationDetailPanel
         slug="test-falls"
-        onBack={vi.fn()}
         userLocation={null}
       />
     );
@@ -95,7 +93,6 @@ describe("LocationDetailPanel driving info", () => {
     render(
       <LocationDetailPanel
         slug="test-falls"
-        onBack={vi.fn()}
         userLocation={{ lat: 51.5, lng: -0.12 }}
       />
     );

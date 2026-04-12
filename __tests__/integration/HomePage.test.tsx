@@ -260,30 +260,37 @@ describe("HomePage integration", () => {
       (capturedMapProps.onMarkerClick as (slug: string) => void)("fairy-pools");
     });
 
-    // Detail panel should load and show the location name in detail view
+    // Detail header should show the location name
     await waitFor(() =>
-      expect(findByText("Back to list")).toBeTruthy()
+      expect(findByText("Details")).toBeTruthy()
     );
   });
 
   it("clicking back in detail panel returns to list", async () => {
     const HomePage = await getHomePage();
-    const { findAllByText, findByText, queryByText } = render(<HomePage />);
+    const { findAllByText, queryByText, container } = render(<HomePage />);
     await findAllByText("Fairy Pools");
 
     act(() => {
       (capturedMapProps.onMarkerClick as (slug: string) => void)("fairy-pools");
     });
 
-    const backButton = await findByText("Back to list");
-
-    act(() => {
-      fireEvent.click(backButton);
+    // Wait for detail view header
+    await waitFor(() => {
+      expect(container.querySelector('[class*="font-semibold"]')).toBeTruthy();
     });
 
-    // Should be back on list view — "Back to list" should be gone
+    // Click the back arrow button in the header
+    const backBtn = container.querySelector('button.shrink-0');
+    expect(backBtn).toBeTruthy();
+
+    act(() => {
+      fireEvent.click(backBtn!);
+    });
+
+    // Should be back on list view
     await waitFor(() =>
-      expect(queryByText("Back to list")).toBeNull()
+      expect(queryByText("Details")).toBeNull()
     );
   });
 });

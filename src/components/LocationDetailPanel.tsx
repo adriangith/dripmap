@@ -2,7 +2,6 @@
 
 import { useEffect, useState, useRef } from "react";
 import {
-  ArrowLeft,
   MapPin,
   Car,
   Shield,
@@ -23,7 +22,6 @@ import { haversineDistanceKm, formatDistance } from "@/lib/useCurrentLocation";
 
 interface LocationDetailPanelProps {
   slug: string;
-  onBack: () => void;
   userLocation?: Coordinates | null;
 }
 
@@ -158,7 +156,6 @@ function EventDetailsSection({ details }: { details: EventPlace["details"] }) {
 
 export default function LocationDetailPanel({
   slug,
-  onBack,
   userLocation,
 }: LocationDetailPanelProps) {
   const [location, setLocation] = useState<Place | null>(null);
@@ -254,13 +251,6 @@ export default function LocationDetailPanel({
   if (error || !location) {
     return (
       <div className="p-4">
-        <button
-          onClick={onBack}
-          className="inline-flex items-center gap-1 text-sm text-blue-600 hover:text-blue-800 mb-4 min-h-[44px]"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Back to list
-        </button>
         <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
           {error || "Location not found"}
         </div>
@@ -274,15 +264,6 @@ export default function LocationDetailPanel({
 
   return (
     <div className="px-4 pb-6">
-      {/* Back button */}
-      <button
-        onClick={onBack}
-        className="inline-flex items-center gap-1 text-sm text-blue-600 hover:text-blue-800 mb-3 min-h-[44px]"
-      >
-        <ArrowLeft className="w-4 h-4" />
-        Back to list
-      </button>
-
       {/* Title and badges */}
       <div className="flex items-start justify-between gap-3 mb-3">
         <div className="min-w-0 flex-1">
