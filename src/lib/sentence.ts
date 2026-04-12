@@ -2,9 +2,25 @@
 
 import type { Filters, Constraints, FilterDimension } from "@/lib/types";
 
-// ── Sentence fragment generators ─────────────────────────────
+// ── Natural-language fragments ───────────────────────────────
 
-const TYPE_WORDS: Record<string, string> = {
+// Singular forms for "a swim", "an event", etc.
+const TYPE_SINGULAR: Record<string, string> = {
+  swim: "a swim",
+  beach: "a beach",
+  event: "an event",
+  bushwalk: "a bushwalk",
+  lookout: "a lookout",
+  waterfall: "a waterfall",
+  cave: "a cave",
+  wildlife: "a wildlife spot",
+  pool: "a pool",
+  cycling: "a cycling trail",
+  fishing: "a fishing spot",
+};
+
+// Plural forms for "swims", "beaches", etc.
+const TYPE_PLURAL: Record<string, string> = {
   swim: "swims",
   beach: "beaches",
   event: "events",
@@ -12,93 +28,131 @@ const TYPE_WORDS: Record<string, string> = {
   lookout: "lookouts",
   waterfall: "waterfalls",
   cave: "caves",
-  wildlife: "wildlife",
+  wildlife: "wildlife spots",
   pool: "pools",
-  cycling: "cycling",
-  fishing: "fishing",
+  cycling: "cycling trails",
+  fishing: "fishing spots",
 };
 
-const DISTANCE_WORDS: Record<string, string> = {
+const DISTANCE_PHRASES: Record<string, string> = {
   "30min": "close by",
-  "1hr": "within an hour",
-  "2hr": "within 2 hours",
-  daytrip: "a day trip away",
+  "1hr": "within an hour's drive",
+  "2hr": "within a couple of hours",
+  daytrip: "for a day trip",
 };
 
-const COST_WORDS: Record<string, string> = {
+const COST_ADJECTIVE: Record<string, string> = {
   free: "free",
   "free-$": "cheap",
   "$$-under": "budget-friendly",
 };
 
-const DURATION_WORDS: Record<string, string> = {
-  quick: "quick",
-  "half-day": "half-day",
-  "full-day": "full-day",
+const DURATION_PHRASES: Record<string, string> = {
+  quick: "for a quick outing",
+  "half-day": "for a half-day adventure",
+  "full-day": "for a full day out",
 };
 
-const GROUP_WORDS: Record<string, string> = {
-  solo: "solo",
-  adults: "for adults",
-  "family-young": "for little kids",
-  "family-older": "for older kids",
-  friends: "with friends",
+const GROUP_PHRASES: Record<string, string> = {
+  solo: "just for you",
+  adults: "for a grown-ups' outing",
+  "family-young": "the little ones will love",
+  "family-older": "the kids will enjoy",
+  friends: "to share with friends",
 };
 
 const DAY_LABELS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-function getDateFragment(d: Constraints["date"]): string | null {
+function getDatePhrase(d: Constraints["date"]): string | null {
   if (!d) return null;
   if (d.mode === "specific") {
     return `on ${d.date.toLocaleDateString("en-AU", { weekday: "short", month: "short", day: "numeric" })}`;
   }
   if (d.days.length === 0) return null;
-  if (d.days.length === 2 && d.days.includes(0) && d.days.includes(6)) return "on weekends";
-  if (d.days.length === 5 && !d.days.includes(0) && !d.days.includes(6)) return "on weekdays";
+  if (d.days.length === 2 && d.days.includes(0) && d.days.includes(6)) return "this weekend";
+  if (d.days.length === 5 && !d.days.includes(0) && !d.days.includes(6)) return "on a weekday";
   return `on ${d.days.map((n) => DAY_LABELS[n]).join("/")}`;
 }
 
-function getDimFragment(
-  dim: FilterDimension,
-  filters: Filters,
-  constraints: Constraints,
-): string | null {
-  switch (dim) {
-    case "type":
-      return filters.type ? TYPE_WORDS[filters.type] ?? null : null;
-    case "distance":
-      return DISTANCE_WORDS[constraints.distance] ?? null;
-    case "date":
-      return getDateFragment(constraints.date);
-    case "cost":
-      return COST_WORDS[constraints.cost] ?? null;
-    case "duration":
-      return DURATION_WORDS[constraints.duration] ?? null;
-    case "group":
-      return constraints.group ? GROUP_WORDS[constraints.group] ?? null : null;
-  }
-}
+// ── Default prompts (no filters active) ─────────────────────
+
+const IDLE_SENTENCES = [
+  "What should we explore today?",
+  "Where shall we wander?",
+  "Ready to discover something new?",
+];
 
 /**
- * Generate a natural-language sentence from active filters, ordered by priority.
+ * Build a discovery-oriented sentence from the active filters,
+ * reading them in priority order to create natural prose.
+ *
  * Examples:
- *   - "Showing everything"
- *   - "Showing free swims close by"
- *   - "Showing cheap events on weekends for little kids"
+ *   No filters  → "What should we explore today?"
+ *   type=swim    → "How about a swim?"
+ *   type+dist    → "How about a swim close by?"
+ *   type+cost    → "How about a free swim?"
+ *   cost+dist+group → "Let's find something free close by the little ones will love"
  */
 export function generateSentence(
   filters: Filters,
   constraints: Constraints,
 ): string {
-  const fragments: string[] = [];
-
+  // Gather active dimensions in priority order
+  const parts: { dim: FilterDimension }[] = [];
   for (const dim of constraints.priority) {
-    const frag = getDimFragment(dim, filters, constraints);
-    if (frag) fragments.push(frag);
+    if (isDimActive(dim, filters, constraints)) {
+      parts.push({ dim });
+    }
   }
 
-  if (fragments.length === 0) return "Showing everything";
-  return `Showing ${fragments.join(" · ")}`;
+  if (parts.length === 0) {
+    // Stable pick based on the day
+    return IDLE_SENTENCES[new Date().getDay() % IDLE_SENTENCES.length];
+  }
+
+  // Build the sentence piece by piece
+  const type = filters.type;
+  const cost = constraints.cost !== "any" ? COST_ADJECTIVE[constraints.cost] : null;
+  const dist = constraints.distance !== "any" ? DISTANCE_PHRASES[constraints.distance] : null;
+  const date = getDatePhrase(constraints.date);
+  const dur = constraints.duration !== "any" ? DURATION_PHRASES[constraints.duration] : null;
+  const group = constraints.group ? GROUP_PHRASES[constraints.group] : null;
+
+  // Construct the subject: "a free swim" or "something free" or "something"
+  let subject: string;
+  if (type) {
+    const adj = cost ? `${cost} ` : "";
+    subject = `${adj}${TYPE_SINGULAR[type] ?? "something"}`;
+  } else if (cost) {
+    subject = `something ${cost}`;
+  } else {
+    subject = "something";
+  }
+
+  // Build trailing qualifiers in priority order (skip type & cost, already in subject)
+  const qualifiers: string[] = [];
+  for (const p of parts) {
+    if (p.dim === "type" || p.dim === "cost") continue;
+    if (p.dim === "distance" && dist) qualifiers.push(dist);
+    if (p.dim === "date" && date) qualifiers.push(date);
+    if (p.dim === "duration" && dur) qualifiers.push(dur);
+    if (p.dim === "group" && group) qualifiers.push(group);
+  }
+
+  const tail = qualifiers.length > 0 ? ` ${qualifiers.join(" ")}` : "";
+
+  return `How about ${subject}${tail}?`;
+}
+
+function isDimActive(dim: FilterDimension, filters: Filters, constraints: Constraints): boolean {
+  switch (dim) {
+    case "type": return filters.type !== null;
+    case "distance": return constraints.distance !== "any";
+    case "date": return constraints.date !== null;
+    case "cost": return constraints.cost !== "any";
+    case "duration": return constraints.duration !== "any";
+    case "group": return constraints.group !== null;
+  }
 }
 
 /**
@@ -114,3 +168,4 @@ export function activeFilterCount(filters: Filters, constraints: Constraints): n
   if (constraints.group !== null) count++;
   return count;
 }
+
