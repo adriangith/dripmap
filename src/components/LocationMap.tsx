@@ -126,8 +126,8 @@ export default function LocationMap({
   const markersRef = useRef<Map<string, L.Marker>>(new Map());
   const clusterGroupRef = useRef<L.MarkerClusterGroup | null>(null);
   const userMarkerRef = useRef<L.Marker | null>(null);
-  // Skip fitBounds after locate so the centering isn't overridden by re-sort
-  const skipFitBoundsRef = useRef(false);
+  // Only fitBounds once (initial load) — after that the user owns the viewport
+  const hasFitBoundsRef = useRef(false);
 
   const [locating, setLocating] = useState(false);
   const [locateError, setLocateError] = useState<string | null>(null);
@@ -212,7 +212,7 @@ export default function LocationMap({
         zIndexOffset: 1000,
       }).addTo(mapRef.current).bindPopup("You are here");
 
-      skipFitBoundsRef.current = true;
+      hasFitBoundsRef.current = true;
     };
 
     // Try browser geolocation first (silent — only if already granted)
@@ -315,8 +315,10 @@ export default function LocationMap({
       markersRef.current.set(loc.slug, marker);
     }
 
-    // Fit bounds if there are locations (skip if user just located themselves)
-    if (locations.length > 0 && !skipFitBoundsRef.current) {
+    // Fit bounds only on initial load — subsequent filter/preference changes
+    // should not override the user's current viewport
+    if (locations.length > 0 && !hasFitBoundsRef.current) {
+      hasFitBoundsRef.current = true;
       const bounds = L.latLngBounds(
         locations.map((l) => [l.coordinates.lat, l.coordinates.lng])
       );
@@ -327,7 +329,6 @@ export default function LocationMap({
         maxZoom: 10,
       });
     }
-    skipFitBoundsRef.current = false;
   }, [locations, onMarkerClick, onMarkerHover]);
 
   // Highlight effect — open popup on hover (no panning to avoid jarring movement)
@@ -385,10 +386,6 @@ export default function LocationMap({
             .bindPopup("You are here");
 
           userMarkerRef.current = userMarker;
-
-          // Prevent fitBounds from overriding this view when the
-          // distance-sorted location list triggers a re-render
-          skipFitBoundsRef.current = true;
 
           // Center user in visible area above the sheet
           setViewAboveSheet(map, [lat, lng], 12, getSheetHeight());
