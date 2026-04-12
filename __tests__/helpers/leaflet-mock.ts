@@ -4,10 +4,12 @@ export function createLeafletMock() {
   const mockMarker = {
     addTo: vi.fn().mockReturnThis(),
     bindPopup: vi.fn().mockReturnThis(),
+    bindTooltip: vi.fn().mockReturnThis(),
     on: vi.fn().mockReturnThis(),
     openPopup: vi.fn().mockReturnThis(),
     closePopup: vi.fn().mockReturnThis(),
     remove: vi.fn().mockReturnThis(),
+    getTooltip: vi.fn().mockReturnValue(null),
   };
 
   const mockMap = {
@@ -16,6 +18,8 @@ export function createLeafletMock() {
     panBy: vi.fn().mockReturnThis(),
     remove: vi.fn(),
     closePopup: vi.fn(),
+    on: vi.fn().mockReturnThis(),
+    getZoom: vi.fn().mockReturnValue(7),
   };
 
   const mockTileLayer = {

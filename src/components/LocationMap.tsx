@@ -172,6 +172,15 @@ export default function LocationMap({
     // Expose for E2E tests
     (window as any).__leafletMap = map;
 
+    // Show/hide permanent POI labels based on zoom level
+    const LABEL_ZOOM_THRESHOLD = 12;
+    const updateLabels = () => {
+      const show = map.getZoom() >= LABEL_ZOOM_THRESHOLD;
+      mapContainerRef.current?.classList.toggle("show-poi-labels", show);
+    };
+    map.on("zoomend", updateLabels);
+    updateLabels();
+
     // Determine initial position: prefer browser geolocation if already
     // granted, otherwise fall back to IP-based geolocation.
     const setInitialLocation = (lat: number, lng: number, zoom: number) => {
@@ -257,6 +266,14 @@ export default function LocationMap({
       const marker = L.marker([loc.coordinates.lat, loc.coordinates.lng], {
         icon: createPinIcon(loc.type),
       }).bindPopup(popupContent, { autoClose: true, closeOnClick: true });
+
+      // Permanent label visible at higher zoom levels (CSS-controlled)
+      marker.bindTooltip(loc.name, {
+        permanent: true,
+        direction: "top",
+        offset: L.point(0, -30),
+        className: "poi-label",
+      });
 
       if (clusterGroup) clusterGroup.addLayer(marker);
 
