@@ -55,11 +55,15 @@ status:
   lastVerified: "2026-06-01"
 details:
   recurrence:
-    type: annual
-    season: all
+    type: range
+    startDate: "2025-11-28"
+    endDate: "2026-05-03"
     startTime: "10:00"
     endTime: "17:00"
-  confirmedDates: null
+  confirmedDates:
+    year: 2025
+    startDate: "2025-11-28"
+    endDate: "2026-05-03"
   venue: National Gallery of Victoria
   venueType: indoor
   bookingRequired: false
