@@ -113,7 +113,7 @@ export function applyConstraints(
     // Soft scoring — weighted by priority order
     let score = 0;
     const priorityWeights = constraints.priority.reduce<Record<string, number>>((acc, dim, i) => {
-      acc[dim] = Math.max(1, 6 - i); // 6,5,4,3,2,1
+      acc[dim] = Math.max(1, constraints.priority.length - i); // top = highest weight
       return acc;
     }, {});
 

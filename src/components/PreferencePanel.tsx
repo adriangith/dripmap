@@ -3,7 +3,6 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import {
   GripVertical,
-  MapPin,
   Navigation,
   Calendar,
   DollarSign,
@@ -16,7 +15,6 @@ import type {
   Filters,
   Constraints,
   FilterDimension,
-  PlaceType,
   DistanceThreshold,
   CostFilter,
   DurationFilter,
@@ -33,7 +31,6 @@ interface DimensionMeta {
 }
 
 const DIMENSIONS: DimensionMeta[] = [
-  { key: "type", icon: MapPin, label: "Activity" },
   { key: "distance", icon: Navigation, label: "Distance" },
   { key: "date", icon: Calendar, label: "When" },
   { key: "cost", icon: DollarSign, label: "Budget" },
@@ -42,21 +39,6 @@ const DIMENSIONS: DimensionMeta[] = [
 ];
 
 // ── Value options ───────────────────────────────────────────
-
-const TYPE_OPTIONS: { value: PlaceType | null; label: string }[] = [
-  { value: null, label: "Anything" },
-  { value: "swim", label: "Swims" },
-  { value: "beach", label: "Beaches" },
-  { value: "event", label: "Events" },
-  { value: "bushwalk", label: "Bushwalks" },
-  { value: "lookout", label: "Lookouts" },
-  { value: "waterfall", label: "Waterfalls" },
-  { value: "cave", label: "Caves" },
-  { value: "wildlife", label: "Wildlife" },
-  { value: "pool", label: "Pools" },
-  { value: "cycling", label: "Cycling" },
-  { value: "fishing", label: "Fishing" },
-];
 
 const DISTANCE_OPTIONS: { value: DistanceThreshold; label: string }[] = [
   { value: "any", label: "Anywhere" },
@@ -95,8 +77,6 @@ const DAY_LABELS = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
 function getValueLabel(dim: FilterDimension, filters: Filters, constraints: Constraints): string {
   switch (dim) {
-    case "type":
-      return TYPE_OPTIONS.find((o) => o.value === filters.type)?.label ?? "Anything";
     case "distance":
       return DISTANCE_OPTIONS.find((o) => o.value === constraints.distance)?.label ?? "Anywhere";
     case "date": {
@@ -120,7 +100,6 @@ function getValueLabel(dim: FilterDimension, filters: Filters, constraints: Cons
 
 function isActive(dim: FilterDimension, filters: Filters, constraints: Constraints): boolean {
   switch (dim) {
-    case "type": return filters.type !== null;
     case "distance": return constraints.distance !== "any";
     case "date": return constraints.date !== null;
     case "cost": return constraints.cost !== "any";
@@ -149,24 +128,6 @@ function ValuePicker({
   onRequestLocation: () => void;
 }) {
   switch (dimension) {
-    case "type":
-      return (
-        <div className="flex flex-wrap gap-1.5">
-          {TYPE_OPTIONS.map((opt) => (
-            <button
-              key={opt.value ?? "any"}
-              onClick={() => onFiltersChange({ ...filters, type: opt.value })}
-              className={`px-2.5 py-1 text-xs rounded-full border transition-colors ${
-                filters.type === opt.value
-                  ? "bg-blue-600 text-white border-blue-600"
-                  : "border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-blue-300"
-              }`}
-            >
-              {opt.label}
-            </button>
-          ))}
-        </div>
-      );
     case "distance":
       return (
         <div className="flex flex-wrap gap-1.5">
@@ -565,7 +526,6 @@ export default function PreferencePanel({
   const activeCount = orderedDimensions.filter((d) => isActive(d.key, filters, constraints)).length;
 
   const handleReset = useCallback(() => {
-    onFiltersChange({ ...filters, type: null });
     onConstraintsChange({
       distance: "any",
       date: null,

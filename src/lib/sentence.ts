@@ -4,36 +4,6 @@ import type { Filters, Constraints, FilterDimension } from "@/lib/types";
 
 // ── Natural-language fragments ───────────────────────────────
 
-// Singular forms for "a swim", "an event", etc.
-const TYPE_SINGULAR: Record<string, string> = {
-  swim: "a swim",
-  beach: "a beach",
-  event: "an event",
-  bushwalk: "a bushwalk",
-  lookout: "a lookout",
-  waterfall: "a waterfall",
-  cave: "a cave",
-  wildlife: "a wildlife spot",
-  pool: "a pool",
-  cycling: "a cycling trail",
-  fishing: "a fishing spot",
-};
-
-// Plural forms for "swims", "beaches", etc.
-const TYPE_PLURAL: Record<string, string> = {
-  swim: "swims",
-  beach: "beaches",
-  event: "events",
-  bushwalk: "bushwalks",
-  lookout: "lookouts",
-  waterfall: "waterfalls",
-  cave: "caves",
-  wildlife: "wildlife spots",
-  pool: "pools",
-  cycling: "cycling trails",
-  fishing: "fishing spots",
-};
-
 const DISTANCE_PHRASES: Record<string, string> = {
   "30min": "close by",
   "1hr": "within an hour's drive",
@@ -87,11 +57,10 @@ const IDLE_SENTENCES = [
  * reading them in priority order to create natural prose.
  *
  * Examples:
- *   No filters  → "What should we explore today?"
- *   type=swim    → "How about a swim?"
- *   type+dist    → "How about a swim close by?"
- *   type+cost    → "How about a free swim?"
- *   cost+dist+group → "Let's find something free close by the little ones will love"
+ *   No filters     → "What should we explore today?"
+ *   cost=free      → "How about something free?"
+ *   cost+dist      → "How about something free close by?"
+ *   dist+group     → "How about something close by the little ones will love?"
  */
 export function generateSentence(
   filters: Filters,
@@ -106,33 +75,22 @@ export function generateSentence(
   }
 
   if (parts.length === 0) {
-    // Stable pick based on the day
     return IDLE_SENTENCES[new Date().getDay() % IDLE_SENTENCES.length];
   }
 
-  // Build the sentence piece by piece
-  const type = filters.type;
   const cost = constraints.cost !== "any" ? COST_ADJECTIVE[constraints.cost] : null;
   const dist = constraints.distance !== "any" ? DISTANCE_PHRASES[constraints.distance] : null;
   const date = getDatePhrase(constraints.date);
   const dur = constraints.duration !== "any" ? DURATION_PHRASES[constraints.duration] : null;
   const group = constraints.group ? GROUP_PHRASES[constraints.group] : null;
 
-  // Construct the subject: "a free swim" or "something free" or "something"
-  let subject: string;
-  if (type) {
-    const adj = cost ? `${cost} ` : "";
-    subject = `${adj}${TYPE_SINGULAR[type] ?? "something"}`;
-  } else if (cost) {
-    subject = `something ${cost}`;
-  } else {
-    subject = "something";
-  }
+  // Subject: "something free" or "something"
+  const subject = cost ? `something ${cost}` : "something";
 
-  // Build trailing qualifiers in priority order (skip type & cost, already in subject)
+  // Build trailing qualifiers in priority order (skip cost, already in subject)
   const qualifiers: string[] = [];
   for (const p of parts) {
-    if (p.dim === "type" || p.dim === "cost") continue;
+    if (p.dim === "cost") continue;
     if (p.dim === "distance" && dist) qualifiers.push(dist);
     if (p.dim === "date" && date) qualifiers.push(date);
     if (p.dim === "duration" && dur) qualifiers.push(dur);
@@ -146,7 +104,6 @@ export function generateSentence(
 
 function isDimActive(dim: FilterDimension, filters: Filters, constraints: Constraints): boolean {
   switch (dim) {
-    case "type": return filters.type !== null;
     case "distance": return constraints.distance !== "any";
     case "date": return constraints.date !== null;
     case "cost": return constraints.cost !== "any";
@@ -160,7 +117,6 @@ function isDimActive(dim: FilterDimension, filters: Filters, constraints: Constr
  */
 export function activeFilterCount(filters: Filters, constraints: Constraints): number {
   let count = 0;
-  if (filters.type !== null) count++;
   if (constraints.distance !== "any") count++;
   if (constraints.date !== null) count++;
   if (constraints.cost !== "any") count++;
@@ -168,4 +124,3 @@ export function activeFilterCount(filters: Filters, constraints: Constraints): n
   if (constraints.group !== null) count++;
   return count;
 }
-
