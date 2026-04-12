@@ -348,11 +348,12 @@ function PreferenceCard({
       }`}
       data-dimension={dimension.key}
     >
-      <div className="flex items-center gap-2 px-3 py-2.5">
+      <div className="flex items-center gap-2 px-3 py-2.5 cursor-pointer" onClick={onToggleExpand}>
         {/* Drag handle */}
         <button
           className="touch-none cursor-grab active:cursor-grabbing p-1 -ml-1 text-gray-300 dark:text-gray-600 hover:text-gray-500"
           onPointerDown={(e) => onDragStart(index, e)}
+          onClick={(e) => e.stopPropagation()}
         >
           <GripVertical className="w-4 h-4" />
         </button>
@@ -392,13 +393,13 @@ function PreferenceCard({
         </span>
 
         {/* Expand chevron */}
-        <button onClick={onToggleExpand} className="p-1 -mr-1">
+        <div className="p-1 -mr-1">
           <ChevronDown
             className={`w-4 h-4 text-gray-400 dark:text-gray-500 transition-transform ${
               expanded ? "rotate-180" : ""
             }`}
           />
-        </button>
+        </div>
       </div>
 
       {/* Expanded value picker */}
