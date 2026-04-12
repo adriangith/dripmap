@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, MapPin, Car, Shield, DollarSign, Calendar, AlertTriangle, Navigation, ExternalLink, Droplets, Waves } from "lucide-react";
+import { ArrowLeft, MapPin, Car, Shield, DollarSign, Calendar, Clock, AlertTriangle, Navigation, ExternalLink, Droplets, Waves } from "lucide-react";
 import { getLocationDetailStatic, getAllLocationSlugs } from "@/lib/locations";
 import Footer from "@/components/Footer";
 import StatusBadge from "@/components/StatusBadge";
@@ -8,7 +8,13 @@ import TypeBadge from "@/components/TypeBadge";
 import BookmarkButton from "@/components/BookmarkButton";
 import MiniMapWrapper from "@/components/MiniMapWrapper";
 import type { Metadata } from "next";
-import type { Place, SwimPlace, BeachPlace, EventPlace } from "@/lib/types";
+import type { Place, SwimPlace, BeachPlace, EventPlace, Duration } from "@/lib/types";
+
+const DURATION_DISPLAY: Record<Duration, string> = {
+  quick: "Under 2 hours",
+  "half-day": "Half day",
+  "full-day": "Full day",
+};
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -226,6 +232,15 @@ export default async function LocationPage({ params }: PageProps) {
                   <p className="text-sm font-medium capitalize">{location.bestSeason.join(", ")}</p>
                 </div>
               </div>
+              {location.duration && (
+                <div className="flex items-center gap-2">
+                  <Clock className="w-4 h-4 text-gray-400" />
+                  <div>
+                    <p className="text-xs text-gray-500">Typical Duration</p>
+                    <p className="text-sm font-medium">{DURATION_DISPLAY[location.duration]}</p>
+                  </div>
+                </div>
+              )}
             </div>
             {location.facilities.length > 0 && (
               <div className="mt-3">

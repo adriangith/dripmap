@@ -6,6 +6,7 @@ const noConstraints: Constraints = {
   distance: "any",
   date: null,
   cost: "any",
+  duration: "any",
   group: null,
 };
 

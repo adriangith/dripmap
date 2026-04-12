@@ -15,6 +15,8 @@ export type PlaceType =
 
 export type CostLevel = "free" | "$" | "$$" | "$$$";
 
+export type Duration = "quick" | "half-day" | "full-day";
+
 export type SiteStatus = "open" | "closed" | "seasonal" | "unknown";
 
 export type Season = "spring" | "summer" | "fall" | "winter";
@@ -97,6 +99,7 @@ interface PlaceBase {
   directions: string;
   tips: string[];
   tags: string[];
+  duration?: Duration;
   status: PlaceStatus;
 }
 
@@ -130,6 +133,7 @@ export interface PlaceIndexEntry {
   highlights: string[];
   status: PlaceStatus;
   tags: string[];
+  duration?: Duration;
   recurrence?: Recurrence; // only present for event type
 }
 
@@ -145,6 +149,7 @@ export interface Filters {
 
 export type DistanceThreshold = "30min" | "1hr" | "2hr" | "daytrip" | "any";
 export type CostFilter = "free" | "free-$" | "$$-under" | "any";
+export type DurationFilter = "quick" | "half-day" | "full-day" | "any";
 export type GroupType = "solo" | "adults" | "family-young" | "family-older" | "friends" | null;
 
 export type DateMode =
@@ -156,6 +161,7 @@ export interface Constraints {
   distance: DistanceThreshold;
   date: DateMode;
   cost: CostFilter;
+  duration: DurationFilter;
   group: GroupType;
 }
 

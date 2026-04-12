@@ -74,6 +74,15 @@ function passesDateFilter(place: PlaceIndexEntry, date: DateMode): boolean {
   return true;
 }
 
+const DURATION_RANK: Record<string, number> = { quick: 0, "half-day": 1, "full-day": 2 };
+
+function passesDurationFilter(place: PlaceIndexEntry, filter: string): boolean {
+  if (filter === "any" || !place.duration) return true;
+  const placeRank = DURATION_RANK[place.duration] ?? 2;
+  const filterRank = DURATION_RANK[filter] ?? 2;
+  return placeRank <= filterRank;
+}
+
 export interface ScoredPlace extends PlaceIndexEntry {
   _score: number;
   _driveMinutes: number | null;
@@ -92,6 +101,9 @@ export function applyConstraints(
 
     // Hard filter: date (for events)
     if (!passesDateFilter(place, constraints.date)) continue;
+
+    // Hard filter: duration
+    if (!passesDurationFilter(place, constraints.duration)) continue;
 
     // Compute drive time for sorting
     const driveMin = userLocation

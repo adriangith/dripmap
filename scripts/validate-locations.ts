@@ -23,6 +23,7 @@ const VALID_CROWD_LEVEL = ["quiet", "moderate", "busy"];
 // Event detail enums
 const VALID_VENUE_TYPE = ["outdoor", "indoor", "mixed"];
 const VALID_RECURRENCE_TYPE = ["once", "range", "weekly", "annual"];
+const VALID_DURATION = ["quick", "half-day", "full-day"];
 
 function checkEnum(value: unknown, allowed: string[], fieldName: string): string[] {
   if (typeof value !== "string" || !allowed.includes(value)) {
@@ -79,6 +80,10 @@ function validateCoreFields(data: Record<string, unknown>): string[] {
 
   if (!Array.isArray(data.tags)) {
     errors.push("tags: must be an array");
+  }
+
+  if (data.duration !== undefined) {
+    errors.push(...checkEnum(data.duration, VALID_DURATION, "duration"));
   }
 
   if (!Array.isArray(data.tips)) {

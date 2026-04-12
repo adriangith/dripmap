@@ -5,6 +5,7 @@ import type {
   Constraints,
   DistanceThreshold,
   CostFilter,
+  DurationFilter,
   GroupType,
   DateMode,
   PlaceType,
@@ -70,6 +71,20 @@ const COST_OPTIONS: { value: CostFilter; label: string }[] = [
   { value: "free", label: "free" },
   { value: "free-$", label: "cheap" },
   { value: "$$-under", label: "budget-friendly" },
+];
+
+const DURATION_LABELS: Record<DurationFilter, string> = {
+  quick: "a quick visit",
+  "half-day": "a few hours",
+  "full-day": "all day",
+  any: "any length",
+};
+
+const DURATION_OPTIONS: { value: DurationFilter; label: string }[] = [
+  { value: "any", label: "any length" },
+  { value: "quick", label: "a quick visit" },
+  { value: "half-day", label: "a few hours" },
+  { value: "full-day", label: "all day" },
 ];
 
 const GROUP_LABELS: Record<string, string> = {
@@ -219,7 +234,7 @@ function OptionButton({
 
 // ── Main component ───────────────────────────────────────────
 
-type OpenToken = "type" | "distance" | "date" | "cost" | "group" | null;
+type OpenToken = "type" | "distance" | "date" | "cost" | "duration" | "group" | null;
 
 interface SentenceFilterProps {
   filters: Filters;
@@ -274,6 +289,7 @@ export default function SentenceFilter({
   const distActive = constraints.distance !== "any";
   const dateActive = constraints.date !== null;
   const costActive = constraints.cost !== "any";
+  const durActive = constraints.duration !== "any";
   const groupActive = constraints.group !== null;
 
   return (
@@ -457,6 +473,30 @@ export default function SentenceFilter({
               selected={constraints.cost === opt.value}
               onClick={() => {
                 updateConstraint({ cost: opt.value });
+                setOpenToken(null);
+              }}
+            />
+          ))}
+        </div>
+      </Token>
+
+      <span className="text-gray-400"> · </span>
+
+      {/* Duration token */}
+      <Token
+        label={DURATION_LABELS[constraints.duration]}
+        active={durActive}
+        popoverOpen={openToken === "duration"}
+        onTap={() => toggle("duration")}
+      >
+        <div className="flex flex-col gap-0.5">
+          {DURATION_OPTIONS.map((opt) => (
+            <OptionButton
+              key={opt.value}
+              label={opt.label}
+              selected={constraints.duration === opt.value}
+              onClick={() => {
+                updateConstraint({ duration: opt.value });
                 setOpenToken(null);
               }}
             />

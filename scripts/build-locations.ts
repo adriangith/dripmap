@@ -15,6 +15,7 @@ export function buildIndex(places: Place[]): PlaceIndexEntry[] {
     highlights: p.highlights,
     status: p.status,
     tags: p.tags,
+    ...(p.duration ? { duration: p.duration } : {}),
     ...(p.type === "event" ? { recurrence: p.details.recurrence } : {}),
   }));
 }

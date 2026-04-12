@@ -10,15 +10,22 @@ import {
   AlertTriangle,
   Navigation,
   ExternalLink,
+  Clock,
 } from "lucide-react";
 import { Droplets, Waves } from "lucide-react";
-import type { Place, SwimPlace, BeachPlace, EventPlace, Coordinates } from "@/lib/types";
+import type { Place, SwimPlace, BeachPlace, EventPlace, Coordinates, Duration } from "@/lib/types";
 import { fetchDrivingInfo, formatDriveTime, formatDriveDistance } from "@/lib/osrm";
 import type { DrivingInfo } from "@/lib/osrm";
 import StatusBadge from "./StatusBadge";
 import TypeBadge from "./TypeBadge";
 import BookmarkButton from "./BookmarkButton";
 import { haversineDistanceKm, formatDistance } from "@/lib/useCurrentLocation";
+
+const DURATION_DISPLAY: Record<Duration, string> = {
+  quick: "Under 2 hours",
+  "half-day": "Half day",
+  "full-day": "Full day",
+};
 
 interface LocationDetailPanelProps {
   slug: string;
@@ -337,6 +344,15 @@ export default function LocationDetailPanel({
               <p className="text-sm font-medium capitalize">{location.bestSeason.join(", ")}</p>
             </div>
           </div>
+          {location.duration && (
+            <div className="flex items-center gap-2">
+              <Clock className="w-4 h-4 text-gray-400 shrink-0" />
+              <div>
+                <p className="text-xs text-gray-500">Typical Duration</p>
+                <p className="text-sm font-medium">{DURATION_DISPLAY[location.duration]}</p>
+              </div>
+            </div>
+          )}
         </div>
         {location.facilities.length > 0 && (
           <div className="mt-2.5">
