@@ -46,18 +46,34 @@ function costScore(placeCost: string, filter: string): number {
   }
 }
 
+/** Map group preference to the ageSuitability.ideal values it matches. */
+const GROUP_TO_IDEAL: Record<string, string[]> = {
+  solo: ["adults", "teens"],
+  adults: ["adults", "teens"],
+  "family-young": ["toddlers", "preschool", "primary"],
+  "family-older": ["primary", "teens"],
+  friends: ["adults", "teens"],
+};
+
+function passesGroupFilter(place: PlaceIndexEntry, group: string | null): boolean {
+  if (!group) return true;
+  const validIdeals = GROUP_TO_IDEAL[group];
+  if (!validIdeals) return true;
+  const placeIdeals = place.ageSuitability?.ideal ?? [];
+  // If the place has no age data, let it through
+  if (placeIdeals.length === 0) return true;
+  // At least one of the place's ideal groups must overlap with the preference
+  return placeIdeals.some((i) => validIdeals.includes(i));
+}
+
 function groupScore(place: PlaceIndexEntry, group: string | null): number {
   if (!group) return 0;
-  const tags = place.tags.join(" ").toLowerCase();
-  const hasFamily = tags.includes("family") || tags.includes("kids");
-  if (group === "family-young" || group === "family-older") {
-    return hasFamily ? 5 : -5;
-  }
-  if (group === "adults" || group === "solo") {
-    const hasAdventure = tags.includes("adventure") || tags.includes("surf") || tags.includes("cliff");
-    return hasAdventure ? 3 : 0;
-  }
-  return 0;
+  const validIdeals = GROUP_TO_IDEAL[group];
+  if (!validIdeals) return 0;
+  const placeIdeals = place.ageSuitability?.ideal ?? [];
+  if (placeIdeals.length === 0) return 0;
+  const overlap = placeIdeals.filter((i) => validIdeals.includes(i)).length;
+  return overlap * 3;
 }
 
 function passesDateFilter(place: PlaceIndexEntry, date: DateMode): boolean {
@@ -104,6 +120,9 @@ export function applyConstraints(
 
     // Hard filter: duration
     if (!passesDurationFilter(place, constraints.duration)) continue;
+
+    // Hard filter: group suitability
+    if (!passesGroupFilter(place, constraints.group)) continue;
 
     // Compute drive time for sorting
     const driveMin = userLocation

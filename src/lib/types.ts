@@ -133,6 +133,7 @@ export interface PlaceIndexEntry {
   highlights: string[];
   status: PlaceStatus;
   tags: string[];
+  ageSuitability?: AgeSuitability;
   duration?: Duration;
   recurrence?: Recurrence; // only present for event type
 }

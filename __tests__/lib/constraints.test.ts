@@ -24,6 +24,7 @@ const swim: PlaceIndexEntry = {
   highlights: ["Crystal clear"],
   status: { site: "open", lastVerified: "2026-01-01" },
   tags: ["family-friendly"],
+  ageSuitability: { minAge: null, ideal: ["toddlers", "primary"] },
 };
 
 const expensiveEvent: PlaceIndexEntry = {
@@ -37,6 +38,7 @@ const expensiveEvent: PlaceIndexEntry = {
   highlights: ["Premium experience"],
   status: { site: "open", lastVerified: "2026-01-01" },
   tags: [],
+  ageSuitability: { minAge: 18, ideal: ["adults"] },
 };
 
 const userLocation = { lat: -37.81, lng: 144.96 };

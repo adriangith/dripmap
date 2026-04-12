@@ -72,6 +72,7 @@ describe("buildIndex", () => {
       highlights: ["Crystal clear water"],
       status: sampleSwim.status,
       tags: ["family-friendly"],
+      ageSuitability: sampleSwim.ageSuitability,
     });
   });
 
