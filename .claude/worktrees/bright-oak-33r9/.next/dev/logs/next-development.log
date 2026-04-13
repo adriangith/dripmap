@@ -1,0 +1,4 @@
+{"timestamp":"50:01:24.942","source":"Server","level":"ERROR","message":"Error: ENOENT: no such file or directory, scandir '/home/claude-svc/dripmap/.claude/worktrees/bright-oak-33r9/src/app'"}
+{"timestamp":"50:01:24.971","source":"Server","level":"ERROR","message":"⨯ \"unhandledRejection:\" Error: ENOENT: no such file or directory, scandir '/home/claude-svc/dripmap/.claude/worktrees/bright-oak-33r9/src/app'"}
+{"timestamp":"50:01:24.995","source":"Server","level":"ERROR","message":"⨯ \"unhandledRejection: \" Error: ENOENT: no such file or directory, scandir '/home/claude-svc/dripmap/.claude/worktrees/bright-oak-33r9/src/app'"}
+{"timestamp":"50:01:27.280","source":"Server","level":"LOG","message":"✓ Compiled in 32s"}

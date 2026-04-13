@@ -204,6 +204,14 @@ export default function LocationMap({
     map.on("zoomend", updateLabels);
     updateLabels();
 
+    // Clear route polyline when clicking empty map area
+    map.on("click", () => {
+      if (routeLayerRef.current) {
+        routeLayerRef.current.remove();
+        routeLayerRef.current = null;
+      }
+    });
+
     // Determine initial position: prefer browser geolocation if already
     // granted, otherwise fall back to IP-based geolocation.
     const setInitialLocation = (lat: number, lng: number, zoom: number) => {
@@ -316,9 +324,22 @@ export default function LocationMap({
 
       if (clusterGroup) clusterGroup.addLayer(marker);
 
-      // On click: open popup + notify parent
+      // On click: open popup, show route if available, notify parent
       marker.on("click", () => {
         marker.openPopup();
+
+        // Show walk/bushwalk route on click (works on mobile + desktop)
+        if (routeLayerRef.current) {
+          routeLayerRef.current.remove();
+          routeLayerRef.current = null;
+        }
+        if ((loc.type === "walk" || loc.type === "bushwalk") && loc.route) {
+          routeLayerRef.current = L.polyline(
+            loc.route.map(([lat, lng]) => [lat, lng] as L.LatLngTuple),
+            { color: PIN_COLORS[loc.type], weight: 4, opacity: 0.7 },
+          ).addTo(map);
+        }
+
         onMarkerClick(loc.slug);
       });
 
