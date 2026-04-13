@@ -20,6 +20,7 @@ import type { DrivingInfo } from "@/lib/osrm";
 import StatusBadge from "./StatusBadge";
 import TypeBadge from "./TypeBadge";
 import BookmarkButton from "./BookmarkButton";
+import VisitedButton from "./VisitedButton";
 import { haversineDistanceKm, formatDistance } from "@/lib/useCurrentLocation";
 
 const DURATION_DISPLAY: Record<Duration, string> = {
@@ -286,7 +287,10 @@ export default function LocationDetailPanel({
             )}
           </div>
         </div>
-        <BookmarkButton slug={location.slug} />
+        <div className="flex gap-2">
+          <BookmarkButton slug={location.slug} />
+          <VisitedButton slug={location.slug} />
+        </div>
       </div>
 
       {/* Status */}

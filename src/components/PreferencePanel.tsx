@@ -536,6 +536,7 @@ export default function PreferencePanel({
       cost: "any",
       duration: "any",
       group: null,
+      visited: "any",
       priority: [...constraints.priority],
     });
   }, [filters, constraints, onFiltersChange, onConstraintsChange]);

@@ -7,6 +7,7 @@ import type {
   CostFilter,
   DurationFilter,
   GroupType,
+  VisitedFilter,
   DateMode,
   PlaceType,
   Filters,
@@ -234,7 +235,7 @@ function OptionButton({
 
 // ── Main component ───────────────────────────────────────────
 
-type OpenToken = "type" | "distance" | "date" | "cost" | "duration" | "group" | null;
+type OpenToken = "type" | "distance" | "date" | "cost" | "duration" | "group" | "visited" | null;
 
 interface SentenceFilterProps {
   filters: Filters;
@@ -291,6 +292,7 @@ export default function SentenceFilter({
   const costActive = constraints.cost !== "any";
   const durActive = constraints.duration !== "any";
   const groupActive = constraints.group !== null;
+  const visitedActive = constraints.visited === "unvisited";
 
   return (
     <div
@@ -531,6 +533,27 @@ export default function SentenceFilter({
               }}
             />
           ))}
+        </div>
+      </Token>
+
+      <span className="text-gray-400"> · </span>
+
+      {/* Visited token */}
+      <Token
+        label={visitedActive ? "somewhere new" : "Flexible"}
+        active={visitedActive}
+        popoverOpen={openToken === "visited"}
+        onTap={() => toggle("visited")}
+      >
+        <div className="flex flex-col gap-0.5">
+          <OptionButton
+            label="somewhere new"
+            selected={constraints.visited === "unvisited"}
+            onClick={() => {
+              updateConstraint({ visited: constraints.visited === "unvisited" ? "any" as VisitedFilter : "unvisited" as VisitedFilter });
+              setOpenToken(null);
+            }}
+          />
         </div>
       </Token>
     </div>

@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import StatusBadge from "@/components/StatusBadge";
 import TypeBadge from "@/components/TypeBadge";
 import BookmarkButton from "@/components/BookmarkButton";
+import VisitedButton from "@/components/VisitedButton";
 import MiniMapWrapper from "@/components/MiniMapWrapper";
 import DrivingInfoBanner from "@/components/DrivingInfoBanner";
 import CostIndicator from "@/components/CostIndicator";
@@ -88,7 +89,10 @@ export default async function LocationPage({ params }: PageProps) {
                 </span>
               </div>
             </div>
-            <BookmarkButton slug={location.slug} />
+            <div className="flex gap-2">
+              <BookmarkButton slug={location.slug} />
+              <VisitedButton slug={location.slug} />
+            </div>
           </div>
 
           {/* Status */}

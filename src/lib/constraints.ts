@@ -1,6 +1,7 @@
 import type { PlaceIndexEntry, Constraints, Coordinates, DateMode } from "./types";
 import { haversineDistanceKm } from "./useCurrentLocation";
 import { isEventOnDate, isEventOnDayOfWeek } from "./event-dates";
+import { getVisited } from "./visited";
 
 const ROAD_FACTOR = 1.4;
 const AVG_SPEED_KMH = 60;
@@ -125,6 +126,8 @@ export function applyConstraints(
 ): ScoredPlace[] {
   const scored: ScoredPlace[] = [];
 
+  const visitedSet = constraints.visited === "unvisited" ? new Set(getVisited()) : null;
+
   for (const place of places) {
     // Hard filter: distance
     if (!passesDistanceFilter(place, constraints.distance, userLocation)) continue;
@@ -137,6 +140,9 @@ export function applyConstraints(
 
     // Hard filter: group suitability
     if (!passesGroupFilter(place, constraints.group)) continue;
+
+    // Hard filter: visited
+    if (visitedSet && visitedSet.has(place.slug)) continue;
 
     // Compute drive time for sorting
     const driveMin = userLocation

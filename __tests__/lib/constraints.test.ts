@@ -10,6 +10,7 @@ const noConstraints: Constraints = {
   cost: "any",
   duration: "any",
   group: null,
+  visited: "any",
   priority: [...DEFAULT_PRIORITY],
 };
 
