@@ -7,6 +7,7 @@ import StatusBadge from "@/components/StatusBadge";
 import TypeBadge from "@/components/TypeBadge";
 import BookmarkButton from "@/components/BookmarkButton";
 import MiniMapWrapper from "@/components/MiniMapWrapper";
+import DrivingInfoBanner from "@/components/DrivingInfoBanner";
 import type { Metadata } from "next";
 import type { Place, SwimPlace, BeachPlace, EventPlace, Duration } from "@/lib/types";
 
@@ -102,6 +103,9 @@ export default async function LocationPage({ params }: PageProps) {
               <p className="text-sm text-amber-700 dark:text-amber-400 ml-2">{location.status.note}</p>
             )}
           </div>
+
+          {/* Driving info (client-side, uses browser geolocation) */}
+          <DrivingInfoBanner destination={location.coordinates} />
 
           {/* Highlights */}
           {location.highlights.length > 0 && (
