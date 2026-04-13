@@ -10,6 +10,7 @@ import {
   Users,
   X,
   ChevronDown,
+  CircleCheck,
 } from "lucide-react";
 import type {
   Filters,
@@ -527,7 +528,8 @@ export default function PreferencePanel({
     return () => document.removeEventListener("keydown", handleEsc);
   }, [open, onClose]);
 
-  const activeCount = orderedDimensions.filter((d) => isActive(d.key, filters, constraints)).length;
+  const visitedActive = constraints.visited === "unvisited";
+  const activeCount = orderedDimensions.filter((d) => isActive(d.key, filters, constraints)).length + (visitedActive ? 1 : 0);
 
   const handleReset = useCallback(() => {
     onConstraintsChange({
@@ -597,6 +599,41 @@ export default function PreferencePanel({
               isDragging={dragIndex === i}
             />
           ))}
+
+          {/* Visited toggle */}
+          <button
+            onClick={() =>
+              onConstraintsChange({
+                ...constraints,
+                visited: visitedActive ? "any" : "unvisited",
+              })
+            }
+            className={`w-full flex items-center gap-3 px-3 py-3 rounded-xl border transition-colors ${
+              visitedActive
+                ? "border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-950"
+                : "border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800"
+            }`}
+          >
+            <CircleCheck
+              className={`w-5 h-5 flex-shrink-0 ${
+                visitedActive
+                  ? "text-green-600 dark:text-green-400"
+                  : "text-gray-400 dark:text-gray-500"
+              }`}
+            />
+            <span
+              className={`text-sm font-medium ${
+                visitedActive
+                  ? "text-green-800 dark:text-green-200"
+                  : "text-gray-700 dark:text-gray-300"
+              }`}
+            >
+              Somewhere new
+            </span>
+            <span className="ml-auto text-xs text-gray-400 dark:text-gray-500">
+              {visitedActive ? "Hiding visited" : "Showing all"}
+            </span>
+          </button>
         </div>
       </div>
     </div>
