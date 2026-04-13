@@ -13,8 +13,9 @@ description: >
   starfish in the rockpool, and discover jellyfish, seahorses, and
   crocodiles across multiple levels.
 photos:
-  - url: /images/placeholder.jpg
+  - url: https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Warty_prowfish_%28Aetapcus_maculatus%29_closeup_at_Sea_Life_Melbourne_Aquarium.jpg/960px-Warty_prowfish_%28Aetapcus_maculatus%29_closeup_at_Sea_Life_Melbourne_Aquarium.jpg
     alt: SEA LIFE Melbourne Aquarium oceanarium tunnel
+    credit: "Ethmostigmus"
 highlights:
   - Walk-through oceanarium tunnel with sharks
   - Interactive rockpool touch tank

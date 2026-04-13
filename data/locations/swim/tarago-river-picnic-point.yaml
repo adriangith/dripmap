@@ -12,8 +12,10 @@ description: 'The Tarago River meanders past a grassy knoll with a shallow, sand
 
   '
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Neerim_South_Main_Street_004.JPG/960px-Neerim_South_Main_Street_004.JPG
+
   alt: Tarago River at Picnic Point, Longwarry North swimming hole in Victoria, Australia
+  credit: "Wikipedia"
 highlights:
 - Shallow water suitable for children and wading
 - Playground and barbecue facilities for families

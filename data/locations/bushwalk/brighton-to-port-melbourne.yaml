@@ -13,8 +13,9 @@ description: >
   Station Pier where you can reward yourself with fish and chips in true
   Melbourne style.
 photos:
-  - url: /images/placeholder.jpg
+  - url: https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Bathing_Boxes_Brighton_Port_Philip_Bay._%2811987895163%29.jpg/960px-Bathing_Boxes_Brighton_Port_Philip_Bay._%2811987895163%29.jpg
     alt: Brighton Beach bathing boxes along the coastal walk
+    credit: "Bernard Spragg. NZ from Christchurch, New Zealand"
 highlights:
   - Brighton Bathing Boxes
   - Elwood and St Kilda beaches

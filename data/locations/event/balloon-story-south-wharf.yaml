@@ -13,8 +13,9 @@ description: >
   opportunities, and themed rooms that change regularly. Perfect for rainy
   days or hot summer afternoons.
 photos:
-  - url: /images/placeholder.jpg
+  - url: https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/South_Wharf_%26_Melbourne_Convention_and_Exhibition_Centre.jpg/960px-South_Wharf_%26_Melbourne_Convention_and_Exhibition_Centre.jpg
     alt: Balloon Story indoor balloon playground South Wharf
+    credit: "Donaldytong"
 highlights:
   - Rooms filled with thousands of colourful balloons
   - Ball pits and balloon slides

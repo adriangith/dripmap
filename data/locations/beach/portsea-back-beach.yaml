@@ -11,8 +11,10 @@ description: A dramatic ocean beach on the Bass Strait side of the Mornington Pe
   natural rock archway, is a short walk along the cliff path. The beach is popular with surfers and rock-pool explorers, but
   strong currents require caution.
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Portsea_pier_Victoria.jpg/960px-Portsea_pier_Victoria.jpg
+
   alt: Portsea Back Beach cliff jumping platform
+  credit: "Wikipedia"
 highlights:
 - Dramatic Bass Strait ocean beach with powerful surf
 - London Bridge natural rock archway nearby

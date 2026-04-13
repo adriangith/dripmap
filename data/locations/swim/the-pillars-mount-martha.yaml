@@ -12,8 +12,10 @@ description: A unique Mediterranean-style cliff-jumping spot on the Mornington P
   for sunbathing between jumps. Accessed via a small track from the Esplanade, the golden sandstone pillars and vivid water
   create a striking, almost European atmosphere.
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Mount_Martha_sign.jpg/960px-Mount_Martha_sign.jpg
+
   alt: Cliff jumping at The Pillars, Mount Martha
+  credit: "Wikipedia"
 highlights:
 - Cliff jumping from sandstone ledges at various heights
 - Deep, clear green-blue water below the cliffs

@@ -11,8 +11,10 @@ description: Jackson's Point is a popular swimming and recreation area on the sh
   With a maximum depth of 40 metres and surface area of over 20,000 hectares when full, it offers vast open-water swimming,
   boating, and fishing.
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Albury_from_Monument_Hill_5.jpg/960px-Albury_from_Monument_Hill_5.jpg
+
   alt: Lake Hume at Jacksons Point swimming hole in Victoria, Australia
+  credit: "Wikipedia"
 highlights:
 - One of Australia's largest inland reservoirs
 - Vast open-water swimming and boating

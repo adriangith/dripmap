@@ -11,8 +11,10 @@ description: 'The best of both worlds at Cobram, with a swim in the River Murray
 
   '
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Map_of_the_Murray_River%2C_south-eastern_Australia.tif/lossless-page1-960px-Map_of_the_Murray_River%2C_south-eastern_Australia.tif.png
+
   alt: River Murray at Thompsons Beach, Cobram swimming hole in Victoria, Australia
+  credit: "Wikipedia"
 highlights:
 - Shallow entry makes it suitable for families
 - Cafe on site for post-swim refreshments

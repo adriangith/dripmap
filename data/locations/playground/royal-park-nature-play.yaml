@@ -13,8 +13,9 @@ description: >
   and explore in a more natural setting. Set within the beautiful Royal
   Park with views of the city skyline.
 photos:
-  - url: /images/placeholder.jpg
+  - url: https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Royal_Park_Melbourne.jpg/960px-Royal_Park_Melbourne.jpg
     alt: Royal Park Nature Play Playground in Parkville
+    credit: "Takver at English Wikipedia"
 highlights:
   - Nature-based play with ropes, wood and rocks
   - Set within Royal Park with city views

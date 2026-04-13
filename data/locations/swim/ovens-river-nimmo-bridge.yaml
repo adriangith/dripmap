@@ -12,8 +12,10 @@ description: 'A dramatic swimming spot near Myrtleford where a long, diagonal ch
 
   '
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/WangarattaOvensRiver.JPG/960px-WangarattaOvensRiver.JPG
+
   alt: Ovens River at Nimmo Bridge swimming hole in Victoria, Australia
+  credit: "Wikipedia"
 highlights:
 - The deep hole below the chute is exciting but be cautious of the current
 - The wider pool downstream is calmer and better for relaxed swimming

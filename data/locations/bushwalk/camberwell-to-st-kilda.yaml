@@ -14,8 +14,9 @@ description: >
   down to the St Kilda foreshore. End with sunset views from St Kilda
   Pier.
 photos:
-  - url: /images/placeholder.jpg
+  - url: https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Melbourne_%28AU%29%2C_St_Kilda_Beach_--_2019_--_1590.jpg/960px-Melbourne_%28AU%29%2C_St_Kilda_Beach_--_2019_--_1590.jpg
     alt: St Kilda Pier at sunset
+    credit: "Dietmar Rabich"
 highlights:
   - Leafy Hawthorn back-streets
   - Yarra Trail riverside section

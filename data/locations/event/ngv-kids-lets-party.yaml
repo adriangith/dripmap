@@ -13,8 +13,9 @@ description: >
   installations inspired by fashion and celebration. The NGV regularly runs
   free family programs alongside its exhibitions.
 photos:
-  - url: /images/placeholder.jpg
+  - url: https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/National_Gallery_of_Victoria_from_Eurkea_Tower.jpg/960px-National_Gallery_of_Victoria_from_Eurkea_Tower.jpg
     alt: NGV Kids fashion exhibition
+    credit: "Lakeyboy at English Wikipedia"
 highlights:
   - Interactive dress-up and design activities
   - Free entry to NGV Australia

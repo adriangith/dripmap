@@ -12,8 +12,10 @@ description: 'Filled to the brim every spring, the water laps up against the san
 
   '
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Lakes_entrance_-_the_entrance.jpg/960px-Lakes_entrance_-_the_entrance.jpg
+
   alt: Lake Glenmaggie swimming hole in Victoria, Australia
+  credit: "Wikipedia"
 highlights:
 - Visit in spring when the lake is usually at its fullest
 - Lake can be drawn down significantly in summer

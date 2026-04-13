@@ -12,8 +12,10 @@ description: 'A former clay quarry near Ballarat that was filled with water in t
 
   '
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Ballarat_Town_Hall_2011_004.JPG/960px-Ballarat_Town_Hall_2011_004.JPG
+
   alt: Lake Esmond, Ballarat swimming hole in Victoria, Australia
+  credit: "Wikipedia"
 highlights:
 - Hosts local triathlon swimming events — good for open water training
 - Former quarry — water gets deep quickly

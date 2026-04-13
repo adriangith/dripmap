@@ -11,8 +11,10 @@ description: 'An ornamental lake on the outskirts of the historic gold mining to
 
   '
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Beechworth_panorama.jpg/960px-Beechworth_panorama.jpg
+
   alt: Lake Sambell, Beechworth swimming hole in Victoria, Australia
+  credit: "Wikipedia"
 highlights:
 - Two designated swimming beaches to choose from
 - Check current conditions as the lake has been drawn down for dam repairs

@@ -13,8 +13,10 @@ description: A hidden gem on the back beaches of the Mornington Peninsula, celeb
   the rugged coastline as you descend. The beach is much quieter than the bay-side beaches, offering a raw and untouched
   coastal experience.
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Welcome_to_Blairgowrie.jpg/960px-Welcome_to_Blairgowrie.jpg
+
   alt: Rock pools at Bridgewater Bay, Blairgowrie
+  credit: "Wikipedia"
 highlights:
 - Deep circular rock pools like natural bathtubs
 - Dramatic sandstone cliff amphitheatre

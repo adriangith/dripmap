@@ -12,8 +12,9 @@ description: >
   established elm trees providing excellent shade. The playground has
   modern equipment for a range of ages set among heritage gardens.
 photos:
-  - url: /images/placeholder.jpg
+  - url: https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Jacaranda_Flagstaff_Gardens%2C_Melbourne.jpg/960px-Jacaranda_Flagstaff_Gardens%2C_Melbourne.jpg
     alt: Flagstaff Gardens playground near Queen Victoria Market
+    credit: "a.canvas.of.light"
 highlights:
   - Closest playground to Queen Vic Market
   - Melbourne's oldest park with heritage elms

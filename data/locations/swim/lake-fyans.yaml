@@ -12,8 +12,10 @@ description: 'Lake Fyans has two main swimming beaches with gently sloping, sand
 
   '
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/en/5/55/View_over_Stawell_Victoria_from_Big_Hill_Lookout.png
+
   alt: Lake Fyans swimming hole in Victoria, Australia
+  credit: "Wikipedia"
 highlights:
 - Two swimming beaches with sandy shores
 - Warm tea-coloured water from the surrounding bushland

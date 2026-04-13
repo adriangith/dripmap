@@ -12,8 +12,10 @@ description: 'A roadside picnic area on the way to Metung in the Gippsland Lakes
 
   '
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/GreatAlpineRd%2C-Bruthen%2C-Vic.jpg/960px-GreatAlpineRd%2C-Bruthen%2C-Vic.jpg
+
   alt: Tambo River at Sardine Flat swimming hole in Victoria, Australia
+  credit: "Wikipedia"
 highlights:
 - Roadside location makes it an easy stop on the way to Metung
 - Deep water — suitable for confident swimmers

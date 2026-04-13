@@ -14,8 +14,9 @@ description: >
   back-streets finishing at Parliament station. One of Melbourne's best
   creek-side urban trails.
 photos:
-  - url: /images/placeholder.jpg
+  - url: https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Preston_swing_bridge_for_Merri_Creek_Trail_%2845740749374%29.jpg/960px-Preston_swing_bridge_for_Merri_Creek_Trail_%2845740749374%29.jpg
     alt: Merri Creek trail through Melbourne's inner north
+    credit: "Philip Mallis from Melbourne"
 highlights:
   - Breakfast at CERES Community Environment Park
   - Leafy creek-side trail through inner north

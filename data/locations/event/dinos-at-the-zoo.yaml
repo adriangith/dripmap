@@ -13,8 +13,9 @@ description: >
   animals, join fossil-digging activities, and learn about prehistoric
   creatures through interactive displays.
 photos:
-  - url: /images/placeholder.jpg
+  - url: https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Aerial_panorama_of_Parkville%2C_and_the_Melbourne_Zoo.jpg/960px-Aerial_panorama_of_Parkville%2C_and_the_Melbourne_Zoo.jpg
     alt: Animatronic dinosaurs at Werribee Open Range Zoo
+    credit: "BobTanGo"
 highlights:
   - Life-sized animatronic dinosaurs on safari trail
   - Fossil-digging activities for kids

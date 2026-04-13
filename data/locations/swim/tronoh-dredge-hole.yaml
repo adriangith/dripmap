@@ -12,8 +12,10 @@ description: 'A picturesque lake and former mining dredge hole hidden in the for
 
   '
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/EldoradoMainStreet.JPG/960px-EldoradoMainStreet.JPG
+
   alt: Tronoh Dredge Hole, Harrietville swimming hole in Victoria, Australia
+  credit: "Wikipedia"
 highlights:
 - Check for algal bloom warnings before swimming
 - Swimming pontoon available in the lake

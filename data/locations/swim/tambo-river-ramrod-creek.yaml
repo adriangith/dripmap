@@ -12,8 +12,10 @@ description: 'One of the best swimming holes in Gippsland, readily accessible fr
 
   '
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Tambo-River%2C-Devils-Backbone%2C-NE%2C-23.05.2009.jpg/960px-Tambo-River%2C-Devils-Backbone%2C-NE%2C-23.05.2009.jpg
+
   alt: Tambo River at Ramrod Creek swimming hole in Victoria, Australia
+  credit: "Wikipedia"
 highlights:
 - Deep pool for jumping and snorkelling, shallow water upstream for splashing
 - One of the best swimming holes in Gippsland

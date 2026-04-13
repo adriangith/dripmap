@@ -14,8 +14,9 @@ description: >
   town of Williamstown. A full-day adventure showcasing Melbourne's
   underrated west.
 photos:
-  - url: /images/placeholder.jpg
+  - url: https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Maribyrnong_River_viaduct_bridge.jpg/960px-Maribyrnong_River_viaduct_bridge.jpg
     alt: Maribyrnong River trail in Melbourne's west
+    credit: "DocklandsTony"
 highlights:
   - Scenic Maribyrnong River valley
   - Footscray's vibrant food scene for lunch

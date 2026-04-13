@@ -12,8 +12,10 @@ description: >
   of Melbourne's beautiful city. The gardens are tucked behind the
   Melbourne Museum and Royal Exhibition Building, a World Heritage site.
 photos:
-  - url: /images/placeholder.jpg
+  - url: https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Carlton_gardens_panorama.jpg/960px-Carlton_gardens_panorama.jpg
     alt: Carlton Gardens playground behind Melbourne Museum
+    credit: "fir0002  flagstaffotos [at] gmail.com
+		Canon 20D + Tamron 28-75mm f/2.8"
 highlights:
   - Two playgrounds in one location
   - Behind Melbourne Museum and Exhibition Building

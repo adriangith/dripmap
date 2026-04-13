@@ -12,8 +12,10 @@ description: 'A former quarry that has been converted into a recreational lake, 
 
   '
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Mt_Dandenong_from_Mooroolbark.jpg/960px-Mt_Dandenong_from_Mooroolbark.jpg
+
   alt: Quarry Reserve, Ferntree Gully swimming hole in Victoria, Australia
+  credit: "Wikipedia"
 highlights:
 - Check for algal bloom warnings before swimming
 - Adventure playground and barbecues available for families

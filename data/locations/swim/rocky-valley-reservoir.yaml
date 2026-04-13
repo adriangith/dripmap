@@ -12,8 +12,10 @@ description: 'On the mountain plain near Falls Creek alpine resort, this is swim
 
   '
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Rocky_Valley_Dam_-_panoramio.jpg/960px-Rocky_Valley_Dam_-_panoramio.jpg
+
   alt: Rocky Valley Reservoir swimming hole in Victoria, Australia
+  credit: "Wikipedia"
 highlights:
 - Water is extremely cold — wetsuits highly recommended
 - Spectacular high-altitude scenery

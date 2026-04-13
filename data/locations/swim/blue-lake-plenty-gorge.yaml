@@ -10,8 +10,10 @@ description: A striking blue-green lake in Plenty Gorge Park, just 25km north of
   minerals in the soil of this former quarry. The surrounding parkland is home to kangaroos, echidnas, and over 100 species
   of birds. Walking and cycling trails wind through the gorge along the Plenty River.
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/commons/b/bb/Plentyriver.png
+
   alt: Blue Lake, Plenty Gorge swimming hole in Victoria, Australia
+  credit: "Wikipedia"
 highlights:
 - Vivid blue-green water in a former quarry
 - Just 25km from Melbourne CBD

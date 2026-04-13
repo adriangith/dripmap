@@ -14,8 +14,9 @@ description: >
   the river to Fed Square. Can be shortened to Fairfield to Abbotsford
   Convent for a gentler outing.
 photos:
-  - url: /images/placeholder.jpg
+  - url: https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Melbourne_Docklands_-_Yarras_Edge_-_marina_panorama.jpg/960px-Melbourne_Docklands_-_Yarras_Edge_-_marina_panorama.jpg
     alt: Yarra River trail between Fairfield and the city
+    credit: "Diliff"
 highlights:
   - Breakfast at Fairfield Boathouse
   - Dights Falls and Abbotsford Convent

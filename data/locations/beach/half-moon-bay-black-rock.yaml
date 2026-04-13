@@ -12,8 +12,10 @@ description: A crescent-shaped bay in Black Rock offering a rare chance to swim 
   and snorkellers, who explore the marine life around the wreck and the nearby jetty. The bay is well-sheltered by the Cerberus
   and the surrounding cliffs, making it calm even on windy days.
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Cerebrus_at_Dusk.jpg/960px-Cerebrus_at_Dusk.jpg
+
   alt: HMVS Cerberus shipwreck at Half Moon Bay
+  credit: "Wikipedia"
 highlights:
 - HMVS Cerberus 19th-century shipwreck as breakwater
 - Sheltered crescent-shaped bay ideal for families

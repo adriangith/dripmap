@@ -10,8 +10,10 @@ description: A beautiful alpine lake at 1,300 metres elevation in Mount Buffalo 
   after engineer Carlo Catani. The 15-hectare reservoir features a golden granite floor, its own sandy beach, a jetty, and
   three designated swimming areas. Camp among wombats on the shoreline and explore Snow Gum forests on the Lakeside Walk.
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Mt_buffalo_plateau.jpg/960px-Mt_buffalo_plateau.jpg
+
   alt: Lake Catani swimming hole in Victoria, Australia
+  credit: "Wikipedia"
 highlights:
 - Alpine lake at 1,300m elevation in Mount Buffalo National Park
 - Sandy beach with golden granite lake floor

@@ -12,8 +12,10 @@ description: 'A large, north-facing irrigation storage near Myrtleford with oodl
 
   '
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Mt_buffalo_plateau.jpg/960px-Mt_buffalo_plateau.jpg
+
   alt: Lake Buffalo swimming hole in Victoria, Australia
+  credit: "Wikipedia"
 highlights:
 - Visit in late spring or early summer when the lake is usually close to full
 - Swimming areas on both sides of the lake — explore both

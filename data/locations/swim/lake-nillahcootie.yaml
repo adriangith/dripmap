@@ -12,8 +12,10 @@ description: 'A flat, shallow, north-facing lake at relatively low elevation tha
 
   '
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Mansfield_Police_Memorial_and_Mansfield_Hotel.JPG/960px-Mansfield_Police_Memorial_and_Mansfield_Hotel.JPG
+
   alt: Lake Nillahcootie swimming hole in Victoria, Australia
+  credit: "Wikipedia"
 highlights:
 - Warms up earlier than most Victorian reservoirs — great for spring swimming
 - Shallow lake with gradual entry — suitable for families

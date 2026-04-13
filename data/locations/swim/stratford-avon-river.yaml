@@ -12,8 +12,10 @@ description: 'The Avon River meanders through wide pebbly beaches either side of
 
   '
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Stratford_main_shopping_strip_-_April_2021.jpg/960px-Stratford_main_shopping_strip_-_April_2021.jpg
+
   alt: Stratford upon Avon swimming hole in Victoria, Australia
+  credit: "Wikipedia"
 highlights:
 - Great rest stop on the drive between Melbourne and Bairnsdale
 - Wide pebbly beaches for picnics and paddling

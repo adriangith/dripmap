@@ -11,8 +11,10 @@ description: The Lerderderg River has carved a deep and picturesque gorge throug
   the river at popular spots like Mackenzies Flat or O'Briens Crossing, then follow old water races and hike part of the Great
   Dividing Trail.
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/BacchusMarshLerderdergRiver.JPG/960px-BacchusMarshLerderdergRiver.JPG
+
   alt: Lerderderg Gorge at Grahams Dam swimming hole in Victoria, Australia
+  credit: "Wikipedia"
 highlights:
 - Deep picturesque gorge just an hour from Melbourne
 - Feels truly remote despite proximity to city

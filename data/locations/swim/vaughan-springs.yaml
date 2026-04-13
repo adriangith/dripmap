@@ -11,8 +11,10 @@ description: A peaceful mineral springs reserve along the Loddon River near the 
   swimming spot in warmer months. The surrounding bushland is rich with gold-rush era history and remnants of the 1850s mining
   settlement.
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Vaughan_river%2C_Vaughan_Victoria_Australia.jpg/960px-Vaughan_river%2C_Vaughan_Victoria_Australia.jpg
+
   alt: Vaughan Springs swimming hole in Victoria, Australia
+  credit: "Wikipedia"
 highlights:
 - Natural mineral springs bubbling up from underground
 - Swimming in the Loddon River

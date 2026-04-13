@@ -14,8 +14,9 @@ description: >
   Stop for coffee on Lygon Street before finishing through Princes Park and
   Royal Park.
 photos:
-  - url: /images/placeholder.jpg
+  - url: https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Royal_Botanic_Gardens_Melbourne_Guilfoyle%27s_Volcano_pano_2017.jpg/960px-Royal_Botanic_Gardens_Melbourne_Guilfoyle%27s_Volcano_pano_2017.jpg
     alt: Royal Botanic Gardens along Steve's Great Parks Hike in Melbourne
+    credit: "Wpcpey"
 highlights:
   - Royal Botanic Gardens and MCG precinct
   - Carlton Gardens and Royal Exhibition Building

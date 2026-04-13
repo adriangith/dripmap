@@ -11,8 +11,10 @@ description: 'A former town water supply reservoir near Ballan sitting silently 
 
   '
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/commons/2/2c/Daylesfordsnow.jpg
+
   alt: Colbrook Reservoir swimming hole in Victoria, Australia
+  credit: "Wikipedia"
 highlights:
 - Usually full even in summer — reliable water levels
 - Great for long lap swimming — 200 metre laps possible

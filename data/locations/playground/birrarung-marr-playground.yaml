@@ -12,8 +12,9 @@ description: >
   during a city adventure. Features climbing equipment and slides with
   the Yarra River and city skyline as a backdrop.
 photos:
-  - url: /images/placeholder.jpg
+  - url: https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Birrarung_Marr_pedestrian_bridge.jpg/960px-Birrarung_Marr_pedestrian_bridge.jpg
     alt: Birrarung Marr Playground in Melbourne CBD
+    credit: "R Jones at English Wikipedia"
 highlights:
   - Central city location near Fed Square
   - Yarra River and city skyline backdrop

@@ -11,8 +11,10 @@ description: 'The St George River meanders through a wide, flat sand bar on its 
 
   '
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/2009-0825-GreatOceanRoadsign.jpg/960px-2009-0825-GreatOceanRoadsign.jpg
+
   alt: St George River Estuary, Lorne swimming hole in Victoria, Australia
+  credit: "Wikipedia"
 highlights:
 - Shallow, gentle river — great for children and wading
 - Wide sand bar perfect for picnics and relaxing

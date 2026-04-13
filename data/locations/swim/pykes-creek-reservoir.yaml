@@ -12,8 +12,10 @@ description: 'Swimmer''s Cove is the designated swimming area at Pykes Creek Res
 
   '
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Ballan_Inglis_St_001.JPG/960px-Ballan_Inglis_St_001.JPG
+
   alt: Pykes Creek Reservoir swimming hole in Victoria, Australia
+  credit: "Wikipedia"
 highlights:
 - Pick a quiet weekday to avoid jet ski noise
 - Check for algal bloom warnings before visiting

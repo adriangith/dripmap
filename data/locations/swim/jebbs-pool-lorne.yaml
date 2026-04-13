@@ -12,8 +12,10 @@ description: 'Cross the Cumberland River on stepping stones to reach this bush p
 
   '
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/LorneVictoriaDec122024_03.jpg/960px-LorneVictoriaDec122024_03.jpg
+
   alt: Jebbs Pool, Lorne swimming hole in Victoria, Australia
+  credit: "Wikipedia"
 highlights:
 - Only a kilometre from the Great Ocean Road — easy side trip
 - Rock slide into the pool adds fun for adventurous swimmers

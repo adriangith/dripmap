@@ -12,8 +12,10 @@ description: 'An icy cold swimming pool within the Buchan Caves Reserve that fil
 
   '
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/commons/8/82/FairyCave_BuchanVictoria.jpg
+
   alt: Buchan Caves Reserve swimming hole in Victoria, Australia
+  credit: "Wikipedia"
 highlights:
 - Water is icy cold — only bearable on the hottest days
 - Combine with a guided cave tour at Buchan Caves

@@ -10,8 +10,10 @@ description: Natural rock pools along the rugged Bass Strait coastline at Sorren
   At low tide, these pools become calm, sheltered swimming spots perfect for families with young children, while the surrounding
   rock platforms offer excellent snorkelling opportunities. The pools are surrounded by dramatic coastal limestone formations.
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/commons/0/06/Sorrento_beach_melbourne_b.jpg
+
   alt: Sorrento rock pools at low tide
+  credit: "Wikipedia"
 highlights:
 - Natural rock pools sheltered from Bass Strait surf
 - Perfect for families with young children at low tide

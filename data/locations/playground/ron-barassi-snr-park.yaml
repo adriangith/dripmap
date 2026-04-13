@@ -12,8 +12,9 @@ description: >
   big open park with soccer and footy goals. The industrial bridge backdrop
   makes it feel uniquely Melbourne.
 photos:
-  - url: /images/placeholder.jpg
+  - url: https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Ron_Barassi_Senior_park_from_above.jpg/960px-Ron_Barassi_Senior_park_from_above.jpg
     alt: Ron Barassi Snr Park playground in Docklands
+    credit: "Bob Tan"
 highlights:
   - Water play and sand play areas
   - Under the Bolte Bridge — unique setting

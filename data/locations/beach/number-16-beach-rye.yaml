@@ -13,8 +13,10 @@ description: A rugged "back beach" near Rye on the Mornington Peninsula, known f
   bay-side beaches, Number Sixteen offers a raw, untouched coastal experience with some of the peninsula's most dramatic
   geological formations.
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Kitesurfing_Rye_Australia_DSC_1990.JPG/960px-Kitesurfing_Rye_Australia_DSC_1990.JPG
+
   alt: Rock shelf and wave waterfalls at Number Sixteen Beach
+  credit: "Wikipedia"
 highlights:
 - Wave-created "waterfalls" over the rock shelf
 - Sea caves and deep rock pools at low tide

@@ -11,8 +11,10 @@ description: A unique natural mineral spring in the Hepburn Mineral Springs Rese
   springs to taste, walking trails through native bushland, and the historic Hepburn Bathhouse & Spa nearby for a full spa
   country experience.
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/commons/6/62/Main_Rd_Hepburn_Springs.jpg
+
   alt: The Blowhole, Hepburn Springs swimming hole in Victoria, Australia
+  credit: "Wikipedia"
 highlights:
 - Naturally carbonated mineral water bubbling from rock
 - Multiple mineral springs to taste in the reserve

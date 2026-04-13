@@ -12,8 +12,10 @@ description: 'A small weir backs up the flow of water to create a long, deep riv
 
   '
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/1_bright_victoria_aerial_panorama_2018.jpg/960px-1_bright_victoria_aerial_panorama_2018.jpg
+
   alt: Ovens River at Porepunkah Riverside Park swimming hole in Victoria, Australia
+  credit: "Wikipedia"
 highlights:
 - Try lap swimming against the gentle current for a workout
 - Toddler pool in the playground for young children

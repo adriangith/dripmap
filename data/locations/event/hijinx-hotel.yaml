@@ -13,8 +13,9 @@ description: >
   kids of various ages. It's part escape room, part interactive playground,
   and all fun.
 photos:
-  - url: /images/placeholder.jpg
+  - url: https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/The_Punisher_Human_Statue_Bodyart_Bodypainting_%289104619043%29.jpg/960px-The_Punisher_Human_Statue_Bodyart_Bodypainting_%289104619043%29.jpg
     alt: Hijinx Hotel interactive experience QV Melbourne
+    credit: "Eva Rinaldi"
 highlights:
   - Themed interactive puzzle rooms
   - Suitable for a range of ages

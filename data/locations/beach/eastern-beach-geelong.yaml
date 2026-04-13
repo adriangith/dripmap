@@ -12,8 +12,10 @@ description: A beautifully restored 1930s seaside precinct on the Geelong waterf
   reserve features manicured lawns, a separate children's pool, a vintage carousel, and sweeping views across Corio Bay. It
   is one of the finest examples of inter-war seaside architecture in Australia.
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Geelong_Town_Hall_%28cropped%29.JPG/960px-Geelong_Town_Hall_%28cropped%29.JPG
+
   alt: Eastern Beach seawater pool and Art Deco promenade
+  credit: "Wikipedia"
 highlights:
 - Enclosed 1930s seawater pool with shark-proof netting
 - Multi-level diving tower and floating platforms

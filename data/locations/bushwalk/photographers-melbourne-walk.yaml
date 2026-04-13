@@ -14,8 +14,9 @@ description: >
   Hosier Lane and Degraves Street. Finish at Federation Square. Perfect
   for capturing Melbourne's character.
 photos:
-  - url: /images/placeholder.jpg
+  - url: https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Melbourne_%28AU%29%2C_Melbourne_City_Centre_--_2019_--_1493-7.jpg/960px-Melbourne_%28AU%29%2C_Melbourne_City_Centre_--_2019_--_1493-7.jpg
     alt: Morrell Bridge over the Yarra on the Photographer's Melbourne Walk
+    credit: "Dietmar Rabich"
 highlights:
   - Morrell Bridge and Yarra riverside
   - Hosier Lane street art

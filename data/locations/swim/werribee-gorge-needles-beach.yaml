@@ -11,8 +11,10 @@ description: A dramatic swimming spot at the bottom of Werribee Gorge, a 200-met
   with a secluded river swimming hole surrounded by ancient geological formations. Near Bacchus Marsh, just an hour west of
   Melbourne.
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/WerribeeGorgeStatePark.JPG/960px-WerribeeGorgeStatePark.JPG
+
   alt: Werribee Gorge at Needles Beach swimming hole in Victoria, Australia
+  credit: "Wikipedia"
 highlights:
 - Secluded swimming hole in a 200m deep gorge
 - Dramatic geological formations over 400 million years old

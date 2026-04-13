@@ -12,8 +12,9 @@ description: >
   summer. Over 40 food stalls from Melbourne's best restaurants and pop-ups,
   plus bars, DJs, and a rotating lineup of live acts.
 photos:
-  - url: /images/placeholder.jpg
+  - url: https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/AUS_Melbourne%2C_Central_Business_District%2C_Victoria_Street_004.jpg/960px-AUS_Melbourne%2C_Central_Business_District%2C_Victoria_Street_004.jpg
     alt: Queen Victoria Night Market food stalls
+    credit: "-wuppertaler"
 highlights:
   - 40+ street food stalls from Melbourne's best
   - Live music and DJs every week

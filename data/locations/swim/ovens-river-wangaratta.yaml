@@ -11,8 +11,10 @@ description: 'Two steep, sandy beaches leading down to deep, slow-moving water o
 
   '
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/WingsOverWangaratta.jpg/960px-WingsOverWangaratta.jpg
+
   alt: Ovens River at Northern Beaches, Wangaratta swimming hole in Victoria, Australia
+  credit: "Wikipedia"
 highlights:
 - Watch for submerged snags in the water
 - Rope swings available from overhanging trees — use with caution

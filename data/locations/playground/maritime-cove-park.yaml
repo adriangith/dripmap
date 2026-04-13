@@ -12,8 +12,9 @@ description: >
   structure, climbing nets, slides and water play. The seaside theme
   makes it feel like an adventure on the high seas.
 photos:
-  - url: /images/placeholder.jpg
+  - url: https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Docklands_Park-Harbour_Esp_%28Docklands%29.jpg/960px-Docklands_Park-Harbour_Esp_%28Docklands%29.jpg
     alt: Maritime Cove Community Park in Port Melbourne
+    credit: "Vanbasten 23"
 highlights:
   - Marine-themed play equipment
   - Ship structure and climbing nets

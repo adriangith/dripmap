@@ -12,8 +12,10 @@ description: >
   design, giving it the feel of a fairy garden amongst a forest. One
   of Melbourne's most atmospheric playgrounds.
 photos:
-  - url: /images/placeholder.jpg
+  - url: https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Carlton_gardens_panorama.jpg/960px-Carlton_gardens_panorama.jpg
     alt: Lincoln Square playground among Moreton Bay figs in Carlton
+    credit: "fir0002  flagstaffotos [at] gmail.com
+		Canon 20D + Tamron 28-75mm f/2.8"
 highlights:
   - 150-year-old Moreton Bay fig trees
   - Fairy garden atmosphere

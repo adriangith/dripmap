@@ -12,8 +12,10 @@ description: 'A broad swimming hole with a calm backwater on a sweeping elbow be
 
   '
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/MarysvilleMainStreet.JPG/960px-MarysvilleMainStreet.JPG
+
   alt: Black Duck Hole, Anglers Rest swimming hole in Victoria, Australia
+  credit: "Wikipedia"
 highlights:
 - Remote location — let someone know your plans before visiting
 - Calm backwater area is great for relaxed swimming

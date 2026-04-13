@@ -10,8 +10,9 @@ description: >
   Recently refurbished with a new beach for swimming and barbecue facilities near Ballarat. St George's Lake in Creswick
   offers a tranquil swim with clear, deep water set against a backdrop of pine forest and native bush.
 photos:
-  - url: /images/placeholder.jpg
+  - url: https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Aerial_perspective_of_St_Georges_Lake_in_Creswick.jpg/960px-Aerial_perspective_of_St_Georges_Lake_in_Creswick.jpg
     alt: St George's Lake, Creswick swimming hole in Victoria, Australia
+    credit: "Bob T"
 highlights:
   - Recently refurbished beach and facilities
   - Clear, deep water for swimming

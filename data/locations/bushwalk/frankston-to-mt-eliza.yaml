@@ -13,8 +13,9 @@ description: >
   and finish at the charming Mt Eliza village. Features a mix of beach,
   cliff-top paths, and tea-tree bushland.
 photos:
-  - url: /images/placeholder.jpg
+  - url: https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Frankston_coastline_facing_north_towards_Melbourne.jpg/960px-Frankston_coastline_facing_north_towards_Melbourne.jpg
     alt: Coastal trail from Frankston to Mt Eliza
+    credit: "BobTanGo"
 highlights:
   - Frankston Pier and foreshore
   - Cliff-top views over Davey's Bay

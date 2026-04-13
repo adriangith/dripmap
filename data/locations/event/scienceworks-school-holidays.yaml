@@ -12,8 +12,9 @@ description: >
   kids. The permanent exhibitions include the Lightning Room high-voltage show,
   Sportsworks, and the Planetarium. Special holiday programs change each term.
 photos:
-  - url: /images/placeholder.jpg
+  - url: https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Scienceworks_Museum.jpg/960px-Scienceworks_Museum.jpg
     alt: Scienceworks museum during school holidays
+    credit: "User:Wai Hong"
 highlights:
   - Lightning Room live electricity show
   - Hands-on science workshops for kids

@@ -12,8 +12,10 @@ description: 'A reservoir in the Latrobe Valley with a designated swimming area 
 
   '
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Moe_001.jpg/960px-Moe_001.jpg
+
   alt: Blue Rock Lake swimming hole in Victoria, Australia
+  credit: "Wikipedia"
 highlights:
 - The western picnic area has the best swimming access
 - Gradual entry into the water — suitable for families

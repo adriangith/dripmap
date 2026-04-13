@@ -13,8 +13,9 @@ description: >
   and nautical-themed fun for the whole family along the beautiful
   waterfront.
 photos:
-  - url: /images/placeholder.jpg
+  - url: https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Williamstown_Railway_Station_June_2014.jpg/960px-Williamstown_Railway_Station_June_2014.jpg
     alt: PirateFest at Williamstown foreshore
+    credit: "Nick-D"
 highlights:
   - Pirate-themed performances and treasure hunts
   - Face painting and craft activities

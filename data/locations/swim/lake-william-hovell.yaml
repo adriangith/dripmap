@@ -12,8 +12,10 @@ description: 'A jet-ski and motor boat free lake at the top of the King River Va
 
   '
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/William_Hilton_Hovell_1871_SLNSW_FL3316243.jpg/960px-William_Hilton_Hovell_1871_SLNSW_FL3316243.jpg
+
   alt: Lake William Hovell swimming hole in Victoria, Australia
+  credit: "Wikipedia"
 highlights:
 - No jet skis or motor boats — peaceful swimming guaranteed
 - Great for long-distance open water swimming

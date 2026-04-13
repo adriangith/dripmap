@@ -12,8 +12,10 @@ description: 'Affectionately known as ''The Res'', this lake on the upper reache
 
   '
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Mount_Macedon.jpg/960px-Mount_Macedon.jpg
+
   alt: Macedon Reservoir swimming hole in Victoria, Australia
+  credit: "Wikipedia"
 highlights:
 - Known locally as 'The Res'
 - Lakeside shade keeps you cool in and out of the water

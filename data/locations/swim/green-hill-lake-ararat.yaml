@@ -12,8 +12,10 @@ description: 'A lake of contrasts for swimmers near Ararat that can quickly chan
 
   '
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Barkly_St_to_the_Grampians%2C_Ararat%2C_Vic%2C_jjron%2C_12.01.2011.jpg/960px-Barkly_St_to_the_Grampians%2C_Ararat%2C_Vic%2C_jjron%2C_12.01.2011.jpg
+
   alt: Green Hill Lake, Ararat swimming hole in Victoria, Australia
+  credit: "Wikipedia"
 highlights:
 - Two swimming beaches to choose from
 - Gold coin donation camping available by the water

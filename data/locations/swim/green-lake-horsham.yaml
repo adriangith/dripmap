@@ -12,8 +12,10 @@ description: 'One of four lakes dotted along the Western Highway east of Horsham
 
   '
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Horsham_street.jpg/960px-Horsham_street.jpg
+
   alt: Green Lake, Horsham swimming hole in Victoria, Australia
+  credit: "Wikipedia"
 highlights:
 - Long sandy beach — plenty of room to spread out
 - New sheltered barbecue facilities available

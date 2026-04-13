@@ -12,8 +12,10 @@ description: 'An exhilarating swimming spot on the Yarra River where a natural d
 
   '
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/AUS_Melbourne%2C_Melbourne%2C_Queensbridge_Square%2C_View_002.jpg/960px-AUS_Melbourne%2C_Melbourne%2C_Queensbridge_Square%2C_View_002.jpg
+
   alt: Yarra River at Bend of Islands swimming hole in Victoria, Australia
+  credit: "Wikipedia"
 highlights:
 - Only for experienced and strong swimmers due to dangerous rapids
 - Never swim alone at this isolated location

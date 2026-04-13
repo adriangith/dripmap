@@ -12,8 +12,9 @@ description: >
   the heart of Melbourne. Features a playground, beautiful gardens,
   walking trails, a cafe, conservatory, and Captain Cook's Cottage.
 photos:
-  - url: /images/placeholder.jpg
+  - url: https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Waterfall_at_Fitzroy_Gardens%2C_Melbourne.jpg/960px-Waterfall_at_Fitzroy_Gardens%2C_Melbourne.jpg
     alt: Fitzroy Gardens playground in Melbourne
+    credit: "Shkuru Afshar"
 highlights:
   - Beautiful heritage gardens in the CBD
   - Playground plus conservatory and Cook's Cottage

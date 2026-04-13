@@ -10,8 +10,10 @@ description: An artificial lake in the heart of Daylesford spa country, designed
   Canberra) and completed in 1929. The calm, clear waters are surrounded by walking trails and mineral springs. Historic change
   rooms from the 1940s sit lakeside, and the charming cafes and galleries of Daylesford are just a short stroll away.
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Aerial_panorama_of_Lake_Daylesford.jpg/960px-Aerial_panorama_of_Lake_Daylesford.jpg
+
   alt: Lake Daylesford swimming hole in Victoria, Australia
+  credit: "Wikipedia"
 highlights:
 - Designed by Walter Burley Griffin, architect of Canberra
 - Calm, clear water ideal for family swimming

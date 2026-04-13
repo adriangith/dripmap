@@ -12,8 +12,10 @@ description: 'A former rural water supply reservoir in the Castlemaine Diggings 
 
   '
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Castlemaine_Town_Hall_2023_%28cropped%29.jpg/960px-Castlemaine_Town_Hall_2023_%28cropped%29.jpg
+
   alt: Expedition Pass Reservoir swimming hole in Victoria, Australia
+  credit: "Wikipedia"
 highlights:
 - Water gets deep quickly — suitable for confident swimmers
 - A flotation device is recommended for open water swimming

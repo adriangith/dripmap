@@ -11,8 +11,10 @@ description: 'Set in a dry and thinly forested section of the Lerderderg State P
 
   '
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/BlackwoodHotel2.JPG/960px-BlackwoodHotel2.JPG
+
   alt: Shaws Lake, Blackwood swimming hole in Victoria, Australia
+  credit: "Wikipedia"
 highlights:
 - Temperature layers — warm on surface, icy below
 - Keep your legs up near the surface for warmth

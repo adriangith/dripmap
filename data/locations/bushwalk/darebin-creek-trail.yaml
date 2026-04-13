@@ -13,8 +13,9 @@ description: >
   of Melbourne's most underrated trails, especially peaceful on weekday
   mornings.
 photos:
-  - url: /images/placeholder.jpg
+  - url: https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Darebin_Creek_Trail_near_bridge_over_Darebin_Creek_at_Smith_Street%2C_Alphington.jpg/960px-Darebin_Creek_Trail_near_bridge_over_Darebin_Creek_at_Smith_Street%2C_Alphington.jpg
     alt: Tree-lined Darebin Creek trail
+    credit: "Philip Mallis"
 highlights:
   - Peaceful creek-side trail
   - Darebin Parklands wildlife

@@ -12,8 +12,10 @@ description: 'An isolated, lakeside bush camping experience near Stawell in west
 
   '
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/en/5/55/View_over_Stawell_Victoria_from_Big_Hill_Lookout.png
+
   alt: Lake Lonsdale swimming hole in Victoria, Australia
+  credit: "Wikipedia"
 highlights:
 - Time your visit for when lake levels are adequate
 - Bush camping available at the lakeside — very peaceful

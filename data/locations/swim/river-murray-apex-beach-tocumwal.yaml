@@ -12,8 +12,10 @@ description: 'Probably the most popular beach near town on the Victorian side of
 
   '
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Tocumwal_Levee_Bank.JPG/960px-Tocumwal_Levee_Bank.JPG
+
   alt: River Murray at Apex Beach, Tocumwal swimming hole in Victoria, Australia
+  credit: "Wikipedia"
 highlights:
 - The sheltered inlet is safer for less experienced swimmers
 - Shaded campsites available nearby

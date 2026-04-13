@@ -10,8 +10,10 @@ description: A striking horseshoe-shaped waterfall on the Campaspe River near Ky
   The falls drop around 15 metres into a deep swimming hole surrounded by basalt columns — a popular summer swimming spot
   for locals. The area has significant Aboriginal heritage as a traditional meeting place.
 photos:
-- url: /images/placeholder.jpg
+- url: https://upload.wikimedia.org/wikipedia/commons/d/d4/PiperStKyneton.jpg
+
   alt: Turpins Falls, Kyneton swimming hole in Victoria, Australia
+  credit: "Wikipedia"
 highlights:
 - Dramatic 15m horseshoe-shaped waterfall
 - Deep swimming hole surrounded by basalt columns
