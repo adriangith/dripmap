@@ -39,7 +39,7 @@ export default function LocationCard({
   const cardContent = (
     <>
       {photo && (
-        <div className="relative w-full h-20 -mb-2">
+        <div className="relative w-full h-24">
           <Image
             src={photo}
             alt=""
@@ -47,25 +47,31 @@ export default function LocationCard({
             className="object-cover"
             sizes="(max-width: 768px) 100vw, 400px"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white dark:to-gray-800" />
-        </div>
-      )}
-      <div className="p-3">
-        <div className="flex items-start justify-between gap-2">
-          <div className="min-w-0 flex-1">
-            <h3 className="font-semibold text-gray-900 dark:text-gray-100 truncate">{location.name}</h3>
-            <div className="flex items-center gap-2 mt-1">
-              <TypeBadge type={location.type} showLabel={false} />
-              <span className="text-sm text-gray-500 dark:text-gray-400">{location.country}</span>
-              {distance && (
-                <span className="text-xs text-blue-600 font-medium">{distance}</span>
-              )}
-              <CostIndicator cost={location.cost} />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent via-40% to-black/70" />
+          <div className="absolute bottom-0 left-0 right-0 px-3 pb-1.5 flex items-end justify-between gap-2">
+            <h3 className="font-semibold text-white truncate text-sm drop-shadow-sm">{location.name}</h3>
+            <div className="shrink-0">
+              <StatusBadge status={location.status.site} />
             </div>
           </div>
-          <div className="flex flex-col items-end gap-1 shrink-0">
-            <StatusBadge status={location.status.site} />
+        </div>
+      )}
+      <div className="p-3 pt-1.5">
+        {!photo && (
+          <div className="flex items-start justify-between gap-2 mb-1">
+            <h3 className="font-semibold text-gray-900 dark:text-gray-100 truncate">{location.name}</h3>
+            <div className="shrink-0">
+              <StatusBadge status={location.status.site} />
+            </div>
           </div>
+        )}
+        <div className="flex items-center gap-2">
+          <TypeBadge type={location.type} showLabel={false} />
+          <span className="text-sm text-gray-500 dark:text-gray-400">{location.country}</span>
+          {distance && (
+            <span className="text-xs text-blue-600 font-medium">{distance}</span>
+          )}
+          <CostIndicator cost={location.cost} />
         </div>
         {location.highlights.length > 0 ? (
           <p className="text-sm text-gray-600 dark:text-gray-400 mt-1.5 line-clamp-1">
