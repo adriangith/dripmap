@@ -52,9 +52,7 @@ function costScore(placeCost: string, filter: string): number {
   switch (filter) {
     case "free":
       return placeRank === 0 ? 0 : -placeRank * 10;
-    case "free-$":
-      return placeRank <= 1 ? 0 : -(placeRank - 1) * 10;
-    case "$$-under":
+    case "affordable":
       return placeRank <= 2 ? 0 : -(placeRank - 2) * 10;
     default:
       return 0;

@@ -13,8 +13,7 @@ const DISTANCE_PHRASES: Record<string, string> = {
 
 const COST_ADJECTIVE: Record<string, string> = {
   free: "free",
-  "free-$": "cheap",
-  "$$-under": "budget-friendly",
+  affordable: "affordable",
 };
 
 const DURATION_PHRASES: Record<string, string> = {

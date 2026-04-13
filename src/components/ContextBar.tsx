@@ -23,8 +23,7 @@ const DISTANCE_OPTIONS: { value: DistanceThreshold; label: string }[] = [
 
 const COST_OPTIONS: { value: CostFilter; label: string }[] = [
   { value: "free", label: "Free only" },
-  { value: "free-$", label: "Free — $" },
-  { value: "$$-under", label: "Under $$$" },
+  { value: "affordable", label: "Affordable" },
   { value: "any", label: "Any cost" },
 ];
 

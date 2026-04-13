@@ -65,16 +65,14 @@ const DISTANCE_OPTIONS: { value: DistanceThreshold; label: string }[] = [
 
 const COST_LABELS: Record<CostFilter, string> = {
   free: "free",
-  "free-$": "cheap",
-  "$$-under": "budget-friendly",
+  affordable: "affordable",
   any: "any budget",
 };
 
 const COST_OPTIONS: { value: CostFilter; label: string }[] = [
   { value: "any", label: "any budget" },
   { value: "free", label: "free" },
-  { value: "free-$", label: "cheap" },
-  { value: "$$-under", label: "budget-friendly" },
+  { value: "affordable", label: "affordable" },
 ];
 
 const DURATION_LABELS: Record<DurationFilter, string> = {

@@ -198,7 +198,7 @@ export interface Filters {
 // ── Constraints (discovery context) ─────────────────────────
 
 export type DistanceThreshold = "30min" | "1hr" | "2hr" | "daytrip" | "any";
-export type CostFilter = "free" | "free-$" | "$$-under" | "any";
+export type CostFilter = "free" | "affordable" | "any";
 export type DurationFilter = "quick" | "half-day" | "full-day" | "any";
 export type GroupType = "solo" | "adults" | "family-young" | "family-older" | "friends" | null;
 
