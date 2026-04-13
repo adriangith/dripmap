@@ -86,10 +86,72 @@ const validEvent = {
   },
 };
 
+const validEatery = {
+  slug: "test-restaurant",
+  name: "Test Restaurant",
+  type: "eatery",
+  coordinates: { lat: -37.8, lng: 144.9 },
+  region: "Victoria, Australia",
+  country: "AU",
+  description: "A test eatery.",
+  photos: [],
+  highlights: ["Great food"],
+  cost: "$$",
+  ageSuitability: { minAge: null, ideal: ["all-ages"] },
+  accessibility: "easy",
+  parking: "street",
+  facilities: ["highchairs"],
+  bestSeason: ["spring", "summer", "fall", "winter"],
+  directions: "Central Melbourne.",
+  tips: [],
+  tags: ["family-friendly"],
+  status: { site: "open", lastVerified: "2026-04-13" },
+  details: {
+    cuisine: ["restaurant"],
+    seating: "indoor",
+    booking: "recommended",
+    bookingUrl: "https://example.com/book",
+    dietaryOptions: ["vegetarian", "gluten-free"],
+    kidsMenu: false,
+  },
+};
+
 describe("validatePlace", () => {
   it("accepts a valid swim", () => { expect(validatePlace(validSwim)).toEqual([]); });
   it("accepts a valid beach", () => { expect(validatePlace(validBeach)).toEqual([]); });
   it("accepts a valid event", () => { expect(validatePlace(validEvent)).toEqual([]); });
+
+  it("accepts a valid eatery", () => { expect(validatePlace(validEatery)).toEqual([]); });
+
+  it("rejects eatery with invalid cuisine value", () => {
+    const bad = { ...validEatery, details: { ...validEatery.details, cuisine: ["sushi-train"] } };
+    expect(validatePlace(bad)).toContainEqual(expect.stringContaining("cuisine"));
+  });
+
+  it("rejects eatery with empty cuisine array", () => {
+    const bad = { ...validEatery, details: { ...validEatery.details, cuisine: [] } };
+    expect(validatePlace(bad)).toContainEqual(expect.stringContaining("cuisine"));
+  });
+
+  it("rejects eatery with invalid seating", () => {
+    const bad = { ...validEatery, details: { ...validEatery.details, seating: "standing" } };
+    expect(validatePlace(bad)).toContainEqual(expect.stringContaining("seating"));
+  });
+
+  it("rejects eatery with invalid booking", () => {
+    const bad = { ...validEatery, details: { ...validEatery.details, booking: "maybe" } };
+    expect(validatePlace(bad)).toContainEqual(expect.stringContaining("booking"));
+  });
+
+  it("rejects eatery with non-boolean kidsMenu", () => {
+    const bad = { ...validEatery, details: { ...validEatery.details, kidsMenu: "yes" } };
+    expect(validatePlace(bad)).toContainEqual(expect.stringContaining("kidsMenu"));
+  });
+
+  it("rejects eatery with invalid dietaryOptions value", () => {
+    const bad = { ...validEatery, details: { ...validEatery.details, dietaryOptions: ["keto"] } };
+    expect(validatePlace(bad)).toContainEqual(expect.stringContaining("dietaryOptions"));
+  });
 
   it("rejects missing required core fields", () => {
     const { slug, ...missing } = validSwim;

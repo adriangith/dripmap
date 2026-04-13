@@ -4,7 +4,7 @@ import * as yaml from "js-yaml";
 
 const VALID_TYPES = [
   "swim", "beach", "event", "bushwalk", "lookout", "waterfall",
-  "cave", "wildlife", "pool", "cycling", "fishing",
+  "cave", "wildlife", "pool", "cycling", "fishing", "eatery",
 ];
 const VALID_COST = ["free", "$", "$$", "$$$"];
 const VALID_SEASONS = ["spring", "summer", "fall", "winter"];
@@ -24,6 +24,15 @@ const VALID_CROWD_LEVEL = ["quiet", "moderate", "busy"];
 const VALID_VENUE_TYPE = ["outdoor", "indoor", "mixed"];
 const VALID_RECURRENCE_TYPE = ["once", "range", "weekly", "annual"];
 const VALID_DURATION = ["quick", "half-day", "full-day"];
+
+// Eatery detail enums
+const VALID_EATERY_CUISINE = [
+  "cafe", "restaurant", "pub", "fish-and-chips", "ice-cream",
+  "bakery", "market", "farm-gate", "pick-your-own", "food-truck",
+];
+const VALID_DIETARY_OPTION = ["vegetarian", "vegan", "gluten-free", "allergy-aware"];
+const VALID_SEATING = ["indoor", "outdoor", "both"];
+const VALID_BOOKING = ["required", "recommended", "walk-in"];
 
 function checkEnum(value: unknown, allowed: string[], fieldName: string): string[] {
   if (typeof value !== "string" || !allowed.includes(value)) {
@@ -169,6 +178,43 @@ function validateEventDetails(details: Record<string, unknown>): string[] {
   return errors;
 }
 
+function validateEateryDetails(details: Record<string, unknown>): string[] {
+  const errors: string[] = [];
+
+  if (!Array.isArray(details.cuisine) || (details.cuisine as unknown[]).length === 0) {
+    errors.push("details.cuisine: must be a non-empty array");
+  } else {
+    for (const item of details.cuisine as unknown[]) {
+      if (typeof item !== "string" || !VALID_EATERY_CUISINE.includes(item)) {
+        errors.push(`details.cuisine: invalid value "${item}", must be one of [${VALID_EATERY_CUISINE.join(", ")}]`);
+      }
+    }
+  }
+
+  errors.push(...checkEnum(details.seating, VALID_SEATING, "details.seating"));
+  errors.push(...checkEnum(details.booking, VALID_BOOKING, "details.booking"));
+
+  if (details.bookingUrl !== null && typeof details.bookingUrl !== "string") {
+    errors.push("details.bookingUrl: must be a string or null");
+  }
+
+  if (!Array.isArray(details.dietaryOptions)) {
+    errors.push("details.dietaryOptions: must be an array");
+  } else {
+    for (const item of details.dietaryOptions as unknown[]) {
+      if (typeof item !== "string" || !VALID_DIETARY_OPTION.includes(item)) {
+        errors.push(`details.dietaryOptions: invalid value "${item}", must be one of [${VALID_DIETARY_OPTION.join(", ")}]`);
+      }
+    }
+  }
+
+  if (typeof details.kidsMenu !== "boolean") {
+    errors.push("details.kidsMenu: must be a boolean");
+  }
+
+  return errors;
+}
+
 export function validatePlace(data: Record<string, unknown>): string[] {
   const errors = validateCoreFields(data);
 
@@ -187,6 +233,9 @@ export function validatePlace(data: Record<string, unknown>): string[] {
       break;
     case "event":
       errors.push(...validateEventDetails(details));
+      break;
+    case "eatery":
+      errors.push(...validateEateryDetails(details));
       break;
     // Future types — core validation only for now
   }
