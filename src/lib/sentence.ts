@@ -31,6 +31,11 @@ const GROUP_PHRASES: Record<string, string> = {
   friends: "to share with friends",
 };
 
+const VISITED_PHRASES: Record<string, string> = {
+  new: "you haven't tried",
+  familiar: "you know and love",
+};
+
 const DAY_LABELS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 function getDatePhrase(d: Constraints["date"]): string | null {
@@ -95,6 +100,7 @@ export function generateSentence(
     if (p.dim === "date" && date) qualifiers.push(date);
     if (p.dim === "duration" && dur) qualifiers.push(dur);
     if (p.dim === "group" && group) qualifiers.push(group);
+    if (p.dim === "familiarity" && constraints.visited !== "any") qualifiers.push(VISITED_PHRASES[constraints.visited]);
   }
 
   const tail = qualifiers.length > 0 ? ` ${qualifiers.join(" ")}` : "";
@@ -109,6 +115,7 @@ function isDimActive(dim: FilterDimension, filters: Filters, constraints: Constr
     case "cost": return constraints.cost !== "any";
     case "duration": return constraints.duration !== "any";
     case "group": return constraints.group !== null;
+    case "familiarity": return constraints.visited !== "any";
   }
 }
 
@@ -122,5 +129,6 @@ export function activeFilterCount(filters: Filters, constraints: Constraints): n
   if (constraints.cost !== "any") count++;
   if (constraints.duration !== "any") count++;
   if (constraints.group !== null) count++;
+  if (constraints.visited !== "any") count++;
   return count;
 }

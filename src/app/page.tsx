@@ -57,7 +57,14 @@ function loadSessionState<T>(key: string, fallback: T): T {
 export default function HomePage() {
   const [allLocations, setAllLocations] = useState<PlaceIndexEntry[]>([]);
   const [filters, setFilters] = useState<Filters>(() => loadSessionState(FILTERS_KEY, emptyFilters));
-  const [constraints, setConstraints] = useState<Constraints>(() => loadSessionState(CONSTRAINTS_KEY, defaultConstraints));
+  const [constraints, setConstraints] = useState<Constraints>(() => {
+    const loaded = loadSessionState(CONSTRAINTS_KEY, defaultConstraints);
+    // Migrate: ensure "familiarity" is in the priority array
+    if (!loaded.priority.includes("familiarity")) {
+      loaded.priority = [...loaded.priority, "familiarity"];
+    }
+    return loaded;
+  });
   const [highlightedSlug, setHighlightedSlug] = useState<string | null>(null);
   const [userLocation, setUserLocation] = useState<Coordinates | null>(null);
   const [loadError, setLoadError] = useState(false);

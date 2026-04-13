@@ -171,10 +171,11 @@ export function applyConstraints(
     // Visited preference score
     if (constraints.visited !== "any") {
       const isVisited = visitedSet.has(place.slug);
+      const familiarityWeight = priorityWeights["familiarity"] ?? 1;
       if (constraints.visited === "new" && !isVisited) {
-        score += 15;
+        score += 15 * familiarityWeight;
       } else if (constraints.visited === "familiar" && isVisited) {
-        score += 15;
+        score += 15 * familiarityWeight;
       }
     }
 

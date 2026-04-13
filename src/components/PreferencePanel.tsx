@@ -21,6 +21,7 @@ import type {
   DurationFilter,
   GroupType,
   DateMode,
+  VisitedFilter,
 } from "@/lib/types";
 
 // ── Dimension metadata ──────────────────────────────────────
@@ -37,6 +38,7 @@ const DIMENSIONS: DimensionMeta[] = [
   { key: "cost", icon: DollarSign, label: "Budget" },
   { key: "duration", icon: Clock, label: "Duration" },
   { key: "group", icon: Users, label: "Who" },
+  { key: "familiarity", icon: CircleCheck, label: "Familiarity" },
 ];
 
 // ── Value options ───────────────────────────────────────────
@@ -70,6 +72,11 @@ const GROUP_OPTIONS: { value: GroupType; label: string }[] = [
 
 const DAY_LABELS = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
+const VISITED_OPTIONS: { value: VisitedFilter; label: string }[] = [
+  { value: "new", label: "Somewhere new" },
+  { value: "familiar", label: "Somewhere familiar" },
+];
+
 // ── Helpers ─────────────────────────────────────────────────
 
 function getValueLabel(dim: FilterDimension, filters: Filters, constraints: Constraints): string {
@@ -100,6 +107,10 @@ function getValueLabel(dim: FilterDimension, filters: Filters, constraints: Cons
       return constraints.group === null
         ? "Flexible"
         : GROUP_OPTIONS.find((o) => o.value === constraints.group)?.label ?? "Flexible";
+    case "familiarity":
+      return constraints.visited === "any"
+        ? "Flexible"
+        : VISITED_OPTIONS.find((o) => o.value === constraints.visited)?.label ?? "Flexible";
   }
 }
 
@@ -110,6 +121,7 @@ function isActive(dim: FilterDimension, filters: Filters, constraints: Constrain
     case "cost": return constraints.cost !== "any";
     case "duration": return constraints.duration !== "any";
     case "group": return constraints.group !== null;
+    case "familiarity": return constraints.visited !== "any";
   }
 }
 
@@ -298,9 +310,26 @@ function ValuePicker({
         </div>
       );
     }
+    case "familiarity":
+      return (
+        <div className="flex flex-wrap gap-1.5">
+          {VISITED_OPTIONS.map((opt) => (
+            <button
+              key={opt.value}
+              onClick={() => onConstraintsChange({ ...constraints, visited: constraints.visited === opt.value ? "any" : opt.value })}
+              className={`px-2.5 py-1 text-xs rounded-full border transition-colors ${
+                constraints.visited === opt.value
+                  ? "bg-blue-600 text-white border-blue-600"
+                  : "border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-blue-300"
+              }`}
+            >
+              {opt.label}
+            </button>
+          ))}
+        </div>
+      );
   }
 }
-
 // ── Draggable preference card ───────────────────────────────
 
 function PreferenceCard({
@@ -528,8 +557,7 @@ export default function PreferencePanel({
     return () => document.removeEventListener("keydown", handleEsc);
   }, [open, onClose]);
 
-    const visitedActive = constraints.visited !== "any";
-  const activeCount = orderedDimensions.filter((d) => isActive(d.key, filters, constraints)).length + (visitedActive ? 1 : 0);
+    const activeCount = orderedDimensions.filter((d) => isActive(d.key, filters, constraints)).length;
 
   const handleReset = useCallback(() => {
     onConstraintsChange({
@@ -599,39 +627,6 @@ export default function PreferencePanel({
               isDragging={dragIndex === i}
             />
           ))}
-
-          {/* Visited preference */}
-          <div className="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-3">
-            <div className="flex items-center gap-2 mb-2">
-              <CircleCheck className="w-4 h-4 text-gray-400 dark:text-gray-500" />
-              <span className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
-                Familiarity
-              </span>
-            </div>
-            <div className="flex gap-2">
-              {([
-                { value: "new" as const, label: "Somewhere new" },
-                { value: "familiar" as const, label: "Somewhere familiar" },
-              ] as const).map(({ value, label }) => (
-                <button
-                  key={value}
-                  onClick={() =>
-                    onConstraintsChange({
-                      ...constraints,
-                      visited: constraints.visited === value ? "any" : value,
-                    })
-                  }
-                  className={`flex-1 text-xs py-2 px-2 rounded-lg border transition-colors ${
-                    constraints.visited === value
-                      ? "border-green-300 bg-green-50 text-green-800 font-medium dark:border-green-700 dark:bg-green-950 dark:text-green-200"
-                      : "border-gray-200 bg-gray-50 text-gray-600 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300"
-                  }`}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
-          </div>
         </div>
       </div>
     </div>

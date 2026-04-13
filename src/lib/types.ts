@@ -196,9 +196,9 @@ export type DateMode =
 
 export type VisitedFilter = "new" | "familiar" | "any";
 
-export type FilterDimension = "distance" | "date" | "cost" | "duration" | "group";
+export type FilterDimension = "distance" | "date" | "cost" | "duration" | "group" | "familiarity";
 
-export const DEFAULT_PRIORITY: FilterDimension[] = ["distance", "date", "cost", "duration", "group"];
+export const DEFAULT_PRIORITY: FilterDimension[] = ["distance", "date", "cost", "duration", "group", "familiarity"];
 
 export interface Constraints {
   distance: DistanceThreshold;
