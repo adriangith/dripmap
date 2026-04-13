@@ -292,7 +292,7 @@ export default function SentenceFilter({
   const costActive = constraints.cost !== "any";
   const durActive = constraints.duration !== "any";
   const groupActive = constraints.group !== null;
-  const visitedActive = constraints.visited === "unvisited";
+  const visitedActive = constraints.visited !== "any";
 
   return (
     <div
@@ -540,7 +540,7 @@ export default function SentenceFilter({
 
       {/* Visited token */}
       <Token
-        label={visitedActive ? "somewhere new" : "Flexible"}
+        label={constraints.visited === "new" ? "somewhere new" : constraints.visited === "familiar" ? "somewhere familiar" : "Flexible"}
         active={visitedActive}
         popoverOpen={openToken === "visited"}
         onTap={() => toggle("visited")}
@@ -548,9 +548,17 @@ export default function SentenceFilter({
         <div className="flex flex-col gap-0.5">
           <OptionButton
             label="somewhere new"
-            selected={constraints.visited === "unvisited"}
+            selected={constraints.visited === "new"}
             onClick={() => {
-              updateConstraint({ visited: constraints.visited === "unvisited" ? "any" as VisitedFilter : "unvisited" as VisitedFilter });
+              updateConstraint({ visited: constraints.visited === "new" ? "any" as VisitedFilter : "new" as VisitedFilter });
+              setOpenToken(null);
+            }}
+          />
+          <OptionButton
+            label="somewhere familiar"
+            selected={constraints.visited === "familiar"}
+            onClick={() => {
+              updateConstraint({ visited: constraints.visited === "familiar" ? "any" as VisitedFilter : "familiar" as VisitedFilter });
               setOpenToken(null);
             }}
           />

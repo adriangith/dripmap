@@ -193,7 +193,7 @@ export type DateMode =
   | { mode: "recurring"; days: number[] }  // 0=Sun, 1=Mon, ..., 6=Sat
   | null;
 
-export type VisitedFilter = "unvisited" | "any";
+export type VisitedFilter = "new" | "familiar" | "any";
 
 export type FilterDimension = "distance" | "date" | "cost" | "duration" | "group";
 

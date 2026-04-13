@@ -126,7 +126,7 @@ export function applyConstraints(
 ): ScoredPlace[] {
   const scored: ScoredPlace[] = [];
 
-  const visitedSet = constraints.visited === "unvisited" ? new Set(getVisited()) : null;
+  const visitedSet = new Set(getVisited());
 
   for (const place of places) {
     // Hard filter: distance
@@ -140,9 +140,6 @@ export function applyConstraints(
 
     // Hard filter: group suitability
     if (!passesGroupFilter(place, constraints.group)) continue;
-
-    // Hard filter: visited
-    if (visitedSet && visitedSet.has(place.slug)) continue;
 
     // Compute drive time for sorting
     const driveMin = userLocation
@@ -170,6 +167,16 @@ export function applyConstraints(
 
     // Group score
     score += groupScore(place, constraints.group) * (priorityWeights["group"] ?? 1);
+
+    // Visited preference score
+    if (constraints.visited !== "any") {
+      const isVisited = visitedSet.has(place.slug);
+      if (constraints.visited === "new" && !isVisited) {
+        score += 15;
+      } else if (constraints.visited === "familiar" && isVisited) {
+        score += 15;
+      }
+    }
 
     scored.push({ ...place, _score: score, _driveMinutes: driveMin });
   }

@@ -528,7 +528,7 @@ export default function PreferencePanel({
     return () => document.removeEventListener("keydown", handleEsc);
   }, [open, onClose]);
 
-  const visitedActive = constraints.visited === "unvisited";
+    const visitedActive = constraints.visited !== "any";
   const activeCount = orderedDimensions.filter((d) => isActive(d.key, filters, constraints)).length + (visitedActive ? 1 : 0);
 
   const handleReset = useCallback(() => {
@@ -600,40 +600,38 @@ export default function PreferencePanel({
             />
           ))}
 
-          {/* Visited toggle */}
-          <button
-            onClick={() =>
-              onConstraintsChange({
-                ...constraints,
-                visited: visitedActive ? "any" : "unvisited",
-              })
-            }
-            className={`w-full flex items-center gap-3 px-3 py-3 rounded-xl border transition-colors ${
-              visitedActive
-                ? "border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-950"
-                : "border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800"
-            }`}
-          >
-            <CircleCheck
-              className={`w-5 h-5 flex-shrink-0 ${
-                visitedActive
-                  ? "text-green-600 dark:text-green-400"
-                  : "text-gray-400 dark:text-gray-500"
-              }`}
-            />
-            <span
-              className={`text-sm font-medium ${
-                visitedActive
-                  ? "text-green-800 dark:text-green-200"
-                  : "text-gray-700 dark:text-gray-300"
-              }`}
-            >
-              Somewhere new
-            </span>
-            <span className="ml-auto text-xs text-gray-400 dark:text-gray-500">
-              {visitedActive ? "Hiding visited" : "Showing all"}
-            </span>
-          </button>
+          {/* Visited preference */}
+          <div className="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-3">
+            <div className="flex items-center gap-2 mb-2">
+              <CircleCheck className="w-4 h-4 text-gray-400 dark:text-gray-500" />
+              <span className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+                Familiarity
+              </span>
+            </div>
+            <div className="flex gap-2">
+              {([
+                { value: "new" as const, label: "Somewhere new" },
+                { value: "familiar" as const, label: "Somewhere familiar" },
+              ] as const).map(({ value, label }) => (
+                <button
+                  key={value}
+                  onClick={() =>
+                    onConstraintsChange({
+                      ...constraints,
+                      visited: constraints.visited === value ? "any" : value,
+                    })
+                  }
+                  className={`flex-1 text-xs py-2 px-2 rounded-lg border transition-colors ${
+                    constraints.visited === value
+                      ? "border-green-300 bg-green-50 text-green-800 font-medium dark:border-green-700 dark:bg-green-950 dark:text-green-200"
+                      : "border-gray-200 bg-gray-50 text-gray-600 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300"
+                  }`}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>
