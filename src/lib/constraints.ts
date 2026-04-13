@@ -19,6 +19,20 @@ const DISTANCE_MAX_MINUTES: Record<string, number> = {
   any: Infinity,
 };
 
+/**
+ * Scoring curve for daytrip distance preference.
+ * Peaks in the 60–180 min range (the "day trip sweet spot"),
+ * lower for very close places (not really a day trip)
+ * and tapers for very far ones (over 3 hours).
+ */
+function daytripProximityBonus(driveMin: number): number {
+  if (driveMin <= 30) return 5;           // too close for a day trip
+  if (driveMin <= 60) return 5 + (driveMin - 30) * (15 / 30);  // ramp up: 5→20
+  if (driveMin <= 180) return 20;         // sweet spot: full bonus
+  if (driveMin <= 240) return 20 - (driveMin - 180) * (12 / 60); // taper: 20→8
+  return 8;                               // still reachable but far
+}
+
 function passesDistanceFilter(
   place: PlaceIndexEntry,
   threshold: string,
@@ -136,9 +150,12 @@ export function applyConstraints(
       return acc;
     }, {});
 
-    // Proximity bonus (closer = higher score)
+    // Proximity bonus — shape depends on distance preference
     if (driveMin !== null) {
-      const base = Math.max(0, 20 - driveMin / 6);
+      const base =
+        constraints.distance === "daytrip"
+          ? daytripProximityBonus(driveMin)
+          : Math.max(0, 20 - driveMin / 6);
       score += base * (priorityWeights["distance"] ?? 1);
     }
 

@@ -9,6 +9,7 @@ import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import { Crosshair } from "lucide-react";
 
 import type { PlaceIndexEntry, PlaceType, Coordinates } from "@/lib/types";
+import type { ScoredPlace } from "@/lib/constraints";
 
 /**
  * Sets the map view so that `latLng` appears centered in the visible area
@@ -46,7 +47,7 @@ const PIN_COLORS: Record<PlaceType, string> = {
   eatery: "#e11d48",
 };
 
-function createPinIcon(type: PlaceType): L.DivIcon {
+function createPinIcon(type: PlaceType, opacity = 1): L.DivIcon {
   const color = PIN_COLORS[type];
   return L.divIcon({
     className: "",
@@ -58,6 +59,7 @@ function createPinIcon(type: PlaceType): L.DivIcon {
       transform: rotate(-45deg);
       box-shadow: 0 2px 4px rgba(0,0,0,0.3);
       pointer-events: none;
+      opacity: ${opacity};
     "></div>`,
     iconSize: [28, 28],
     iconAnchor: [14, 28],
@@ -97,7 +99,7 @@ function createUserLocationIcon(): L.DivIcon {
 }
 
 interface LocationMapProps {
-  locations: PlaceIndexEntry[];
+  locations: (PlaceIndexEntry & { _score?: number })[];
   highlightedSlug: string | null;
   focusedSlug?: string | null;
   onMarkerClick: (slug: string) => void;
@@ -272,8 +274,23 @@ export default function LocationMap({
     if (clusterGroup) clusterGroup.clearLayers();
     markersRef.current.clear();
 
-    // Add new markers
+    // Add new markers — compute opacity from scores when available
+    const scores = locations
+      .map((l) => (l as ScoredPlace)._score)
+      .filter((s): s is number => s !== undefined);
+    const hasScores = scores.length > 0;
+    const maxScore = hasScores ? Math.max(...scores) : 0;
+    const minScore = hasScores ? Math.min(...scores) : 0;
+    const scoreRange = maxScore - minScore;
+
     for (const loc of locations) {
+      // Normalise score to 0.35–1.0 opacity range
+      let pinOpacity = 1;
+      if (hasScores && scoreRange > 0) {
+        const s = (loc as ScoredPlace)._score ?? minScore;
+        pinOpacity = 0.35 + 0.65 * ((s - minScore) / scoreRange);
+      }
+
       const popupContent = document.createElement("div");
       const strong = document.createElement("strong");
       strong.textContent = loc.name;
@@ -283,7 +300,7 @@ export default function LocationMap({
       popupContent.append(strong, document.createElement("br"), typeSpan);
 
       const marker = L.marker([loc.coordinates.lat, loc.coordinates.lng], {
-        icon: createPinIcon(loc.type),
+        icon: createPinIcon(loc.type, pinOpacity),
       }).bindPopup(popupContent, { autoClose: true, closeOnClick: true });
 
       // Permanent label visible at higher zoom levels (CSS-controlled)

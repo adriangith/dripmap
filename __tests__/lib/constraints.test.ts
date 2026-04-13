@@ -79,4 +79,28 @@ describe("applyConstraints", () => {
     const result = applyConstraints([swim, expensiveEvent], { ...noConstraints, group: "family-young" }, userLocation);
     expect(result[0].slug).toBe("test-swim"); // has family-friendly tag
   });
+
+  it("daytrip preference ranks far-away place above nearby one", () => {
+    // ~2hr drive away (roughly 140km straight-line ÷ 60kph × 1.4 road factor)
+    const farPlace: PlaceIndexEntry = {
+      ...swim,
+      slug: "far-place",
+      name: "Far Place",
+      coordinates: { lat: -36.5, lng: 145.5 },
+    };
+    // ~10min drive away
+    const nearPlace: PlaceIndexEntry = {
+      ...swim,
+      slug: "near-place",
+      name: "Near Place",
+      coordinates: { lat: -37.805, lng: 144.955 },
+    };
+    const result = applyConstraints(
+      [nearPlace, farPlace],
+      { ...noConstraints, distance: "daytrip", priority: ["distance", "cost", "date", "duration", "group"] },
+      userLocation,
+    );
+    expect(result[0].slug).toBe("far-place");
+    expect(result[1].slug).toBe("near-place");
+  });
 });
