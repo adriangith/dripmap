@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Drift
 
-## Getting Started
+A discovery-oriented PWA for finding places to visit around Melbourne and regional Victoria. Built as a static Next.js app with Leaflet maps, offline support, and a preference-based scoring engine.
 
-First, run the development server:
+## What it does
+
+Drift helps you answer "where should we go today?" by surfacing places based on your preferences — how far you want to travel, what you want to spend, whether you've been before, and what kind of outing you're after. It covers swims, beaches, walks, bushwalks, playgrounds, events, museums, and more across 97 locations.
+
+### Key features
+
+- **Preference-based discovery** — drag to prioritise cost, familiarity, and time-of-day; results are soft-scored, not hard-filtered
+- **Interactive map** — Leaflet with clustered pins, walk route polylines, and CartoDB Voyager/dark tiles
+- **Offline-first PWA** — Workbox service worker precaches map tiles, location data, and images
+- **Constraint engine** — distance filtering, event date matching, visited/not-visited tracking
+- **Responsive layout** — bottom sheet on mobile, sidebar on desktop
+- **Dark mode** — system-aware, applies to both UI and map tiles
+
+## Data
+
+Locations are authored as YAML files in `data/locations/`, organised by type:
+
+| Category | Count | Example |
+|----------|-------|---------|
+| swim | 56 | Stony Creek Reservoir, Pound Bend |
+| walk | 11 | Merri Creek Walk, Bayside Beach Hike |
+| event | 11 | NGV Let's Party, Balloon Story |
+| playground | 10 | Waltzing Matilda Playground |
+| beach | 7 | Half Moon Bay, Eastern Beach |
+| museum | 2 | Melbourne Holocaust Museum, Rippon Lea Estate |
+
+The build pipeline validates each YAML against a type-aware schema, then compiles them to JSON in `public/generated/`.
+
+## Development
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev                    # Dev server (localhost:3000)
+npm run dev:network:https      # HTTPS dev server (required for geolocation)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Commands
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Command | Purpose |
+|---------|---------|
+| `npm run build` | Full pipeline: validate YAML → build JSON → Next.js export → generate SW |
+| `npm run validate` | Validate all location YAML files |
+| `npm run build:data` | Build location JSON from YAML |
+| `npm run lint` | ESLint |
+| `npm run test` | Vitest unit/integration tests |
+| `npm run test:e2e` | Build + Playwright E2E tests (Chromium) |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Adding a location
 
-## Learn More
+1. Create a YAML file in `data/locations/<type>/` (see existing files for schema)
+2. Run `npm run validate` to check it
+3. Run `npm run build` to generate the site
 
-To learn more about Next.js, take a look at the following resources:
+## Tech stack
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Next.js 16** with static export (`output: "export"`)
+- **Leaflet** + leaflet.markercluster for maps
+- **Vitest** + React Testing Library for unit tests
+- **Playwright** for E2E tests
+- **Workbox** for service worker / offline support
+- **Vercel** for hosting (auto-deploys from `main`)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
