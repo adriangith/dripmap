@@ -1,6 +1,6 @@
 import {
   Waves, Droplets, Calendar, TreePine, Eye, Mountain,
-  PawPrint, Droplet, Bike, Fish, UtensilsCrossed, ToyBrick,
+  PawPrint, Droplet, Bike, Fish, UtensilsCrossed, ToyBrick, Footprints,
   type LucideIcon,
 } from "lucide-react";
 import type { PlaceType } from "@/lib/types";
@@ -10,6 +10,7 @@ const TYPE_CONFIG: Record<PlaceType, { icon: LucideIcon; label: string; color: s
   beach: { icon: Waves, label: "Beach", color: "text-blue-500" },
   event: { icon: Calendar, label: "Event", color: "text-pink-600" },
   bushwalk: { icon: TreePine, label: "Bushwalk", color: "text-green-700" },
+  walk: { icon: Footprints, label: "Walk", color: "text-amber-700" },
   lookout: { icon: Eye, label: "Lookout", color: "text-amber-600" },
   waterfall: { icon: Droplet, label: "Waterfall", color: "text-blue-700" },
   cave: { icon: Mountain, label: "Cave", color: "text-gray-600" },

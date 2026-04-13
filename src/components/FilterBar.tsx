@@ -8,6 +8,7 @@ const TYPE_CHIPS: { value: PlaceType; label: string }[] = [
   { value: "beach", label: "Beaches" },
   { value: "event", label: "Events" },
   { value: "bushwalk", label: "Bushwalks" },
+  { value: "walk", label: "Walks" },
   { value: "lookout", label: "Lookouts" },
   { value: "waterfall", label: "Waterfalls" },
   { value: "cave", label: "Caves" },

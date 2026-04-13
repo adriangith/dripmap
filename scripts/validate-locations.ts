@@ -3,7 +3,7 @@ import * as path from "path";
 import * as yaml from "js-yaml";
 
 const VALID_TYPES = [
-  "swim", "beach", "event", "bushwalk", "lookout", "waterfall",
+  "swim", "beach", "event", "bushwalk", "walk", "lookout", "waterfall",
   "cave", "wildlife", "pool", "cycling", "fishing", "eatery", "playground",
 ];
 const VALID_COST = ["free", "$", "$$", "$$$"];
@@ -249,6 +249,7 @@ export function validatePlace(data: Record<string, unknown>): string[] {
       errors.push(...validateEventDetails(details));
       break;
     case "bushwalk":
+    case "walk":
       errors.push(...validateBushwalkDetails(details));
       break;
     case "eatery":

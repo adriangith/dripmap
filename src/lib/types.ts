@@ -5,6 +5,7 @@ export type PlaceType =
   | "beach"
   | "event"
   | "bushwalk"
+  | "walk"
   | "lookout"
   | "waterfall"
   | "cave"

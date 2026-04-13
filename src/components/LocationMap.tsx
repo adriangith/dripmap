@@ -37,6 +37,7 @@ const PIN_COLORS: Record<PlaceType, string> = {
   beach: "#3b82f6",
   event: "#db2777",
   bushwalk: "#15803d",
+  walk: "#b45309",
   lookout: "#d97706",
   waterfall: "#1d4ed8",
   cave: "#4b5563",
