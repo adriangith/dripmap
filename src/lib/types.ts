@@ -163,6 +163,7 @@ export interface PlaceIndexEntry {
   region: string;
   country: string;
   cost: CostLevel;
+  photo?: string; // first photo URL for card thumbnails
   highlights: string[];
   status: PlaceStatus;
   tags: string[];

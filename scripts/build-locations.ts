@@ -12,6 +12,7 @@ export function buildIndex(places: Place[]): PlaceIndexEntry[] {
     region: p.region,
     country: p.country,
     cost: p.cost,
+    ...(p.photos?.[0]?.url ? { photo: p.photos[0].url } : {}),
     highlights: p.highlights,
     status: p.status,
     tags: p.tags,

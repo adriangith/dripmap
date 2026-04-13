@@ -69,6 +69,7 @@ describe("buildIndex", () => {
       region: "Victoria, Australia",
       country: "AU",
       cost: "free",
+      photo: "/images/test.jpg",
       highlights: ["Crystal clear water"],
       status: sampleSwim.status,
       tags: ["family-friendly"],
