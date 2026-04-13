@@ -4,6 +4,14 @@ const DAY_NAMES = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
 
 const SUMMER_MONTHS = [12, 1, 2]; // Southern hemisphere
 
+/** Format a Date as YYYY-MM-DD in local time (avoids UTC shift from toISOString). */
+function toLocalDateString(date: Date): string {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
+
 function isSeason(date: Date, season: string): boolean {
   const month = date.getMonth() + 1;
   switch (season) {
@@ -16,7 +24,7 @@ function isSeason(date: Date, season: string): boolean {
 }
 
 function dateInRange(date: Date, start: string, end: string): boolean {
-  const d = date.toISOString().slice(0, 10);
+  const d = toLocalDateString(date);
   return d >= start && d <= end;
 }
 
@@ -30,7 +38,7 @@ export function isEventOnDate(rec: Recurrence, date: Date): boolean {
 
   switch (rec.type) {
     case "once":
-      return date.toISOString().slice(0, 10) === rec.date;
+      return toLocalDateString(date) === rec.date;
 
     case "range": {
       if (!dateInRange(date, rec.startDate, rec.endDate)) return false;
