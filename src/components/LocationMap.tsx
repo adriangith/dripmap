@@ -230,7 +230,7 @@ export default function LocationMap({
           navigator.geolocation.getCurrentPosition(
             (pos) => {
               usedBrowserLocation = true;
-              setInitialLocation(pos.coords.latitude, pos.coords.longitude, 10);
+              setInitialLocation(pos.coords.latitude, pos.coords.longitude, 11);
               resolve();
             },
             () => resolve(),
@@ -406,7 +406,7 @@ export default function LocationMap({
           userMarkerRef.current = userMarker;
 
           // Center user in visible area above the sheet
-          setViewAboveSheet(map, [lat, lng], 12, getSheetHeight());
+          setViewAboveSheet(map, [lat, lng], 14, getSheetHeight());
         }
 
         onUserLocation?.({ lat, lng });
