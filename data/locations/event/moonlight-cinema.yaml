@@ -49,18 +49,18 @@ tags:
   - melbourne
 status:
   site: seasonal
-  lastVerified: "2026-04-10"
+  lastVerified: "2026-04-13"
 details:
   recurrence:
     type: range
-    startDate: "2026-12-01"
-    endDate: "2027-03-31"
+    startDate: "2025-12-03"
+    endDate: "2026-04-05"
     startTime: "19:00"
     endTime: "23:00"
   confirmedDates:
-    year: 2026
-    startDate: "2026-12-01"
-    endDate: "2027-03-31"
+    year: 2025
+    startDate: "2025-12-03"
+    endDate: "2026-04-05"
   venue: Royal Botanic Gardens
   venueType: outdoor
   bookingRequired: true
