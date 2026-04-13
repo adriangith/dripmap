@@ -131,6 +131,7 @@ export default function LocationMap({
   const markersRef = useRef<Map<string, L.Marker>>(new Map());
   const clusterGroupRef = useRef<L.MarkerClusterGroup | null>(null);
   const userMarkerRef = useRef<L.Marker | null>(null);
+  const routeLayerRef = useRef<L.Polyline | null>(null);
   // Only fitBounds once (initial load) — after that the user owns the viewport
   const hasFitBoundsRef = useRef(false);
 
@@ -351,17 +352,35 @@ export default function LocationMap({
     }
   }, [locations, onMarkerClick, onMarkerHover]);
 
-  // Highlight effect — open popup on hover (no panning to avoid jarring movement)
+  // Highlight effect — open popup on hover, draw route polyline for walks
   useEffect(() => {
     if (!highlightedSlug) return;
+    const map = mapRef.current;
     const marker = markersRef.current.get(highlightedSlug);
     if (marker) {
       marker.openPopup();
     }
+
+    // Draw route polyline for walk/bushwalk types (desktop only)
+    if (map && window.matchMedia("(hover: hover)").matches) {
+      const loc = locations.find((l) => l.slug === highlightedSlug);
+      if (loc && (loc.type === "walk" || loc.type === "bushwalk") && loc.route) {
+        const polyline = L.polyline(
+          loc.route.map(([lat, lng]) => [lat, lng] as L.LatLngTuple),
+          { color: PIN_COLORS[loc.type], weight: 4, opacity: 0.7 },
+        ).addTo(map);
+        routeLayerRef.current = polyline;
+      }
+    }
+
     return () => {
       mapRef.current?.closePopup();
+      if (routeLayerRef.current) {
+        routeLayerRef.current.remove();
+        routeLayerRef.current = null;
+      }
     };
-  }, [highlightedSlug]);
+  }, [highlightedSlug, locations]);
 
   // Focus effect — zoom to pin and center in visible area above sheet
   useEffect(() => {
