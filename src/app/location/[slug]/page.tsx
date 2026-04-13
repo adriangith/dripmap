@@ -8,6 +8,7 @@ import TypeBadge from "@/components/TypeBadge";
 import BookmarkButton from "@/components/BookmarkButton";
 import MiniMapWrapper from "@/components/MiniMapWrapper";
 import DrivingInfoBanner from "@/components/DrivingInfoBanner";
+import CostIndicator from "@/components/CostIndicator";
 import type { Metadata } from "next";
 import type { Place, SwimPlace, BeachPlace, EventPlace, Duration } from "@/lib/types";
 
@@ -15,13 +16,6 @@ const DURATION_DISPLAY: Record<Duration, string> = {
   quick: "Under 2 hours",
   "half-day": "Half day",
   "full-day": "Full day",
-};
-
-const COST_LABELS: Record<string, string> = {
-  free: "Free",
-  "$": "Budget-friendly ($)",
-  "$$": "Moderate ($$)",
-  "$$$": "Premium ($$$)",
 };
 
 interface PageProps {
@@ -233,7 +227,7 @@ export default async function LocationPage({ params }: PageProps) {
                 <DollarSign className="w-4 h-4 text-gray-400 dark:text-gray-500" />
                 <div>
                   <p className="text-xs text-gray-500 dark:text-gray-400">Cost</p>
-                  <p className="text-sm font-medium capitalize">{COST_LABELS[location.cost] ?? location.cost}</p>
+                  <CostIndicator cost={location.cost} showLabel />
                 </div>
               </div>
               <div className="flex items-center gap-2 col-span-2">

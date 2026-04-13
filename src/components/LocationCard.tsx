@@ -3,24 +3,8 @@ import type { PlaceIndexEntry, Coordinates } from "@/lib/types";
 import { haversineDistanceKm, formatDistance } from "@/lib/useCurrentLocation";
 import TypeBadge from "./TypeBadge";
 import StatusBadge from "./StatusBadge";
+import CostIndicator from "./CostIndicator";
 import Image from "next/image";
-
-const COST_STYLES: Record<string, { label: string; className: string }> = {
-  free: { label: "Free", className: "bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-400" },
-  "$": { label: "$", className: "bg-yellow-100 text-yellow-700 dark:bg-yellow-950 dark:text-yellow-400" },
-  "$$": { label: "$$", className: "bg-orange-100 text-orange-700 dark:bg-orange-950 dark:text-orange-400" },
-  "$$$": { label: "$$$", className: "bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-400" },
-};
-
-function CostBadge({ cost }: { cost: string }) {
-  const style = COST_STYLES[cost];
-  if (!style) return null;
-  return (
-    <span className={`px-1.5 py-0.5 text-xs font-medium rounded ${style.className}`}>
-      {style.label}
-    </span>
-  );
-}
 
 interface LocationCardProps {
   location: PlaceIndexEntry & { _driveMinutes?: number | null };
@@ -76,7 +60,7 @@ export default function LocationCard({
               {distance && (
                 <span className="text-xs text-blue-600 font-medium">{distance}</span>
               )}
-              <CostBadge cost={location.cost} />
+              <CostIndicator cost={location.cost} />
             </div>
           </div>
           <div className="flex flex-col items-end gap-1 shrink-0">
