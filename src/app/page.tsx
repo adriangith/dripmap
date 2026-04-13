@@ -40,14 +40,35 @@ const defaultConstraints: Constraints = {
   priority: [...DEFAULT_PRIORITY],
 };
 
+const FILTERS_KEY = "drift:filters";
+const CONSTRAINTS_KEY = "drift:constraints";
+
+function loadSessionState<T>(key: string, fallback: T): T {
+  if (typeof sessionStorage === "undefined") return fallback;
+  try {
+    const raw = sessionStorage.getItem(key);
+    return raw ? JSON.parse(raw) : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
 export default function HomePage() {
   const [allLocations, setAllLocations] = useState<PlaceIndexEntry[]>([]);
-  const [filters, setFilters] = useState<Filters>(emptyFilters);
-  const [constraints, setConstraints] = useState<Constraints>(defaultConstraints);
+  const [filters, setFilters] = useState<Filters>(() => loadSessionState(FILTERS_KEY, emptyFilters));
+  const [constraints, setConstraints] = useState<Constraints>(() => loadSessionState(CONSTRAINTS_KEY, defaultConstraints));
   const [highlightedSlug, setHighlightedSlug] = useState<string | null>(null);
   const [userLocation, setUserLocation] = useState<Coordinates | null>(null);
   const [loadError, setLoadError] = useState(false);
   const [prefsOpen, setPrefsOpen] = useState(false);
+
+  // Persist filters & constraints to sessionStorage
+  useEffect(() => {
+    try { sessionStorage.setItem(FILTERS_KEY, JSON.stringify(filters)); } catch {}
+  }, [filters]);
+  useEffect(() => {
+    try { sessionStorage.setItem(CONSTRAINTS_KEY, JSON.stringify(constraints)); } catch {}
+  }, [constraints]);
 
   // Apple Maps-style sheet state
   const [sheetView, setSheetView] = useState<"list" | "detail">("list");

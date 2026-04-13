@@ -124,6 +124,8 @@ const getHomePage = () =>
 
 describe("HomePage integration", () => {
   beforeEach(() => {
+    // Clear persisted filter state so each test starts fresh
+    sessionStorage.clear();
     // Simulate mobile viewport so marker clicks open in-sheet detail
     Object.defineProperty(window, "innerWidth", { value: 390, writable: true, configurable: true });
     globalThis.fetch = vi.fn().mockImplementation((url: string) => {
