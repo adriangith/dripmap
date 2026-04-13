@@ -11,7 +11,8 @@ export type PlaceType =
   | "wildlife"
   | "pool"
   | "cycling"
-  | "fishing";
+  | "fishing"
+  | "eatery";
 
 export type CostLevel = "free" | "$" | "$$" | "$$$";
 
@@ -79,6 +80,33 @@ export interface EventDetails {
   organiserUrl: string | null;
 }
 
+export type EateryCuisine =
+  | "cafe"
+  | "restaurant"
+  | "pub"
+  | "fish-and-chips"
+  | "ice-cream"
+  | "bakery"
+  | "market"
+  | "farm-gate"
+  | "pick-your-own"
+  | "food-truck";
+
+export type DietaryOption =
+  | "vegetarian"
+  | "vegan"
+  | "gluten-free"
+  | "allergy-aware";
+
+export interface EateryDetails {
+  cuisine: EateryCuisine[];
+  seating: "indoor" | "outdoor" | "both";
+  booking: "required" | "recommended" | "walk-in";
+  bookingUrl: string | null;
+  dietaryOptions: DietaryOption[];
+  kidsMenu: boolean;
+}
+
 // ── Discriminated union ───────────────────────────────────────
 
 interface PlaceBase {
@@ -118,7 +146,12 @@ export interface EventPlace extends PlaceBase {
   details: EventDetails;
 }
 
-export type Place = SwimPlace | BeachPlace | EventPlace;
+export interface EateryPlace extends PlaceBase {
+  type: "eatery";
+  details: EateryDetails;
+}
+
+export type Place = SwimPlace | BeachPlace | EventPlace | EateryPlace;
 
 // ── Index entry (lightweight, used in list/map) ───────────────
 
