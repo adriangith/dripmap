@@ -1,0 +1,60 @@
+slug: rippon-lea-estate
+name: Rippon Lea Estate
+type: museum
+coordinates:
+  lat: -37.8792
+  lng: 144.9995
+region: Victoria, Australia
+country: AU
+description: >
+  Rippon Lea Estate is a heritage-listed Victorian mansion and gardens
+  in Elsternwick, managed by the National Trust of Australia. Built in
+  1868 for Sir Frederick Sargood, the Lombardic Romanesque mansion sits
+  on expansive grounds featuring a man-made lake, heritage gardens,
+  orchards, and a fernery. Listed on the Australian National Heritage
+  List, the estate offers guided house tours, garden walks, and hosts
+  seasonal events and exhibitions throughout the year.
+photos:
+  - url: https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Rippon_Lea_west_garden_front.jpg/960px-Rippon_Lea_west_garden_front.jpg
+    alt: Rippon Lea Estate mansion and garden front
+    credit: "Wikimedia Commons"
+highlights:
+  - Heritage Victorian mansion with guided tours
+  - Expansive gardens with lake and fernery
+  - National Heritage Listed property
+cost: "$$"
+duration: half-day
+ageSuitability:
+  minAge: null
+  ideal:
+    - primary
+    - teens
+    - adults
+accessibility: easy
+parking: street
+facilities:
+  - toilets
+  - cafe
+bestSeason:
+  - spring
+  - summer
+  - fall
+  - winter
+directions: >
+  Located at 192 Hotham Street, Elsternwick. Take the Sandringham train
+  line to Rippon Lea station which is right next to the estate entrance.
+  Street parking available on Hotham Street.
+tips:
+  - Allow 1.5-2 hours to see both the house and gardens
+  - Guided house tours run at set times — check the website for schedule
+  - National Trust members receive free entry
+  - The gardens are beautiful in spring when the flowers are in bloom
+tags:
+  - museum
+  - heritage
+  - gardens
+  - public-transport
+status:
+  site: open
+  lastVerified: "2026-04-13"
+details: {}
