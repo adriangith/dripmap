@@ -1,6 +1,6 @@
 import { render, fireEvent, cleanup, waitFor, act } from "@testing-library/react";
 import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
-import type { PlaceIndexEntry } from "../../src/lib/types";
+import type { LocationIndexEntry } from "../../src/lib/types";
 
 // ── LocationMap stub ───────────────────────────────────────────────────────
 // Captures props so tests can invoke callbacks (e.g. onMarkerClick).
@@ -55,29 +55,23 @@ vi.mock("next/navigation", () => ({
 }));
 
 // ── Sample data (matches public/generated/locations-index.json) ───────────
-const SAMPLE_LOCATIONS: PlaceIndexEntry[] = [
+const SAMPLE_LOCATIONS: LocationIndexEntry[] = [
   {
     slug: "fairy-pools",
     name: "Fairy Pools",
-    type: "swim",
+    type: "swimming-hole",
     coordinates: { lat: 57.2501, lng: -6.2743 },
-    region: "Scotland, UK",
     country: "GB",
-    cost: "free",
-    highlights: ["Crystal clear pools"],
-    status: { site: "open", lastVerified: "2026-02-20" },
+    status: { site: "open", waterAccess: "open", lastVerified: "2026-02-20" },
     tags: ["scenic", "hiking", "cold-water", "wild-swimming"],
   },
   {
     slug: "hamilton-pool",
     name: "Hamilton Pool Preserve",
-    type: "swim",
+    type: "swimming-hole",
     coordinates: { lat: 30.3427, lng: -98.1266 },
-    region: "Texas, USA",
     country: "US",
-    cost: "$$",
-    highlights: ["Natural grotto"],
-    status: { site: "open", lastVerified: "2026-03-10" },
+    status: { site: "open", waterAccess: "seasonal", lastVerified: "2026-03-10" },
     tags: ["scenic", "reservation-required", "swimming"],
   },
   {
@@ -85,11 +79,8 @@ const SAMPLE_LOCATIONS: PlaceIndexEntry[] = [
     name: "Niagara Falls",
     type: "waterfall",
     coordinates: { lat: 43.0962, lng: -79.0377 },
-    region: "Ontario, Canada",
     country: "CA",
-    cost: "free",
-    highlights: ["World-famous waterfall"],
-    status: { site: "open", lastVerified: "2026-03-15" },
+    status: { site: "open", waterAccess: "open", lastVerified: "2026-03-15" },
     tags: ["family-friendly", "iconic", "accessible", "free"],
   },
 ];
@@ -98,24 +89,24 @@ const SAMPLE_LOCATIONS: PlaceIndexEntry[] = [
 const FAIRY_POOLS_DETAIL = {
   slug: "fairy-pools",
   name: "Fairy Pools",
-  type: "swim",
+  type: "swimming-hole",
   coordinates: { lat: 57.2501, lng: -6.2743 },
-  region: "Scotland, UK",
+  region: "Europe",
   country: "GB",
   description: "Crystal clear pools in the Scottish Highlands.",
   photos: [],
-  highlights: ["Crystal clear pools"],
-  cost: "free",
-  ageSuitability: { minAge: null, ideal: ["adults"] },
-  accessibility: "moderate",
-  parking: "available",
-  facilities: [],
-  bestSeason: ["summer"],
+  practical: {
+    accessibility: "moderate",
+    parking: "available",
+    facilities: [],
+    bestSeason: ["summer"],
+    dangerLevel: "moderate",
+    cost: "free",
+  },
   directions: "Take the A87.",
   tips: ["Bring warm clothes"],
   tags: ["scenic", "hiking", "cold-water", "wild-swimming"],
-  status: { site: "open", lastVerified: "2026-02-20" },
-  details: { dangerLevel: "moderate", waterAccess: "open", depth: null },
+  status: { site: "open", waterAccess: "open", lastVerified: "2026-02-20" },
 };
 
 // Lazy import so all mocks are registered first
@@ -124,10 +115,6 @@ const getHomePage = () =>
 
 describe("HomePage integration", () => {
   beforeEach(() => {
-    // Clear persisted filter state so each test starts fresh
-    sessionStorage.clear();
-    // Simulate mobile viewport so marker clicks open in-sheet detail
-    Object.defineProperty(window, "innerWidth", { value: 390, writable: true, configurable: true });
     globalThis.fetch = vi.fn().mockImplementation((url: string) => {
       if (url.includes("locations-index.json")) {
         return Promise.resolve({
@@ -249,7 +236,7 @@ describe("HomePage integration", () => {
     // Wait for data then confirm FilterBar renders "3 locations"
     // Two FilterBars exist (desktop + mobile), so findAllByText is appropriate
     await findAllByText("Fairy Pools");
-    const counts = await findAllByText("3 places");
+    const counts = await findAllByText("3 locations");
     expect(counts.length).toBeGreaterThanOrEqual(1);
   });
 
@@ -262,37 +249,30 @@ describe("HomePage integration", () => {
       (capturedMapProps.onMarkerClick as (slug: string) => void)("fairy-pools");
     });
 
-    // Detail header should show the location name
+    // Detail panel should load and show the location name in detail view
     await waitFor(() =>
-      expect(findByText("Details")).toBeTruthy()
+      expect(findByText("Back to list")).toBeTruthy()
     );
   });
 
   it("clicking back in detail panel returns to list", async () => {
     const HomePage = await getHomePage();
-    const { findAllByText, queryByText, container } = render(<HomePage />);
+    const { findAllByText, findByText, queryByText } = render(<HomePage />);
     await findAllByText("Fairy Pools");
 
     act(() => {
       (capturedMapProps.onMarkerClick as (slug: string) => void)("fairy-pools");
     });
 
-    // Wait for detail view header
-    await waitFor(() => {
-      expect(container.querySelector('[class*="font-semibold"]')).toBeTruthy();
-    });
-
-    // Click the back arrow button in the header
-    const backBtn = container.querySelector('button.shrink-0');
-    expect(backBtn).toBeTruthy();
+    const backButton = await findByText("Back to list");
 
     act(() => {
-      fireEvent.click(backBtn!);
+      fireEvent.click(backButton);
     });
 
-    // Should be back on list view
+    // Should be back on list view — "Back to list" should be gone
     await waitFor(() =>
-      expect(queryByText("Details")).toBeNull()
+      expect(queryByText("Back to list")).toBeNull()
     );
   });
 });

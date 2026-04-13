@@ -71,9 +71,9 @@ async function main() {
           },
         },
       },
-      // CartoDB Voyager tiles
+      // OpenStreetMap tiles
       {
-        urlPattern: /^https:\/\/[abcd]\.basemaps\.cartocdn\.com\/.*/i,
+        urlPattern: /^https:\/\/[abc]\.tile\.openstreetmap\.org\/.*/i,
         handler: "CacheFirst",
         options: {
           cacheName: "map-tiles",

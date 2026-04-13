@@ -1,9 +1,9 @@
 import Link from "next/link";
-import type { PlaceIndexEntry, Coordinates } from "@/lib/types";
+import type { LocationIndexEntry, Coordinates } from "@/lib/types";
 import LocationCard from "./LocationCard";
 
 interface LocationListProps {
-  locations: PlaceIndexEntry[];
+  locations: LocationIndexEntry[];
   highlightedSlug: string | null;
   onHover: (slug: string | null) => void;
   userLocation?: Coordinates | null;
@@ -20,7 +20,7 @@ export default function LocationList({
   if (locations.length === 0) {
     return (
       <div className="flex items-center justify-center p-8 text-gray-500">
-        <p>No places match your filters.</p>
+        <p>No locations match your filters.</p>
       </div>
     );
   }
@@ -39,7 +39,7 @@ export default function LocationList({
       ))}
       <div className="pt-2 pb-1 text-center">
         <Link href="/about" className="text-xs text-gray-400 hover:text-gray-600 transition-colors">
-          About Drift
+          About dripmap
         </Link>
       </div>
     </div>

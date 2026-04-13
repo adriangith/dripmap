@@ -1,0 +1,40 @@
+slug: venus-baths-halls-gap
+name: Venus Baths, Halls Gap
+type: swimming-hole
+coordinates:
+  lat: -37.14
+  lng: 142.52
+region: Victoria, Australia
+country: AU
+description: >
+  A series of weathered holes in a rock shelf along Stony Creek in the Grampians, providing waist-deep bathing relief from the heat and the possibility of a short slide into the water. One of the most iconic natural attractions in the Grampians National Park.
+photos:
+  - url: /images/placeholder.jpg
+    alt: Venus Baths, Halls Gap swimming hole in Victoria, Australia
+practical:
+  accessibility: easy
+  parking: available
+  facilities:
+    - restrooms
+  bestSeason:
+    - spring
+    - summer
+  dangerLevel: low
+  cost: free
+directions: >
+  From Halls Gap, follow the well-marked walking track to Venus Baths. The walk is approximately 2 km return along Stony Creek through the bush.
+tips:
+  - Water can become stagnant in dry periods — visit after recent rain
+  - The natural rock slide is fun but be careful on the slippery surface
+  - Waist-deep pools — more bathing than swimming
+  - Popular tourist spot — visit early morning for fewer crowds
+tags:
+  - rock-pool
+  - grampians
+  - scenic
+  - natural-slide
+status:
+  site: open
+  waterAccess: seasonal
+  note: "Water can become stagnant in dry periods"
+  lastVerified: "2026-04-01"

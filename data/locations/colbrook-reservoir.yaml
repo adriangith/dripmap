@@ -1,0 +1,38 @@
+slug: colbrook-reservoir
+name: Colbrook Reservoir
+type: swimming-hole
+coordinates:
+  lat: -37.6
+  lng: 144.23
+region: Victoria, Australia
+country: AU
+description: >
+  A former town water supply reservoir near Ballan sitting silently in the bush. Usually full even in summer since no one is drawing the water. Swimmers can enjoy 200 metre laps or dart across to the rope swing for a more adventurous experience.
+photos:
+  - url: /images/placeholder.jpg
+    alt: Colbrook Reservoir swimming hole in Victoria, Australia
+practical:
+  accessibility: moderate
+  parking: limited
+  facilities: []
+  bestSeason:
+    - spring
+    - summer
+  dangerLevel: moderate
+  cost: free
+directions: >
+  Located near Ballan, west of Melbourne. From Ballan, follow local roads south towards Colbrook. The reservoir is accessible via a short walk from the nearest road access point.
+tips:
+  - Usually full even in summer — reliable water levels
+  - Great for long lap swimming — 200 metre laps possible
+  - Rope swing available for adventurous swimmers
+  - Bush setting provides natural shade and scenery
+tags:
+  - reservoir
+  - lap-swimming
+  - rope-swing
+  - bush-setting
+status:
+  site: open
+  waterAccess: open
+  lastVerified: "2026-04-01"

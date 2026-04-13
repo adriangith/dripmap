@@ -1,7 +1,7 @@
 {
-  "name": "Drift",
-  "short_name": "Drift",
-  "description": "Discover summer activities across Victoria",
+  "name": "dripmap",
+  "short_name": "dripmap",
+  "description": "Find water play locations worldwide",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

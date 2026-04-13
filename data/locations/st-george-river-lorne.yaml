@@ -1,0 +1,38 @@
+slug: st-george-river-lorne
+name: St George River Estuary, Lorne
+type: swimming-hole
+coordinates:
+  lat: -38.54
+  lng: 143.97
+region: Victoria, Australia
+country: AU
+description: >
+  The St George River meanders through a wide, flat sand bar on its way to the ocean just outside Lorne. Skip across this shallow river from one side to the other, or sit yourself down on the river bed and relax in the gentle current.
+photos:
+  - url: /images/placeholder.jpg
+    alt: St George River Estuary, Lorne swimming hole in Victoria, Australia
+practical:
+  accessibility: easy
+  parking: available
+  facilities: []
+  bestSeason:
+    - summer
+  dangerLevel: low
+  cost: free
+directions: >
+  Located just outside of Lorne on the Great Ocean Road. The river estuary is visible from the road. Park at the nearby pullover area and walk to the sand bar.
+tips:
+  - Shallow, gentle river — great for children and wading
+  - Wide sand bar perfect for picnics and relaxing
+  - Easy side trip when driving the Great Ocean Road
+  - Best on warm, calm days
+tags:
+  - river
+  - estuary
+  - wading
+  - family-friendly
+  - great-ocean-road
+status:
+  site: open
+  waterAccess: open
+  lastVerified: "2026-04-01"

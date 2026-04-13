@@ -1,0 +1,37 @@
+slug: youngs-creek-reservoir
+name: Young's Creek Reservoir, Orbost
+type: swimming-hole
+coordinates:
+  lat: -37.67
+  lng: 148.45
+region: Victoria, Australia
+country: AU
+description: >
+  A former water supply reservoir north of Orbost offering long lap swimming in the middle of the bush, after a 2 km hike from the nearby picnic area. A seldom-visited swimming spot where you can find a spot free of fallen timber and head out into the open water.
+photos:
+  - url: /images/placeholder.jpg
+    alt: Young's Creek Reservoir, Orbost swimming hole in Victoria, Australia
+practical:
+  accessibility: difficult
+  parking: available
+  facilities: []
+  bestSeason:
+    - summer
+  dangerLevel: moderate
+  cost: free
+directions: >
+  From Orbost, head north following local roads towards Young's Creek Reservoir. Park at the picnic area and hike approximately 2 km to reach the reservoir.
+tips:
+  - The 2 km hike in is part of the adventure
+  - Pick a spot free of fallen timber for your swim
+  - Seldom visited — expect solitude
+  - Bring all supplies as there are no facilities at the reservoir
+tags:
+  - reservoir
+  - remote
+  - hiking
+  - wild-swimming
+status:
+  site: open
+  waterAccess: open
+  lastVerified: "2026-04-01"

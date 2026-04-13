@@ -1,5 +1,5 @@
 {
-  "name": "drift",
+  "name": "dripmap",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -17,7 +17,6 @@
     "dev:network:https": "next dev --hostname 0.0.0.0 --experimental-https --experimental-https-key certificates/localhost-key.pem --experimental-https-cert certificates/localhost.pem"
   },
   "dependencies": {
-    "@vercel/analytics": "^2.0.1",
     "js-yaml": "^4.1.1",
     "leaflet": "^1.9.4",
     "leaflet.markercluster": "^1.5.3",

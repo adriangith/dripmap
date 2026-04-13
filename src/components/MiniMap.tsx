@@ -25,14 +25,9 @@ export default function MiniMap({ coordinates, name }: MiniMapProps) {
       touchZoom: false,
     }).setView([coordinates.lat, coordinates.lng], 13);
 
-    const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const tileUrl = isDark
-      ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-      : "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png";
-
-    L.tileLayer(tileUrl, {
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution:
-        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>',
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     }).addTo(map);
 
     const icon = L.divIcon({
@@ -69,7 +64,7 @@ export default function MiniMap({ coordinates, name }: MiniMapProps) {
   return (
     <div
       ref={containerRef}
-      className="h-48 w-full rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700"
+      className="h-48 w-full rounded-lg overflow-hidden border border-gray-200"
     />
   );
 }
