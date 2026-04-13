@@ -62,3 +62,27 @@ details:
   distanceKm: 12.5
   difficulty: easy
   terrain: paved
+  route:
+    - [-37.9067, 144.9931]  # Middle Brighton station
+    - [-37.9080, 144.9855]  # Brighton Beach foreshore
+    - [-37.9020, 144.9836]  # Hampton Beach
+    - [-37.8981, 144.9851]
+    - [-37.8969, 144.9864]  # Sandringham Gardens
+    - [-37.8920, 144.9861]
+    - [-37.8887, 144.9840]  # Elwood Beach north
+    - [-37.8850, 144.9803]
+    - [-37.8821, 144.9758]  # Point Ormond
+    - [-37.8787, 144.9762]
+    - [-37.8783, 144.9756]
+    - [-37.8759, 144.9745]  # St Kilda Marina
+    - [-37.8753, 144.9766]
+    - [-37.8700, 144.9758]  # St Kilda Beach
+    - [-37.8668, 144.9736]  # St Kilda Pier area
+    - [-37.8651, 144.9711]
+    - [-37.8621, 144.9710]  # South Melbourne Beach
+    - [-37.8587, 144.9694]
+    - [-37.8541, 144.9612]  # South Melbourne Life Saving Club
+    - [-37.8451, 144.9426]  # Beacon Cove
+    - [-37.8445, 144.9402]
+    - [-37.8419, 144.9353]  # Princes Pier
+    - [-37.8402, 144.9243]  # Station Pier, Port Melbourne
