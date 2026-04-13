@@ -1,15 +1,9 @@
-import type { LocationIndexEntry, Filters } from "./types";
+import type { PlaceIndexEntry, Filters } from "./types";
 
-/**
- * Filters a location index by the active fields in `filters`.
- * NOTE: `accessibility`, `season`, and `cost` are not applied here because
- * `LocationIndexEntry` does not include `practical` data. Apply them after
- * fetching full `Location` objects if needed.
- */
 export function filterLocations(
-  locations: LocationIndexEntry[],
+  locations: PlaceIndexEntry[],
   filters: Filters
-): LocationIndexEntry[] {
+): PlaceIndexEntry[] {
   return locations.filter((loc) => {
     if (filters.type && loc.type !== filters.type) return false;
     if (filters.siteStatus && loc.status.site !== filters.siteStatus) return false;
@@ -18,8 +12,10 @@ export function filterLocations(
       const term = filters.search.toLowerCase();
       const searchable = [
         loc.name,
+        loc.region,
         loc.country,
         ...loc.tags,
+        ...loc.highlights,
       ]
         .join(" ")
         .toLowerCase();

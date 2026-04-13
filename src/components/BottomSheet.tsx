@@ -2,7 +2,7 @@
 
 import { useRef, useState, useCallback, useEffect } from "react";
 
-export const SNAP_PEEK = 140;
+export const SNAP_PEEK = 96;
 export const SNAP_HALF = 0.5;
 export const SNAP_FULL = 0.92;
 
@@ -48,14 +48,20 @@ function springAnimate(
 
 interface BottomSheetProps {
   children: React.ReactNode;
+  /** Content rendered above the scrollable area — not clipped by overflow */
+  header?: React.ReactNode;
   snapTo?: number | null;
   onHeightChange?: (height: number) => void;
+  /** Fires only when crossing the expanded/collapsed threshold */
+  onExpandedChange?: (expanded: boolean) => void;
 }
 
-export default function BottomSheet({ children, snapTo, onHeightChange }: BottomSheetProps) {
+export default function BottomSheet({ children, header, snapTo, onHeightChange, onExpandedChange }: BottomSheetProps) {
   const sheetRef = useRef<HTMLDivElement>(null);
-  const [sheetHeight, setSheetHeight] = useState(SNAP_PEEK);
-  const [isDragging, setIsDragging] = useState(false);
+  // React state only used for content-visibility threshold — NOT updated per pixel
+  const [, setIsExpanded] = useState(false);
+  const heightRef = useRef(SNAP_PEEK);
+  const draggingRef = useRef(false);
   const animatingRef = useRef(false);
 
   const dragStartY = useRef(0);
@@ -67,6 +73,27 @@ export default function BottomSheet({ children, snapTo, onHeightChange }: Bottom
   const lastTouchTime = useRef(0);
   const velocityRef = useRef(0);
 
+  // Write height directly to the DOM — no React re-render
+  const applyHeight = useCallback((h: number) => {
+    heightRef.current = h;
+    if (sheetRef.current) sheetRef.current.style.height = `${h}px`;
+    document.documentElement.style.setProperty("--sheet-height", `${h}px`);
+    // Only toggle React state when crossing the visibility threshold
+    const expanded = h > SNAP_PEEK + 20;
+    setIsExpanded(prev => {
+      if (prev !== expanded) {
+        onExpandedChange?.(expanded);
+        return expanded;
+      }
+      return prev;
+    });
+  }, [onExpandedChange]);
+
+  // Set initial value
+  useEffect(() => {
+    applyHeight(SNAP_PEEK);
+  }, [applyHeight]);
+
   const getSnaps = useCallback(() => {
     const vh = window.innerHeight;
     return [SNAP_PEEK, vh * SNAP_HALF, vh * SNAP_FULL];
@@ -75,14 +102,16 @@ export default function BottomSheet({ children, snapTo, onHeightChange }: Bottom
   const snapToNearest = useCallback((height: number, velocity: number) => {
     const snaps = getSnaps();
 
-    // Velocity threshold: 0.5px/ms
+    // Velocity threshold: 0.5px/ms — fast flicks snap to the next point
     if (Math.abs(velocity) > 0.5) {
       if (velocity < 0) {
+        // Swiping up — next higher snap
         for (const snap of snaps) {
           if (snap > height + 10) return snap;
         }
         return snaps[snaps.length - 1];
       } else {
+        // Swiping down — next lower snap
         for (let i = snaps.length - 1; i >= 0; i--) {
           if (snaps[i] < height - 10) return snaps[i];
         }
@@ -90,33 +119,43 @@ export default function BottomSheet({ children, snapTo, onHeightChange }: Bottom
       }
     }
 
-    let nearest = snaps[0];
-    let minDist = Math.abs(height - snaps[0]);
-    for (let i = 1; i < snaps.length; i++) {
-      const dist = Math.abs(height - snaps[i]);
-      if (dist < minDist) {
-        minDist = dist;
-        nearest = snaps[i];
+    // Slow drag: bias toward the drag direction so the user only needs to
+    // move ~30% of the gap (instead of 50%) to commit to the next snap.
+    const dragDelta = height - dragStartHeight.current;
+    const bias = dragDelta !== 0 ? 0.3 : 0.5;
+
+    let best = snaps[0];
+    let bestScore = Infinity;
+    for (const snap of snaps) {
+      const dist = snap - height;
+      // Weight: if dist sign matches drag direction, use lower threshold
+      const sameDirection =
+        (dragDelta > 0 && dist > 0) || (dragDelta < 0 && dist < 0);
+      const weight = sameDirection ? bias : 1 - bias;
+      const score = Math.abs(dist) * weight;
+      if (score < bestScore) {
+        bestScore = score;
+        best = snap;
       }
     }
-    return nearest;
+    return best;
   }, [getSnaps]);
 
   // Programmatic snap via prop
   useEffect(() => {
-    if (snapTo == null || isDragging) return;
+    if (snapTo == null || draggingRef.current) return;
     cancelSpring.current?.();
     animatingRef.current = true;
     cancelSpring.current = springAnimate(
-      sheetHeight,
+      heightRef.current,
       snapTo,
       (v) => {
-        setSheetHeight(v);
+        applyHeight(v);
         onHeightChange?.(v);
       },
-      () => animatingRef.current = false,
+      () => { animatingRef.current = false; },
     );
-  // Only trigger when snapTo changes, not on every sheetHeight change
+  // Only trigger when snapTo changes
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [snapTo]);
 
@@ -126,19 +165,19 @@ export default function BottomSheet({ children, snapTo, onHeightChange }: Bottom
       cancelSpring.current = null;
       animatingRef.current = false;
 
-      setIsDragging(true);
+      draggingRef.current = true;
       dragStartY.current = clientY;
-      dragStartHeight.current = sheetHeight;
+      dragStartHeight.current = heightRef.current;
       lastTouchY.current = clientY;
       lastTouchTime.current = Date.now();
       velocityRef.current = 0;
     },
-    [sheetHeight]
+    []
   );
 
   const handleDragMove = useCallback(
     (clientY: number) => {
-      if (!isDragging) return;
+      if (!draggingRef.current) return;
 
       const now = Date.now();
       const dt = now - lastTouchTime.current;
@@ -153,37 +192,36 @@ export default function BottomSheet({ children, snapTo, onHeightChange }: Bottom
         SNAP_PEEK,
         Math.min(window.innerHeight * SNAP_FULL, dragStartHeight.current + delta)
       );
-      setSheetHeight(newHeight);
+      applyHeight(newHeight);
       onHeightChange?.(newHeight);
     },
-    [isDragging, onHeightChange]
+    [onHeightChange, applyHeight]
   );
 
   const handleDragEnd = useCallback(() => {
-    setIsDragging(false);
-    const target = snapToNearest(sheetHeight, velocityRef.current);
+    draggingRef.current = false;
+    const target = snapToNearest(heightRef.current, velocityRef.current);
     animatingRef.current = true;
     cancelSpring.current = springAnimate(
-      sheetHeight,
+      heightRef.current,
       target,
       (v) => {
-        setSheetHeight(v);
+        applyHeight(v);
         onHeightChange?.(v);
       },
-      () => animatingRef.current = false,
+      () => { animatingRef.current = false; },
     );
-  }, [snapToNearest, sheetHeight, onHeightChange]);
+  }, [snapToNearest, onHeightChange, applyHeight]);
 
   useEffect(() => {
-    if (!isDragging) return;
-
     const onMouseMove = (e: MouseEvent) => handleDragMove(e.clientY);
-    const onMouseUp = () => handleDragEnd();
+    const onMouseUp = () => { if (draggingRef.current) handleDragEnd(); };
     const onTouchMove = (e: TouchEvent) => {
+      if (!draggingRef.current) return;
       e.preventDefault();
       handleDragMove(e.touches[0].clientY);
     };
-    const onTouchEnd = () => handleDragEnd();
+    const onTouchEnd = () => { if (draggingRef.current) handleDragEnd(); };
 
     window.addEventListener("mousemove", onMouseMove);
     window.addEventListener("mouseup", onMouseUp);
@@ -196,7 +234,7 @@ export default function BottomSheet({ children, snapTo, onHeightChange }: Bottom
       window.removeEventListener("touchmove", onTouchMove);
       window.removeEventListener("touchend", onTouchEnd);
     };
-  }, [isDragging, handleDragMove, handleDragEnd]);
+  }, [handleDragMove, handleDragEnd]);
 
   useEffect(() => {
     return () => cancelSpring.current?.();
@@ -205,8 +243,8 @@ export default function BottomSheet({ children, snapTo, onHeightChange }: Bottom
   return (
     <div
       ref={sheetRef}
-      className="fixed bottom-0 left-0 right-0 bg-white rounded-t-2xl shadow-[0_-2px_16px_rgba(0,0,0,0.12)] z-40 flex flex-col lg:hidden"
-      style={{ height: sheetHeight }}
+      className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 rounded-t-2xl shadow-[0_-2px_16px_rgba(0,0,0,0.12)] dark:shadow-[0_-2px_16px_rgba(0,0,0,0.4)] z-40 flex flex-col lg:hidden"
+      style={{ height: SNAP_PEEK }}
     >
       {/* Drag handle — enlarged 48px hit target */}
       <div
@@ -218,8 +256,15 @@ export default function BottomSheet({ children, snapTo, onHeightChange }: Bottom
           handleDragStart(e.touches[0].clientY);
         }}
       >
-        <div className="w-10 h-1 rounded-full bg-gray-300" />
+        <div className="w-10 h-1 rounded-full bg-gray-300 dark:bg-gray-600" />
       </div>
+
+      {/* Header — outside scroll, popovers can overflow visibly */}
+      {header && (
+        <div className="shrink-0 relative z-10 overflow-visible">
+          {header}
+        </div>
+      )}
 
       {/* Scrollable content */}
       <div className="flex-1 overflow-y-auto overscroll-contain">

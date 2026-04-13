@@ -1,0 +1,60 @@
+slug: lake-esmond-ballarat
+name: Lake Esmond, Ballarat
+type: swim
+coordinates:
+  lat: -37.55
+  lng: 143.86
+region: Victoria, Australia
+country: AU
+description: 'A former clay quarry near Ballarat that was filled with water in the 1980s and converted to a recreational lake.
+  It now hosts the swimming leg of local triathlon events over summer, with one of the old excavators apparently lurking beneath
+  the surface.
+
+  '
+photos:
+- url: https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Ballarat_Town_Hall_2011_004.JPG/960px-Ballarat_Town_Hall_2011_004.JPG
+
+  alt: Lake Esmond, Ballarat swimming hole in Victoria, Australia
+  credit: "Wikipedia"
+highlights:
+- Hosts local triathlon swimming events — good for open water training
+- Former quarry — water gets deep quickly
+cost: free
+duration: quick
+ageSuitability:
+  minAge: null
+  ideal:
+  - toddlers
+  - primary
+  - teens
+  - adults
+accessibility: easy
+parking: available
+facilities:
+- restrooms
+- picnic-tables
+- playground
+- walking-trails
+bestSeason:
+- summer
+directions: 'Located in Ballarat. From the Ballarat city centre, follow signs to Lake Esmond. The lake has road access and
+  parking near the main swimming area.
+
+  '
+tips:
+- Hosts local triathlon swimming events — good for open water training
+- Former quarry — water gets deep quickly
+- Legend has it an old excavator lurks beneath the surface
+- Combine with a visit to historic Ballarat
+tags:
+- lake
+- quarry
+- triathlon
+- open-water
+status:
+  site: open
+  lastVerified: '2026-04-01'
+details:
+  dangerLevel: moderate
+  waterAccess: open
+  depth: Shallow urban lake, typically 1-3m

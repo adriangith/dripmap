@@ -1,0 +1,59 @@
+slug: niagara-falls
+name: Niagara Falls
+type: swim
+coordinates:
+  lat: 43.0962
+  lng: -79.0377
+region: North America
+country: CA
+description: Not to be confused with its North American namesake, Victoria's Niagara Falls is a charming waterfall on the
+  Sabine River near Trentham in the Macedon Ranges. The falls drop several metres into a swimming hole surrounded by lush
+  tree ferns and native forest. A short walking track from the picnic area leads to the base of the falls.
+photos:
+- url: /images/locations/niagara-falls/hero.jpg
+  alt: Niagara Falls from the Canadian side
+  credit: Parks Canada
+highlights:
+- Victoria's own Niagara Falls (much smaller than the famous one!)
+- Swimming hole surrounded by lush tree ferns
+- Short family-friendly walk from picnic area
+- Near charming Trentham in the Macedon Ranges
+cost: free
+duration: half-day
+ageSuitability:
+  minAge: null
+  ideal:
+  - toddlers
+  - primary
+  - teens
+  - adults
+accessibility: wheelchair-accessible
+parking: available
+facilities:
+- picnic-tables
+bestSeason:
+- spring
+- summer
+- fall
+directions: 'From Toronto, take the QEW south toward Niagara. Follow signs to Niagara Falls. Main parking is at the Niagara
+  Parks Welcome Centre on Niagara Parkway.
+
+  '
+tips:
+- Short walk from the picnic area to the falls — suitable for families
+- Best after rain when water flow is strongest
+- The pool can be cold even in summer — quick dip territory
+- Combine with a visit to nearby Trentham for cafes and the historic railway
+- Look for platypus in the early morning or at dusk
+tags:
+- family-friendly
+- iconic
+- accessible
+- free
+status:
+  site: open
+  lastVerified: '2026-03-15'
+details:
+  dangerLevel: low
+  waterAccess: open
+  depth: Pool below falls approximately 1-2m

@@ -1,11 +1,13 @@
 import Link from "next/link";
-import type { LocationIndexEntry, Coordinates } from "@/lib/types";
+import type { PlaceIndexEntry, Coordinates } from "@/lib/types";
 import { haversineDistanceKm, formatDistance } from "@/lib/useCurrentLocation";
 import TypeBadge from "./TypeBadge";
 import StatusBadge from "./StatusBadge";
+import CostIndicator from "./CostIndicator";
+import Image from "next/image";
 
 interface LocationCardProps {
-  location: LocationIndexEntry;
+  location: PlaceIndexEntry & { _driveMinutes?: number | null };
   onHover?: (slug: string | null) => void;
   isHighlighted?: boolean;
   userLocation?: Coordinates | null;
@@ -19,53 +21,66 @@ export default function LocationCard({
   userLocation,
   onCardClick,
 }: LocationCardProps) {
-  const distance =
-    userLocation
+  const driveMinutes = (location as { _driveMinutes?: number | null })._driveMinutes;
+  const distance = driveMinutes != null
+    ? `~${Math.round(driveMinutes)} min`
+    : userLocation
       ? formatDistance(haversineDistanceKm(userLocation, location.coordinates))
       : null;
 
-  const cardClassName = `block rounded-lg border p-3 transition-all duration-100 active:scale-[0.98] active:shadow-none ${
+  const photo = location.photo && !location.photo.includes("placeholder") ? location.photo : undefined;
+
+  const cardClassName = `block rounded-lg border overflow-hidden transition-all duration-100 active:scale-[0.98] active:shadow-none ${
     isHighlighted
-      ? "border-blue-400 bg-blue-50 shadow-md"
-      : "border-gray-200 bg-white shadow-sm hover:shadow-md"
+      ? "border-blue-400 bg-blue-50 dark:bg-blue-950 shadow-md"
+      : "border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm hover:shadow-md"
   }`;
 
   const cardContent = (
     <>
-      <div className="flex items-start justify-between gap-2">
-        <div className="min-w-0 flex-1">
-          <h3 className="font-semibold text-gray-900 truncate">{location.name}</h3>
-          <div className="flex items-center gap-2 mt-1">
-            <TypeBadge type={location.type} showLabel={false} />
-            <span className="text-sm text-gray-500">{location.country}</span>
-            {distance && (
-              <span className="text-xs text-blue-600 font-medium">{distance}</span>
-            )}
-          </div>
-        </div>
-        <div className="flex flex-col items-end gap-1 shrink-0">
-          <StatusBadge status={location.status.site} />
-          {location.status.site === "open" &&
-            location.status.waterAccess !== "open" && (
-              <StatusBadge
-                status={location.status.waterAccess}
-                label={`Water: ${location.status.waterAccess}`}
-              />
-            )}
-        </div>
-      </div>
-      {location.tags.length > 0 && (
-        <div className="flex flex-wrap gap-1 mt-2">
-          {location.tags.slice(0, 3).map((tag) => (
-            <span
-              key={tag}
-              className="px-1.5 py-0.5 text-xs bg-gray-100 text-gray-600 rounded"
-            >
-              {tag}
-            </span>
-          ))}
+      {photo && (
+        <div className="relative w-full h-20 -mb-2">
+          <Image
+            src={photo}
+            alt=""
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, 400px"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white dark:to-gray-800" />
         </div>
       )}
+      <div className="p-3">
+        <div className="flex items-start justify-between gap-2">
+          <div className="min-w-0 flex-1">
+            <h3 className="font-semibold text-gray-900 dark:text-gray-100 truncate">{location.name}</h3>
+            <div className="flex items-center gap-2 mt-1">
+              <TypeBadge type={location.type} showLabel={false} />
+              <span className="text-sm text-gray-500 dark:text-gray-400">{location.country}</span>
+              {distance && (
+                <span className="text-xs text-blue-600 font-medium">{distance}</span>
+              )}
+              <CostIndicator cost={location.cost} />
+            </div>
+          </div>
+          <div className="flex flex-col items-end gap-1 shrink-0">
+            <StatusBadge status={location.status.site} />
+          </div>
+        </div>
+        {location.highlights.length > 0 ? (
+          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1.5 line-clamp-1">
+            {location.highlights[0]}
+          </p>
+        ) : location.tags.length > 0 ? (
+          <div className="flex flex-wrap gap-1 mt-2">
+            {location.tags.slice(0, 3).map((tag) => (
+              <span key={tag} className="px-1.5 py-0.5 text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded">
+                {tag}
+              </span>
+            ))}
+          </div>
+        ) : null}
+      </div>
     </>
   );
 

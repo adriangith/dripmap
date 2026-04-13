@@ -1,6 +1,6 @@
 import { render, fireEvent } from "@testing-library/react";
 import { vi, describe, it, expect } from "vitest";
-import type { LocationIndexEntry } from "../../src/lib/types";
+import type { PlaceIndexEntry } from "../../src/lib/types";
 
 vi.mock("next/link", () => ({
   default: ({
@@ -21,13 +21,16 @@ vi.mock("next/link", () => ({
 const getLocationCard = () =>
   import("../../src/components/LocationCard").then((m) => m.default);
 
-const location: LocationIndexEntry = {
+const location: PlaceIndexEntry = {
   slug: "fairy-pools",
   name: "Fairy Pools",
-  type: "swimming-hole",
+  type: "swim",
   coordinates: { lat: 57.25, lng: -6.27 },
+  region: "Scotland, UK",
   country: "GB",
-  status: { site: "open", waterAccess: "open", lastVerified: "2026-02-20" },
+  cost: "free",
+  highlights: ["Crystal clear pools"],
+  status: { site: "open", lastVerified: "2026-02-20" },
   tags: ["scenic", "hiking", "cold-water"],
 };
 

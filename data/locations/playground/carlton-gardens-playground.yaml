@@ -1,0 +1,56 @@
+slug: carlton-gardens-playground
+name: Carlton Gardens Playspaces
+type: playground
+coordinates:
+  lat: -37.8052
+  lng: 144.9715
+region: Victoria, Australia
+country: AU
+description: >
+  A two-for-one special at the northern end of Carlton Gardens — two
+  playgrounds to explore while spending quality family time on the edge
+  of Melbourne's beautiful city. The gardens are tucked behind the
+  Melbourne Museum and Royal Exhibition Building, a World Heritage site.
+photos:
+  - url: https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Carlton_gardens_panorama.jpg/960px-Carlton_gardens_panorama.jpg
+    alt: Carlton Gardens playground behind Melbourne Museum
+    credit: "fir0002  flagstaffotos [at] gmail.com
+		Canon 20D + Tamron 28-75mm f/2.8"
+highlights:
+  - Two playgrounds in one location
+  - Behind Melbourne Museum and Exhibition Building
+  - Beautiful tree-lined avenues
+cost: free
+duration: quick
+ageSuitability:
+  minAge: 1
+  ideal:
+    - toddler
+    - primary
+accessibility: easy
+parking: paid
+facilities:
+  - toilets
+  - cafe
+  - water
+bestSeason:
+  - spring
+  - summer
+  - fall
+  - winter
+directions: >
+  Northern end of Carlton Gardens, behind Melbourne Museum on Nicholson
+  Street. Walk from Parliament station (10 minutes) or take tram route
+  86/96 along Nicholson Street.
+tips:
+  - Combine with a visit to Melbourne Museum or IMAX
+  - The autumn leaves in the gardens are spectacular
+  - Two separate play areas suit different age groups
+tags:
+  - family-friendly
+  - free
+  - heritage
+status:
+  site: open
+  lastVerified: "2026-04-13"
+details: {}

@@ -1,0 +1,53 @@
+slug: yarra-river-laughing-waters
+name: Yarra River at Laughing Waters
+type: swim
+coordinates:
+  lat: -37.73
+  lng: 145.13
+region: Victoria, Australia
+country: AU
+description: >
+  A series of broad, deep pools on the Yarra River at Laughing Waters in Eltham, separated by gurgling rapids that give
+  this location its name. A little harder to reach than other spots along the Yarra, but one of the best for swimming in
+  a natural bush setting.
+photos:
+  - url: https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Melbourne_New_Year_2014_%2811726618003%29.jpg/960px-Melbourne_New_Year_2014_%2811726618003%29.jpg
+    alt: Yarra River at Laughing Waters swimming hole in Victoria, Australia
+    credit: "Chris Phutully from Australia"
+highlights:
+  - One of the best Yarra River swimming spots — worth the effort to reach
+  - The path to the river is steep — wear sturdy shoes
+cost: free
+duration: half-day
+ageSuitability:
+  minAge: null
+  ideal:
+    - toddlers
+    - primary
+    - teens
+    - adults
+accessibility: moderate
+parking: limited
+facilities: []
+bestSeason:
+  - summer
+directions: >
+  Located in Eltham, north-east of Melbourne. Access via Laughing Waters Road. Park at the end of the road and follow
+  walking tracks down to the river. The path can be steep in places.
+tips:
+  - One of the best Yarra River swimming spots — worth the effort to reach
+  - The path to the river is steep — wear sturdy shoes
+  - Multiple pools to explore along the river
+  - Visit on weekdays for a quieter experience
+tags:
+  - river
+  - pools
+  - bush-setting
+  - scenic
+status:
+  site: open
+  lastVerified: '2026-04-01'
+details:
+  dangerLevel: moderate
+  waterAccess: open
+  depth: null

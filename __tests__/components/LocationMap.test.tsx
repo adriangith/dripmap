@@ -1,7 +1,7 @@
 import { render, cleanup } from "@testing-library/react";
 import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
 import { createLeafletMock } from "../helpers/leaflet-mock";
-import type { LocationIndexEntry } from "../../src/lib/types";
+import type { PlaceIndexEntry } from "../../src/lib/types";
 
 // Build a fresh mock for each test
 let leafletMock: ReturnType<typeof createLeafletMock>;
@@ -26,19 +26,33 @@ vi.mock("leaflet.markercluster/dist/MarkerCluster.Default.css", () => ({}));
 const getLocationMap = () =>
   import("../../src/components/LocationMap").then((m) => m.default);
 
-const makeLocation = (slug: string, lat: number, lng: number): LocationIndexEntry => ({
+const makeLocation = (slug: string, lat: number, lng: number): PlaceIndexEntry => ({
   slug,
   name: slug,
   type: "waterfall",
   coordinates: { lat, lng },
+  region: "North America",
   country: "US",
-  status: { site: "open", waterAccess: "open", lastVerified: "2026-01-01" },
+  cost: "free",
+  highlights: [],
+  status: { site: "open", lastVerified: "2026-01-01" },
   tags: [],
 });
 
 describe("LocationMap", () => {
   beforeEach(() => {
     leafletMock = createLeafletMock();
+    // jsdom lacks matchMedia — stub it so hover-guard code works in tests
+    Object.defineProperty(window, "matchMedia", {
+      writable: true,
+      configurable: true,
+      value: vi.fn().mockImplementation((query: string) => ({
+        matches: query === "(hover: hover)",
+        media: query,
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+      })),
+    });
   });
 
   afterEach(() => {
@@ -86,7 +100,7 @@ describe("LocationMap", () => {
       />
     );
     expect(leafletMock.L.tileLayer).toHaveBeenCalledWith(
-      expect.stringContaining("openstreetmap.org"),
+      expect.stringContaining("cartocdn.com"),
       expect.any(Object)
     );
   });

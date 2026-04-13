@@ -1,0 +1,63 @@
+slug: port-phillip-bay-walk
+name: Port Phillip Bay Walk (Williamstown to Altona)
+type: walk
+coordinates:
+  lat: -37.8653
+  lng: 144.9067
+region: Victoria, Australia
+country: AU
+description: >
+  A 12.5km coastal walk from Williamstown to Altona Pier along the
+  Port Phillip Bay foreshore. Start with breakfast on the Williamstown
+  waterfront, explore the historic maritime precinct, then follow the
+  bay trail past Seaholme Beach and Altona Coastal Park to Altona Pier.
+  Great for bird-watching with regular sightings of pelicans and
+  cormorants.
+photos:
+  - url: https://upload.wikimedia.org/wikipedia/commons/d/d8/Port_Phillip_Bay.png
+    alt: Port Phillip Bay coastline between Williamstown and Altona
+    credit: "Wikimedia Commons"
+highlights:
+  - Historic Williamstown maritime precinct
+  - Altona Coastal Park birdlife
+  - Panoramic bay views to the You Yangs
+cost: free
+duration: half-day
+ageSuitability:
+  minAge: null
+  ideal:
+    - primary
+    - teens
+    - adults
+accessibility: easy
+parking: street
+facilities:
+  - toilets
+  - cafe
+  - water
+bestSeason:
+  - spring
+  - summer
+  - fall
+directions: >
+  Start at Williamstown station or drive to the waterfront. Walk south
+  along the bay foreshore past Seaholme Beach and through Altona Coastal
+  Park. Finish at Altona Pier. Return by train from Altona station
+  (short walk from the pier).
+tips:
+  - Bring binoculars for birdwatching at Altona Coastal Park
+  - Mostly flat and paved — great for a relaxed morning
+  - Williamstown has excellent cafes for a pre-walk coffee
+  - Beautiful sunset spot if you walk it in reverse
+tags:
+  - coastal
+  - solo-friendly
+  - public-transport
+  - birdwatching
+status:
+  site: open
+  lastVerified: "2026-04-01"
+details:
+  distanceKm: 12.5
+  difficulty: easy
+  terrain: paved

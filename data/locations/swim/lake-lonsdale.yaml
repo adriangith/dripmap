@@ -1,0 +1,59 @@
+slug: lake-lonsdale
+name: Lake Lonsdale
+type: swim
+coordinates:
+  lat: -36.98
+  lng: 142.62
+region: Victoria, Australia
+country: AU
+description: 'An isolated, lakeside bush camping experience near Stawell in western Victoria. Swimming is available when lake
+  levels cooperate, though timing your visit is important to avoid periods when submerged vegetation obscures the water. Can
+  be very shallow in parts.
+
+  '
+photos:
+- url: https://upload.wikimedia.org/wikipedia/en/5/55/View_over_Stawell_Victoria_from_Big_Hill_Lookout.png
+
+  alt: Lake Lonsdale swimming hole in Victoria, Australia
+  credit: "Wikipedia"
+highlights:
+- Time your visit for when lake levels are adequate
+- Bush camping available at the lakeside — very peaceful
+cost: free
+duration: quick
+ageSuitability:
+  minAge: null
+  ideal:
+  - toddlers
+  - primary
+  - teens
+  - adults
+accessibility: easy
+parking: available
+facilities:
+- camping
+bestSeason:
+- spring
+- summer
+directions: 'From Stawell, head north-west to Lake Lonsdale. The lake is accessible via local roads with bush camping areas
+  signposted around the shoreline.
+
+  '
+tips:
+- Time your visit for when lake levels are adequate
+- Bush camping available at the lakeside — very peaceful
+- Can be very shallow in parts — check conditions
+- Submerged vegetation can be an issue at low water levels
+tags:
+- lake
+- camping
+- remote
+- bush-setting
+status:
+  site: open
+  lastVerified: '2026-04-01'
+  note: Water levels variable; submerged vegetation at low levels
+details:
+  dangerLevel: low
+  waterAccess: seasonal
+  depth: Shallow lake, typically 2-4m
