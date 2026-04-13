@@ -1,0 +1,62 @@
+slug: steves-great-parks-hike
+name: Steve's Great Melbourne Parks Hike
+type: bushwalk
+coordinates:
+  lat: -37.8305
+  lng: 144.9734
+region: Victoria, Australia
+country: AU
+description: >
+  An 11.5km urban hike through Melbourne's finest parks, from the Shrine of
+  Remembrance to Flemington Bridge station. Pass through the Royal Botanic
+  Gardens, cross the lovely Morrell Bridge, walk through the MCG precinct,
+  Fitzroy Gardens, Carlton Gardens and past the Royal Exhibition Building.
+  Stop for coffee on Lygon Street before finishing through Princes Park and
+  Royal Park.
+photos:
+  - url: /images/placeholder.jpg
+    alt: Royal Botanic Gardens along Steve's Great Parks Hike in Melbourne
+highlights:
+  - Royal Botanic Gardens and MCG precinct
+  - Carlton Gardens and Royal Exhibition Building
+  - Lygon Street coffee pitstop
+cost: free
+duration: half-day
+ageSuitability:
+  minAge: null
+  ideal:
+    - teens
+    - adults
+accessibility: easy
+parking: street
+facilities:
+  - toilets
+  - cafe
+  - water
+bestSeason:
+  - spring
+  - summer
+  - fall
+directions: >
+  Start at the Shrine of Remembrance (tram routes 3/5/6/16/64/67/72 stop
+  nearby). Walk north through the Royal Botanic Gardens, cross the Yarra via
+  Morrell Bridge. Continue through Fitzroy Gardens and Carlton Gardens to
+  Lygon Street, then through Princes Park and Royal Park to Flemington Bridge
+  station.
+tips:
+  - Accessible by public transport at both ends
+  - Pack water — limited refill points through the parks
+  - Great for photography, especially early morning light
+  - Lygon Street has excellent Italian cafes for a mid-walk break
+tags:
+  - urban-hike
+  - parks
+  - solo-friendly
+  - public-transport
+status:
+  site: open
+  lastVerified: "2026-04-01"
+details:
+  distanceKm: 11.5
+  difficulty: easy
+  terrain: paved

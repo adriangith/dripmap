@@ -1,0 +1,63 @@
+slug: brighton-to-port-melbourne
+name: Bayside Beach Hike (Brighton to Port Melbourne)
+type: bushwalk
+coordinates:
+  lat: -37.9092
+  lng: 144.9867
+region: Victoria, Australia
+country: AU
+description: >
+  A 12.5km coastal walk from Middle Brighton station to Port Melbourne Pier.
+  Stroll past the iconic Brighton Bathing Boxes, along Elwood Beach and
+  St Kilda Beach, past the South Melbourne Life Saving Club, and finish at
+  Station Pier where you can reward yourself with fish and chips in true
+  Melbourne style.
+photos:
+  - url: /images/placeholder.jpg
+    alt: Brighton Beach bathing boxes along the coastal walk
+highlights:
+  - Brighton Bathing Boxes
+  - Elwood and St Kilda beaches
+  - Fish and chips at Station Pier
+cost: free
+duration: half-day
+ageSuitability:
+  minAge: null
+  ideal:
+    - primary
+    - teens
+    - adults
+accessibility: easy
+parking: street
+facilities:
+  - toilets
+  - cafe
+  - water
+  - swimming
+bestSeason:
+  - spring
+  - summer
+  - fall
+directions: >
+  Start at Middle Brighton train station. Walk west to the beach, then
+  follow the Bay Trail north along the foreshore through Elwood, St Kilda,
+  and South Melbourne to Station Pier in Port Melbourne. Return by tram
+  (route 109) from Port Melbourne.
+tips:
+  - Bring swimmers for a dip at St Kilda or Elwood
+  - Mostly flat and paved — suitable for all fitness levels
+  - Great sunset walk if started in the late afternoon
+  - Plenty of cafes and food options along the route
+tags:
+  - coastal
+  - urban-hike
+  - solo-friendly
+  - public-transport
+  - beach
+status:
+  site: open
+  lastVerified: "2026-04-01"
+details:
+  distanceKm: 12.5
+  difficulty: easy
+  terrain: paved

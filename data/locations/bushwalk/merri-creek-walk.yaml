@@ -1,0 +1,61 @@
+slug: merri-creek-walk
+name: Merri Creek Walk (Coburg to Parliament)
+type: bushwalk
+coordinates:
+  lat: -37.7423
+  lng: 144.9653
+region: Victoria, Australia
+country: AU
+description: >
+  A 10km walk following Merri Creek from Coburg into the heart of
+  Melbourne. Start at the CERES Community Environment Park for breakfast,
+  then follow the creek trail through Northcote and Clifton Hill. The
+  trail meets the Yarra and continues through the Collingwood and Fitzroy
+  back-streets finishing at Parliament station. One of Melbourne's best
+  creek-side urban trails.
+photos:
+  - url: /images/placeholder.jpg
+    alt: Merri Creek trail through Melbourne's inner north
+highlights:
+  - Breakfast at CERES Community Environment Park
+  - Leafy creek-side trail through inner north
+  - Street art and laneways through Fitzroy
+cost: free
+duration: half-day
+ageSuitability:
+  minAge: null
+  ideal:
+    - teens
+    - adults
+accessibility: easy
+parking: street
+facilities:
+  - toilets
+  - cafe
+  - water
+bestSeason:
+  - spring
+  - summer
+  - fall
+directions: >
+  Start at CERES in Brunswick East (train to Moreland station or drive).
+  Follow the Merri Creek Trail south through Northcote and Clifton Hill.
+  The trail joins the Yarra at Dights Falls — continue south through
+  Collingwood and Fitzroy to Parliament station.
+tips:
+  - CERES Organic Market Cafe is a great starting breakfast spot
+  - Look for the painted murals near Rushall station
+  - Trail is mostly flat and well-signed
+  - Best on weekday mornings when the trail is quiet
+tags:
+  - creek-trail
+  - urban-hike
+  - solo-friendly
+  - public-transport
+status:
+  site: open
+  lastVerified: "2026-04-01"
+details:
+  distanceKm: 10
+  difficulty: easy
+  terrain: mixed

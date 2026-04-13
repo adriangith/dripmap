@@ -1,0 +1,60 @@
+slug: frankston-to-mt-eliza
+name: Frankston to Mt Eliza Coastal Walk
+type: bushwalk
+coordinates:
+  lat: -38.1437
+  lng: 145.1268
+region: Victoria, Australia
+country: AU
+description: >
+  A 14km coastal and bushland walk from Frankston to Mt Eliza along the
+  Mornington Peninsula coastline. Start at Frankston Pier, walk south past
+  Davey's Bay and Olivers Hill, through the Pines Flora and Fauna Reserve,
+  and finish at the charming Mt Eliza village. Features a mix of beach,
+  cliff-top paths, and tea-tree bushland.
+photos:
+  - url: /images/placeholder.jpg
+    alt: Coastal trail from Frankston to Mt Eliza
+highlights:
+  - Frankston Pier and foreshore
+  - Cliff-top views over Davey's Bay
+  - The Pines Flora and Fauna Reserve
+cost: free
+duration: half-day
+ageSuitability:
+  minAge: null
+  ideal:
+    - teens
+    - adults
+accessibility: moderate
+parking: paid
+facilities:
+  - toilets
+  - cafe
+  - water
+bestSeason:
+  - spring
+  - summer
+  - fall
+directions: >
+  Start at Frankston station (Frankston line). Walk south along the
+  foreshore past Frankston Pier. Continue along the coastal path through
+  Daveys Bay and Olivers Hill. Pass through The Pines Reserve and finish
+  at Mt Eliza village. Return by bus (route 788 to Frankston station).
+tips:
+  - Great day trip from Melbourne — Frankston is 55min by train
+  - Bring swimmers for the beaches along the way
+  - Mt Eliza village has cafes for a well-earned lunch
+  - Some steep sections around Olivers Hill — moderate fitness required
+tags:
+  - coastal
+  - solo-friendly
+  - public-transport
+  - day-trip
+status:
+  site: open
+  lastVerified: "2026-04-01"
+details:
+  distanceKm: 14
+  difficulty: moderate
+  terrain: mixed

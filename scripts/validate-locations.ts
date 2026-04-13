@@ -34,6 +34,10 @@ const VALID_DIETARY_OPTION = ["vegetarian", "vegan", "gluten-free", "allergy-awa
 const VALID_SEATING = ["indoor", "outdoor", "both"];
 const VALID_BOOKING = ["required", "recommended", "walk-in"];
 
+// Bushwalk detail enums
+const VALID_DIFFICULTY = ["easy", "moderate", "hard"];
+const VALID_TERRAIN = ["paved", "gravel", "trail", "mixed"];
+
 function checkEnum(value: unknown, allowed: string[], fieldName: string): string[] {
   if (typeof value !== "string" || !allowed.includes(value)) {
     return [`${fieldName}: must be one of [${allowed.join(", ")}], got "${value}"`];
@@ -178,6 +182,16 @@ function validateEventDetails(details: Record<string, unknown>): string[] {
   return errors;
 }
 
+function validateBushwalkDetails(details: Record<string, unknown>): string[] {
+  const errors: string[] = [];
+  if (typeof details.distanceKm !== "number" || details.distanceKm <= 0) {
+    errors.push("details.distanceKm: must be a positive number");
+  }
+  errors.push(...checkEnum(details.difficulty, VALID_DIFFICULTY, "details.difficulty"));
+  errors.push(...checkEnum(details.terrain, VALID_TERRAIN, "details.terrain"));
+  return errors;
+}
+
 function validateEateryDetails(details: Record<string, unknown>): string[] {
   const errors: string[] = [];
 
@@ -233,6 +247,9 @@ export function validatePlace(data: Record<string, unknown>): string[] {
       break;
     case "event":
       errors.push(...validateEventDetails(details));
+      break;
+    case "bushwalk":
+      errors.push(...validateBushwalkDetails(details));
       break;
     case "eatery":
       errors.push(...validateEateryDetails(details));

@@ -1,0 +1,59 @@
+slug: western-waterways-hike
+name: Western Waterways Hike (Aircraft to Williamstown)
+type: bushwalk
+coordinates:
+  lat: -37.7366
+  lng: 144.8394
+region: Victoria, Australia
+country: AU
+description: >
+  A long 22km hike along the Maribyrnong River from Aircraft station
+  through Melbourne's western waterways to Williamstown. Follow the
+  Maribyrnong River Trail past Brimbank Park and Footscray, then cross
+  to the Yarra and continue along the waterfront to the historic port
+  town of Williamstown. A full-day adventure showcasing Melbourne's
+  underrated west.
+photos:
+  - url: /images/placeholder.jpg
+    alt: Maribyrnong River trail in Melbourne's west
+highlights:
+  - Scenic Maribyrnong River valley
+  - Footscray's vibrant food scene for lunch
+  - Historic Williamstown waterfront finish
+cost: free
+duration: full-day
+ageSuitability:
+  minAge: null
+  ideal:
+    - adults
+accessibility: moderate
+parking: street
+facilities:
+  - toilets
+  - cafe
+  - water
+bestSeason:
+  - spring
+  - fall
+directions: >
+  Start at Aircraft station (Sunbury line). Walk south along the
+  Maribyrnong River Trail through Brimbank Park and into Footscray.
+  At the river mouth cross to the Westgate Park precinct and follow
+  the coastal trail to Williamstown station. Return by train.
+tips:
+  - Long walk — bring lunch or plan to eat in Footscray
+  - Start early to allow plenty of daylight
+  - Less crowded than eastern trails
+  - Williamstown has pubs and restaurants for a well-earned finish
+tags:
+  - river-trail
+  - solo-friendly
+  - public-transport
+  - full-day
+status:
+  site: open
+  lastVerified: "2026-04-01"
+details:
+  distanceKm: 22
+  difficulty: moderate
+  terrain: mixed
