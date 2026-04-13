@@ -60,3 +60,16 @@ details:
   distanceKm: 10
   difficulty: easy
   terrain: mixed
+  route:
+    - [-37.7423, 144.9653]  # CERES, Brunswick East
+    - [-37.7480, 144.9670]  # Merri Creek trail north
+    - [-37.7550, 144.9690]  # Near Moreland station
+    - [-37.7620, 144.9710]  # Coburg Lake area
+    - [-37.7700, 144.9730]  # Northcote — Rushall station
+    - [-37.7780, 144.9745]  # Westgarth
+    - [-37.7850, 144.9760]  # Clifton Hill
+    - [-37.7920, 144.9770]  # Near Eastern Freeway crossing
+    - [-37.7980, 144.9755]  # Dights Falls / Yarra confluence
+    - [-37.8050, 144.9740]  # Collingwood
+    - [-37.8100, 144.9730]  # Fitzroy
+    - [-37.8136, 144.9731]  # Parliament station
