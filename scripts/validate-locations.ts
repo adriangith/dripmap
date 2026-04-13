@@ -189,6 +189,31 @@ function validateBushwalkDetails(details: Record<string, unknown>): string[] {
   }
   errors.push(...checkEnum(details.difficulty, VALID_DIFFICULTY, "details.difficulty"));
   errors.push(...checkEnum(details.terrain, VALID_TERRAIN, "details.terrain"));
+
+  // Optional route: array of [lat, lng] pairs
+  if (details.route !== undefined) {
+    if (!Array.isArray(details.route)) {
+      errors.push("details.route: must be an array of [lat, lng] pairs");
+    } else if ((details.route as unknown[]).length < 2) {
+      errors.push("details.route: must have at least 2 points");
+    } else {
+      for (let i = 0; i < (details.route as unknown[]).length; i++) {
+        const point = (details.route as unknown[])[i];
+        if (!Array.isArray(point) || (point as unknown[]).length !== 2) {
+          errors.push(`details.route[${i}]: must be a [lat, lng] pair`);
+          continue;
+        }
+        const [lat, lng] = point as [unknown, unknown];
+        if (typeof lat !== "number" || lat < -90 || lat > 90) {
+          errors.push(`details.route[${i}]: lat must be between -90 and 90`);
+        }
+        if (typeof lng !== "number" || lng < -180 || lng > 180) {
+          errors.push(`details.route[${i}]: lng must be between -180 and 180`);
+        }
+      }
+    }
+  }
+
   return errors;
 }
 

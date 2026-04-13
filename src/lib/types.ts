@@ -100,6 +100,13 @@ export type DietaryOption =
   | "gluten-free"
   | "allergy-aware";
 
+export interface WalkDetails {
+  distanceKm: number;
+  difficulty: "easy" | "moderate" | "hard";
+  terrain: "paved" | "gravel" | "trail" | "mixed";
+  route?: [number, number][];
+}
+
 export interface EateryDetails {
   cuisine: EateryCuisine[];
   seating: "indoor" | "outdoor" | "both";
@@ -153,7 +160,12 @@ export interface EateryPlace extends PlaceBase {
   details: EateryDetails;
 }
 
-export type Place = SwimPlace | BeachPlace | EventPlace | EateryPlace;
+export interface WalkPlace extends PlaceBase {
+  type: "walk" | "bushwalk";
+  details: WalkDetails;
+}
+
+export type Place = SwimPlace | BeachPlace | EventPlace | EateryPlace | WalkPlace;
 
 // ── Index entry (lightweight, used in list/map) ───────────────
 
@@ -172,6 +184,7 @@ export interface PlaceIndexEntry {
   ageSuitability?: AgeSuitability;
   duration?: Duration;
   recurrence?: Recurrence; // only present for event type
+  route?: [number, number][]; // only present for walk/bushwalk type
 }
 
 // ── Filters (updated for new types) ──────────────────────────

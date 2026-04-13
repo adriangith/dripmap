@@ -123,6 +123,47 @@ describe("validatePlace", () => {
 
   it("accepts a valid eatery", () => { expect(validatePlace(validEatery)).toEqual([]); });
 
+  // Walk route validation
+  const validWalk = {
+    slug: "test-walk",
+    name: "Test Walk",
+    type: "walk",
+    coordinates: { lat: -37.8, lng: 144.9 },
+    region: "Victoria, Australia",
+    country: "AU",
+    description: "A test walk.",
+    photos: [],
+    highlights: ["Great views"],
+    cost: "free",
+    ageSuitability: { minAge: null, ideal: ["adults"] },
+    accessibility: "easy",
+    parking: "street",
+    facilities: [],
+    bestSeason: ["spring", "summer"],
+    directions: "Head north.",
+    tips: [],
+    tags: ["urban-hike"],
+    status: { site: "open", lastVerified: "2026-04-13" },
+    details: { distanceKm: 10, difficulty: "easy", terrain: "mixed" },
+  };
+
+  it("accepts a valid walk without route", () => { expect(validatePlace(validWalk)).toEqual([]); });
+
+  it("accepts a valid walk with route", () => {
+    const withRoute = { ...validWalk, details: { ...validWalk.details, route: [[-37.74, 144.96], [-37.78, 144.97], [-37.81, 144.97]] } };
+    expect(validatePlace(withRoute)).toEqual([]);
+  });
+
+  it("rejects walk route with fewer than 2 points", () => {
+    const bad = { ...validWalk, details: { ...validWalk.details, route: [[-37.74, 144.96]] } };
+    expect(validatePlace(bad)).toContainEqual(expect.stringContaining("at least 2 points"));
+  });
+
+  it("rejects walk route with invalid coordinates", () => {
+    const bad = { ...validWalk, details: { ...validWalk.details, route: [[-37.74, 144.96], [200, 144.97]] } };
+    expect(validatePlace(bad)).toContainEqual(expect.stringContaining("lat must be between"));
+  });
+
   it("rejects eatery with invalid cuisine value", () => {
     const bad = { ...validEatery, details: { ...validEatery.details, cuisine: ["sushi-train"] } };
     expect(validatePlace(bad)).toContainEqual(expect.stringContaining("cuisine"));
