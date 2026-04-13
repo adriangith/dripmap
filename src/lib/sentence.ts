@@ -49,6 +49,12 @@ function getDatePhrase(d: Constraints["date"]): string | null {
   return `on ${d.days.map((n) => DAY_LABELS[n]).join("/")}`;
 }
 
+function getTimeOfDayPhrase(t: Constraints["timeOfDay"]): string | null {
+  if (t === "day") return "during the day";
+  if (t === "evening") return "in the evening";
+  return null;
+}
+
 // ── Default prompts (no filters active) ─────────────────────
 
 const IDLE_SENTENCES = [
@@ -86,6 +92,7 @@ export function generateSentence(
   const cost = constraints.cost !== "any" ? COST_ADJECTIVE[constraints.cost] : null;
   const dist = constraints.distance !== "any" ? DISTANCE_PHRASES[constraints.distance] : null;
   const date = getDatePhrase(constraints.date);
+  const tod = getTimeOfDayPhrase(constraints.timeOfDay);
   const dur = constraints.duration !== "any" ? DURATION_PHRASES[constraints.duration] : null;
   const group = constraints.group ? GROUP_PHRASES[constraints.group] : null;
 
@@ -97,7 +104,10 @@ export function generateSentence(
   for (const p of parts) {
     if (p.dim === "cost") continue;
     if (p.dim === "distance" && dist) qualifiers.push(dist);
-    if (p.dim === "date" && date) qualifiers.push(date);
+    if (p.dim === "date") {
+      if (date) qualifiers.push(date);
+      if (tod) qualifiers.push(tod);
+    }
     if (p.dim === "duration" && dur) qualifiers.push(dur);
     if (p.dim === "group" && group) qualifiers.push(group);
     if (p.dim === "familiarity" && constraints.visited !== "any") qualifiers.push(VISITED_PHRASES[constraints.visited]);
@@ -111,7 +121,7 @@ export function generateSentence(
 function isDimActive(dim: FilterDimension, filters: Filters, constraints: Constraints): boolean {
   switch (dim) {
     case "distance": return constraints.distance !== "any";
-    case "date": return constraints.date !== null;
+    case "date": return constraints.date !== null || constraints.timeOfDay !== null;
     case "cost": return constraints.cost !== "any";
     case "duration": return constraints.duration !== "any";
     case "group": return constraints.group !== null;
@@ -125,7 +135,7 @@ function isDimActive(dim: FilterDimension, filters: Filters, constraints: Constr
 export function activeFilterCount(filters: Filters, constraints: Constraints): number {
   let count = 0;
   if (constraints.distance !== "any") count++;
-  if (constraints.date !== null) count++;
+  if (constraints.date !== null || constraints.timeOfDay !== null) count++;
   if (constraints.cost !== "any") count++;
   if (constraints.duration !== "any") count++;
   if (constraints.group !== null) count++;

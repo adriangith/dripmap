@@ -1,4 +1,4 @@
-import type { PlaceIndexEntry, Constraints, Coordinates, DateMode } from "./types";
+import type { PlaceIndexEntry, Constraints, Coordinates, DateMode, TimeOfDay } from "./types";
 import { haversineDistanceKm } from "./useCurrentLocation";
 import { isEventOnDate, isEventOnDayOfWeek } from "./event-dates";
 import { getVisited } from "./visited";
@@ -105,6 +105,33 @@ function passesDateFilter(place: PlaceIndexEntry, date: DateMode): boolean {
   return true;
 }
 
+/** Parse "HH:MM" → hour number, or null if missing. */
+function parseHour(time?: string): number | null {
+  if (!time) return null;
+  const h = parseInt(time.split(":")[0], 10);
+  return Number.isNaN(h) ? null : h;
+}
+
+function passesTimeOfDayFilter(place: PlaceIndexEntry, timeOfDay: TimeOfDay): boolean {
+  if (!timeOfDay) return true;
+
+  // Events with startTime: classify by when they start
+  if (place.type === "event" && place.recurrence) {
+    const rec = place.recurrence;
+    const startTimeStr = rec.type !== "annual" ? rec.startTime : undefined;
+    const start = parseHour(startTimeStr);
+    if (start !== null) {
+      const isEvening = start >= 17;
+      return timeOfDay === "evening" ? isEvening : !isEvening;
+    }
+    // No startTime on event — let it through
+    return true;
+  }
+
+  // Non-events (swims, beaches, walks, playgrounds) are daytime activities
+  return timeOfDay === "day";
+}
+
 const DURATION_RANK: Record<string, number> = { quick: 0, "half-day": 1, "full-day": 2 };
 
 function passesDurationFilter(place: PlaceIndexEntry, filter: string): boolean {
@@ -134,6 +161,9 @@ export function applyConstraints(
 
     // Hard filter: date (for events)
     if (!passesDateFilter(place, constraints.date)) continue;
+
+    // Hard filter: time of day
+    if (!passesTimeOfDayFilter(place, constraints.timeOfDay)) continue;
 
     // Hard filter: duration
     if (!passesDurationFilter(place, constraints.duration)) continue;

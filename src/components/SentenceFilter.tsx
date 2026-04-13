@@ -9,6 +9,7 @@ import type {
   GroupType,
   VisitedFilter,
   DateMode,
+  TimeOfDay,
   PlaceType,
   Filters,
 } from "@/lib/types";
@@ -109,21 +110,22 @@ const GROUP_OPTIONS: { value: GroupType; label: string }[] = [
 
 const DAY_LABELS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-function dateToLabel(d: DateMode): string {
-  if (!d) return "anytime";
+function dateToLabel(d: DateMode, tod: TimeOfDay): string {
+  const todSuffix = tod === "day" ? ", daytime" : tod === "evening" ? ", evening" : "";
+  if (!d) return todSuffix ? todSuffix.slice(2) : "anytime";
   if (d.mode === "specific") {
     return d.date.toLocaleDateString("en-AU", {
       weekday: "short",
       month: "short",
       day: "numeric",
-    });
+    }) + todSuffix;
   }
-  if (d.days.length === 0) return "anytime";
+  if (d.days.length === 0) return todSuffix ? todSuffix.slice(2) : "anytime";
   if (d.days.length === 2 && d.days.includes(0) && d.days.includes(6))
-    return "on weekends";
+    return "on weekends" + todSuffix;
   if (d.days.length === 5 && !d.days.includes(0) && !d.days.includes(6))
-    return "on weekdays";
-  return d.days.map((n) => DAY_LABELS[n]).join(", ");
+    return "on weekdays" + todSuffix;
+  return d.days.map((n) => DAY_LABELS[n]).join(", ") + todSuffix;
 }
 
 // ── Popover ──────────────────────────────────────────────────
@@ -277,7 +279,7 @@ export default function SentenceFilter({
   const distLabel = DISTANCE_LABELS[constraints.distance];
 
   // Date label
-  const dtLabel = dateToLabel(constraints.date);
+  const dtLabel = dateToLabel(constraints.date, constraints.timeOfDay);
 
   // Cost label
   const costLbl = COST_LABELS[constraints.cost];
@@ -290,7 +292,7 @@ export default function SentenceFilter({
   // Is active helpers
   const typeActive = filters.type !== null;
   const distActive = constraints.distance !== "any";
-  const dateActive = constraints.date !== null;
+  const dateActive = constraints.date !== null || constraints.timeOfDay !== null;
   const costActive = constraints.cost !== "any";
   const durActive = constraints.duration !== "any";
   const groupActive = constraints.group !== null;
@@ -369,9 +371,9 @@ export default function SentenceFilter({
         <div className="space-y-2">
           <OptionButton
             label="anytime"
-            selected={!constraints.date}
+            selected={!constraints.date && !constraints.timeOfDay}
             onClick={() => {
-              updateConstraint({ date: null });
+              updateConstraint({ date: null, timeOfDay: null });
               setOpenToken(null);
             }}
           />
@@ -456,6 +458,31 @@ export default function SentenceFilter({
               }}
               className="w-full text-sm border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-lg px-2 py-1.5"
             />
+          </div>
+          <div className="border-t border-gray-100 dark:border-gray-700 pt-2">
+            <p className="text-xs text-gray-400 mb-1 px-3">Time of day</p>
+            <div className="flex gap-1.5 px-2">
+              <button
+                onClick={() => updateConstraint({ timeOfDay: constraints.timeOfDay === "day" ? null : "day" })}
+                className={`flex-1 px-2.5 py-1.5 text-xs rounded-lg border transition-colors flex items-center justify-center gap-1 ${
+                  constraints.timeOfDay === "day"
+                    ? "bg-amber-500 text-white border-amber-500"
+                    : "border-gray-200 dark:border-gray-600 hover:border-amber-300 dark:text-gray-300"
+                }`}
+              >
+                ☀️ Daytime
+              </button>
+              <button
+                onClick={() => updateConstraint({ timeOfDay: constraints.timeOfDay === "evening" ? null : "evening" })}
+                className={`flex-1 px-2.5 py-1.5 text-xs rounded-lg border transition-colors flex items-center justify-center gap-1 ${
+                  constraints.timeOfDay === "evening"
+                    ? "bg-indigo-600 text-white border-indigo-600"
+                    : "border-gray-200 dark:border-gray-600 hover:border-indigo-300 dark:text-gray-300"
+                }`}
+              >
+                🌙 Evening
+              </button>
+            </div>
           </div>
         </div>
       </Token>

@@ -307,6 +307,31 @@ function ValuePicker({
             }}
             className="w-full text-sm border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-lg px-2 py-1.5"
           />
+          <div className="pt-1">
+            <p className="text-xs text-gray-400 mb-1">Time of day</p>
+            <div className="flex gap-1.5">
+              <button
+                onClick={() => onConstraintsChange({ ...constraints, timeOfDay: constraints.timeOfDay === "day" ? null : "day" })}
+                className={`flex-1 px-2.5 py-1 text-xs rounded-full border transition-colors flex items-center justify-center gap-1 ${
+                  constraints.timeOfDay === "day"
+                    ? "bg-amber-500 text-white border-amber-500"
+                    : "border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-amber-300"
+                }`}
+              >
+                ☀️ Daytime
+              </button>
+              <button
+                onClick={() => onConstraintsChange({ ...constraints, timeOfDay: constraints.timeOfDay === "evening" ? null : "evening" })}
+                className={`flex-1 px-2.5 py-1 text-xs rounded-full border transition-colors flex items-center justify-center gap-1 ${
+                  constraints.timeOfDay === "evening"
+                    ? "bg-indigo-600 text-white border-indigo-600"
+                    : "border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-indigo-300"
+                }`}
+              >
+                🌙 Evening
+              </button>
+            </div>
+          </div>
         </div>
       );
     }
@@ -563,6 +588,7 @@ export default function PreferencePanel({
     onConstraintsChange({
       distance: "any",
       date: null,
+      timeOfDay: null,
       cost: "any",
       duration: "any",
       group: null,

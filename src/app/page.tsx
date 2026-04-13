@@ -34,6 +34,7 @@ const emptyFilters: Filters = {
 const defaultConstraints: Constraints = {
   distance: "any",
   date: null,
+  timeOfDay: null,
   cost: "any",
   duration: "any",
   group: null,

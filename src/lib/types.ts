@@ -207,6 +207,8 @@ export type DateMode =
   | { mode: "recurring"; days: number[] }  // 0=Sun, 1=Mon, ..., 6=Sat
   | null;
 
+export type TimeOfDay = "day" | "evening" | null;
+
 export type VisitedFilter = "new" | "familiar" | "any";
 
 export type FilterDimension = "distance" | "date" | "cost" | "duration" | "group" | "familiarity";
@@ -216,6 +218,7 @@ export const DEFAULT_PRIORITY: FilterDimension[] = ["distance", "date", "cost", 
 export interface Constraints {
   distance: DistanceThreshold;
   date: DateMode;
+  timeOfDay: TimeOfDay;
   cost: CostFilter;
   duration: DurationFilter;
   group: GroupType;
