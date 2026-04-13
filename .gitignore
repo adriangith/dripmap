@@ -45,3 +45,4 @@ public/sw.js
 public/workbox-*.js
 .superpowers/
 certificates/
+.claude/worktrees/
