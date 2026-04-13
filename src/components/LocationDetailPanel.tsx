@@ -28,6 +28,13 @@ const DURATION_DISPLAY: Record<Duration, string> = {
   "full-day": "Full day",
 };
 
+const COST_LABELS: Record<string, string> = {
+  free: "Free",
+  "$": "Budget-friendly ($)",
+  "$$": "Moderate ($$)",
+  "$$$": "Premium ($$$)",
+};
+
 interface LocationDetailPanelProps {
   slug: string;
   userLocation?: Coordinates | null;
@@ -335,7 +342,7 @@ export default function LocationDetailPanel({
             <DollarSign className="w-4 h-4 text-gray-400 dark:text-gray-500 shrink-0" />
             <div>
               <p className="text-xs text-gray-500 dark:text-gray-400">Cost</p>
-              <p className="text-sm font-medium capitalize">{location.cost}</p>
+              <p className="text-sm font-medium capitalize">{COST_LABELS[location.cost] ?? location.cost}</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
