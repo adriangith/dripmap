@@ -19,6 +19,9 @@ export function buildIndex(places: Place[]): PlaceIndexEntry[] {
     ...(p.ageSuitability ? { ageSuitability: p.ageSuitability } : {}),
     ...(p.duration ? { duration: p.duration } : {}),
     ...(p.type === "event" ? { recurrence: p.details.recurrence } : {}),
+    ...((p.type === "walk" || p.type === "bushwalk") && (p as any).details?.route
+      ? { route: (p as any).details.route }
+      : {}),
   }));
 }
 
