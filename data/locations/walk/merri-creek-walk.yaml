@@ -2,8 +2,8 @@ slug: merri-creek-walk
 name: Merri Creek Walk (Coburg to Parliament)
 type: walk
 coordinates:
-  lat: -37.7423
-  lng: 144.9653
+  lat: -37.7398
+  lng: 144.9787
 region: Victoria, Australia
 country: AU
 description: >
@@ -61,15 +61,42 @@ details:
   difficulty: easy
   terrain: mixed
   route:
-    - [-37.7423, 144.9653]  # CERES, Brunswick East
-    - [-37.7480, 144.9670]  # Merri Creek trail north
-    - [-37.7550, 144.9690]  # Near Moreland station
-    - [-37.7620, 144.9710]  # Coburg Lake area
-    - [-37.7700, 144.9730]  # Northcote — Rushall station
-    - [-37.7780, 144.9745]  # Westgarth
-    - [-37.7850, 144.9760]  # Clifton Hill
-    - [-37.7920, 144.9770]  # Near Eastern Freeway crossing
-    - [-37.7980, 144.9755]  # Dights Falls / Yarra confluence
-    - [-37.8050, 144.9740]  # Collingwood
-    - [-37.8100, 144.9730]  # Fitzroy
-    - [-37.8136, 144.9731]  # Parliament station
+    - [-37.7398, 144.9787]  # CERES, Brunswick East
+    - [-37.7405, 144.9794]
+    - [-37.7430, 144.9788]
+    - [-37.7442, 144.9801]
+    - [-37.7455, 144.9818]
+    - [-37.7461, 144.9814]
+    - [-37.7465, 144.9807]
+    - [-37.7482, 144.9811]
+    - [-37.7487, 144.9816]
+    - [-37.7502, 144.9810]
+    - [-37.7523, 144.9822]
+    - [-37.7537, 144.9799]  # Near Normanby Ave
+    - [-37.7565, 144.9800]
+    - [-37.7571, 144.9806]
+    - [-37.7580, 144.9801]
+    - [-37.7596, 144.9812]
+    - [-37.7610, 144.9809]
+    - [-37.7615, 144.9814]
+    - [-37.7625, 144.9812]
+    - [-37.7633, 144.9815]
+    - [-37.7643, 144.9835]
+    - [-37.7662, 144.9855]  # Near Rushall station
+    - [-37.7671, 144.9842]
+    - [-37.7706, 144.9839]  # Westgarth
+    - [-37.7733, 144.9862]
+    - [-37.7744, 144.9867]
+    - [-37.7750, 144.9874]
+    - [-37.7752, 144.9884]
+    - [-37.7766, 144.9885]
+    - [-37.7782, 144.9896]  # Clifton Hill
+    - [-37.7810, 144.9892]
+    - [-37.7840, 144.9890]
+    - [-37.7870, 144.9910]  # Near Dights Falls
+    - [-37.7920, 144.9920]  # Yarra confluence, Abbotsford
+    - [-37.7960, 144.9890]  # Collingwood
+    - [-37.8000, 144.9850]  # Victoria Parade
+    - [-37.8050, 144.9800]  # Fitzroy Gardens
+    - [-37.8080, 144.9770]  # Treasury Gardens
+    - [-37.8111, 144.9731]  # Parliament station
