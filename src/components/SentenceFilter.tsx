@@ -29,6 +29,9 @@ const TYPE_LABELS: Record<string, string> = {
   pool: "pools",
   cycling: "cycling",
   fishing: "fishing",
+  eatery: "eateries",
+  playground: "playgrounds",
+  museum: "museums",
 };
 
 const TYPE_OPTIONS: { value: PlaceType | null; label: string }[] = [
@@ -45,6 +48,9 @@ const TYPE_OPTIONS: { value: PlaceType | null; label: string }[] = [
   { value: "pool", label: "pools" },
   { value: "cycling", label: "cycling" },
   { value: "fishing", label: "fishing" },
+  { value: "eatery", label: "eateries" },
+  { value: "playground", label: "playgrounds" },
+  { value: "museum", label: "museums" },
 ];
 
 const DISTANCE_LABELS: Record<DistanceThreshold, string> = {

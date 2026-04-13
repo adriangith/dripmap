@@ -1,0 +1,60 @@
+slug: melbourne-holocaust-museum
+name: Melbourne Holocaust Museum
+type: museum
+coordinates:
+  lat: -37.8834
+  lng: 145.0011
+region: Victoria, Australia
+country: AU
+description: >
+  The Melbourne Holocaust Museum in Elsternwick is dedicated to Holocaust
+  education, research, and remembrance. Founded in 1984 by Holocaust
+  survivors, the museum's core exhibition "Everybody Had a Name" is an
+  immersive exploration of the Jewish experience of the Holocaust, from
+  pre-war life through to how survivors rebuilt their lives in Melbourne.
+  The museum also hosts rotating special exhibitions, survivor talks, film
+  screenings, and panel discussions.
+photos:
+  - url: https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Melbourne-Holocaust-Museum.jpg/960px-Melbourne-Holocaust-Museum.jpg
+    alt: Melbourne Holocaust Museum building in Elsternwick
+    credit: "Wikimedia Commons"
+highlights:
+  - Everybody Had a Name core exhibition
+  - Holocaust survivor testimony program
+  - Rotating special exhibitions
+cost: "$$"
+duration: half-day
+ageSuitability:
+  minAge: 9
+  ideal:
+    - primary
+    - teens
+    - adults
+accessibility: easy
+parking: street
+facilities:
+  - toilets
+  - shop
+bestSeason:
+  - spring
+  - summer
+  - fall
+  - winter
+directions: >
+  Located at 13 Selwyn Street, Elsternwick. Take the Sandringham train line
+  to Elsternwick station, then a short walk south along Glen Huntly Road and
+  turn right onto Selwyn Street. Street parking available.
+tips:
+  - Allow at least 2 hours for the full experience
+  - Age-appropriate education programs available for school groups
+  - Check mhm.org.au for current special exhibitions and events
+  - Closed on Saturdays and Jewish holidays
+tags:
+  - museum
+  - educational
+  - indoor
+  - public-transport
+status:
+  site: open
+  lastVerified: "2026-04-13"
+details: {}

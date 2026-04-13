@@ -5,6 +5,7 @@ import * as yaml from "js-yaml";
 const VALID_TYPES = [
   "swim", "beach", "event", "bushwalk", "walk", "lookout", "waterfall",
   "cave", "wildlife", "pool", "cycling", "fishing", "eatery", "playground",
+  "museum",
 ];
 const VALID_COST = ["free", "$", "$$", "$$$"];
 const VALID_SEASONS = ["spring", "summer", "fall", "winter"];

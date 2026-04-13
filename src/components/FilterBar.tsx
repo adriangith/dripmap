@@ -16,6 +16,9 @@ const TYPE_CHIPS: { value: PlaceType; label: string }[] = [
   { value: "pool", label: "Pools" },
   { value: "cycling", label: "Cycling" },
   { value: "fishing", label: "Fishing" },
+  { value: "eatery", label: "Eateries" },
+  { value: "playground", label: "Playgrounds" },
+  { value: "museum", label: "Museums" },
 ];
 
 const STATUS_CHIPS: { value: SiteStatus; label: string }[] = [
