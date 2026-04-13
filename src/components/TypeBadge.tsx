@@ -1,6 +1,6 @@
 import {
   Waves, Droplets, Calendar, TreePine, Eye, Mountain,
-  PawPrint, Droplet, Bike, Fish, UtensilsCrossed,
+  PawPrint, Droplet, Bike, Fish, UtensilsCrossed, ToyBrick,
   type LucideIcon,
 } from "lucide-react";
 import type { PlaceType } from "@/lib/types";
@@ -18,6 +18,7 @@ const TYPE_CONFIG: Record<PlaceType, { icon: LucideIcon; label: string; color: s
   cycling: { icon: Bike, label: "Cycling", color: "text-lime-600" },
   fishing: { icon: Fish, label: "Fishing", color: "text-teal-600" },
   eatery: { icon: UtensilsCrossed, label: "Eatery", color: "text-pink-500" },
+  playground: { icon: ToyBrick, label: "Playground", color: "text-emerald-500" },
 };
 
 interface TypeBadgeProps {

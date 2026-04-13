@@ -45,6 +45,7 @@ const PIN_COLORS: Record<PlaceType, string> = {
   cycling: "#65a30d",
   fishing: "#0d9488",
   eatery: "#e11d48",
+  playground: "#10b981",
 };
 
 function createPinIcon(type: PlaceType, opacity = 1): L.DivIcon {

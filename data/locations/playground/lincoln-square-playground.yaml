@@ -1,0 +1,54 @@
+slug: lincoln-square-playground
+name: Lincoln Square Playground
+type: playground
+coordinates:
+  lat: -37.8005
+  lng: 144.9620
+region: Victoria, Australia
+country: AU
+description: >
+  A magical playground set among 150-year-old Moreton Bay fig trees in
+  Carlton. The ancient trees have been incorporated into the play space
+  design, giving it the feel of a fairy garden amongst a forest. One
+  of Melbourne's most atmospheric playgrounds.
+photos:
+  - url: /images/placeholder.jpg
+    alt: Lincoln Square playground among Moreton Bay figs in Carlton
+highlights:
+  - 150-year-old Moreton Bay fig trees
+  - Fairy garden atmosphere
+  - Beautiful shaded play space
+cost: free
+duration: quick
+ageSuitability:
+  minAge: 1
+  ideal:
+    - toddler
+    - primary
+accessibility: easy
+parking: street
+facilities:
+  - toilets
+  - water
+bestSeason:
+  - spring
+  - summer
+  - fall
+  - winter
+directions: >
+  Lincoln Square is bounded by Swanston, Bouverie, Lincoln and Pelham
+  Streets in Carlton. Walk from Melbourne Central station (10 minutes)
+  or take tram route 1/6 along Swanston Street.
+tips:
+  - The enormous fig trees provide natural shade year-round
+  - Close to Lygon Street for coffee and Italian food
+  - Feels magical — one of Melbourne's most beautiful play spaces
+tags:
+  - heritage
+  - family-friendly
+  - free
+  - nature
+status:
+  site: open
+  lastVerified: "2026-04-13"
+details: {}

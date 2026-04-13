@@ -1,0 +1,53 @@
+slug: birrarung-marr-playground
+name: Birrarung Marr Playground
+type: playground
+coordinates:
+  lat: -37.8180
+  lng: 144.9720
+region: Victoria, Australia
+country: AU
+description: >
+  A city playground right in the heart of Melbourne at Birrarung Marr,
+  between Federation Square and the MCG. Perfect for a quick play stop
+  during a city adventure. Features climbing equipment and slides with
+  the Yarra River and city skyline as a backdrop.
+photos:
+  - url: /images/placeholder.jpg
+    alt: Birrarung Marr Playground in Melbourne CBD
+highlights:
+  - Central city location near Fed Square
+  - Yarra River and city skyline backdrop
+  - Perfect pitstop during a city day out
+cost: free
+duration: quick
+ageSuitability:
+  minAge: 2
+  ideal:
+    - toddler
+    - primary
+accessibility: easy
+parking: paid
+facilities:
+  - toilets
+  - water
+bestSeason:
+  - spring
+  - summer
+  - fall
+  - winter
+directions: >
+  Located in Birrarung Marr, between Federation Square and the MCG.
+  Short walk from Flinders Street station. Follow the riverside path
+  east from Fed Square.
+tips:
+  - Great combined with a visit to Fed Square or the NGV
+  - Shaded by river gums in summer
+  - Close to cafes at Fed Square for coffee
+tags:
+  - city
+  - family-friendly
+  - free
+status:
+  site: open
+  lastVerified: "2026-04-13"
+details: {}

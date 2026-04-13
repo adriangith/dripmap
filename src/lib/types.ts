@@ -12,7 +12,8 @@ export type PlaceType =
   | "pool"
   | "cycling"
   | "fishing"
-  | "eatery";
+  | "eatery"
+  | "playground";
 
 export type CostLevel = "free" | "$" | "$$" | "$$$";
 

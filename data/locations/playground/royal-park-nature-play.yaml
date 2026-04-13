@@ -1,0 +1,55 @@
+slug: royal-park-nature-play
+name: Royal Park Nature Play Playground
+type: playground
+coordinates:
+  lat: -37.7838
+  lng: 144.9525
+region: Victoria, Australia
+country: AU
+description: >
+  A fantastic nature play playground in Parkville where the blend of
+  playground and nature is excellent. Ropes, wood and rocks replace the
+  usual run-of-the-mill play equipment, encouraging kids to climb, balance
+  and explore in a more natural setting. Set within the beautiful Royal
+  Park with views of the city skyline.
+photos:
+  - url: /images/placeholder.jpg
+    alt: Royal Park Nature Play Playground in Parkville
+highlights:
+  - Nature-based play with ropes, wood and rocks
+  - Set within Royal Park with city views
+  - Encourages creative and adventurous play
+cost: free
+duration: quick
+ageSuitability:
+  minAge: 2
+  ideal:
+    - toddler
+    - primary
+accessibility: easy
+parking: free
+facilities:
+  - toilets
+  - water
+  - bbq
+bestSeason:
+  - spring
+  - summer
+  - fall
+  - winter
+directions: >
+  Located within Royal Park, Parkville. Accessible via tram route 58 or
+  a short walk from Royal Park station. Free parking available along
+  The Avenue.
+tips:
+  - Combine with a visit to the Melbourne Zoo nearby
+  - Shaded areas but bring sun protection in summer
+  - Great for toddlers through to primary school age
+tags:
+  - nature-play
+  - family-friendly
+  - free
+status:
+  site: open
+  lastVerified: "2026-04-13"
+details: {}

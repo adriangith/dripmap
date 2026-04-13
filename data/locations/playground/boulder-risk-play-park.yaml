@@ -1,0 +1,55 @@
+slug: boulder-risk-play-park
+name: Boulder Risk-Play Park
+type: playground
+coordinates:
+  lat: -37.8225
+  lng: 144.9620
+region: Victoria, Australia
+country: AU
+description: >
+  There is almost nothing ordinary about Melbourne's coolest playground.
+  At first glance it looks like builders forgot to finish their work —
+  no even surfaces, no smooth handrails, and plenty of hazards to keep
+  an eye on. But that's exactly the point. Boulder Park in Southbank is
+  designed to let kids assess and manage risk through play.
+photos:
+  - url: /images/placeholder.jpg
+    alt: Boulder Risk-Play Park in Southbank
+highlights:
+  - Risk-based play design — unique in Melbourne
+  - Uneven surfaces and climbing challenges
+  - Right on Southbank near the Arts Centre
+cost: free
+duration: quick
+ageSuitability:
+  minAge: 5
+  ideal:
+    - primary
+    - teens
+accessibility: moderate
+parking: paid
+facilities:
+  - toilets
+  - cafe
+bestSeason:
+  - spring
+  - summer
+  - fall
+  - winter
+directions: >
+  Located on Southbank Boulevard near the Arts Centre. Walk from Flinders
+  Street station across the Yarra, or take tram routes 1/3a/5/6/16/64/67/72
+  to the Arts Centre stop.
+tips:
+  - Designed for older kids who can assess risk
+  - Supervise younger children closely — surfaces are intentionally uneven
+  - Great to combine with a Southbank riverside walk
+tags:
+  - risk-play
+  - family-friendly
+  - free
+  - unique
+status:
+  site: open
+  lastVerified: "2026-04-13"
+details: {}

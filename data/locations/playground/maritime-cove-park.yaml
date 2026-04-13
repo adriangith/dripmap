@@ -1,0 +1,52 @@
+slug: maritime-cove-park
+name: Maritime Cove Community Park
+type: playground
+coordinates:
+  lat: -37.8340
+  lng: 144.9290
+region: Victoria, Australia
+country: AU
+description: >
+  A fabulous marine-themed community park in Port Melbourne that opened
+  in 2017. Features nautical-inspired play equipment including a ship
+  structure, climbing nets, slides and water play. The seaside theme
+  makes it feel like an adventure on the high seas.
+photos:
+  - url: /images/placeholder.jpg
+    alt: Maritime Cove Community Park in Port Melbourne
+highlights:
+  - Marine-themed play equipment
+  - Ship structure and climbing nets
+  - Near Port Melbourne beach
+cost: free
+duration: quick
+ageSuitability:
+  minAge: 2
+  ideal:
+    - toddler
+    - primary
+accessibility: easy
+parking: street
+facilities:
+  - toilets
+  - water
+bestSeason:
+  - spring
+  - summer
+  - fall
+directions: >
+  Located on Beach Street, Port Melbourne. Take tram route 109 to the
+  Port Melbourne terminus, then a short walk. Street parking available.
+tips:
+  - Combine with a walk along Port Melbourne beach
+  - The nautical theme is great for imaginative play
+  - Close to fish and chip shops for lunch
+tags:
+  - themed
+  - family-friendly
+  - free
+  - coastal
+status:
+  site: open
+  lastVerified: "2026-04-13"
+details: {}
