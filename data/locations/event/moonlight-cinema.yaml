@@ -1,0 +1,69 @@
+slug: moonlight-cinema
+name: Moonlight Cinema
+type: event
+coordinates:
+  lat: -37.8316
+  lng: 144.9811
+region: Victoria, Australia
+country: AU
+description: >
+  Watch films under the stars in Melbourne's Royal Botanic Gardens. Moonlight
+  Cinema runs every summer with a mix of new releases, cult classics, and
+  family-friendly screenings. Bring a picnic, a blanket, and arrive early to
+  claim a good spot on the grass.
+photos:
+  - url: /images/placeholder.jpg
+    alt: Moonlight Cinema in the Royal Botanic Gardens
+highlights:
+  - Outdoor cinema in the Botanic Gardens
+  - Mix of new releases and cult classics
+  - BYO picnic and blanket
+cost: "$$"
+duration: quick
+ageSuitability:
+  minAge: null
+  ideal:
+    - primary
+    - teens
+    - adults
+accessibility: easy
+parking: limited
+facilities:
+  - restrooms
+  - food
+  - bars
+bestSeason:
+  - summer
+directions: >
+  Gate D entrance, Royal Botanic Gardens, Birdwood Avenue, Melbourne. Tram 8
+  from the city stops nearby. Limited street parking — public transport
+  recommended.
+tips:
+  - Gates open at 7pm, film starts at sundown (~8:45pm in peak summer)
+  - Gold Grass tickets guarantee a prime viewing spot
+  - Bring insect repellent — the gardens have mosquitoes after dark
+tags:
+  - cinema
+  - outdoor
+  - botanic-gardens
+  - melbourne
+status:
+  site: seasonal
+  lastVerified: "2026-04-13"
+details:
+  recurrence:
+    type: range
+    startDate: "2025-12-03"
+    endDate: "2026-04-05"
+    startTime: "19:00"
+    endTime: "23:00"
+  confirmedDates:
+    year: 2025
+    startDate: "2025-12-03"
+    endDate: "2026-04-05"
+  venue: Royal Botanic Gardens
+  venueType: outdoor
+  bookingRequired: true
+  bookingUrl: https://www.moonlight.com.au
+  organiser: Moonlight Cinema
+  organiserUrl: https://www.moonlight.com.au

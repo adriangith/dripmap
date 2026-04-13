@@ -1,0 +1,61 @@
+slug: lake-daylesford
+name: Lake Daylesford
+type: swim
+coordinates:
+  lat: -37.35
+  lng: 144.14
+region: Victoria, Australia
+country: AU
+description: An artificial lake in the heart of Daylesford spa country, designed by Walter Burley Griffin (the architect of
+  Canberra) and completed in 1929. The calm, clear waters are surrounded by walking trails and mineral springs. Historic change
+  rooms from the 1940s sit lakeside, and the charming cafes and galleries of Daylesford are just a short stroll away.
+photos:
+- url: https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Aerial_panorama_of_Lake_Daylesford.jpg/960px-Aerial_panorama_of_Lake_Daylesford.jpg
+
+  alt: Lake Daylesford swimming hole in Victoria, Australia
+  credit: "Wikipedia"
+highlights:
+- Designed by Walter Burley Griffin, architect of Canberra
+- Calm, clear water ideal for family swimming
+- Historic change rooms from the 1940s
+- Surrounded by mineral springs and spa country
+cost: free
+duration: quick
+ageSuitability:
+  minAge: null
+  ideal:
+  - toddlers
+  - primary
+  - teens
+  - adults
+accessibility: easy
+parking: available
+facilities:
+- restrooms
+- picnic-tables
+- bbq
+- walking-trails
+bestSeason:
+- spring
+- summer
+directions: 'Located in Daylesford, an easy drive from Melbourne via the Western Freeway. The lake is in the centre of town
+  with parking available at several points around the shoreline.
+
+  '
+tips:
+- Walk the lakeside trail for lovely views of the surrounding hills
+- Visit the nearby Hepburn Mineral Springs Reserve to taste natural mineral water
+- Combine with a visit to Daylesford's cafes, galleries, and antique shops
+- Water is shallow near the edges — safe for kids to wade
+tags:
+- lake
+- family-friendly
+- historic
+- spa-country
+status:
+  site: open
+  lastVerified: '2026-04-01'
+details:
+  dangerLevel: low
+  waterAccess: open
+  depth: Average 2m, max 9m

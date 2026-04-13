@@ -1,0 +1,56 @@
+slug: ian-potter-childrens-garden
+name: Ian Potter Children's Garden
+type: playground
+coordinates:
+  lat: -37.8310
+  lng: 144.9795
+region: Victoria, Australia
+country: AU
+description: >
+  Splash in the stream, roll down a mini hill, play pandas in the bamboo
+  forest or be a fairy among tree hollows and rocky mounds. The Ian Potter
+  Children's Garden within the Royal Botanic Gardens is totally dedicated
+  to children and full of things that will have families enjoying this place
+  for hours.
+photos:
+  - url: /images/placeholder.jpg
+    alt: Ian Potter Children's Garden at Royal Botanic Gardens
+highlights:
+  - Water play stream and bamboo forest
+  - Nature-based imaginative play
+  - Within the Royal Botanic Gardens
+cost: free
+duration: half-day
+ageSuitability:
+  minAge: 1
+  ideal:
+    - toddler
+    - primary
+accessibility: easy
+parking: paid
+facilities:
+  - toilets
+  - water
+  - cafe
+bestSeason:
+  - spring
+  - summer
+  - fall
+directions: >
+  Enter the Royal Botanic Gardens via Gate F on Birdwood Avenue. The
+  Children's Garden is signposted within the gardens. Tram routes
+  3/5/6/16/64/67/72 stop nearby on St Kilda Road.
+tips:
+  - Opens at 10am Wednesday–Sunday (closed Mon–Tue)
+  - Can get busy on weekends — arrive early
+  - Bring a change of clothes for the water play
+  - Combine with a picnic in the Botanic Gardens
+tags:
+  - nature-play
+  - water-play
+  - family-friendly
+  - free
+status:
+  site: open
+  lastVerified: "2026-04-13"
+details: {}

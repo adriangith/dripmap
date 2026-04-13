@@ -1,0 +1,62 @@
+slug: inner-yarra-hike
+name: Inner-Yarra Hike (Fairfield to Fed Square)
+type: walk
+coordinates:
+  lat: -37.7788
+  lng: 145.0178
+region: Victoria, Australia
+country: AU
+description: >
+  A 16km hike following the Yarra River from Fairfield Boathouse to
+  Federation Square. Start with breakfast at the boathouse, then walk past
+  Dights Falls where the Merri meets the Yarra. Continue through
+  Collingwood Children's Farm and the Abbotsford Convent before following
+  the river to Fed Square. Can be shortened to Fairfield to Abbotsford
+  Convent for a gentler outing.
+photos:
+  - url: https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Melbourne_Docklands_-_Yarras_Edge_-_marina_panorama.jpg/960px-Melbourne_Docklands_-_Yarras_Edge_-_marina_panorama.jpg
+    alt: Yarra River trail between Fairfield and the city
+    credit: "Diliff"
+highlights:
+  - Breakfast at Fairfield Boathouse
+  - Dights Falls and Abbotsford Convent
+  - Scenic riverside trail into the city
+cost: free
+duration: full-day
+ageSuitability:
+  minAge: null
+  ideal:
+    - teens
+    - adults
+accessibility: moderate
+parking: limited
+facilities:
+  - toilets
+  - cafe
+  - water
+bestSeason:
+  - spring
+  - summer
+  - fall
+directions: >
+  Start at Fairfield Boathouse (bus routes from Clifton Hill or drive).
+  Follow the Yarra Trail south through Studley Park, past Dights Falls
+  and Collingwood Children's Farm. Continue along the river through
+  Richmond and into the city, finishing at Federation Square.
+tips:
+  - Grab breakfast at Fairfield Boathouse before starting
+  - Shorter option — stop at Abbotsford Convent (about 6km)
+  - Trail is mostly flat along the river
+  - Great solo walk with plenty of cafes along the way
+tags:
+  - urban-hike
+  - riverside
+  - solo-friendly
+  - public-transport
+status:
+  site: open
+  lastVerified: "2026-04-01"
+details:
+  distanceKm: 16
+  difficulty: moderate
+  terrain: mixed

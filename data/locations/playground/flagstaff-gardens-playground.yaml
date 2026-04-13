@@ -1,0 +1,54 @@
+slug: flagstaff-gardens-playground
+name: Flagstaff Gardens Playground
+type: playground
+coordinates:
+  lat: -37.8105
+  lng: 144.9540
+region: Victoria, Australia
+country: AU
+description: >
+  The closest and greatest playground option if you're visiting the Queen
+  Victoria Market. Flagstaff Gardens is Melbourne's oldest park with
+  established elm trees providing excellent shade. The playground has
+  modern equipment for a range of ages set among heritage gardens.
+photos:
+  - url: https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Jacaranda_Flagstaff_Gardens%2C_Melbourne.jpg/960px-Jacaranda_Flagstaff_Gardens%2C_Melbourne.jpg
+    alt: Flagstaff Gardens playground near Queen Victoria Market
+    credit: "a.canvas.of.light"
+highlights:
+  - Closest playground to Queen Vic Market
+  - Melbourne's oldest park with heritage elms
+  - Well-shaded in summer
+cost: free
+duration: quick
+ageSuitability:
+  minAge: 1
+  ideal:
+    - toddler
+    - primary
+accessibility: easy
+parking: street
+facilities:
+  - toilets
+  - water
+bestSeason:
+  - spring
+  - summer
+  - fall
+  - winter
+directions: >
+  Located on William Street between La Trobe and Dudley Streets. Walk
+  from Flagstaff station (2 minutes) or Melbourne Central station
+  (10 minutes). Close to Queen Victoria Market.
+tips:
+  - Perfect pitstop after a Queen Vic Market visit
+  - Excellent shade from the old elm trees
+  - Combine with the market for a great morning out
+tags:
+  - city
+  - family-friendly
+  - free
+status:
+  site: open
+  lastVerified: "2026-04-13"
+details: {}

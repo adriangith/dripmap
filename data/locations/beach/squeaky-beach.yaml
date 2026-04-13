@@ -1,0 +1,71 @@
+slug: squeaky-beach
+name: Squeaky Beach
+type: beach
+coordinates:
+  lat: -39.0489
+  lng: 146.3214
+region: Victoria, Australia
+country: AU
+description: One of Victoria's most iconic beaches within Wilsons Promontory National Park, famous for its high-silica white
+  sand that produces a distinct squeaking sound when walked upon. The turquoise waters are framed by large granite boulders
+  stained orange by lichen, creating an extraordinary contrast of colour. At the northern end, a maze of smooth granite rock
+  formations invites exploration. The clear, shallow bay is ideal for swimming, and the beach is reached via a pleasant 30-minute
+  walk through coastal bushland from the Tidal River campground.
+photos:
+- url: https://upload.wikimedia.org/wikipedia/commons/0/05/A194%2C_Wilson%27s_Promontory_National_Park%2C_Australia%2C_rocky_beach%2C_2007.JPG
+
+  alt: Squeaky Beach white sand and granite boulders
+  credit: "Wikipedia"
+highlights:
+- Famous squeaky white quartz sand
+- Turquoise water framed by orange-lichen granite boulders
+- Rock maze at the northern end to explore
+- Part of Wilsons Promontory National Park
+cost: free
+duration: half-day
+ageSuitability:
+  minAge: null
+  ideal:
+  - primary
+  - teens
+  - adults
+accessibility: moderate
+parking: available
+facilities:
+- restrooms
+- parking
+- walking-trails
+- camping
+bestSeason:
+- summer
+- spring
+directions: Drive to Tidal River in Wilsons Promontory National Park (about 230km southeast of Melbourne). From the Tidal
+  River day-visitor car park, follow the signposted walking track to Squeaky Beach (approximately 30 minutes each way through
+  coastal scrub).
+tips:
+- Park entry fees apply for Wilsons Promontory National Park
+- The 30-minute walk is mostly flat with some sandy sections
+- Explore the granite boulder maze at the northern end of the beach
+- Wear reef shoes if exploring the rocks — they can be slippery when wet
+- Combine with Tidal River beach and the Lilly Pilly Gully nature walk
+- No mobile reception in most of the park — download maps beforehand
+tags:
+- national-park
+- photography
+- family-friendly
+- unique-sand
+- wilsons-promontory
+status:
+  site: open
+  lastVerified: '2026-04-12'
+details:
+  beachType: bay
+  patrolled:
+    seasonal: false
+    months: []
+    hours: null
+  dogPolicy: prohibited
+  waveExposure: sheltered
+  waterHazards:
+  - rocks
+  crowdLevel: moderate

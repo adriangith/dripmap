@@ -1,0 +1,67 @@
+slug: hijinx-hotel
+name: Hijinx Hotel
+type: event
+coordinates:
+  lat: -37.8110
+  lng: 144.9650
+region: Victoria, Australia
+country: AU
+description: >
+  Hijinx Hotel at QV Melbourne is an interactive adventure experience with
+  themed rooms full of puzzles, challenges, and surprises. Each room has a
+  different theme and difficulty level, making it suitable for families with
+  kids of various ages. It's part escape room, part interactive playground,
+  and all fun.
+photos:
+  - url: https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/The_Punisher_Human_Statue_Bodyart_Bodypainting_%289104619043%29.jpg/960px-The_Punisher_Human_Statue_Bodyart_Bodypainting_%289104619043%29.jpg
+    alt: Hijinx Hotel interactive experience QV Melbourne
+    credit: "Eva Rinaldi"
+highlights:
+  - Themed interactive puzzle rooms
+  - Suitable for a range of ages
+  - Indoor activity in the heart of the CBD
+cost: "$$"
+duration: quick
+ageSuitability:
+  minAge: 5
+  ideal:
+    - primary
+    - teens
+accessibility: easy
+parking: available
+facilities:
+  - restrooms
+bestSeason:
+  - spring
+  - summer
+  - fall
+  - winter
+directions: >
+  QV Melbourne, corner of Swanston and Lonsdale Streets, Melbourne CBD.
+  Multiple tram routes stop on Swanston Street. Paid parking available at QV.
+tips:
+  - Book online to guarantee your session time
+  - Allow about 90 minutes for the full experience
+  - Best for kids aged 5 and up — younger children may need help with puzzles
+tags:
+  - indoor
+  - interactive
+  - puzzles
+  - family
+  - melbourne-cbd
+status:
+  site: open
+  lastVerified: "2026-06-01"
+details:
+  recurrence:
+    type: annual
+    season: all
+    startTime: "10:00"
+    endTime: "20:00"
+  confirmedDates: null
+  venue: QV Melbourne
+  venueType: indoor
+  bookingRequired: true
+  bookingUrl: https://www.hijinxhotel.com
+  organiser: Hijinx Hotel
+  organiserUrl: https://www.hijinxhotel.com

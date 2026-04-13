@@ -1,0 +1,57 @@
+slug: fitzroy-gardens-playground
+name: Fitzroy Gardens Playground
+type: playground
+coordinates:
+  lat: -37.8130
+  lng: 144.9800
+region: Victoria, Australia
+country: AU
+description: >
+  Trade the city's hustle for nature's hush at Fitzroy Gardens. This
+  is the perfect place to immerse yourself in vibrant greenery right in
+  the heart of Melbourne. Features a playground, beautiful gardens,
+  walking trails, a cafe, conservatory, and Captain Cook's Cottage.
+photos:
+  - url: https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Waterfall_at_Fitzroy_Gardens%2C_Melbourne.jpg/960px-Waterfall_at_Fitzroy_Gardens%2C_Melbourne.jpg
+    alt: Fitzroy Gardens playground in Melbourne
+    credit: "Shkuru Afshar"
+highlights:
+  - Beautiful heritage gardens in the CBD
+  - Playground plus conservatory and Cook's Cottage
+  - Cafe on-site for coffee and treats
+cost: free
+duration: quick
+ageSuitability:
+  minAge: 1
+  ideal:
+    - toddler
+    - primary
+accessibility: easy
+parking: paid
+facilities:
+  - toilets
+  - cafe
+  - water
+bestSeason:
+  - spring
+  - summer
+  - fall
+  - winter
+directions: >
+  Fitzroy Gardens is bounded by Wellington Parade, Clarendon Street,
+  Albert Street and Lansdowne Street. Walk from Parliament station
+  (10 minutes) or Jolimont station (5 minutes). Tram routes 48/75
+  run along Wellington Parade.
+tips:
+  - Visit the conservatory for a free flower display
+  - The Fairies' Tree is a must-see for little ones
+  - Shaded paths make it pleasant even in summer
+tags:
+  - heritage
+  - family-friendly
+  - free
+  - gardens
+status:
+  site: open
+  lastVerified: "2026-04-13"
+details: {}

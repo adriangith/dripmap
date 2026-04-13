@@ -1,0 +1,58 @@
+slug: lake-glenmaggie
+name: Lake Glenmaggie
+type: swim
+coordinates:
+  lat: -37.85
+  lng: 146.84
+region: Victoria, Australia
+country: AU
+description: 'Filled to the brim every spring, the water laps up against the sandy beaches amongst the flooded gum trees.
+  You can still swim in summer, but the lake can be drawn down considerably for irrigation. Multiple swimming areas around
+  the lake offer different experiences.
+
+  '
+photos:
+- url: https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Lakes_entrance_-_the_entrance.jpg/960px-Lakes_entrance_-_the_entrance.jpg
+
+  alt: Lake Glenmaggie swimming hole in Victoria, Australia
+  credit: "Wikipedia"
+highlights:
+- Visit in spring when the lake is usually at its fullest
+- Lake can be drawn down significantly in summer
+cost: free
+duration: half-day
+ageSuitability:
+  minAge: null
+  ideal:
+  - toddlers
+  - primary
+  - teens
+  - adults
+accessibility: easy
+parking: available
+facilities:
+- picnic-tables
+bestSeason:
+- spring
+- summer
+directions: 'From Heyfield, head north-east towards Glenmaggie. The lake is signposted from the main road. Multiple access
+  points around the lake provide swimming opportunities.
+
+  '
+tips:
+- Visit in spring when the lake is usually at its fullest
+- Lake can be drawn down significantly in summer
+- Sandy beaches among flooded gum trees create unique scenery
+- Check water levels before making the trip
+tags:
+- lake
+- beach
+- scenic
+status:
+  site: open
+  lastVerified: '2026-04-01'
+  note: Lake levels can drop significantly in summer due to irrigation
+details:
+  dangerLevel: low
+  waterAccess: seasonal
+  depth: Deep reservoir, up to 15m+

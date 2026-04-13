@@ -8,33 +8,32 @@ vi.mock("../../src/lib/osrm", () => ({
 }));
 
 import { fetchDrivingInfo } from "../../src/lib/osrm";
-import type { Location } from "../../src/lib/types";
+import type { Place } from "../../src/lib/types";
 
-const mockLocation: Location = {
+const mockLocation: Place = {
   slug: "test-falls",
   name: "Test Falls",
-  type: "waterfall",
+  type: "swim",
   coordinates: { lat: 51.45, lng: -0.97 },
   region: "Europe",
   country: "GB",
   description: "A beautiful waterfall.",
   photos: [],
-  practical: {
-    accessibility: "easy",
-    parking: "available",
-    facilities: ["restrooms"],
-    bestSeason: ["summer"],
-    dangerLevel: "low",
-    cost: "free",
-  },
+  highlights: ["Stunning cascades"],
+  cost: "free",
+  ageSuitability: { minAge: null, ideal: ["adults"] },
+  accessibility: "easy",
+  parking: "available",
+  facilities: ["restrooms"],
+  bestSeason: ["summer"],
   directions: "Head north.",
   tips: ["Bring a towel."],
   tags: ["scenic"],
   status: {
     site: "open",
-    waterAccess: "open",
     lastVerified: "2026-01-01",
   },
+  details: { dangerLevel: "low", waterAccess: "open", depth: null },
 };
 
 beforeEach(() => {
@@ -62,7 +61,6 @@ describe("LocationDetailPanel driving info", () => {
     render(
       <LocationDetailPanel
         slug="test-falls"
-        onBack={vi.fn()}
         userLocation={{ lat: 51.5, lng: -0.12 }}
       />
     );
@@ -78,7 +76,6 @@ describe("LocationDetailPanel driving info", () => {
     render(
       <LocationDetailPanel
         slug="test-falls"
-        onBack={vi.fn()}
         userLocation={null}
       />
     );
@@ -96,7 +93,6 @@ describe("LocationDetailPanel driving info", () => {
     render(
       <LocationDetailPanel
         slug="test-falls"
-        onBack={vi.fn()}
         userLocation={{ lat: 51.5, lng: -0.12 }}
       />
     );

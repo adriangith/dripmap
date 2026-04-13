@@ -2,14 +2,41 @@ import * as fs from "fs";
 import * as path from "path";
 import * as yaml from "js-yaml";
 
-const VALID_TYPES = ["waterfall", "swimming-hole", "splash-pad", "spring", "creek"];
-const VALID_ACCESSIBILITY = ["wheelchair-accessible", "easy", "moderate", "difficult", "extreme"];
-const VALID_PARKING = ["available", "limited", "none", "street"];
-const VALID_DANGER = ["low", "moderate", "high", "extreme"];
-const VALID_COST = ["free", "paid", "donation"];
+const VALID_TYPES = [
+  "swim", "beach", "event", "bushwalk", "walk", "lookout", "waterfall",
+  "cave", "wildlife", "pool", "cycling", "fishing", "eatery", "playground",
+];
+const VALID_COST = ["free", "$", "$$", "$$$"];
 const VALID_SEASONS = ["spring", "summer", "fall", "winter"];
 const VALID_SITE_STATUS = ["open", "closed", "seasonal", "unknown"];
+
+// Swim detail enums
+const VALID_DANGER = ["low", "moderate", "high", "extreme"];
 const VALID_WATER_ACCESS = ["open", "closed", "seasonal", "restricted", "unknown"];
+
+// Beach detail enums
+const VALID_BEACH_TYPE = ["surf", "bay", "rock-pools", "river", "estuary"];
+const VALID_DOG_POLICY = ["allowed", "seasonal-offleash", "prohibited"];
+const VALID_WAVE_EXPOSURE = ["sheltered", "moderate", "exposed"];
+const VALID_CROWD_LEVEL = ["quiet", "moderate", "busy"];
+
+// Event detail enums
+const VALID_VENUE_TYPE = ["outdoor", "indoor", "mixed"];
+const VALID_RECURRENCE_TYPE = ["once", "range", "weekly", "annual"];
+const VALID_DURATION = ["quick", "half-day", "full-day"];
+
+// Eatery detail enums
+const VALID_EATERY_CUISINE = [
+  "cafe", "restaurant", "pub", "fish-and-chips", "ice-cream",
+  "bakery", "market", "farm-gate", "pick-your-own", "food-truck",
+];
+const VALID_DIETARY_OPTION = ["vegetarian", "vegan", "gluten-free", "allergy-aware"];
+const VALID_SEATING = ["indoor", "outdoor", "both"];
+const VALID_BOOKING = ["required", "recommended", "walk-in"];
+
+// Bushwalk detail enums
+const VALID_DIFFICULTY = ["easy", "moderate", "hard"];
+const VALID_TERRAIN = ["paved", "gravel", "trail", "mixed"];
 
 function checkEnum(value: unknown, allowed: string[], fieldName: string): string[] {
   if (typeof value !== "string" || !allowed.includes(value)) {
@@ -31,7 +58,7 @@ function checkArrayEnum(value: unknown, allowed: string[], fieldName: string): s
   return errors;
 }
 
-export function validateLocation(data: Record<string, unknown>): string[] {
+function validateCoreFields(data: Record<string, unknown>): string[] {
   const errors: string[] = [];
 
   const requiredStrings = ["slug", "name", "region", "country", "description", "directions"];
@@ -42,6 +69,7 @@ export function validateLocation(data: Record<string, unknown>): string[] {
   }
 
   errors.push(...checkEnum(data.type, VALID_TYPES, "type"));
+  errors.push(...checkEnum(data.cost, VALID_COST, "cost"));
 
   const coords = data.coordinates as Record<string, unknown> | undefined;
   if (!coords || typeof coords !== "object") {
@@ -59,34 +87,43 @@ export function validateLocation(data: Record<string, unknown>): string[] {
     errors.push("photos: must be an array");
   }
 
-  const practical = data.practical as Record<string, unknown> | undefined;
-  if (!practical || typeof practical !== "object") {
-    errors.push("practical: required object is missing");
-  } else {
-    errors.push(...checkEnum(practical.accessibility, VALID_ACCESSIBILITY, "practical.accessibility"));
-    errors.push(...checkEnum(practical.parking, VALID_PARKING, "practical.parking"));
-    errors.push(...checkEnum(practical.dangerLevel, VALID_DANGER, "practical.dangerLevel"));
-    errors.push(...checkEnum(practical.cost, VALID_COST, "practical.cost"));
-    errors.push(...checkArrayEnum(practical.bestSeason, VALID_SEASONS, "practical.bestSeason"));
-    if (!Array.isArray(practical.facilities)) {
-      errors.push("practical.facilities: must be an array");
-    }
-  }
-
-  if (!Array.isArray(data.tips)) {
-    errors.push("tips: must be an array");
+  if (!Array.isArray(data.highlights) || (data.highlights as unknown[]).length === 0) {
+    errors.push("highlights: must be a non-empty array (every entry should have at least one highlight)");
   }
 
   if (!Array.isArray(data.tags)) {
     errors.push("tags: must be an array");
   }
 
+  if (data.duration !== undefined) {
+    errors.push(...checkEnum(data.duration, VALID_DURATION, "duration"));
+  }
+
+  if (!Array.isArray(data.tips)) {
+    errors.push("tips: must be an array");
+  }
+
+  errors.push(...checkArrayEnum(data.bestSeason, VALID_SEASONS, "bestSeason"));
+
+  // ageSuitability
+  const age = data.ageSuitability as Record<string, unknown> | undefined;
+  if (!age || typeof age !== "object") {
+    errors.push("ageSuitability: required object is missing");
+  } else {
+    if (age.minAge !== null && typeof age.minAge !== "number") {
+      errors.push("ageSuitability.minAge: must be a number or null");
+    }
+    if (!Array.isArray(age.ideal)) {
+      errors.push("ageSuitability.ideal: must be an array");
+    }
+  }
+
+  // status
   const status = data.status as Record<string, unknown> | undefined;
   if (!status || typeof status !== "object") {
     errors.push("status: required object is missing");
   } else {
     errors.push(...checkEnum(status.site, VALID_SITE_STATUS, "status.site"));
-    errors.push(...checkEnum(status.waterAccess, VALID_WATER_ACCESS, "status.waterAccess"));
     if (typeof status.lastVerified !== "string") {
       errors.push("status.lastVerified: required string field is missing");
     } else if (!/^\d{4}-\d{2}-\d{2}$/.test(status.lastVerified) || isNaN(Date.parse(status.lastVerified))) {
@@ -97,7 +134,162 @@ export function validateLocation(data: Record<string, unknown>): string[] {
   return errors;
 }
 
-// CLI entrypoint: validate all YAML files in data/locations/
+function validateSwimDetails(details: Record<string, unknown>): string[] {
+  const errors: string[] = [];
+  errors.push(...checkEnum(details.dangerLevel, VALID_DANGER, "details.dangerLevel"));
+  errors.push(...checkEnum(details.waterAccess, VALID_WATER_ACCESS, "details.waterAccess"));
+  return errors;
+}
+
+function validateBeachDetails(details: Record<string, unknown>): string[] {
+  const errors: string[] = [];
+  errors.push(...checkEnum(details.beachType, VALID_BEACH_TYPE, "details.beachType"));
+  errors.push(...checkEnum(details.dogPolicy, VALID_DOG_POLICY, "details.dogPolicy"));
+  errors.push(...checkEnum(details.waveExposure, VALID_WAVE_EXPOSURE, "details.waveExposure"));
+  errors.push(...checkEnum(details.crowdLevel, VALID_CROWD_LEVEL, "details.crowdLevel"));
+
+  const patrolled = details.patrolled as Record<string, unknown> | undefined;
+  if (!patrolled || typeof patrolled !== "object") {
+    errors.push("details.patrolled: required object is missing");
+  }
+
+  if (!Array.isArray(details.waterHazards)) {
+    errors.push("details.waterHazards: must be an array");
+  }
+
+  return errors;
+}
+
+function validateEventDetails(details: Record<string, unknown>): string[] {
+  const errors: string[] = [];
+
+  const recurrence = details.recurrence as Record<string, unknown> | undefined;
+  if (!recurrence || typeof recurrence !== "object") {
+    errors.push("details.recurrence: required object is missing");
+  } else {
+    errors.push(...checkEnum(recurrence.type, VALID_RECURRENCE_TYPE, "details.recurrence.type"));
+  }
+
+  if (typeof details.venue !== "string") {
+    errors.push("details.venue: required string field is missing");
+  }
+  errors.push(...checkEnum(details.venueType, VALID_VENUE_TYPE, "details.venueType"));
+
+  if (typeof details.bookingRequired !== "boolean") {
+    errors.push("details.bookingRequired: must be a boolean");
+  }
+
+  return errors;
+}
+
+function validateBushwalkDetails(details: Record<string, unknown>): string[] {
+  const errors: string[] = [];
+  if (typeof details.distanceKm !== "number" || details.distanceKm <= 0) {
+    errors.push("details.distanceKm: must be a positive number");
+  }
+  errors.push(...checkEnum(details.difficulty, VALID_DIFFICULTY, "details.difficulty"));
+  errors.push(...checkEnum(details.terrain, VALID_TERRAIN, "details.terrain"));
+
+  // Optional route: array of [lat, lng] pairs
+  if (details.route !== undefined) {
+    if (!Array.isArray(details.route)) {
+      errors.push("details.route: must be an array of [lat, lng] pairs");
+    } else if ((details.route as unknown[]).length < 2) {
+      errors.push("details.route: must have at least 2 points");
+    } else {
+      for (let i = 0; i < (details.route as unknown[]).length; i++) {
+        const point = (details.route as unknown[])[i];
+        if (!Array.isArray(point) || (point as unknown[]).length !== 2) {
+          errors.push(`details.route[${i}]: must be a [lat, lng] pair`);
+          continue;
+        }
+        const [lat, lng] = point as [unknown, unknown];
+        if (typeof lat !== "number" || lat < -90 || lat > 90) {
+          errors.push(`details.route[${i}]: lat must be between -90 and 90`);
+        }
+        if (typeof lng !== "number" || lng < -180 || lng > 180) {
+          errors.push(`details.route[${i}]: lng must be between -180 and 180`);
+        }
+      }
+    }
+  }
+
+  return errors;
+}
+
+function validateEateryDetails(details: Record<string, unknown>): string[] {
+  const errors: string[] = [];
+
+  if (!Array.isArray(details.cuisine) || (details.cuisine as unknown[]).length === 0) {
+    errors.push("details.cuisine: must be a non-empty array");
+  } else {
+    for (const item of details.cuisine as unknown[]) {
+      if (typeof item !== "string" || !VALID_EATERY_CUISINE.includes(item)) {
+        errors.push(`details.cuisine: invalid value "${item}", must be one of [${VALID_EATERY_CUISINE.join(", ")}]`);
+      }
+    }
+  }
+
+  errors.push(...checkEnum(details.seating, VALID_SEATING, "details.seating"));
+  errors.push(...checkEnum(details.booking, VALID_BOOKING, "details.booking"));
+
+  if (details.bookingUrl !== null && typeof details.bookingUrl !== "string") {
+    errors.push("details.bookingUrl: must be a string or null");
+  }
+
+  if (!Array.isArray(details.dietaryOptions)) {
+    errors.push("details.dietaryOptions: must be an array");
+  } else {
+    for (const item of details.dietaryOptions as unknown[]) {
+      if (typeof item !== "string" || !VALID_DIETARY_OPTION.includes(item)) {
+        errors.push(`details.dietaryOptions: invalid value "${item}", must be one of [${VALID_DIETARY_OPTION.join(", ")}]`);
+      }
+    }
+  }
+
+  if (typeof details.kidsMenu !== "boolean") {
+    errors.push("details.kidsMenu: must be a boolean");
+  }
+
+  return errors;
+}
+
+export function validatePlace(data: Record<string, unknown>): string[] {
+  const errors = validateCoreFields(data);
+
+  const details = data.details as Record<string, unknown> | undefined;
+  if (!details || typeof details !== "object") {
+    errors.push("details: required object is missing");
+    return errors;
+  }
+
+  switch (data.type) {
+    case "swim":
+      errors.push(...validateSwimDetails(details));
+      break;
+    case "beach":
+      errors.push(...validateBeachDetails(details));
+      break;
+    case "event":
+      errors.push(...validateEventDetails(details));
+      break;
+    case "bushwalk":
+    case "walk":
+      errors.push(...validateBushwalkDetails(details));
+      break;
+    case "eatery":
+      errors.push(...validateEateryDetails(details));
+      break;
+    // Future types — core validation only for now
+  }
+
+  return errors;
+}
+
+/** @deprecated Use validatePlace */
+export const validateLocation = validatePlace;
+
+// CLI entrypoint: validate all YAML files in data/locations/ (recursively)
 if (process.argv[1] === __filename) {
   const locationsDir = path.resolve(process.cwd(), "data/locations");
 
@@ -106,7 +298,20 @@ if (process.argv[1] === __filename) {
     process.exit(1);
   }
 
-  const files = fs.readdirSync(locationsDir).filter((f) => f.endsWith(".yaml"));
+  function getYamlFiles(dir: string): string[] {
+    const results: string[] = [];
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const fullPath = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        results.push(...getYamlFiles(fullPath));
+      } else if (entry.name.endsWith(".yaml")) {
+        results.push(fullPath);
+      }
+    }
+    return results;
+  }
+
+  const files = getYamlFiles(locationsDir);
 
   if (files.length === 0) {
     console.warn("Warning: No YAML files found in data/locations/ — nothing to validate.");
@@ -115,27 +320,27 @@ if (process.argv[1] === __filename) {
 
   let hasErrors = false;
 
-  for (const file of files) {
-    const filePath = path.join(locationsDir, file);
+  for (const filePath of files) {
+    const relPath = path.relative(locationsDir, filePath);
     const content = fs.readFileSync(filePath, "utf-8");
     let data: Record<string, unknown>;
     try {
       data = yaml.load(content) as Record<string, unknown>;
     } catch (e) {
       hasErrors = true;
-      console.error(`\n❌ ${file}: YAML parse error — ${(e as Error).message}`);
+      console.error(`\n❌ ${relPath}: YAML parse error — ${(e as Error).message}`);
       continue;
     }
-    const errors = validateLocation(data);
+    const errors = validatePlace(data);
 
     if (errors.length > 0) {
       hasErrors = true;
-      console.error(`\n❌ ${file}:`);
+      console.error(`\n❌ ${relPath}:`);
       for (const error of errors) {
         console.error(`   - ${error}`);
       }
     } else {
-      console.log(`✓ ${file}`);
+      console.log(`✓ ${relPath}`);
     }
   }
 

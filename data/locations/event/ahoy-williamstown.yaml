@@ -1,0 +1,66 @@
+slug: ahoy-williamstown
+name: Ahoy Williamstown — PirateFest
+type: event
+coordinates:
+  lat: -37.8600
+  lng: 144.8980
+region: Victoria, Australia
+country: AU
+description: >
+  Ahoy Williamstown is a pirate-themed festival along the Williamstown
+  foreshore during school holidays. The event features treasure hunts,
+  pirate performances, face painting, craft activities, market stalls,
+  and nautical-themed fun for the whole family along the beautiful
+  waterfront.
+photos:
+  - url: https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Williamstown_Railway_Station_June_2014.jpg/960px-Williamstown_Railway_Station_June_2014.jpg
+    alt: PirateFest at Williamstown foreshore
+    credit: "Nick-D"
+highlights:
+  - Pirate-themed performances and treasure hunts
+  - Face painting and craft activities
+  - Beautiful Williamstown waterfront setting
+cost: free
+duration: half-day
+ageSuitability:
+  minAge: 2
+  ideal:
+    - preschool
+    - primary
+accessibility: easy
+parking: limited
+facilities:
+  - restrooms
+  - food
+bestSeason:
+  - fall
+directions: >
+  Williamstown foreshore, along Nelson Place and Commonwealth Reserve.
+  Take the Williamstown train line to Williamstown station, then walk to
+  the foreshore. Limited street parking available.
+tips:
+  - Come in pirate costume for extra fun
+  - The foreshore playground is great for kids after the event
+  - Arrive early for parking — it fills up fast
+tags:
+  - festival
+  - outdoor
+  - family
+  - school-holidays
+  - waterfront
+status:
+  site: seasonal
+  lastVerified: "2026-06-01"
+details:
+  recurrence:
+    type: annual
+    season: fall
+    startTime: "10:00"
+    endTime: "16:00"
+  confirmedDates: null
+  venue: Williamstown Foreshore
+  venueType: outdoor
+  bookingRequired: false
+  bookingUrl: null
+  organiser: Hobsons Bay City Council
+  organiserUrl: null
