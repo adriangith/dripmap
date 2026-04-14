@@ -69,24 +69,15 @@ const PIN_ICONS: Record<PlaceType, string> = {
   museum: `<path d="M10 18v-7"/><path d="M11.12 2.198a2 2 0 0 1 1.76.006l7.866 3.847c.476.233.31.949-.22.949H3.474c-.53 0-.695-.716-.22-.949z"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="M3 22h18"/><path d="M6 18v-7"/>`,
 };
 
-function createPinIcon(type: PlaceType, opacity = 1): L.DivIcon {
+function createPinIcon(type: PlaceType, opacity = 1, name?: string): L.DivIcon {
   const color = PIN_COLORS[type];
   const svgPaths = PIN_ICONS[type];
+  const labelHtml = name
+    ? `<span class="pin-label" style="background:${color};">${name.length > 20 ? name.slice(0, 18) + "…" : name}</span>`
+    : "";
   return L.divIcon({
     className: "",
-    html: `<div style="
-      width: 32px; height: 32px;
-      background: ${color};
-      border: 2px solid white;
-      border-radius: 50% 50% 50% 0;
-      transform: rotate(-45deg);
-      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-      pointer-events: none;
-      opacity: ${opacity};
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    "><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transform: rotate(45deg);">${svgPaths}</svg></div>`,
+    html: `<div class="pin-wrapper" style="opacity:${opacity};"><div class="pin-marker" style="background:${color};"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(45deg);">${svgPaths}</svg></div>${labelHtml}</div>`,
     iconSize: [32, 32],
     iconAnchor: [16, 32],
     popupAnchor: [0, -32],
@@ -336,16 +327,8 @@ export default function LocationMap({
       popupContent.append(strong, document.createElement("br"), typeSpan);
 
       const marker = L.marker([loc.coordinates.lat, loc.coordinates.lng], {
-        icon: createPinIcon(loc.type, pinOpacity),
+        icon: createPinIcon(loc.type, pinOpacity, loc.name),
       }).bindPopup(popupContent, { autoClose: true, closeOnClick: true });
-
-      // Permanent label visible at higher zoom levels (CSS-controlled)
-      marker.bindTooltip(loc.name, {
-        permanent: true,
-        direction: "top",
-        offset: L.point(0, -30),
-        className: "poi-label",
-      });
 
       if (clusterGroup) clusterGroup.addLayer(marker);
 
