@@ -239,6 +239,40 @@ Each section below is a **self-contained area** that can be worked on independen
 
 ---
 
+### 10. Promoted POI & Affiliate Links *(planned — not yet implemented)*
+
+**What it will do:** Allow certain locations to be marked as promoted (sponsored/featured) and optionally carry affiliate links. Promoted POI appear mixed into regular results with a subtle "Promoted" badge so they feel native rather than intrusive. Affiliate links attach to booking URLs, ticket links, or call-to-action buttons on the detail panel.
+
+**Likely files (to be created):**
+- `src/lib/promotions/types.ts` — `PromotionConfig` interface (promoted flag, affiliate URL, sponsor name, display priority boost, campaign ID, expiry date)
+- `src/lib/promotions/promotions.ts` — Logic for loading promotion configs (from YAML, JSON, or remote endpoint) and applying them to locations
+- `src/components/PromotedBadge.tsx` — Small "Promoted" / "Sponsored" badge component
+- `data/promotions/` or a `promoted` field in location YAML — Promotion configuration data
+
+**Likely files to modify:**
+- `src/lib/types.ts` — Add optional `promotion` field to `PlaceBase` and `PlaceIndexEntry`
+- `src/components/LocationCard.tsx` — Render `PromotedBadge`, apply affiliate link wrapping
+- `src/components/LocationDetailPanel.tsx` — Show sponsor attribution, affiliate CTA buttons
+- `src/lib/constraints.ts` — Optional priority boost for promoted POI in scoring (subtle, not aggressive)
+- `src/app/page.tsx` — Load and apply promotion configs
+
+**Design principles:**
+- **Transparency** — promoted content is always labelled; users should never feel tricked
+- **Non-disruptive** — promoted POI follow the same card/detail layout as organic results; no pop-ups, interstitials, or takeovers
+- **Affiliate tracking** — booking/ticket URLs can carry affiliate parameters (e.g. `?ref=drift`) without changing the user experience
+- **Time-bound** — promotions should have optional start/expiry dates so stale campaigns auto-expire
+- **Scoring nudge, not override** — promoted POI get a small relevance boost but never override strong user preference mismatches (e.g. a promoted full-day event won't rank first when the user selected "quick")
+
+**Touch points:**
+- `types.ts` — additive (new optional field)
+- `LocationCard` / `LocationDetailPanel` — visual changes only
+- `constraints.ts` — scoring adjustment (small, optional)
+- `page.tsx` — wiring promotion data in
+
+**Safe solo work:** All of it — this is a greenfield module. No existing code depends on promotions yet.
+
+---
+
 ## Merge Conflict Risk Matrix
 
 | File | Risk | Why |
