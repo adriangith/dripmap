@@ -156,6 +156,7 @@ export default function LocationMap({
 
   const [locating, setLocating] = useState(false);
   const [locateError, setLocateError] = useState<string | null>(null);
+  const prevFocusedSlugRef = useRef<string | null | undefined>(null);
 
   // Initialize map
   useEffect(() => {
@@ -392,8 +393,14 @@ export default function LocationMap({
   }, [highlightedSlug, focusedSlug, locations]);
 
   // Focus effect — zoom to pin and center in visible area above sheet,
-  // and draw route polyline for walk/bushwalk types
+  // and draw route polyline for walk/bushwalk types.
+  // Only fly to the POI when focusedSlug changes (not on sheet resize),
+  // so the user can navigate freely (e.g. locate themselves) while a
+  // location is active.
   useEffect(() => {
+    const slugChanged = focusedSlug !== prevFocusedSlugRef.current;
+    prevFocusedSlugRef.current = focusedSlug;
+
     if (!focusedSlug) {
       // Clear route when detail panel closes
       if (routeLayerRef.current) {
@@ -402,6 +409,9 @@ export default function LocationMap({
       }
       return;
     }
+
+    if (!slugChanged) return;
+
     const map = mapRef.current;
     const marker = markersRef.current.get(focusedSlug);
     if (map && marker) {
