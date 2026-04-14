@@ -436,7 +436,7 @@ export default function LocationMap({
     const marker = markersRef.current.get(focusedSlug);
     if (map && marker) {
       const sh = focusSheetHeight ?? getSheetHeight();
-      setViewAboveSheet(map, marker.getLatLng(), 12, sh);
+      setViewAboveSheet(map, marker.getLatLng(), 15, sh);
 
       // Draw route polyline for walk/bushwalk types
       if (routeLayerRef.current) {
