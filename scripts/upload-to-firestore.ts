@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as path from "path";
 import * as yaml from "js-yaml";
-import { initializeApp, cert, type ServiceAccount } from "firebase-admin/app";
+import { initializeApp, cert, applicationDefault, type ServiceAccount } from "firebase-admin/app";
 import { getFirestore, FieldValue } from "firebase-admin/firestore";
 import { validatePlace } from "./validate-locations";
 import { buildIndex, buildDetail } from "./build-locations";
@@ -52,6 +52,9 @@ Environment Variables:
   GOOGLE_APPLICATION_CREDENTIALS  Path to service account JSON (used if
                                   --service-account is not provided)
 
+If no credentials are provided, falls back to Application Default Credentials
+(e.g. from \`firebase login\` or \`gcloud auth application-default login\`).
+
 The script reads all YAML files from data/locations/, validates them,
 then uploads each location to a "locations" collection (keyed by slug)
 and writes a "locations-meta" document in the "meta" collection with
@@ -70,27 +73,24 @@ async function main(): Promise<void> {
   }
 
   // Initialize Firebase Admin
+  // Supports: --service-account flag, GOOGLE_APPLICATION_CREDENTIALS env var,
+  // or Application Default Credentials (e.g. from `firebase login`)
   const credentialPath =
     serviceAccountPath ?? process.env.GOOGLE_APPLICATION_CREDENTIALS;
 
-  if (!credentialPath) {
-    console.error(
-      "Error: No credentials provided.\n" +
-        "Use --service-account <path> or set GOOGLE_APPLICATION_CREDENTIALS."
-    );
-    process.exit(1);
+  if (credentialPath) {
+    if (!fs.existsSync(credentialPath)) {
+      console.error(`Error: Service account file not found: ${credentialPath}`);
+      process.exit(1);
+    }
+    const serviceAccount = JSON.parse(
+      fs.readFileSync(credentialPath, "utf-8")
+    ) as ServiceAccount;
+    initializeApp({ credential: cert(serviceAccount) });
+  } else {
+    // Fall back to Application Default Credentials (firebase login, gcloud auth, etc.)
+    initializeApp({ credential: applicationDefault() });
   }
-
-  if (!fs.existsSync(credentialPath)) {
-    console.error(`Error: Service account file not found: ${credentialPath}`);
-    process.exit(1);
-  }
-
-  const serviceAccount = JSON.parse(
-    fs.readFileSync(credentialPath, "utf-8")
-  ) as ServiceAccount;
-
-  initializeApp({ credential: cert(serviceAccount) });
   const db = getFirestore();
 
   // Read and validate YAML files
