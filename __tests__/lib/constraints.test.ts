@@ -58,11 +58,12 @@ describe("applyConstraints", () => {
     expect(result).toHaveLength(2);
   });
 
-  it("hard-filters by distance", () => {
+  it("soft-scores by distance (far places rank lower but are not hidden)", () => {
     const farSwim: PlaceIndexEntry = { ...swim, slug: "far-swim", coordinates: { lat: -36.0, lng: 146.0 } };
     const result = applyConstraints([swim, farSwim], { ...noConstraints, distance: "30min" }, userLocation);
-    expect(result.some((r) => r.slug === "test-swim")).toBe(true);
-    expect(result.some((r) => r.slug === "far-swim")).toBe(false);
+    expect(result).toHaveLength(2); // both still present
+    expect(result[0].slug).toBe("test-swim"); // closer place ranks first
+    expect(result[0]._score).toBeGreaterThan(result[1]._score);
   });
 
   it("soft-scores by cost (free items score higher when cost=free)", () => {

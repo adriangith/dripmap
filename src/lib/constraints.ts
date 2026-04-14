@@ -34,16 +34,6 @@ function daytripProximityBonus(driveMin: number): number {
   return 8;                               // still reachable but far
 }
 
-function passesDistanceFilter(
-  place: PlaceIndexEntry,
-  threshold: string,
-  userLocation: Coordinates | null,
-): boolean {
-  if (threshold === "any" || !userLocation) return true;
-  const maxMin = DISTANCE_MAX_MINUTES[threshold] ?? Infinity;
-  return estimateDriveMinutes(userLocation, place.coordinates) <= maxMin;
-}
-
 function costScore(placeCost: string, filter: string): number {
   if (filter === "any") return 0;
   const costRank: Record<string, number> = { free: 0, "$": 1, "$$": 2, "$$$": 3 };
@@ -154,9 +144,6 @@ export function applyConstraints(
   const visitedSet = new Set(getVisited());
 
   for (const place of places) {
-    // Hard filter: distance
-    if (!passesDistanceFilter(place, constraints.distance, userLocation)) continue;
-
     // Hard filter: date (for events)
     if (!passesDateFilter(place, constraints.date)) continue;
 
@@ -181,13 +168,24 @@ export function applyConstraints(
       return acc;
     }, {});
 
-    // Proximity bonus — shape depends on distance preference
+    // Proximity score — soft preference, never excludes
     if (driveMin !== null) {
-      const base =
-        constraints.distance === "daytrip"
-          ? daytripProximityBonus(driveMin)
-          : Math.max(0, 20 - driveMin / 6);
-      score += base * (priorityWeights["distance"] ?? 1);
+      const distWeight = priorityWeights["distance"] ?? 1;
+      if (constraints.distance === "daytrip") {
+        score += daytripProximityBonus(driveMin) * distWeight;
+      } else if (constraints.distance !== "any") {
+        const maxMin = DISTANCE_MAX_MINUTES[constraints.distance] ?? Infinity;
+        if (driveMin <= maxMin) {
+          // Within preferred range — full bonus scaled by closeness
+          score += Math.max(0, 20 - driveMin / 6) * distWeight;
+        } else {
+          // Outside preferred range — penalty that increases with distance over threshold
+          const overRatio = (driveMin - maxMin) / maxMin;
+          score += -15 * Math.min(overRatio, 2) * distWeight;
+        }
+      } else {
+        score += Math.max(0, 20 - driveMin / 6) * distWeight;
+      }
     }
 
     // Cost score
