@@ -20,13 +20,10 @@ highlights:
 - Only for experienced and strong swimmers due to dangerous rapids
 - Never swim alone at this isolated location
 cost: free
-duration: quick
+duration: full-day
 ageSuitability:
-  minAge: null
+  minAge: 16
   ideal:
-  - toddlers
-  - primary
-  - teens
   - adults
 accessibility: difficult
 parking: limited
