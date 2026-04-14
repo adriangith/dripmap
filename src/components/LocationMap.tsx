@@ -427,16 +427,42 @@ export default function LocationMap({
     };
   }, [highlightedSlug, locations]);
 
-  // Focus effect — zoom to pin and center in visible area above sheet
+  // Focus effect — zoom to pin and center in visible area above sheet,
+  // and draw route polyline for walk/bushwalk types
   useEffect(() => {
-    if (!focusedSlug) return;
+    if (!focusedSlug) {
+      // Clear route when detail panel closes
+      if (routeLayerRef.current) {
+        routeLayerRef.current.remove();
+        routeLayerRef.current = null;
+      }
+      return;
+    }
     const map = mapRef.current;
     const marker = markersRef.current.get(focusedSlug);
     if (map && marker) {
       const sh = focusSheetHeight ?? getSheetHeight();
       setViewAboveSheet(map, marker.getLatLng(), 12, sh);
+
+      // Draw route polyline for walk/bushwalk types
+      if (routeLayerRef.current) {
+        routeLayerRef.current.remove();
+        routeLayerRef.current = null;
+      }
+      const loc = locations.find((l) => l.slug === focusedSlug);
+      if (loc && (loc.type === "walk" || loc.type === "bushwalk") && loc.route) {
+        routeLayerRef.current = L.polyline(
+          loc.route.map(([lat, lng]) => [lat, lng] as L.LatLngTuple),
+          { color: PIN_COLORS[loc.type], weight: 4, opacity: 0.7 },
+        ).addTo(map);
+        // Fit map to route bounds
+        map.fitBounds(routeLayerRef.current.getBounds(), {
+          paddingTopLeft: L.point(50, 50),
+          paddingBottomRight: L.point(50, Math.max(50, sh)),
+        });
+      }
     }
-  }, [focusedSlug, focusSheetHeight]);
+  }, [focusedSlug, focusSheetHeight, locations]);
 
   const handleLocateMe = useCallback(() => {
     if (!window.isSecureContext) {
