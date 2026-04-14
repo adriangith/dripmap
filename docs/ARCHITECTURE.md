@@ -218,6 +218,27 @@ Each section below is a **self-contained area** that can be worked on independen
 
 ---
 
+### 9. External Data Integrations
+
+**What it does:** Source-agnostic event feed system. Fetches live event listings from external providers (Eventbrite, Humanitix, etc.) at build time and optionally refreshes at runtime via a remote JSON endpoint.
+
+**Files:**
+- `src/lib/integrations/types.ts` — `EventProvider` interface, `ExternalEvent` type, `toPlace()` mapper
+- `src/lib/integrations/providers/stub.ts` — Example provider for development
+- `src/lib/integrations/merge.ts` — Deduplication logic (static entries take precedence)
+- `src/lib/integrations/use-external-events.ts` — Client-side refresh hook with localStorage caching
+- `scripts/fetch-events.ts` — Build-time fetcher (runs in prebuild pipeline)
+
+**Touch points:**
+- `page.tsx` calls `useExternalEvents()` to merge external data into the location index
+- `types.ts` has optional `source` field on `PlaceBase` and `PlaceIndexEntry` for attribution
+- Build pipeline: runs after `build:data` in `prebuild` script
+- External events become regular `Place` objects — all display components work unchanged
+
+**Safe solo work:** Adding new providers (one file each), changing cache duration, refresh endpoint URL, attribution display, build-time provider configuration.
+
+---
+
 ## Merge Conflict Risk Matrix
 
 | File | Risk | Why |
@@ -227,6 +248,7 @@ Each section below is a **self-contained area** that can be worked on independen
 | `src/components/LocationDetailPanel.tsx` | 🟡 Medium | Large file, many features converge here |
 | `src/components/PreferencePanel.tsx` | 🟢 Low | Self-contained, rarely touched by other work |
 | `data/locations/*.yaml` | 🟢 Low | Independent files, merge-friendly unless schema changes |
+| `src/lib/integrations/` | 🟢 Low | Self-contained module, only `page.tsx` wiring touches other code |
 | Everything else | 🟢 Low | Focused scope, minimal cross-cutting |
 
 ### Tips for Multi-Agent Branches

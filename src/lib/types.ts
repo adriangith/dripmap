@@ -149,6 +149,7 @@ interface PlaceBase {
   duration?: Duration;
   status: PlaceStatus;
   fit?: FitBlurbs;
+  source?: { provider: string; url: string };
 }
 
 export interface SwimPlace extends PlaceBase {
@@ -197,6 +198,7 @@ export interface PlaceIndexEntry {
   recurrence?: Recurrence; // only present for event type
   route?: [number, number][]; // only present for walk/bushwalk type
   fit?: FitBlurbs;
+  source?: { provider: string; url: string };
 }
 
 // ── Filters (updated for new types) ──────────────────────────

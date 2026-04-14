@@ -18,6 +18,7 @@ import type { PlaceIndexEntry, Filters, Coordinates, Constraints } from "@/lib/t
 import { DEFAULT_PRIORITY } from "@/lib/types";
 import type { ScoredPlace } from "@/lib/constraints";
 import { useUserData } from "@/lib/use-user-data";
+import { useExternalEvents } from "@/lib/integrations/use-external-events";
 
 const LocationMap = dynamic(() => import("@/components/LocationMap"), {
   ssr: false,
@@ -61,7 +62,7 @@ function loadSessionState<T>(key: string, fallback: T): T {
 export default function HomePage() {
   const { onboardingComplete, preferences } = useUserData();
   const [onboardingDone, setOnboardingDone] = useState(false);
-  const [allLocations, setAllLocations] = useState<PlaceIndexEntry[]>([]);
+  const [staticLocations, setStaticLocations] = useState<PlaceIndexEntry[]>([]);
   const [filters, setFilters] = useState<Filters>(() => loadSessionState(FILTERS_KEY, emptyFilters));
   const [constraints, setConstraints] = useState<Constraints>(() => {
     const loaded = loadSessionState(CONSTRAINTS_KEY, defaultConstraints);
@@ -117,12 +118,15 @@ export default function HomePage() {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();
       })
-      .then((data: PlaceIndexEntry[]) => setAllLocations(data))
+      .then((data: PlaceIndexEntry[]) => setStaticLocations(data))
       .catch(() => {
-        setAllLocations([]);
+        setStaticLocations([]);
         setLoadError(true);
       });
   }, []);
+
+  // Merge in external events (from remote endpoint, if configured)
+  const allLocations = useExternalEvents(staticLocations);
 
   const filteredLocations: ScoredPlace[] = useMemo(() => {
     const filtered = filterLocations(allLocations, filters);
