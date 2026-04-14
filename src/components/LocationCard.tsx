@@ -44,17 +44,17 @@ export default function LocationCard({
   const cardContent = (
     <>
       {photo && (
-        <div className="relative w-full h-24">
+        <div className="relative w-full h-16">
           <Image
             src={photo}
             alt=""
             fill
-            className="object-cover"
+            className="object-cover brightness-90 saturate-[0.85]"
             sizes="(max-width: 768px) 100vw, 400px"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent via-40% to-black/70" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/15 via-black/10 via-50% to-black/60" />
           <div className="absolute bottom-0 left-0 right-0 px-3 pb-1.5 flex items-end justify-between gap-2">
-            <h3 className="font-semibold text-white truncate text-sm drop-shadow-sm">{location.name}</h3>
+            <h3 className="font-semibold text-white truncate text-sm drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]">{location.name}</h3>
             <div className="shrink-0">
               <StatusBadge status={location.status.site} />
             </div>

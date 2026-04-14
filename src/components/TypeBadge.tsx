@@ -7,21 +7,21 @@ import {
 import type { PlaceType } from "@/lib/types";
 
 const TYPE_CONFIG: Record<PlaceType, { icon: LucideIcon; label: string; color: string }> = {
-  swim: { icon: Droplets, label: "Swim", color: "text-cyan-600" },
-  beach: { icon: Waves, label: "Beach", color: "text-blue-500" },
-  event: { icon: Calendar, label: "Event", color: "text-pink-600" },
-  bushwalk: { icon: TreePine, label: "Bushwalk", color: "text-green-700" },
-  walk: { icon: Footprints, label: "Walk", color: "text-amber-700" },
-  lookout: { icon: Eye, label: "Lookout", color: "text-amber-600" },
-  waterfall: { icon: Droplet, label: "Waterfall", color: "text-blue-700" },
-  cave: { icon: Mountain, label: "Cave", color: "text-gray-600" },
-  wildlife: { icon: PawPrint, label: "Wildlife", color: "text-orange-600" },
-  pool: { icon: Waves, label: "Pool", color: "text-violet-600" },
-  cycling: { icon: Bike, label: "Cycling", color: "text-lime-600" },
-  fishing: { icon: Fish, label: "Fishing", color: "text-teal-600" },
-  eatery: { icon: UtensilsCrossed, label: "Eatery", color: "text-pink-500" },
-  playground: { icon: ToyBrick, label: "Playground", color: "text-emerald-500" },
-  museum: { icon: Landmark, label: "Museum", color: "text-violet-700" },
+  swim: { icon: Droplets, label: "Swim", color: "text-cyan-500/80" },
+  beach: { icon: Waves, label: "Beach", color: "text-blue-400/80" },
+  event: { icon: Calendar, label: "Event", color: "text-pink-400/80" },
+  bushwalk: { icon: TreePine, label: "Bushwalk", color: "text-green-600/80" },
+  walk: { icon: Footprints, label: "Walk", color: "text-amber-600/80" },
+  lookout: { icon: Eye, label: "Lookout", color: "text-amber-500/80" },
+  waterfall: { icon: Droplet, label: "Waterfall", color: "text-blue-500/80" },
+  cave: { icon: Mountain, label: "Cave", color: "text-gray-500/80" },
+  wildlife: { icon: PawPrint, label: "Wildlife", color: "text-orange-500/80" },
+  pool: { icon: Waves, label: "Pool", color: "text-violet-500/80" },
+  cycling: { icon: Bike, label: "Cycling", color: "text-lime-500/80" },
+  fishing: { icon: Fish, label: "Fishing", color: "text-teal-500/80" },
+  eatery: { icon: UtensilsCrossed, label: "Eatery", color: "text-pink-400/80" },
+  playground: { icon: ToyBrick, label: "Playground", color: "text-emerald-400/80" },
+  museum: { icon: Landmark, label: "Museum", color: "text-violet-500/80" },
 };
 
 interface TypeBadgeProps {

@@ -23,7 +23,7 @@ export default function CostIndicator({ cost, showLabel = false }: CostIndicator
 
   if (level === 0) {
     return (
-      <span className="text-xs font-medium text-green-600 dark:text-green-400">
+      <span className="text-xs font-medium text-green-500 dark:text-green-500">
         Free
       </span>
     );
@@ -37,7 +37,7 @@ export default function CostIndicator({ cost, showLabel = false }: CostIndicator
             key={i}
             className={
               i <= level
-                ? "font-semibold text-gray-900 dark:text-gray-100"
+                ? "font-semibold text-gray-700 dark:text-gray-300"
                 : "text-gray-300 dark:text-gray-600"
             }
           >
