@@ -9,6 +9,7 @@ Drift helps you answer "where should we go today?" by surfacing places based on 
 ### Key features
 
 - **Preference-based discovery** — drag to prioritise cost, familiarity, and time-of-day; results are soft-scored, not hard-filtered
+- **Personalised descriptions** — each place's description adapts to highlight what matters to you, so you can tell at a glance whether it's the right fit
 - **Interactive map** — Leaflet with clustered pins, walk route polylines, and CartoDB Voyager/dark tiles
 - **Offline-first PWA** — Workbox service worker precaches map tiles, location data, and images
 - **Constraint engine** — distance filtering, event date matching, visited/not-visited tracking
