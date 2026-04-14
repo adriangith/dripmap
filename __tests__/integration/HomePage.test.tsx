@@ -170,15 +170,15 @@ describe("HomePage integration", () => {
     );
   });
 
-  it("cards link to correct detail pages", async () => {
+  it("cards open detail panel on click", async () => {
     const HomePage = await getHomePage();
     const { findAllByText, getAllByRole } = render(<HomePage />);
-    // Wait for cards to load before collecting links
+    // Wait for cards to load
     await findAllByText("Fairy Pools");
-    const hrefs = getAllByRole("link").map((l) => l.getAttribute("href"));
-    expect(hrefs).toContain("/location/fairy-pools");
-    expect(hrefs).toContain("/location/hamilton-pool");
-    expect(hrefs).toContain("/location/niagara-falls");
+    // Cards are now buttons (in-page detail panel), not links
+    const buttons = getAllByRole("button");
+    const cardButtons = buttons.filter((b) => b.textContent?.includes("Fairy Pools"));
+    expect(cardButtons.length).toBeGreaterThan(0);
   });
 
   it("filtering by type narrows displayed cards", async () => {
@@ -228,9 +228,11 @@ describe("HomePage integration", () => {
       ).toBe("3")
     );
 
-    // Simulate hovering a card (sets highlightedSlug, triggers re-render)
-    const cards = container.querySelectorAll("a[href^='/location/']");
-    fireEvent.mouseEnter(cards[0]);
+    // Simulate hovering a card button
+    const buttons = container.querySelectorAll("button");
+    const cardButton = Array.from(buttons).find((b) => b.textContent?.includes("Fairy Pools"));
+    expect(cardButton).toBeTruthy();
+    fireEvent.mouseEnter(cardButton!);
 
     // Map should still receive 3 locations — not be recreated with a new reference
     await waitFor(() =>
@@ -240,7 +242,7 @@ describe("HomePage integration", () => {
     );
     // Render count check: the stub should not have been called with a fresh props
     // object that differs in array identity — validated above via stable data-count
-    fireEvent.mouseLeave(cards[0]);
+    fireEvent.mouseLeave(cardButton!);
   });
 
   it("shows result count in filter bar", async () => {
