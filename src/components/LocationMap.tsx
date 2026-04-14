@@ -321,23 +321,14 @@ export default function LocationMap({
         pinOpacity = 0.35 + 0.65 * ((s - minScore) / scoreRange);
       }
 
-      const popupContent = document.createElement("div");
-      const strong = document.createElement("strong");
-      strong.textContent = loc.name;
-      const typeSpan = document.createElement("span");
-      typeSpan.style.textTransform = "capitalize";
-      typeSpan.textContent = loc.type.replace("-", " ");
-      popupContent.append(strong, document.createElement("br"), typeSpan);
-
       const marker = L.marker([loc.coordinates.lat, loc.coordinates.lng], {
         icon: createPinIcon(loc.type, pinOpacity, loc.name),
-      }).bindPopup(popupContent, { autoClose: true, closeOnClick: true });
+      });
 
       if (clusterGroup) clusterGroup.addLayer(marker);
 
-      // On click: open popup, notify parent (route drawn by focus effect)
+      // On click: notify parent (route drawn by focus effect)
       marker.on("click", () => {
-        marker.openPopup();
         // Clear any hover route
         if (hoverRouteLayerRef.current) {
           hoverRouteLayerRef.current.remove();
@@ -349,11 +340,9 @@ export default function LocationMap({
       // Hover behaviour (desktop only — touch devices fire spurious
       // mouseover/mouseout that would immediately close the popup)
       marker.on("mouseover", () => {
-        if (window.matchMedia("(hover: hover)").matches) marker.openPopup();
         onMarkerHover(loc.slug);
       });
       marker.on("mouseout", () => {
-        if (window.matchMedia("(hover: hover)").matches) marker.closePopup();
         onMarkerHover(null);
       });
 
@@ -376,14 +365,10 @@ export default function LocationMap({
     }
   }, [locations, onMarkerClick, onMarkerHover]);
 
-  // Highlight effect — open popup on hover, draw route polyline for walks
+  // Highlight effect — draw route polyline for walks on hover
   useEffect(() => {
     if (!highlightedSlug) return;
     const map = mapRef.current;
-    const marker = markersRef.current.get(highlightedSlug);
-    if (marker) {
-      marker.openPopup();
-    }
 
     // Draw route polyline for walk/bushwalk types (desktop hover only)
     // Skip if the focused detail panel already shows this route
@@ -399,7 +384,6 @@ export default function LocationMap({
     }
 
     return () => {
-      mapRef.current?.closePopup();
       if (hoverRouteLayerRef.current) {
         hoverRouteLayerRef.current.remove();
         hoverRouteLayerRef.current = null;
