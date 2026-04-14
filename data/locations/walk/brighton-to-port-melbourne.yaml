@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=../../../schemas/location.schema.json
 slug: brighton-to-port-melbourne
 name: Bayside Beach Hike (Brighton to Port Melbourne)
 type: walk

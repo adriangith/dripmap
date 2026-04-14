@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=../../../schemas/location.schema.json
 slug: inner-yarra-hike
 name: Inner-Yarra Hike (Fairfield to Fed Square)
 type: walk

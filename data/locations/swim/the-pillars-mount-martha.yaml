@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=../../../schemas/location.schema.json
 slug: the-pillars-mount-martha
 name: The Pillars
 type: swim

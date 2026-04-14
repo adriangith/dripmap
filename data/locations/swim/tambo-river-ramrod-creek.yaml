@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=../../../schemas/location.schema.json
 slug: tambo-river-ramrod-creek
 name: Tambo River at Ramrod Creek
 type: swim

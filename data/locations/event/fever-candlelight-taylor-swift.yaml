@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=../../../schemas/location.schema.json
 slug: fever-candlelight-taylor-swift
 name: "Candlelight: A Tribute to Taylor Swift"
 type: event

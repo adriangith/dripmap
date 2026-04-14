@@ -1,43 +1,14 @@
 import * as fs from "fs";
 import * as path from "path";
 import * as yaml from "js-yaml";
-
-const VALID_TYPES = [
-  "swim", "beach", "event", "bushwalk", "walk", "lookout", "waterfall",
-  "cave", "wildlife", "pool", "cycling", "fishing", "eatery", "playground",
-  "museum",
-];
-const VALID_COST = ["free", "$", "$$", "$$$"];
-const VALID_SEASONS = ["spring", "summer", "fall", "winter"];
-const VALID_SITE_STATUS = ["open", "closed", "seasonal", "unknown"];
-
-// Swim detail enums
-const VALID_DANGER = ["low", "moderate", "high", "extreme"];
-const VALID_WATER_ACCESS = ["open", "closed", "seasonal", "restricted", "unknown"];
-
-// Beach detail enums
-const VALID_BEACH_TYPE = ["surf", "bay", "rock-pools", "river", "estuary"];
-const VALID_DOG_POLICY = ["allowed", "seasonal-offleash", "prohibited"];
-const VALID_WAVE_EXPOSURE = ["sheltered", "moderate", "exposed"];
-const VALID_CROWD_LEVEL = ["quiet", "moderate", "busy"];
-
-// Event detail enums
-const VALID_VENUE_TYPE = ["outdoor", "indoor", "mixed"];
-const VALID_RECURRENCE_TYPE = ["once", "range", "weekly", "annual"];
-const VALID_DURATION = ["quick", "half-day", "full-day"];
-
-// Eatery detail enums
-const VALID_EATERY_CUISINE = [
-  "cafe", "restaurant", "pub", "fish-and-chips", "ice-cream",
-  "bakery", "market", "farm-gate", "pick-your-own", "food-truck",
-];
-const VALID_DIETARY_OPTION = ["vegetarian", "vegan", "gluten-free", "allergy-aware"];
-const VALID_SEATING = ["indoor", "outdoor", "both"];
-const VALID_BOOKING = ["required", "recommended", "walk-in"];
-
-// Bushwalk detail enums
-const VALID_DIFFICULTY = ["easy", "moderate", "hard"];
-const VALID_TERRAIN = ["paved", "gravel", "trail", "mixed"];
+import {
+  VALID_TYPES, VALID_COST, VALID_SEASONS, VALID_SITE_STATUS,
+  VALID_DANGER, VALID_WATER_ACCESS,
+  VALID_BEACH_TYPE, VALID_DOG_POLICY, VALID_WAVE_EXPOSURE, VALID_CROWD_LEVEL,
+  VALID_VENUE_TYPE, VALID_RECURRENCE_TYPE, VALID_DURATION,
+  VALID_EATERY_CUISINE, VALID_DIETARY_OPTION, VALID_SEATING, VALID_BOOKING,
+  VALID_DIFFICULTY, VALID_TERRAIN,
+} from "./location-enums";
 
 function checkEnum(value: unknown, allowed: string[], fieldName: string): string[] {
   if (typeof value !== "string" || !allowed.includes(value)) {

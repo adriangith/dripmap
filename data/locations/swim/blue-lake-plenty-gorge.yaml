@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=../../../schemas/location.schema.json
 slug: blue-lake-plenty-gorge
 name: Blue Lake, Plenty Gorge
 type: swim

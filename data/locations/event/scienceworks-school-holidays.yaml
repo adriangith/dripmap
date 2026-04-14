@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=../../../schemas/location.schema.json
 slug: scienceworks-school-holidays
 name: Scienceworks School Holidays
 type: event

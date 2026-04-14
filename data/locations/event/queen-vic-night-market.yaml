@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=../../../schemas/location.schema.json
 slug: queen-vic-night-market
 name: Queen Victoria Night Market
 type: event

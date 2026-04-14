@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=../../../schemas/location.schema.json
 slug: tambo-river-sardine-flat
 name: Tambo River at Sardine Flat
 type: swim

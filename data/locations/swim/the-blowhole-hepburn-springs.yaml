@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=../../../schemas/location.schema.json
 slug: the-blowhole-hepburn-springs
 name: The Blowhole, Hepburn Springs
 type: swim

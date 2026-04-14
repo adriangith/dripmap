@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=../../../schemas/location.schema.json
 slug: middle-yarra-templestowe
 name: Middle-Yarra Walk (Templestowe to Eltham)
 type: walk

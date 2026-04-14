@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=../../../schemas/location.schema.json
 slug: squeaky-beach
 name: Squeaky Beach
 type: beach

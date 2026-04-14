@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=../../../schemas/location.schema.json
 slug: carlton-gardens-playground
 name: Carlton Gardens Playspaces
 type: playground
