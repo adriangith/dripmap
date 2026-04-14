@@ -26,7 +26,13 @@ export default function LocationCard({
 }: LocationCardProps) {
   const driveMinutes = (location as { _driveMinutes?: number | null })._driveMinutes;
   const distance = driveMinutes != null
-    ? `~${Math.round(driveMinutes)} min`
+    ? (() => {
+        const mins = Math.round(driveMinutes);
+        if (mins < 60) return `~${mins} min`;
+        const h = Math.floor(mins / 60);
+        const m = mins % 60;
+        return m === 0 ? `~${h} hr` : `~${h} hr ${m} min`;
+      })()
     : userLocation
       ? formatDistance(haversineDistanceKm(userLocation, location.coordinates))
       : null;
@@ -74,7 +80,7 @@ export default function LocationCard({
           <TypeBadge type={location.type} showLabel={false} />
           <span className="text-sm text-gray-500 dark:text-gray-400">{location.country}</span>
           {distance && (
-            <span className="text-xs text-blue-600 font-medium">{distance}</span>
+            <span className="text-xs text-gray-500 dark:text-gray-400 font-medium">{distance}</span>
           )}
           <CostIndicator cost={location.cost} />
         </div>
