@@ -5,5 +5,15 @@ service cloud.firestore {
     match /users/{uid} {
       allow read, write: if request.auth != null && request.auth.uid == uid;
     }
+
+    // Public read access for location data
+    match /locations/{slug} {
+      allow read: if true;
+    }
+
+    // Public read access for metadata (e.g. data version hash)
+    match /meta/{docId} {
+      allow read: if true;
+    }
   }
 }

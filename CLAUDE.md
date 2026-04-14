@@ -17,6 +17,8 @@ npm run test:watch       # Vitest in watch mode
 npm run test:e2e         # Full build + Playwright E2E tests (Chromium, port 4173)
 npm run validate         # Validate YAML location data against schema
 npm run build:data       # Convert YAML locations to JSON in public/generated/
+npm run upload:data      # Upload location data to Firestore (needs service account)
+npm run deploy:data      # Validate + build JSON + upload to Firestore
 ```
 
 Run a single test file: `npx vitest run __tests__/lib/filters.test.ts`
@@ -35,6 +37,16 @@ data/locations/*.yaml → scripts/validate-locations.ts → scripts/build-locati
 ```
 
 The `prebuild` hook runs validation and data build automatically before `next build`. Location YAML files have a strict schema (see `scripts/validate-locations.ts` for fields/types).
+
+### Data Deployment (Firestore)
+
+Location data is also uploaded to Firestore for runtime queries. This is a separate step from the build:
+
+```
+npm run deploy:data   # validate → build static JSON → upload to Firestore
+```
+
+Requires `GOOGLE_APPLICATION_CREDENTIALS` env var pointing to a service account key JSON file, or use the `--service-account` flag.
 
 ### App Structure
 

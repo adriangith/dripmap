@@ -133,6 +133,17 @@ const FAIRY_POOLS_DETAIL = {
   details: { dangerLevel: "moderate", waterAccess: "open", depth: null },
 };
 
+// ── Mock @/lib/locations — Firestore-backed, so we stub at module level ───
+vi.mock("../../src/lib/locations", () => ({
+  getLocationIndex: vi.fn(),
+  getLocationDetail: vi.fn(),
+  getLocationIndexStatic: vi.fn(),
+  getLocationDetailStatic: vi.fn(),
+  getAllLocationSlugs: vi.fn(),
+}));
+
+import { getLocationIndex, getLocationDetail } from "../../src/lib/locations";
+
 // Lazy import so all mocks are registered first
 const getHomePage = () =>
   import("../../src/app/page").then((m) => m.default);
@@ -143,20 +154,12 @@ describe("HomePage integration", () => {
     sessionStorage.clear();
     // Simulate mobile viewport so marker clicks open in-sheet detail
     Object.defineProperty(window, "innerWidth", { value: 390, writable: true, configurable: true });
-    globalThis.fetch = vi.fn().mockImplementation((url: string) => {
-      if (url.includes("locations-index.json")) {
-        return Promise.resolve({
-          ok: true,
-          json: () => Promise.resolve(SAMPLE_LOCATIONS),
-        } as unknown as Response);
-      }
-      if (url.includes("/locations/fairy-pools.json")) {
-        return Promise.resolve({
-          ok: true,
-          json: () => Promise.resolve(FAIRY_POOLS_DETAIL),
-        } as unknown as Response);
-      }
-      return Promise.resolve({ ok: false, status: 404 } as Response);
+
+    // Provide data via mocked Firestore-backed functions
+    (getLocationIndex as ReturnType<typeof vi.fn>).mockResolvedValue(SAMPLE_LOCATIONS);
+    (getLocationDetail as ReturnType<typeof vi.fn>).mockImplementation((slug: string) => {
+      if (slug === "fairy-pools") return Promise.resolve(FAIRY_POOLS_DETAIL);
+      return Promise.reject(new Error(`Unknown slug: ${slug}`));
     });
   });
 

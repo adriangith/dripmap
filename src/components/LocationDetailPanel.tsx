@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { Droplets, Waves } from "lucide-react";
 import type { Place, SwimPlace, BeachPlace, EventPlace, Coordinates, Duration, Constraints } from "@/lib/types";
+import { getLocationDetail } from "@/lib/locations";
 import { fetchDrivingInfo, formatDriveTime, formatDriveDistance } from "@/lib/osrm";
 import type { DrivingInfo } from "@/lib/osrm";
 import { buildFitParagraph } from "@/lib/fit";
@@ -176,39 +177,19 @@ export default function LocationDetailPanel({
   const [location, setLocation] = useState<Place | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const cache = useRef<Map<string, Place>>(new Map());
   const [drivingInfo, setDrivingInfo] = useState<DrivingInfo | null>(null);
   const drivingCache = useRef<Map<string, DrivingInfo>>(new Map());
 
   useEffect(() => {
     if (!slug) return;
 
-    // Check cache first
-    const cached = cache.current.get(slug);
-    if (cached) {
-      setLocation(cached);
-      setLoading(false);
-      setError(null);
-      return;
-    }
-
     let aborted = false;
     setLoading(true);
     setError(null);
 
-    fetch(`/generated/locations/${slug}.json`)
-      .then((res) => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return res.json();
-      })
+    getLocationDetail(slug)
       .then((data: Place) => {
         if (aborted) return;
-        cache.current.set(slug, data);
-        // Keep cache small
-        if (cache.current.size > 5) {
-          const oldest = cache.current.keys().next().value;
-          if (oldest) cache.current.delete(oldest);
-        }
         setLocation(data);
       })
       .catch(() => { if (!aborted) setError("Failed to load location details"); })

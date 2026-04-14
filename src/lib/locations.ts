@@ -1,15 +1,17 @@
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "./firebase";
 import type { Place, PlaceIndexEntry } from "./types";
 
 export async function getLocationIndex(): Promise<PlaceIndexEntry[]> {
-  const res = await fetch("/generated/locations-index.json");
-  if (!res.ok) throw new Error("Failed to load location index");
-  return res.json();
+  const snap = await getDoc(doc(db, "meta", "locations-meta"));
+  if (!snap.exists()) throw new Error("Failed to load location index");
+  return snap.data().entries as PlaceIndexEntry[];
 }
 
 export async function getLocationDetail(slug: string): Promise<Place> {
-  const res = await fetch(`/generated/locations/${slug}.json`);
-  if (!res.ok) throw new Error(`Failed to load location: ${slug}`);
-  return res.json();
+  const snap = await getDoc(doc(db, "locations", slug));
+  if (!snap.exists()) throw new Error(`Failed to load location: ${slug}`);
+  return snap.data() as Place;
 }
 
 // For static generation: reads from filesystem at build time
