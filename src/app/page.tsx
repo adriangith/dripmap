@@ -4,6 +4,8 @@ import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { Compass, Search, ArrowLeft } from "lucide-react";
+import AuthButton from "@/components/AuthButton";
+import OnboardingFlow from "@/components/OnboardingFlow";
 import FilterBar from "@/components/FilterBar";
 import FilterButton from "@/components/FilterButton";
 import PreferencePanel from "@/components/PreferencePanel";
@@ -15,6 +17,7 @@ import { applyConstraints } from "@/lib/constraints";
 import type { PlaceIndexEntry, Filters, Coordinates, Constraints } from "@/lib/types";
 import { DEFAULT_PRIORITY } from "@/lib/types";
 import type { ScoredPlace } from "@/lib/constraints";
+import { useUserData } from "@/lib/use-user-data";
 
 const LocationMap = dynamic(() => import("@/components/LocationMap"), {
   ssr: false,
@@ -56,6 +59,8 @@ function loadSessionState<T>(key: string, fallback: T): T {
 }
 
 export default function HomePage() {
+  const { onboardingComplete, preferences } = useUserData();
+  const [showOnboarding, setShowOnboarding] = useState(false);
   const [allLocations, setAllLocations] = useState<PlaceIndexEntry[]>([]);
   const [filters, setFilters] = useState<Filters>(() => loadSessionState(FILTERS_KEY, emptyFilters));
   const [constraints, setConstraints] = useState<Constraints>(() => {
@@ -70,6 +75,27 @@ export default function HomePage() {
   const [userLocation, setUserLocation] = useState<Coordinates | null>(null);
   const [loadError, setLoadError] = useState(false);
   const [prefsOpen, setPrefsOpen] = useState(false);
+
+  // Show onboarding on first visit
+  useEffect(() => {
+    if (!onboardingComplete) setShowOnboarding(true);
+  }, [onboardingComplete]);
+
+  // Apply saved preferences as session defaults (only for fresh sessions)
+  const prefsAppliedRef = useRef(false);
+  useEffect(() => {
+    if (prefsAppliedRef.current || !preferences) return;
+    // Only apply if sessionStorage has no saved constraints (fresh session)
+    if (typeof sessionStorage !== "undefined" && sessionStorage.getItem(CONSTRAINTS_KEY)) return;
+    prefsAppliedRef.current = true;
+    setConstraints((prev) => ({
+      ...prev,
+      ...(preferences.distance ? { distance: preferences.distance } : {}),
+      ...(preferences.cost ? { cost: preferences.cost } : {}),
+      ...(preferences.group ? { group: preferences.group } : {}),
+      ...(preferences.duration ? { duration: preferences.duration } : {}),
+    }));
+  }, [preferences]);
 
   // Persist filters & constraints to sessionStorage
   useEffect(() => {
@@ -174,11 +200,14 @@ export default function HomePage() {
         {/* Map — leave room for collapsed bottom sheet on mobile */}
         <div className="flex-1 relative overflow-hidden">
           {/* Faded logo overlay */}
-          <div className="absolute left-3 z-10 pointer-events-none" style={{ top: "calc(0.75rem + env(safe-area-inset-top))" }}>
-            <Link href="/" className="flex items-center gap-1.5 opacity-40 pointer-events-auto">
+          <div className="absolute left-3 right-3 z-10 flex items-center justify-between" style={{ top: "calc(0.75rem + env(safe-area-inset-top))" }}>
+            <Link href="/" className="flex items-center gap-1.5 opacity-40">
               <Compass className="w-5 h-5 text-blue-600" />
               <span className="font-bold text-blue-700 text-sm">Drift</span>
             </Link>
+            <div className="opacity-70">
+              <AuthButton />
+            </div>
           </div>
           <LocationMap
             locations={filteredLocations}
@@ -315,6 +344,11 @@ export default function HomePage() {
         hasLocation={userLocation !== null}
         onRequestLocation={handleRequestLocation}
       />
+
+      {/* Onboarding (first visit) */}
+      {showOnboarding && (
+        <OnboardingFlow onComplete={() => setShowOnboarding(false)} />
+      )}
     </div>
   );
 }

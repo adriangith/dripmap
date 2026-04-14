@@ -1,32 +1,19 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { Bookmark } from "lucide-react";
-import { isBookmarked, addBookmark, removeBookmark } from "@/lib/bookmarks";
+import { useUserData } from "@/lib/use-user-data";
 
 interface BookmarkButtonProps {
   slug: string;
 }
 
 export default function BookmarkButton({ slug }: BookmarkButtonProps) {
-  const [bookmarked, setBookmarked] = useState(false);
-
-  useEffect(() => {
-    setBookmarked(isBookmarked(slug));
-  }, [slug]);
-
-  const toggle = () => {
-    if (bookmarked) {
-      removeBookmark(slug);
-    } else {
-      addBookmark(slug);
-    }
-    setBookmarked(!bookmarked);
-  };
+  const { bookmarks, toggleBookmark } = useUserData();
+  const bookmarked = bookmarks.includes(slug);
 
   return (
     <button
-      onClick={toggle}
+      onClick={() => toggleBookmark(slug)}
       className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-colors ${
         bookmarked
           ? "bg-blue-50 dark:bg-blue-950 border-blue-300 dark:border-blue-700 text-blue-700 dark:text-blue-300"
