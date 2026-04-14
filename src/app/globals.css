@@ -119,6 +119,7 @@ body {
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.28);
   white-space: nowrap;
   cursor: pointer;
+  transition: box-shadow 0.2s ease;
 }
 .pin-flag::after {
   content: "";
@@ -145,6 +146,20 @@ body {
   font-weight: 600;
   color: #1a1a1a;
   line-height: 1;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: max-width 0.3s ease;
+}
+
+/* Expand name on hover or when active (selected) */
+.pin-flag:hover .pin-flag-text,
+.pin-wrapper.active .pin-flag-text {
+  max-width: 300px;
+}
+.pin-flag:hover,
+.pin-wrapper.active .pin-flag {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
 }
 
 /* At high zoom: show flag, hide pin */
@@ -153,4 +168,25 @@ body {
 }
 .show-poi-labels .pin-marker {
   opacity: 0;
+}
+
+/* Dark mode flag chip */
+@media (prefers-color-scheme: dark) {
+  .pin-flag {
+    background: #1e293b;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+  }
+  .pin-flag::after {
+    border-top-color: #1e293b;
+  }
+  .pin-flag-text {
+    color: #e2e8f0;
+  }
+  .pin-flag:hover,
+  .pin-wrapper.active .pin-flag {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+  }
+  .pin-marker {
+    border-color: #334155;
+  }
 }
