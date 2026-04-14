@@ -168,6 +168,7 @@ export default function BottomSheet({ children, header, snapTo, onHeightChange, 
       draggingRef.current = true;
       dragStartY.current = clientY;
       dragStartHeight.current = heightRef.current;
+      dragDistanceRef.current = 0;
       lastTouchY.current = clientY;
       lastTouchTime.current = Date.now();
       velocityRef.current = 0;
@@ -187,6 +188,8 @@ export default function BottomSheet({ children, header, snapTo, onHeightChange, 
       lastTouchY.current = clientY;
       lastTouchTime.current = now;
 
+      dragDistanceRef.current += Math.abs(clientY - dragStartY.current);
+
       const delta = dragStartY.current - clientY;
       const newHeight = Math.max(
         SNAP_PEEK,
@@ -198,9 +201,10 @@ export default function BottomSheet({ children, header, snapTo, onHeightChange, 
     [onHeightChange, applyHeight]
   );
 
-  const handleDragEnd = useCallback(() => {
-    draggingRef.current = false;
-    const target = snapToNearest(heightRef.current, velocityRef.current);
+  const dragDistanceRef = useRef(0);
+
+  const animateToSnap = useCallback((target: number) => {
+    cancelSpring.current?.();
     animatingRef.current = true;
     cancelSpring.current = springAnimate(
       heightRef.current,
@@ -211,17 +215,49 @@ export default function BottomSheet({ children, header, snapTo, onHeightChange, 
       },
       () => { animatingRef.current = false; },
     );
-  }, [snapToNearest, onHeightChange, applyHeight]);
+  }, [applyHeight, onHeightChange]);
+
+  const handleDragEnd = useCallback(() => {
+    draggingRef.current = false;
+    const target = snapToNearest(heightRef.current, velocityRef.current);
+    animateToSnap(target);
+  }, [snapToNearest, animateToSnap]);
+
+  // Tap on handle cycles: bottom → middle → top → bottom
+  const handleHandleTap = useCallback(() => {
+    const snaps = getSnaps();
+    const h = heightRef.current;
+    // Find current snap (closest)
+    let closestIdx = 0;
+    let closestDist = Infinity;
+    for (let i = 0; i < snaps.length; i++) {
+      const d = Math.abs(snaps[i] - h);
+      if (d < closestDist) { closestDist = d; closestIdx = i; }
+    }
+    // Cycle: bottom(0) → middle(1) → top(2) → bottom(0)
+    const nextIdx = (closestIdx + 1) % snaps.length;
+    animateToSnap(snaps[nextIdx]);
+  }, [getSnaps, animateToSnap]);
 
   useEffect(() => {
     const onMouseMove = (e: MouseEvent) => handleDragMove(e.clientY);
-    const onMouseUp = () => { if (draggingRef.current) handleDragEnd(); };
+    const onMouseUp = () => {
+      if (draggingRef.current) {
+        draggingRef.current = false;
+        if (dragDistanceRef.current < 5) { handleHandleTap(); } else { handleDragEnd(); }
+      }
+    };
     const onTouchMove = (e: TouchEvent) => {
       if (!draggingRef.current) return;
       e.preventDefault();
       handleDragMove(e.touches[0].clientY);
     };
-    const onTouchEnd = () => { if (draggingRef.current) handleDragEnd(); };
+    const onTouchEnd = () => {
+      if (draggingRef.current) {
+        draggingRef.current = false;
+        if (dragDistanceRef.current < 5) { handleHandleTap(); } else { handleDragEnd(); }
+      }
+    };
 
     window.addEventListener("mousemove", onMouseMove);
     window.addEventListener("mouseup", onMouseUp);
@@ -234,7 +270,7 @@ export default function BottomSheet({ children, header, snapTo, onHeightChange, 
       window.removeEventListener("touchmove", onTouchMove);
       window.removeEventListener("touchend", onTouchEnd);
     };
-  }, [handleDragMove, handleDragEnd]);
+  }, [handleDragMove, handleDragEnd, handleHandleTap]);
 
   useEffect(() => {
     return () => cancelSpring.current?.();
