@@ -132,6 +132,23 @@ function validateCoreFields(data: Record<string, unknown>): string[] {
     }
   }
 
+  // fit (optional)
+  if (data.fit !== undefined) {
+    if (typeof data.fit !== "object" || data.fit === null) {
+      errors.push("fit: must be an object");
+    } else {
+      const fit = data.fit as Record<string, unknown>;
+      const validFitKeys = ["cost", "duration", "group", "date"];
+      for (const key of Object.keys(fit)) {
+        if (!validFitKeys.includes(key)) {
+          errors.push(`fit.${key}: unknown key, must be one of [${validFitKeys.join(", ")}]`);
+        } else if (typeof fit[key] !== "string" || (fit[key] as string).trim() === "") {
+          errors.push(`fit.${key}: must be a non-empty string`);
+        }
+      }
+    }
+  }
+
   return errors;
 }
 

@@ -257,7 +257,7 @@ export default function HomePage() {
                 </button>
               </div>
               <div className="flex-1 overflow-y-auto">
-                <LocationDetailPanel slug={detailSlug} userLocation={userLocation} />
+                <LocationDetailPanel slug={detailSlug} userLocation={userLocation} activeConstraints={constraints} />
               </div>
             </>
           ) : (
@@ -286,6 +286,7 @@ export default function HomePage() {
                   onHover={setHighlightedSlug}
                   userLocation={userLocation}
                   onCardClick={handleOpenDesktopDetail}
+                  activeConstraints={constraints}
                 />
               </div>
             </>
@@ -339,6 +340,7 @@ export default function HomePage() {
             <LocationDetailPanel
               slug={detailSlug}
               userLocation={userLocation}
+              activeConstraints={constraints}
             />
           ) : null
         ) : isSheetExpanded ? (
@@ -360,6 +362,7 @@ export default function HomePage() {
               onHover={setHighlightedSlug}
               userLocation={userLocation}
               onCardClick={handleOpenDetail}
+              activeConstraints={constraints}
             />
           </>
         ) : null}

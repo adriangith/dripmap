@@ -100,3 +100,8 @@ details:
     - [-37.8050, 144.9800]  # Fitzroy Gardens
     - [-37.8080, 144.9770]  # Treasury Gardens
     - [-37.8111, 144.9731]  # Parliament station
+fit:
+  cost: 'Completely free — no passes or permits needed.'
+  duration: 'A good half-day adventure at a comfortable pace.'
+  group: 'An easy walk suitable for all fitness levels.'
+  date: 'Spring wildflowers make this walk extra special.'

@@ -61,3 +61,8 @@ details:
   distanceKm: 11.5
   difficulty: easy
   terrain: paved
+fit:
+  cost: 'Completely free — no passes or permits needed.'
+  duration: 'A good half-day adventure at a comfortable pace.'
+  group: 'An easy walk suitable for all fitness levels.'
+  date: 'Spring wildflowers make this walk extra special.'

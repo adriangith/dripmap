@@ -1,6 +1,7 @@
 import Link from "next/link";
-import type { PlaceIndexEntry, Coordinates } from "@/lib/types";
+import type { PlaceIndexEntry, Coordinates, Constraints } from "@/lib/types";
 import { haversineDistanceKm, formatDistance } from "@/lib/useCurrentLocation";
+import { buildFitParagraph } from "@/lib/fit";
 import TypeBadge from "./TypeBadge";
 import StatusBadge from "./StatusBadge";
 import CostIndicator from "./CostIndicator";
@@ -12,6 +13,7 @@ interface LocationCardProps {
   isHighlighted?: boolean;
   userLocation?: Coordinates | null;
   onCardClick?: (slug: string) => void;
+  activeConstraints?: Constraints | null;
 }
 
 export default function LocationCard({
@@ -20,6 +22,7 @@ export default function LocationCard({
   isHighlighted,
   userLocation,
   onCardClick,
+  activeConstraints,
 }: LocationCardProps) {
   const driveMinutes = (location as { _driveMinutes?: number | null })._driveMinutes;
   const distance = driveMinutes != null
@@ -29,6 +32,8 @@ export default function LocationCard({
       : null;
 
   const photo = location.photo && !location.photo.includes("placeholder") ? location.photo : undefined;
+
+  const fitBlurb = buildFitParagraph(location.fit, activeConstraints ?? null);
 
   const cardClassName = `block rounded-lg border overflow-hidden transition-all duration-100 active:scale-[0.98] active:shadow-none ${
     isHighlighted
@@ -73,7 +78,11 @@ export default function LocationCard({
           )}
           <CostIndicator cost={location.cost} />
         </div>
-        {location.highlights.length > 0 ? (
+        {fitBlurb ? (
+          <p className="text-sm text-emerald-700 dark:text-emerald-400 mt-1.5 line-clamp-2">
+            {fitBlurb}
+          </p>
+        ) : location.highlights.length > 0 ? (
           <p className="text-sm text-gray-600 dark:text-gray-400 mt-1.5 line-clamp-1">
             {location.highlights[0]}
           </p>

@@ -22,6 +22,7 @@ export function buildIndex(places: Place[]): PlaceIndexEntry[] {
     ...((p.type === "walk" || p.type === "bushwalk") && (p as any).details?.route
       ? { route: (p as any).details.route }
       : {}),
+    ...(p.fit ? { fit: p.fit } : {}),
   }));
 }
 

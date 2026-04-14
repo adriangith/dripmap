@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { PlaceIndexEntry, Coordinates } from "@/lib/types";
+import type { PlaceIndexEntry, Coordinates, Constraints } from "@/lib/types";
 import LocationCard from "./LocationCard";
 
 interface LocationListProps {
@@ -8,6 +8,7 @@ interface LocationListProps {
   onHover: (slug: string | null) => void;
   userLocation?: Coordinates | null;
   onCardClick?: (slug: string) => void;
+  activeConstraints?: Constraints | null;
 }
 
 export default function LocationList({
@@ -16,6 +17,7 @@ export default function LocationList({
   onHover,
   userLocation,
   onCardClick,
+  activeConstraints,
 }: LocationListProps) {
   if (locations.length === 0) {
     return (
@@ -35,6 +37,7 @@ export default function LocationList({
           isHighlighted={loc.slug === highlightedSlug}
           userLocation={userLocation}
           onCardClick={onCardClick}
+          activeConstraints={activeConstraints}
         />
       ))}
       <div className="pt-2 pb-1 text-center">

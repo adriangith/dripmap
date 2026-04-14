@@ -86,3 +86,8 @@ details:
     - [-37.8445, 144.9402]
     - [-37.8419, 144.9353]  # Princes Pier
     - [-37.8402, 144.9243]  # Station Pier, Port Melbourne
+fit:
+  cost: 'Completely free — no passes or permits needed.'
+  duration: 'A good half-day adventure at a comfortable pace.'
+  group: 'Easy terrain that little legs can handle.'
+  date: 'Spring wildflowers make this walk extra special.'

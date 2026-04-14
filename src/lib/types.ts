@@ -117,6 +117,15 @@ export interface EateryDetails {
   kidsMenu: boolean;
 }
 
+// ── Fit blurbs (preference-based descriptions) ───────────────
+
+export interface FitBlurbs {
+  cost?: string;
+  duration?: string;
+  group?: string;
+  date?: string;
+}
+
 // ── Discriminated union ───────────────────────────────────────
 
 interface PlaceBase {
@@ -139,6 +148,7 @@ interface PlaceBase {
   tags: string[];
   duration?: Duration;
   status: PlaceStatus;
+  fit?: FitBlurbs;
 }
 
 export interface SwimPlace extends PlaceBase {
@@ -186,6 +196,7 @@ export interface PlaceIndexEntry {
   duration?: Duration;
   recurrence?: Recurrence; // only present for event type
   route?: [number, number][]; // only present for walk/bushwalk type
+  fit?: FitBlurbs;
 }
 
 // ── Filters (updated for new types) ──────────────────────────

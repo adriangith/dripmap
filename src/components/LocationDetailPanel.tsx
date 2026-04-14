@@ -14,9 +14,10 @@ import {
   Users,
 } from "lucide-react";
 import { Droplets, Waves } from "lucide-react";
-import type { Place, SwimPlace, BeachPlace, EventPlace, Coordinates, Duration } from "@/lib/types";
+import type { Place, SwimPlace, BeachPlace, EventPlace, Coordinates, Duration, Constraints } from "@/lib/types";
 import { fetchDrivingInfo, formatDriveTime, formatDriveDistance } from "@/lib/osrm";
 import type { DrivingInfo } from "@/lib/osrm";
+import { buildFitParagraph } from "@/lib/fit";
 import StatusBadge from "./StatusBadge";
 import TypeBadge from "./TypeBadge";
 import BookmarkButton from "./BookmarkButton";
@@ -34,6 +35,7 @@ import CostIndicator from "./CostIndicator";
 interface LocationDetailPanelProps {
   slug: string;
   userLocation?: Coordinates | null;
+  activeConstraints?: Constraints | null;
 }
 
 function SwimDetailsSection({ details }: { details: SwimPlace["details"] }) {
@@ -168,6 +170,7 @@ function EventDetailsSection({ details }: { details: EventPlace["details"] }) {
 export default function LocationDetailPanel({
   slug,
   userLocation,
+  activeConstraints,
 }: LocationDetailPanelProps) {
   const [location, setLocation] = useState<Place | null>(null);
   const [loading, setLoading] = useState(true);
@@ -306,6 +309,16 @@ export default function LocationDetailPanel({
           <p className="text-sm text-amber-700 ml-1">{location.status.note}</p>
         )}
       </div>
+
+      {/* Fit blurb — personalised paragraph based on active preferences */}
+      {(() => {
+        const fitText = buildFitParagraph(location.fit, activeConstraints ?? null);
+        return fitText ? (
+          <p className="text-sm text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 rounded-lg px-3 py-2 mb-3">
+            {fitText}
+          </p>
+        ) : null;
+      })()}
 
       {/* Description */}
       <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-sm mb-4">
