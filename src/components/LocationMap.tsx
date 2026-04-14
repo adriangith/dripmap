@@ -156,6 +156,7 @@ export default function LocationMap({
   const clusterGroupRef = useRef<L.MarkerClusterGroup | null>(null);
   const userMarkerRef = useRef<L.Marker | null>(null);
   const routeLayerRef = useRef<L.Polyline | null>(null);
+  const hoverRouteLayerRef = useRef<L.Polyline | null>(null);
   // Only fitBounds once (initial load) — after that the user owns the viewport
   const hasFitBoundsRef = useRef(false);
 
@@ -228,11 +229,11 @@ export default function LocationMap({
     map.on("zoomend", updateLabels);
     updateLabels();
 
-    // Clear route polyline when clicking empty map area
+    // Clear hover route polyline when clicking empty map area
     map.on("click", () => {
-      if (routeLayerRef.current) {
-        routeLayerRef.current.remove();
-        routeLayerRef.current = null;
+      if (hoverRouteLayerRef.current) {
+        hoverRouteLayerRef.current.remove();
+        hoverRouteLayerRef.current = null;
       }
     });
 
@@ -348,22 +349,14 @@ export default function LocationMap({
 
       if (clusterGroup) clusterGroup.addLayer(marker);
 
-      // On click: open popup, show route if available, notify parent
+      // On click: open popup, notify parent (route drawn by focus effect)
       marker.on("click", () => {
         marker.openPopup();
-
-        // Show walk/bushwalk route on click (works on mobile + desktop)
-        if (routeLayerRef.current) {
-          routeLayerRef.current.remove();
-          routeLayerRef.current = null;
+        // Clear any hover route
+        if (hoverRouteLayerRef.current) {
+          hoverRouteLayerRef.current.remove();
+          hoverRouteLayerRef.current = null;
         }
-        if ((loc.type === "walk" || loc.type === "bushwalk") && loc.route) {
-          routeLayerRef.current = L.polyline(
-            loc.route.map(([lat, lng]) => [lat, lng] as L.LatLngTuple),
-            { color: PIN_COLORS[loc.type], weight: 4, opacity: 0.7 },
-          ).addTo(map);
-        }
-
         onMarkerClick(loc.slug);
       });
 
@@ -406,26 +399,27 @@ export default function LocationMap({
       marker.openPopup();
     }
 
-    // Draw route polyline for walk/bushwalk types (desktop only)
-    if (map && window.matchMedia("(hover: hover)").matches) {
+    // Draw route polyline for walk/bushwalk types (desktop hover only)
+    // Skip if the focused detail panel already shows this route
+    if (map && window.matchMedia("(hover: hover)").matches && highlightedSlug !== focusedSlug) {
       const loc = locations.find((l) => l.slug === highlightedSlug);
       if (loc && (loc.type === "walk" || loc.type === "bushwalk") && loc.route) {
         const polyline = L.polyline(
           loc.route.map(([lat, lng]) => [lat, lng] as L.LatLngTuple),
           { color: PIN_COLORS[loc.type], weight: 4, opacity: 0.7 },
         ).addTo(map);
-        routeLayerRef.current = polyline;
+        hoverRouteLayerRef.current = polyline;
       }
     }
 
     return () => {
       mapRef.current?.closePopup();
-      if (routeLayerRef.current) {
-        routeLayerRef.current.remove();
-        routeLayerRef.current = null;
+      if (hoverRouteLayerRef.current) {
+        hoverRouteLayerRef.current.remove();
+        hoverRouteLayerRef.current = null;
       }
     };
-  }, [highlightedSlug, locations]);
+  }, [highlightedSlug, focusedSlug, locations]);
 
   // Focus effect — zoom to pin and center in visible area above sheet,
   // and draw route polyline for walk/bushwalk types
