@@ -60,7 +60,7 @@ function loadSessionState<T>(key: string, fallback: T): T {
 
 export default function HomePage() {
   const { onboardingComplete, preferences } = useUserData();
-  const [showOnboarding, setShowOnboarding] = useState(false);
+  const [onboardingDone, setOnboardingDone] = useState(false);
   const [allLocations, setAllLocations] = useState<PlaceIndexEntry[]>([]);
   const [filters, setFilters] = useState<Filters>(() => loadSessionState(FILTERS_KEY, emptyFilters));
   const [constraints, setConstraints] = useState<Constraints>(() => {
@@ -76,10 +76,8 @@ export default function HomePage() {
   const [loadError, setLoadError] = useState(false);
   const [prefsOpen, setPrefsOpen] = useState(false);
 
-  // Show onboarding on first visit
-  useEffect(() => {
-    if (!onboardingComplete) setShowOnboarding(true);
-  }, [onboardingComplete]);
+  // Onboarding gate: show onboarding until completed/skipped
+  const showOnboarding = !onboardingComplete && !onboardingDone;
 
   // Apply saved preferences as session defaults (only for fresh sessions)
   const prefsAppliedRef = useRef(false);
@@ -202,6 +200,10 @@ export default function HomePage() {
   const handleSheetExpandedChange = useCallback((expanded: boolean) => {
     setIsSheetExpanded(expanded);
   }, []);
+
+  if (showOnboarding) {
+    return <OnboardingFlow onComplete={() => setOnboardingDone(true)} />;
+  }
 
   return (
     <div className="fixed inset-0 overflow-hidden">
@@ -375,10 +377,6 @@ export default function HomePage() {
         onRequestLocation={handleRequestLocation}
       />
 
-      {/* Onboarding (first visit) */}
-      {showOnboarding && (
-        <OnboardingFlow onComplete={() => setShowOnboarding(false)} />
-      )}
     </div>
   );
 }

@@ -54,6 +54,21 @@ vi.mock("next/navigation", () => ({
   useRouter: () => ({ push: vi.fn(), back: vi.fn(), forward: vi.fn(), refresh: vi.fn(), replace: vi.fn(), prefetch: vi.fn() }),
 }));
 
+// ── useUserData — mark onboarding complete so tests see the app ──
+vi.mock("../../src/lib/use-user-data", () => ({
+  useUserData: () => ({
+    onboardingComplete: true,
+    preferences: null,
+    bookmarks: [],
+    visited: [],
+    toggleBookmark: vi.fn(),
+    toggleVisited: vi.fn(),
+    savePreferences: vi.fn(),
+    setOnboardingComplete: vi.fn(),
+    loading: false,
+  }),
+}));
+
 // ── Sample data (matches public/generated/locations-index.json) ───────────
 const SAMPLE_LOCATIONS: PlaceIndexEntry[] = [
   {
