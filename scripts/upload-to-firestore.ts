@@ -9,6 +9,31 @@ import type { Place, PlaceIndexEntry } from "../src/lib/types";
 
 // ── Helpers ──────────────────────────────────────────────────
 
+/** Recursively strip null/undefined values and flatten nested arrays for Firestore. */
+function stripNulls(obj: unknown): unknown {
+  if (obj === null || obj === undefined) return undefined;
+  if (Array.isArray(obj)) {
+    return obj
+      .map((item) => {
+        // Convert [lat, lng] coordinate pairs to {lat, lng} objects
+        if (Array.isArray(item) && item.length === 2 && typeof item[0] === "number" && typeof item[1] === "number") {
+          return { lat: item[0], lng: item[1] };
+        }
+        return stripNulls(item);
+      })
+      .filter((v) => v !== undefined);
+  }
+  if (typeof obj === "object" && obj !== null) {
+    const cleaned: Record<string, unknown> = {};
+    for (const [k, v] of Object.entries(obj)) {
+      const val = stripNulls(v);
+      if (val !== undefined) cleaned[k] = val;
+    }
+    return cleaned;
+  }
+  return obj;
+}
+
 function getYamlFiles(dir: string): string[] {
   const results: string[] = [];
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -89,7 +114,16 @@ async function main(): Promise<void> {
     initializeApp({ credential: cert(serviceAccount) });
   } else {
     // Fall back to Application Default Credentials (firebase login, gcloud auth, etc.)
-    initializeApp({ credential: applicationDefault() });
+    // Resolve project ID from env vars or .firebaserc
+    let projectId = process.env.GCLOUD_PROJECT || process.env.GOOGLE_CLOUD_PROJECT;
+    if (!projectId) {
+      const rcPath = path.resolve(process.cwd(), ".firebaserc");
+      if (fs.existsSync(rcPath)) {
+        const rc = JSON.parse(fs.readFileSync(rcPath, "utf-8"));
+        projectId = rc?.projects?.default;
+      }
+    }
+    initializeApp({ credential: applicationDefault(), projectId });
   }
   const db = getFirestore();
 
@@ -172,7 +206,8 @@ async function main(): Promise<void> {
       await flushBatch();
     }
     const docRef = db.collection("locations").doc(detail.slug);
-    batch.set(docRef, JSON.parse(JSON.stringify(detail)));
+    const cleaned = stripNulls(JSON.parse(JSON.stringify(detail))) as FirebaseFirestore.DocumentData;
+    batch.set(docRef, cleaned);
     opsCount++;
     console.log(`  → locations/${detail.slug}`);
   }
@@ -183,7 +218,7 @@ async function main(): Promise<void> {
   }
   const metaRef = db.collection("meta").doc("locations-meta");
   batch.set(metaRef, {
-    entries: JSON.parse(JSON.stringify(index)),
+    entries: stripNulls(JSON.parse(JSON.stringify(index))) as FirebaseFirestore.DocumentData[],
     updatedAt: FieldValue.serverTimestamp(),
   });
   opsCount++;

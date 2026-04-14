@@ -47,3 +47,4 @@ public/workbox-*.js
 certificates/
 .claude/worktrees/
 firebase-debug.log
+service-account.json
