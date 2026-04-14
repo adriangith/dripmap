@@ -121,7 +121,7 @@ export interface EateryDetails {
 
 export interface FitBlurbs {
   cost?: string;
-  duration?: string;
+  duration?: string | { quick?: string; "half-day"?: string; "full-day"?: string };
   group?: string;
   date?: string;
 }

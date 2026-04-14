@@ -60,6 +60,9 @@ details:
   terrain: trail
 fit:
   cost: 'Completely free — no passes or permits needed.'
-  duration: 'A good half-day adventure at a comfortable pace.'
+  duration:
+    quick: 'You could cut it short, but the best sections come later.'
+    half-day: 'A satisfying walk at a comfortable pace.'
+    full-day: 'Finishes by midday — pair with a nearby café or swim spot.'
   group: 'A good walk for friends or couples.'
   date: 'Spring wildflowers make this walk extra special.'

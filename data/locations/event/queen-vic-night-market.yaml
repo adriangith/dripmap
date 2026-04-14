@@ -68,6 +68,9 @@ details:
   organiserUrl: null
 fit:
   cost: 'Free entry, no tickets required.'
-  duration: 'Wraps up quickly — easy to slot into a busy day.'
+  duration:
+    quick: 'A quick visit that won''t take up your whole day.'
+    half-day: 'Won''t take the whole morning — easy to pair with another activity.'
+    full-day: 'Only an hour or so — plan other stops around it.'
   group: 'Interactive exhibits and activities kids will love.'
   date: 'Runs on weds — check ahead to plan your visit.'

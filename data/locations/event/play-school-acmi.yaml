@@ -70,6 +70,9 @@ details:
   organiserUrl: https://www.acmi.net.au
 fit:
   cost: 'Reasonably priced for a quality experience.'
-  duration: 'Wraps up quickly — easy to slot into a busy day.'
+  duration:
+    quick: 'A quick visit that won''t take up your whole day.'
+    half-day: 'Won''t take the whole morning — easy to pair with another activity.'
+    full-day: 'Only an hour or so — plan other stops around it.'
   group: 'Interactive exhibits and activities kids will love.'
   date: 'An annual highlight — keep an eye out for this year''s dates.'

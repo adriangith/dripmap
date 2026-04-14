@@ -60,6 +60,9 @@ status:
 details: {}
 fit:
   cost: 'Moderately priced and worth every dollar.'
-  duration: 'A satisfying half-day outing.'
+  duration:
+    quick: 'A whistle-stop tour is possible but you''ll miss a lot.'
+    half-day: 'A thorough visit takes a good half-day.'
+    full-day: 'A morning visit leaves the afternoon free for something else.'
   group: 'Interactive displays keep younger visitors engaged.'
   date: 'Open regular hours — a great rainy-day option.'

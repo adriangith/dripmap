@@ -72,6 +72,9 @@ details:
   crowdLevel: moderate
 fit:
   cost: 'Free to visit all day, no entry fees.'
-  duration: 'Settle in for a solid half-day at the shore.'
+  duration:
+    quick: 'A brief visit works, though the beach rewards a longer stay.'
+    half-day: 'Settle in for a solid half-day at the shore.'
+    full-day: 'A solid beach session with time to explore the area afterwards.'
   group: 'Gentle waves and soft sand are perfect for little ones.'
   date: 'Peak season in summer, but lovely on mild days too.'

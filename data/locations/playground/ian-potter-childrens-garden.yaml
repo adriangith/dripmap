@@ -56,6 +56,9 @@ status:
 details: {}
 fit:
   cost: 'Free for everyone to enjoy.'
-  duration: 'A satisfying half-day outing.'
+  duration:
+    quick: 'A quick play is fine, but there''s a lot to explore here.'
+    half-day: 'Enough to explore plus time for a picnic.'
+    full-day: 'Morning at the playground, afternoon exploring nearby.'
   group: 'Great for primary-aged kids who love to climb and explore.'
   date: 'Open every day — great for a morning or afternoon outing.'

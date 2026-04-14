@@ -139,9 +139,25 @@ function validateCoreFields(data: Record<string, unknown>): string[] {
     } else {
       const fit = data.fit as Record<string, unknown>;
       const validFitKeys = ["cost", "duration", "group", "date"];
+      const validDurationKeys = ["quick", "half-day", "full-day"];
       for (const key of Object.keys(fit)) {
         if (!validFitKeys.includes(key)) {
           errors.push(`fit.${key}: unknown key, must be one of [${validFitKeys.join(", ")}]`);
+        } else if (key === "duration") {
+          if (typeof fit[key] === "string") {
+            if ((fit[key] as string).trim() === "") errors.push("fit.duration: must be a non-empty string");
+          } else if (typeof fit[key] === "object" && fit[key] !== null) {
+            const durObj = fit[key] as Record<string, unknown>;
+            for (const dk of Object.keys(durObj)) {
+              if (!validDurationKeys.includes(dk)) {
+                errors.push(`fit.duration.${dk}: unknown key, must be one of [${validDurationKeys.join(", ")}]`);
+              } else if (typeof durObj[dk] !== "string" || (durObj[dk] as string).trim() === "") {
+                errors.push(`fit.duration.${dk}: must be a non-empty string`);
+              }
+            }
+          } else {
+            errors.push("fit.duration: must be a string or object with quick/half-day/full-day keys");
+          }
         } else if (typeof fit[key] !== "string" || (fit[key] as string).trim() === "") {
           errors.push(`fit.${key}: must be a non-empty string`);
         }

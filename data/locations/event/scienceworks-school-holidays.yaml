@@ -69,6 +69,9 @@ details:
   organiserUrl: https://museumsvictoria.com.au
 fit:
   cost: 'Reasonably priced for a quality experience.'
-  duration: 'Plan for a half-day — there''s plenty to see and do.'
+  duration:
+    quick: 'A quick visit works, though there''s plenty more to explore.'
+    half-day: 'Plan for a half-day — there''s plenty to see and do.'
+    full-day: 'Done by lunchtime — plenty of day left for another outing.'
   group: 'Interactive exhibits and activities kids will love.'
   date: 'An annual highlight — keep an eye out for this year''s dates.'

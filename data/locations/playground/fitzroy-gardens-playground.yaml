@@ -57,6 +57,9 @@ status:
 details: {}
 fit:
   cost: 'Free for everyone to enjoy.'
-  duration: 'Perfect for burning off energy in under an hour.'
+  duration:
+    quick: 'Just right for burning off energy quickly.'
+    half-day: 'Kids will play for a bit — add a nearby park or café to round out the morning.'
+    full-day: 'Great first stop — you''ll want a few more activities to fill the day.'
   group: 'Great for primary-aged kids who love to climb and explore.'
   date: 'Open every day — great for a morning or afternoon outing.'

@@ -14,7 +14,16 @@ export function buildFitParagraph(
   const parts: string[] = [];
 
   if (constraints.cost !== "any" && fit.cost) parts.push(fit.cost);
-  if (constraints.duration !== "any" && fit.duration) parts.push(fit.duration);
+
+  if (constraints.duration !== "any" && fit.duration) {
+    if (typeof fit.duration === "string") {
+      parts.push(fit.duration);
+    } else {
+      const blurb = fit.duration[constraints.duration];
+      if (blurb) parts.push(blurb);
+    }
+  }
+
   if (constraints.group && fit.group) parts.push(fit.group);
   if ((constraints.date || constraints.timeOfDay) && fit.date) parts.push(fit.date);
 

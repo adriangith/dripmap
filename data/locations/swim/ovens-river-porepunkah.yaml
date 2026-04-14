@@ -59,6 +59,9 @@ details:
   depth: River pools, typically 1-2m
 fit:
   cost: 'No entry fee — just turn up and swim.'
-  duration: 'Great for a quick cool-down when time is short.'
+  duration:
+    quick: 'Perfect for a quick cool-down.'
+    half-day: 'A quick swim — pair it with a nearby walk or café to fill the morning.'
+    full-day: 'A quick dip — best combined with other nearby spots for a full day.'
   group: 'Shallow spots make it safe for little ones to splash around.'
   date: 'A summer essential — best on hot days.'

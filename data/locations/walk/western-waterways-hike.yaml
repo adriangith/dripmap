@@ -60,6 +60,9 @@ details:
   terrain: mixed
 fit:
   cost: 'Completely free — no passes or permits needed.'
-  duration: 'Set aside the full day for this one.'
+  duration:
+    quick: 'Too long for a quick visit — consider a shorter trail instead.'
+    half-day: 'Doable in half a day at pace, but a full day is more enjoyable.'
+    full-day: 'A full-day trek with rewarding scenery throughout.'
   group: 'A good walk for friends or couples.'
   date: 'Spring wildflowers make this walk extra special.'
