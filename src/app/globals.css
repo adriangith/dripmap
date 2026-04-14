@@ -89,7 +89,6 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  pointer-events: none;
 }
 .pin-marker {
   width: 32px;
@@ -105,13 +104,13 @@ body {
   transition: opacity 0.2s ease;
 }
 
-/* Flag chip — replaces the pin at high zoom */
+/* Flag chip — hidden by default, replaces pin at high zoom */
 .pin-flag {
   position: absolute;
   bottom: 6px;
   left: 50%;
   transform: translateX(-50%);
-  display: flex;
+  display: none;
   align-items: center;
   gap: 0;
   background: white;
@@ -119,9 +118,7 @@ body {
   padding: 3px 4px;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.28);
   white-space: nowrap;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s ease;
+  cursor: pointer;
 }
 .pin-flag::after {
   content: "";
@@ -152,7 +149,7 @@ body {
 
 /* At high zoom: show flag, hide pin */
 .show-poi-labels .pin-flag {
-  opacity: 1;
+  display: flex;
 }
 .show-poi-labels .pin-marker {
   opacity: 0;

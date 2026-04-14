@@ -76,7 +76,7 @@ function createPinIcon(type: PlaceType, opacity = 1, name?: string): L.DivIcon {
     ? name.length > 20 ? name.slice(0, 18) + "…" : name
     : "";
   const labelHtml = name
-    ? `<div class="pin-flag" style="opacity:${opacity};"><div class="pin-flag-dot" style="background:${color};"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">${svgPaths}</svg></div><span class="pin-flag-text">${displayName}</span></div>`
+    ? `<div class="pin-flag"><div class="pin-flag-dot" style="background:${color};"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">${svgPaths}</svg></div><span class="pin-flag-text">${displayName}</span></div>`
     : "";
   return L.divIcon({
     className: "",
