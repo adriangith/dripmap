@@ -201,6 +201,52 @@ Each section below is a **self-contained area** that can be worked on independen
 
 **Safe solo work:** Footer content, about page, PWA manifest, service worker caching rules, global CSS.
 
+#### Offline & PWA Deep Dive
+
+The app is designed to work fully offline after the first visit. Here's how each layer contributes:
+
+**Service Worker (`scripts/generate-sw.ts`)**
+
+Generated post-build by Workbox's `generateSW()`. The script runs against the actual `out/` directory so precache hashes are always correct.
+
+- **Precache (available offline immediately):**
+  - All HTML pages (with clean-URL rewriting: `about.html` → `/about`)
+  - Next.js static assets (`_next/static/**/*.{js,css,png}`)
+  - All location JSON (`generated/**/*.json` — index + per-slug files)
+  - PWA icons, manifest, favicon
+- **Runtime caching (cached on first access):**
+
+  | Pattern | Strategy | Cache Name | TTL |
+  |---------|----------|------------|-----|
+  | CartoDB map tiles | CacheFirst | `map-tiles` | 30 days, max 1000 tiles |
+  | Location detail JSON | CacheFirst | `location-details` | 7 days, max 500 |
+  | Location index JSON | StaleWhileRevalidate | `location-index` | No max age |
+  | RSC payloads (`.txt`) | StaleWhileRevalidate | `rsc-payloads` | 7 days, max 500 |
+  | Images (`/images/*`) | CacheFirst | `images` | 30 days, max 200 |
+
+- **Navigation:** Falls back to `/` (the SPA shell) for any uncached route, so client-side routing handles it.
+- **Update behaviour:** `skipWaiting` + `clientsClaim` — new SW activates immediately on next page load, no refresh prompt.
+
+**What works offline:**
+- Full app navigation (home, about, all location detail pages)
+- Map browsing (tiles cached from previous sessions)
+- Location search, filtering, and scoring (all data is precached JSON)
+- Bookmarks and visited markers (localStorage, no network needed)
+- User preferences (localStorage, synced to Firestore when back online)
+
+**What requires connectivity:**
+- First app load (to populate the precache)
+- Sign-in / sign-out (Firebase Auth)
+- Firestore sync (preferences, bookmarks — queued until online)
+- OSRM routing API (drive time/distance calculations)
+- External event feed refresh (`useExternalEvents` — falls back to localStorage cache)
+- External photo URLs (Wikipedia-hosted images, not precached)
+
+**PWA Manifest (`public/manifest.json`)**
+- `display: standalone` — opens like a native app (no browser chrome)
+- 192px + 512px icons with `maskable` purpose
+- Theme colour: `#3b82f6` (blue)
+
 ---
 
 ### 8. Static Detail Pages (SSG)
