@@ -23,6 +23,7 @@ export function buildIndex(places: Place[]): PlaceIndexEntry[] {
       ? { route: (p as any).details.route }
       : {}),
     ...(p.fit ? { fit: p.fit } : {}),
+    ...(p.source ? { source: p.source } : {}),
   }));
 }
 
