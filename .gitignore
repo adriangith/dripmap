@@ -46,3 +46,4 @@ public/workbox-*.js
 .superpowers/
 certificates/
 .claude/worktrees/
+firebase-debug.log
