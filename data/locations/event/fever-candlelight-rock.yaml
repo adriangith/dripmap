@@ -1,0 +1,81 @@
+slug: fever-candlelight-rock
+name: "Candlelight: Best of Rock"
+type: event
+coordinates:
+  lat: -37.8153
+  lng: 144.9665
+region: Victoria, Australia
+country: AU
+description: >
+  AC/DC, Queen, Led Zeppelin, and Pink Floyd performed by a live string
+  quartet surrounded by hundreds of flickering candles. Classic rock anthems
+  stripped back to their melodic bones and given new life in the candlelit
+  grandeur of Melbourne Town Hall. You'll never hear "Bohemian Rhapsody"
+  the same way again.
+photos:
+  - url: https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/MelbourneTownHall.jpg/1280px-MelbourneTownHall.jpg
+    alt: Melbourne Town Hall candlelight concert setting
+    credit: "Adam.J.W.C."
+highlights:
+  - Rock anthems reimagined for string quartet
+  - Candlelit atmosphere in a grand heritage venue
+  - Hear Queen, AC/DC, and Led Zeppelin like never before
+cost: "$$"
+duration: quick
+ageSuitability:
+  minAge: 8
+  ideal:
+    - teens
+    - adults
+accessibility: wheelchair-accessible
+parking: available
+facilities:
+  - restrooms
+bestSeason:
+  - spring
+  - summer
+  - fall
+  - winter
+directions: >
+  Melbourne Town Hall, corner of Swanston and Collins Streets, Melbourne CBD.
+  Flinders Street Station is a 5-minute walk. Multiple tram routes stop on
+  Swanston Street directly outside.
+tips:
+  - Check the Fever app for exact dates — rock sessions run less frequently than classical
+  - Pair it with dinner at one of the many restaurants on Collins Street
+  - Sessions run about 60 minutes
+tags:
+  - music
+  - rock
+  - indoor
+  - date-night
+  - melbourne-cbd
+status:
+  site: open
+  lastVerified: "2026-04-14"
+source:
+  provider: Fever
+  url: https://feverup.com/en/melbourne/candlelight
+details:
+  recurrence:
+    type: weekly
+    days:
+      - thu
+      - sat
+    startTime: "19:00"
+    endTime: "21:00"
+  confirmedDates: null
+  venue: Melbourne Town Hall
+  venueType: indoor
+  bookingRequired: true
+  bookingUrl: https://feverup.com/en/melbourne/candlelight
+  organiser: Fever
+  organiserUrl: https://feverup.com
+fit:
+  cost: 'Mid-range — tickets from around $30.'
+  duration:
+    quick: 'About an hour — perfect for a quick evening out.'
+    half-day: 'Only an hour — easy to pair with dinner nearby.'
+    full-day: 'Just an hour — plenty of evening left afterwards.'
+  group: 'Best for teens and adults — an atmospheric night out.'
+  date: 'Thu & Sat sessions — check Fever for specific dates.'

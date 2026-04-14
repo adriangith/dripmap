@@ -1,0 +1,82 @@
+slug: fever-candlelight-classical
+name: "Candlelight: Best of Classical Music"
+type: event
+coordinates:
+  lat: -37.8153
+  lng: 144.9665
+region: Victoria, Australia
+country: AU
+description: >
+  A stunning classical music concert performed by candlelight inside Melbourne
+  Town Hall. Thousands of flickering candles transform the grand hall into an
+  intimate, atmospheric setting while a string quartet performs masterpieces
+  by Mozart, Beethoven, Chopin, and Vivaldi. The kind of evening that makes
+  you feel like you stumbled into another century.
+photos:
+  - url: https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/MelbourneTownHall.jpg/1280px-MelbourneTownHall.jpg
+    alt: Melbourne Town Hall exterior
+    credit: "Adam.J.W.C."
+highlights:
+  - Hundreds of candles transforming Melbourne Town Hall
+  - Intimate string quartet performances of classical masterpieces
+  - Multiple sessions — early evening and late night
+cost: "$$"
+duration: quick
+ageSuitability:
+  minAge: 8
+  ideal:
+    - teens
+    - adults
+accessibility: wheelchair-accessible
+parking: available
+facilities:
+  - restrooms
+bestSeason:
+  - spring
+  - summer
+  - fall
+  - winter
+directions: >
+  Melbourne Town Hall, corner of Swanston and Collins Streets, Melbourne CBD.
+  Flinders Street Station is a 5-minute walk. Multiple tram routes stop on
+  Swanston Street directly outside.
+tips:
+  - Arrive 30 minutes early for the best seat selection
+  - Sessions typically run 60–65 minutes with no interval
+  - No food or drink inside the venue
+tags:
+  - music
+  - classical
+  - indoor
+  - date-night
+  - melbourne-cbd
+status:
+  site: open
+  lastVerified: "2026-04-14"
+source:
+  provider: Fever
+  url: https://feverup.com/en/melbourne/candlelight
+details:
+  recurrence:
+    type: weekly
+    days:
+      - thu
+      - fri
+      - sat
+    startTime: "18:30"
+    endTime: "21:30"
+  confirmedDates: null
+  venue: Melbourne Town Hall
+  venueType: indoor
+  bookingRequired: true
+  bookingUrl: https://feverup.com/en/melbourne/candlelight
+  organiser: Fever
+  organiserUrl: https://feverup.com
+fit:
+  cost: 'Mid-range — tickets from around $30.'
+  duration:
+    quick: 'About an hour — perfect for a quick evening out.'
+    half-day: 'Only an hour — easy to pair with dinner nearby.'
+    full-day: 'Just an hour — plenty of evening left afterwards.'
+  group: 'Best for older kids, teens, and adults who enjoy live music.'
+  date: 'Multiple sessions Thu–Sat — easy to find a time that works.'

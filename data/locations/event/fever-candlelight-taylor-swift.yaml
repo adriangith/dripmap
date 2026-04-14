@@ -1,0 +1,82 @@
+slug: fever-candlelight-taylor-swift
+name: "Candlelight: A Tribute to Taylor Swift"
+type: event
+coordinates:
+  lat: -37.8265
+  lng: 144.9801
+region: Victoria, Australia
+country: AU
+description: >
+  Taylor Swift's biggest hits reimagined by a live string quartet, surrounded
+  by thousands of flickering candles. From "Love Story" to "Anti-Hero," hear
+  the Eras catalogue like you've never heard it before in an intimate,
+  atmospheric Melbourne venue. A Swiftie pilgrimage without the stadium
+  queues.
+photos:
+  - url: https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Melbourne_Recital_Centre.jpg/1280px-Melbourne_Recital_Centre.jpg
+    alt: Melbourne Recital Centre
+    credit: "Cookaa"
+highlights:
+  - Taylor Swift's greatest hits performed by candlelight
+  - Intimate string quartet arrangement
+  - A unique Swiftie experience without stadium crowds
+cost: "$$"
+duration: quick
+ageSuitability:
+  minAge: 6
+  ideal:
+    - primary
+    - teens
+    - adults
+accessibility: wheelchair-accessible
+parking: available
+facilities:
+  - restrooms
+bestSeason:
+  - spring
+  - summer
+  - fall
+  - winter
+directions: >
+  Melbourne Recital Centre, corner of Sturt Street and Southbank Boulevard,
+  Southbank. A 10-minute walk from Flinders Street Station across the river.
+  Tram route 1 stops nearby.
+tips:
+  - Book well ahead — Taylor Swift sessions sell out fast
+  - Great for a birthday or special occasion
+  - Check the Fever app for exact venue — it varies by date
+tags:
+  - music
+  - pop
+  - indoor
+  - date-night
+  - southbank
+status:
+  site: open
+  lastVerified: "2026-04-14"
+source:
+  provider: Fever
+  url: https://feverup.com/en/melbourne/candlelight
+details:
+  recurrence:
+    type: weekly
+    days:
+      - fri
+      - sat
+    startTime: "18:30"
+    endTime: "21:00"
+  confirmedDates: null
+  venue: Melbourne Recital Centre
+  venueType: indoor
+  bookingRequired: true
+  bookingUrl: https://feverup.com/en/melbourne/candlelight
+  organiser: Fever
+  organiserUrl: https://feverup.com
+fit:
+  cost: 'Mid-range — tickets from around $30.'
+  duration:
+    quick: 'About an hour — perfect start to a night out.'
+    half-day: 'Only an hour — easy to pair with dinner in Southbank.'
+    full-day: 'Just an hour — plenty of evening left afterwards.'
+  group: 'Fun for Swifties of all ages — kids 6+ welcome.'
+  date: 'Fri & Sat sessions — book early, these sell out.'

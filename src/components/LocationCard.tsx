@@ -5,6 +5,7 @@ import { buildFitParagraph } from "@/lib/fit";
 import TypeBadge from "./TypeBadge";
 import StatusBadge from "./StatusBadge";
 import CostIndicator from "./CostIndicator";
+import SourceAttribution from "./SourceAttribution";
 import Image from "next/image";
 
 interface LocationCardProps {
@@ -83,6 +84,7 @@ export default function LocationCard({
             <span className="text-xs text-gray-500 dark:text-gray-400 font-medium">{distance}</span>
           )}
           <CostIndicator cost={location.cost} />
+          {location.source && <SourceAttribution source={location.source} />}
         </div>
         {fitBlurb ? (
           <p className="text-sm text-emerald-700 dark:text-emerald-400 mt-1.5 line-clamp-2">

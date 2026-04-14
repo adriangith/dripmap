@@ -1,0 +1,83 @@
+slug: fever-candlelight-kids
+name: "Candlelight Junior: Music from Disney"
+type: event
+coordinates:
+  lat: -37.8153
+  lng: 144.9665
+region: Victoria, Australia
+country: AU
+description: >
+  A family-friendly candlelight concert featuring beloved Disney songs
+  performed by a live string quartet. From "Let It Go" to "Under the Sea,"
+  the magic of Disney comes alive surrounded by hundreds of flickering
+  candles. Shorter format and earlier start time designed specifically
+  for younger audiences — no shushing required.
+photos:
+  - url: https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/MelbourneTownHall.jpg/1280px-MelbourneTownHall.jpg
+    alt: Melbourne Town Hall
+    credit: "Adam.J.W.C."
+highlights:
+  - Disney classics performed live by candlelight
+  - Family-friendly format with earlier start times
+  - A magical first concert experience for kids
+cost: "$$"
+duration: quick
+ageSuitability:
+  minAge: 3
+  ideal:
+    - toddlers
+    - primary
+    - teens
+    - adults
+accessibility: wheelchair-accessible
+parking: available
+facilities:
+  - restrooms
+bestSeason:
+  - spring
+  - summer
+  - fall
+  - winter
+directions: >
+  Melbourne Town Hall, corner of Swanston and Collins Streets, Melbourne CBD.
+  Flinders Street Station is a 5-minute walk. Multiple tram routes stop on
+  Swanston Street directly outside.
+tips:
+  - Earlier start times (usually 10am or 2pm) make this perfect for young kids
+  - Sessions are shorter than adult Candlelight — about 45 minutes
+  - Kids can sit on parents' laps for free under a certain age — check booking details
+tags:
+  - music
+  - family-friendly
+  - indoor
+  - disney
+  - melbourne-cbd
+status:
+  site: open
+  lastVerified: "2026-04-14"
+source:
+  provider: Fever
+  url: https://feverup.com/en/melbourne/candlelight
+details:
+  recurrence:
+    type: weekly
+    days:
+      - sat
+      - sun
+    startTime: "10:00"
+    endTime: "14:00"
+  confirmedDates: null
+  venue: Melbourne Town Hall
+  venueType: indoor
+  bookingRequired: true
+  bookingUrl: https://feverup.com/en/melbourne/candlelight
+  organiser: Fever
+  organiserUrl: https://feverup.com
+fit:
+  cost: 'Mid-range — tickets from around $25 for kids.'
+  duration:
+    quick: 'About 45 minutes — perfect quick outing for little ones.'
+    half-day: 'Under an hour — easy to pair with lunch in the CBD.'
+    full-day: 'Just 45 minutes — a nice addition to a bigger day out.'
+  group: 'Designed for families — toddlers through teens will love it.'
+  date: 'Weekend mornings — check Fever for specific dates.'

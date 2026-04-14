@@ -31,6 +31,7 @@ const DURATION_DISPLAY: Record<Duration, string> = {
 };
 
 import CostIndicator from "./CostIndicator";
+import SourceAttribution from "./SourceAttribution";
 
 interface LocationDetailPanelProps {
   slug: string;
@@ -461,6 +462,9 @@ export default function LocationDetailPanel({
         </div>
       )}
       <div className="flex gap-3 mb-4">
+        {location.source && (
+          <SourceAttribution source={location.source} variant="detail" />
+        )}
         <a
           href={`https://www.google.com/maps/dir/?api=1&destination=${location.coordinates.lat},${location.coordinates.lng}`}
           target="_blank"

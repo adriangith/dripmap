@@ -237,6 +237,17 @@ Each section below is a **self-contained area** that can be worked on independen
 
 **Safe solo work:** Adding new providers (one file each), changing cache duration, refresh endpoint URL, attribution display, build-time provider configuration.
 
+#### Active Providers
+
+| Provider | Type | Data Source | Notes |
+|----------|------|-------------|-------|
+| `stub` | Development | Hardcoded | Example events for testing the adapter pattern |
+| `Fever` | Production | Curated YAML | Candlelight concerts and experiences from [feverup.com](https://feverup.com). Events authored as regular `type: event` YAML files in `data/locations/event/fever-*.yaml` with `source: { provider: Fever, url: ... }`. Booking URLs link to Fever ticketing. |
+
+#### Affiliate URL Convention
+
+External providers with booking/ticket links can carry affiliate tracking parameters in their `bookingUrl` field. Convention: append `?ref=drift` (or the provider's specific affiliate parameter) to booking URLs. This is set directly in the YAML — no runtime transformation needed.
+
 ---
 
 ### 10. Promoted POI & Affiliate Links *(planned — not yet implemented)*
