@@ -87,7 +87,8 @@ body {
 .pin-wrapper {
   position: relative;
   display: flex;
-  align-items: flex-end;
+  flex-direction: column;
+  align-items: center;
   pointer-events: none;
 }
 .pin-marker {
@@ -103,22 +104,50 @@ body {
   flex-shrink: 0;
 }
 
-/* Pill label attached to pin — hidden by default, shown at high zoom */
-.pin-label {
+/* Flag label — sits above pin as a unified chip with icon + text */
+.pin-flag {
   position: absolute;
-  left: 30px;
-  bottom: 10px;
-  padding: 2px 8px;
-  border-radius: 10px;
-  font-size: 11px;
-  font-weight: 600;
-  color: white;
+  bottom: 34px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: white;
+  border-radius: 12px;
+  padding: 2px 3px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.22);
   white-space: nowrap;
   opacity: 0;
   transition: opacity 0.3s ease;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
   pointer-events: none;
 }
-.show-poi-labels .pin-label {
-  opacity: 0.92;
+.pin-flag::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid white;
+}
+.pin-flag-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.pin-flag-text {
+  padding: 0 6px 0 4px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #1a1a1a;
+  line-height: 1;
+}
+.show-poi-labels .pin-flag {
+  opacity: 1;
 }
