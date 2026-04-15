@@ -58,6 +58,16 @@ tags:
 status:
   site: open
   lastVerified: "2026-04-13"
+openingHours:
+  - days: [mon, tue, wed, thu]
+    open: "10:00"
+    close: "16:00"
+  - days: [fri]
+    open: "10:00"
+    close: "14:00"
+  - days: [sun]
+    open: "10:00"
+    close: "16:00"
 details: {}
 fit:
   cost: 'Moderately priced and worth every dollar.'
