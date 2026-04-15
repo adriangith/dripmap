@@ -113,7 +113,7 @@ export interface WalkDetails {
   distanceKm: number;
   difficulty: "easy" | "moderate" | "hard";
   terrain: "paved" | "gravel" | "trail" | "mixed";
-  route?: [number, number][];
+  route?: ([number, number] | { lat: number; lng: number })[];
 }
 
 export interface EateryDetails {

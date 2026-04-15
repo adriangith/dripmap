@@ -24,15 +24,15 @@ function createFirestore() {
     return getFirestore(app);
   }
 
-  if (getApps().length === 1) {
+  try {
     return initializeFirestore(app, {
       localCache: persistentLocalCache({
         tabManager: persistentMultipleTabManager(),
       }),
     });
+  } catch {
+    return getFirestore(app);
   }
-
-  return getFirestore(app);
 }
 
 export const auth = getAuth(app);
