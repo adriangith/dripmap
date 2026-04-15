@@ -45,50 +45,57 @@ export default function FilterBar({
 
   const chipsRef = useRef<HTMLDivElement>(null);
   const [collapsed, setCollapsed] = useState(true);
-  const [collapsedHeight, setCollapsedHeight] = useState<number | null>(null);
-  const [fullHeight, setFullHeight] = useState<number | null>(null);
+  const [rowHeight, setRowHeight] = useState<number>(36);
+  const [fullHeight, setFullHeight] = useState<number>(36);
+  const [isDesktop, setIsDesktop] = useState(false);
 
-  // When collapsed, promote the active type chip to the front so it's visible
+  // Always promote active chip to front so it's visible when collapsed
   const orderedTypeChips = useMemo(() => {
-    if (!collapsed || !filters.type) return TYPE_CHIPS;
+    if (!filters.type) return TYPE_CHIPS;
     const active = TYPE_CHIPS.find((c) => c.value === filters.type);
     if (!active) return TYPE_CHIPS;
     return [active, ...TYPE_CHIPS.filter((c) => c.value !== filters.type)];
-  }, [collapsed, filters.type]);
+  }, [filters.type]);
 
   const orderedStatusChips = useMemo(() => {
-    if (!collapsed || !filters.siteStatus) return STATUS_CHIPS;
+    if (!filters.siteStatus) return STATUS_CHIPS;
     const active = STATUS_CHIPS.find((c) => c.value === filters.siteStatus);
     if (!active) return STATUS_CHIPS;
     return [active, ...STATUS_CHIPS.filter((c) => c.value !== filters.siteStatus)];
-  }, [collapsed, filters.siteStatus]);
+  }, [filters.siteStatus]);
 
-  const measure = useCallback(() => {
-    const el = chipsRef.current;
-    if (!el || window.innerWidth < 768) return;
-    el.style.maxHeight = "none";
-    el.style.overflow = "visible";
-    const full = el.scrollHeight;
-    const firstChip = el.querySelector("button") as HTMLElement | null;
-    const single = firstChip
-      ? firstChip.offsetHeight + parseInt(getComputedStyle(el).paddingTop) * 2
-      : 36;
-    setFullHeight(full);
-    setCollapsedHeight(single);
-    if (collapsed) {
-      el.style.maxHeight = `${single}px`;
-      el.style.overflow = "hidden";
-    } else {
-      el.style.maxHeight = `${full}px`;
-      el.style.overflow = "visible";
-    }
-  }, [collapsed]);
-
+  // Measure heights without touching inline styles — let React handle rendering
   useEffect(() => {
-    measure();
-    window.addEventListener("resize", measure);
-    return () => window.removeEventListener("resize", measure);
-  }, [measure, filters, hasActiveFilters]);
+    const el = chipsRef.current;
+    if (!el) return;
+
+    const remeasure = () => {
+      const desktop = window.innerWidth >= 768;
+      setIsDesktop(desktop);
+      if (!desktop) return;
+
+      // Temporarily remove constraints to measure natural full height
+      const prev = el.style.cssText;
+      el.style.maxHeight = "none";
+      el.style.overflow = "visible";
+      const full = el.scrollHeight;
+
+      // Measure single-row height from first chip
+      const firstChip = el.querySelector("button") as HTMLElement | null;
+      const py = parseFloat(getComputedStyle(el).paddingTop) || 0;
+      const single = firstChip ? firstChip.offsetHeight + py * 2 : 36;
+
+      // Restore previous styles before React re-renders
+      el.style.cssText = prev;
+
+      setRowHeight(single);
+      setFullHeight(full);
+    };
+
+    remeasure();
+    window.addEventListener("resize", remeasure);
+    return () => window.removeEventListener("resize", remeasure);
+  }, [filters, hasActiveFilters]);
 
   const handleMouseEnter = useCallback(() => {
     if (window.innerWidth < 768) return;
@@ -100,14 +107,14 @@ export default function FilterBar({
     setCollapsed(true);
   }, []);
 
-  const chipsStyle: React.CSSProperties =
-    collapsedHeight !== null && fullHeight !== null
-      ? {
-          maxHeight: collapsed ? `${collapsedHeight}px` : `${fullHeight}px`,
-          overflow: collapsed ? "hidden" : "visible",
-          transition: "max-height 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
-        }
-      : {};
+  // Only apply collapse styles on desktop
+  const chipsStyle: React.CSSProperties = isDesktop
+    ? {
+        maxHeight: collapsed ? `${rowHeight}px` : `${fullHeight}px`,
+        overflow: "hidden",
+        transition: "max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+      }
+    : {};
 
   return (
     <div
