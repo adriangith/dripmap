@@ -352,6 +352,16 @@ export default function LocationMap({
       markersRef.current.set(loc.slug, marker);
     }
 
+    // Re-apply active state if a marker is currently focused
+    if (prevFocusedSlugRef.current) {
+      const focusedMarker = markersRef.current.get(prevFocusedSlugRef.current);
+      if (focusedMarker) {
+        focusedMarker.setZIndexOffset(10000);
+        const el = focusedMarker.getElement();
+        el?.querySelector(".pin-wrapper")?.classList.add("active");
+      }
+    }
+
     // Fit bounds only on initial load — subsequent filter/preference changes
     // should not override the user's current viewport
     if (locations.length > 0 && !hasFitBoundsRef.current) {

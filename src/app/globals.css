@@ -168,6 +168,7 @@ body {
 }
 .show-poi-labels .pin-marker {
   opacity: 0;
+  pointer-events: none;
 }
 
 /* Dark mode flag chip */
