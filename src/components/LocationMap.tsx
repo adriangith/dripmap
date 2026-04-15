@@ -8,8 +8,9 @@ import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import { Crosshair } from "lucide-react";
 
-import type { PlaceIndexEntry, PlaceType, Coordinates } from "@/lib/types";
+import type { PlaceIndexEntry, PlaceType, Coordinates, OpeningHoursEntry } from "@/lib/types";
 import type { ScoredPlace } from "@/lib/constraints";
+import { DAYS, DAY_LETTERS, isOpenOnDay } from "@/lib/openingHours";
 
 /**
  * Sets the map view so that `latLng` appears centered in the visible area
@@ -69,11 +70,36 @@ const PIN_ICONS: Record<PlaceType, string> = {
   museum: `<path d="M10 18v-7"/><path d="M11.12 2.198a2 2 0 0 1 1.76.006l7.866 3.847c.476.233.31.949-.22.949H3.474c-.53 0-.695-.716-.22-.949z"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="M3 22h18"/><path d="M6 18v-7"/>`,
 };
 
-function createPinIcon(type: PlaceType, opacity = 1, name?: string, slug?: string): L.DivIcon {
+function buildHoursStripHtml(
+  entries: OpeningHoursEntry[] | undefined,
+  color: string,
+  todayIdx: number,
+): string {
+  if (!entries || entries.length === 0) return "";
+  const cells = DAYS.map((d, i) => {
+    const open = isOpenOnDay(entries, d);
+    const classes = ["pin-flag-day"];
+    if (open) classes.push("open");
+    if (i === todayIdx) classes.push("today");
+    const style = open ? `style="background:${color};"` : "";
+    return `<span class="${classes.join(" ")}" ${style}>${DAY_LETTERS[d]}</span>`;
+  }).join("");
+  return `<div class="pin-flag-hours">${cells}</div>`;
+}
+
+function createPinIcon(
+  type: PlaceType,
+  opacity = 1,
+  name?: string,
+  slug?: string,
+  openingHours?: OpeningHoursEntry[],
+): L.DivIcon {
   const color = PIN_COLORS[type];
   const svgPaths = PIN_ICONS[type];
+  const todayIdx = (new Date().getDay() + 6) % 7;
+  const hoursHtml = buildHoursStripHtml(openingHours, color, todayIdx);
   const labelHtml = name
-    ? `<div class="pin-flag"><div class="pin-flag-dot" style="background:${color};"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">${svgPaths}</svg></div><span class="pin-flag-text">${name}</span></div>`
+    ? `<div class="pin-flag"><div class="pin-flag-row"><div class="pin-flag-dot" style="background:${color};"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">${svgPaths}</svg></div><span class="pin-flag-text">${name}</span></div>${hoursHtml}</div>`
     : "";
   return L.divIcon({
     className: "",
@@ -320,7 +346,7 @@ export default function LocationMap({
       }
 
       const marker = L.marker([loc.coordinates.lat, loc.coordinates.lng], {
-        icon: createPinIcon(loc.type, pinOpacity, loc.name, loc.slug),
+        icon: createPinIcon(loc.type, pinOpacity, loc.name, loc.slug, loc.openingHours),
       });
 
       if (clusterGroup) clusterGroup.addLayer(marker);

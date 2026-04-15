@@ -32,6 +32,53 @@ const DURATION_DISPLAY: Record<Duration, string> = {
 
 import CostIndicator from "./CostIndicator";
 import SourceAttribution from "./SourceAttribution";
+import { DAYS, DAY_LABELS, entriesForDay, formatHoursStatus } from "@/lib/openingHours";
+import type { OpeningHoursEntry } from "@/lib/types";
+
+function OpeningHoursSection({ entries }: { entries: OpeningHoursEntry[] }) {
+  const todayIdx = (new Date().getDay() + 6) % 7;
+  const status = formatHoursStatus(entries);
+  return (
+    <section className="mb-4">
+      <div className="flex items-center gap-2 mb-2">
+        <Clock className="w-4 h-4 text-gray-400 dark:text-gray-500 shrink-0" />
+        <h3 className="text-base font-semibold text-gray-900 dark:text-gray-100">Hours</h3>
+        {status && (
+          <span
+            className={`text-xs font-medium px-2 py-0.5 rounded-full ${
+              status.open
+                ? "bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300"
+                : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400"
+            }`}
+          >
+            {status.label}
+          </span>
+        )}
+      </div>
+      <ul className="text-sm">
+        {DAYS.map((d, i) => {
+          const ranges = entriesForDay(entries, d);
+          const isToday = i === todayIdx;
+          return (
+            <li
+              key={d}
+              className={`flex justify-between py-0.5 ${
+                isToday ? "font-semibold text-gray-900 dark:text-gray-100" : "text-gray-700 dark:text-gray-300"
+              }`}
+            >
+              <span className="w-12">{DAY_LABELS[d]}</span>
+              <span>
+                {ranges.length === 0
+                  ? <span className="text-gray-400 dark:text-gray-500">Closed</span>
+                  : ranges.map((r) => `${r.open}–${r.close}`).join(", ")}
+              </span>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
+  );
+}
 
 interface LocationDetailPanelProps {
   slug: string;
@@ -333,6 +380,10 @@ export default function LocationDetailPanel({
         {location.type === "beach" && <BeachDetailsSection details={location.details} />}
         {location.type === "event" && <EventDetailsSection details={location.details} />}
       </section>
+
+      {location.openingHours && location.openingHours.length > 0 && (
+        <OpeningHoursSection entries={location.openingHours} />
+      )}
 
       {/* Common info */}
       <section className="mb-4">

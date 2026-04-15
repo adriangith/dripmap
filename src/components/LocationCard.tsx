@@ -7,6 +7,7 @@ import StatusBadge from "./StatusBadge";
 import CostIndicator from "./CostIndicator";
 import SourceAttribution from "./SourceAttribution";
 import Image from "next/image";
+import { formatHoursStatus } from "@/lib/openingHours";
 
 interface LocationCardProps {
   location: PlaceIndexEntry & { _driveMinutes?: number | null };
@@ -41,6 +42,7 @@ export default function LocationCard({
   const photo = location.photo && !location.photo.includes("placeholder") ? location.photo : undefined;
 
   const fitBlurb = buildFitParagraph(location.fit, activeConstraints ?? null);
+  const hoursStatus = formatHoursStatus(location.openingHours);
 
   const cardClassName = `block rounded-lg border overflow-hidden transition-all duration-100 active:scale-[0.98] active:shadow-none ${
     isHighlighted
@@ -84,6 +86,17 @@ export default function LocationCard({
             <span className="text-xs text-gray-500 dark:text-gray-400 font-medium">{distance}</span>
           )}
           <CostIndicator cost={location.cost} />
+          {hoursStatus && (
+            <span
+              className={`text-xs font-medium px-1.5 py-0.5 rounded ${
+                hoursStatus.open
+                  ? "bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300"
+                  : "bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400"
+              }`}
+            >
+              {hoursStatus.label}
+            </span>
+          )}
           {location.source && <SourceAttribution source={location.source} />}
         </div>
         {fitBlurb ? (
