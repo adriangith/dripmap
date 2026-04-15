@@ -296,15 +296,15 @@ export default function LocationDetailPanel({
   if (loading) {
     return (
       <div className="p-4 space-y-4 animate-pulse">
-        <div className="h-4 w-24 bg-gray-200 dark:bg-gray-700 rounded" />
-        <div className="h-6 w-48 bg-gray-200 dark:bg-gray-700 rounded" />
-        <div className="h-4 w-32 bg-gray-200 dark:bg-gray-700 rounded" />
-        <div className="h-20 bg-gray-100 dark:bg-gray-800 rounded" />
+        <div className="h-4 w-24 bg-gray-200 dark:bg-gray-700 rounded-md" />
+        <div className="h-6 w-48 bg-gray-200 dark:bg-gray-700 rounded-md" />
+        <div className="h-4 w-32 bg-gray-200 dark:bg-gray-700 rounded-md" />
+        <div className="h-20 bg-gray-100 dark:bg-gray-800 rounded-xl" />
         <div className="grid grid-cols-2 gap-3">
-          <div className="h-12 bg-gray-100 dark:bg-gray-800 rounded" />
-          <div className="h-12 bg-gray-100 dark:bg-gray-800 rounded" />
-          <div className="h-12 bg-gray-100 dark:bg-gray-800 rounded" />
-          <div className="h-12 bg-gray-100 dark:bg-gray-800 rounded" />
+          <div className="h-12 bg-gray-100 dark:bg-gray-800 rounded-xl" />
+          <div className="h-12 bg-gray-100 dark:bg-gray-800 rounded-xl" />
+          <div className="h-12 bg-gray-100 dark:bg-gray-800 rounded-xl" />
+          <div className="h-12 bg-gray-100 dark:bg-gray-800 rounded-xl" />
         </div>
       </div>
     );
@@ -313,7 +313,7 @@ export default function LocationDetailPanel({
   if (error || !location) {
     return (
       <div className="p-4">
-        <div className="p-4 bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 rounded-lg text-sm text-red-700 dark:text-red-300">
+        <div className="p-4 bg-red-50 dark:bg-red-950/40 border border-red-200/80 dark:border-red-800/60 rounded-xl text-[13px] text-red-700 dark:text-red-300">
           {error || "Location not found"}
         </div>
       </div>
@@ -362,7 +362,7 @@ export default function LocationDetailPanel({
       {(() => {
         const fitText = buildFitParagraph(location.fit, activeConstraints ?? null);
         return fitText ? (
-          <p className="text-sm text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 rounded-lg px-3 py-2 mb-3">
+          <p className="text-sm text-emerald-700 dark:text-emerald-400 bg-emerald-50/80 dark:bg-emerald-950/30 rounded-xl px-3 py-2 mb-3 ring-1 ring-emerald-100 dark:ring-emerald-900/30">
             {fitText}
           </p>
         ) : null;
@@ -447,7 +447,7 @@ export default function LocationDetailPanel({
             <p className="text-xs text-gray-500 mb-1">Facilities</p>
             <div className="flex flex-wrap gap-1">
               {location.facilities.map((f) => (
-                <span key={f} className="px-2 py-0.5 text-xs bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded capitalize">
+                <span key={f} className="px-2 py-0.5 text-xs bg-gray-100/80 dark:bg-gray-700/60 text-gray-700 dark:text-gray-300 rounded-md capitalize">
                   {f.replaceAll("-", " ")}
                 </span>
               ))}
@@ -490,7 +490,7 @@ export default function LocationDetailPanel({
           {location.tags.map((tag) => (
             <span
               key={tag}
-              className="px-2 py-1 text-xs bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 rounded-full"
+              className="px-2 py-1 text-xs bg-blue-50/80 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 rounded-full ring-1 ring-blue-100 dark:ring-blue-900/30"
             >
               {tag}
             </span>
@@ -520,7 +520,7 @@ export default function LocationDetailPanel({
           href={`https://www.google.com/maps/dir/?api=1&destination=${location.coordinates.lat},${location.coordinates.lng}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 rounded-lg bg-blue-600 dark:bg-blue-500 px-4 py-3 text-sm font-medium text-white shadow-sm hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors min-h-[44px]"
+          className="inline-flex items-center gap-2 rounded-xl bg-blue-600 dark:bg-blue-500 px-4 py-3 text-[13px] font-medium text-white shadow-[var(--shadow-sm)] hover:bg-blue-700 dark:hover:bg-blue-600 hover:shadow-[var(--shadow-md)] transition-all duration-150 min-h-[44px]"
         >
           <Navigation className="w-4 h-4" />
           Google Maps
@@ -530,7 +530,7 @@ export default function LocationDetailPanel({
           href={`https://maps.apple.com/?daddr=${location.coordinates.lat},${location.coordinates.lng}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 rounded-lg bg-gray-900 dark:bg-gray-200 px-4 py-3 text-sm font-medium text-white dark:text-gray-900 shadow-sm hover:bg-gray-800 dark:hover:bg-gray-300 transition-colors min-h-[44px]"
+          className="inline-flex items-center gap-2 rounded-xl bg-gray-900 dark:bg-gray-200 px-4 py-3 text-[13px] font-medium text-white dark:text-gray-900 shadow-[var(--shadow-sm)] hover:bg-gray-800 dark:hover:bg-gray-300 hover:shadow-[var(--shadow-md)] transition-all duration-150 min-h-[44px]"
         >
           <Navigation className="w-4 h-4" />
           Apple Maps

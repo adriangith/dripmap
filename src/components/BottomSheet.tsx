@@ -279,7 +279,7 @@ export default function BottomSheet({ children, header, snapTo, onHeightChange, 
   return (
     <div
       ref={sheetRef}
-      className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 rounded-t-2xl shadow-[0_-2px_16px_rgba(0,0,0,0.12)] dark:shadow-[0_-2px_16px_rgba(0,0,0,0.4)] z-40 flex flex-col lg:hidden"
+      className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 rounded-t-2xl shadow-[0_-4px_24px_rgba(0,0,0,0.1)] dark:shadow-[0_-4px_24px_rgba(0,0,0,0.4)] z-40 flex flex-col lg:hidden border-t border-gray-200/50 dark:border-gray-700/50"
       style={{ height: SNAP_PEEK }}
     >
       {/* Drag handle — enlarged 48px hit target */}
@@ -292,7 +292,7 @@ export default function BottomSheet({ children, header, snapTo, onHeightChange, 
           handleDragStart(e.touches[0].clientY);
         }}
       >
-        <div className="w-10 h-1 rounded-full bg-gray-300 dark:bg-gray-600" />
+        <div className="w-9 h-1 rounded-full bg-gray-300/80 dark:bg-gray-600/80" />
       </div>
 
       {/* Header — outside scroll, popovers can overflow visibly */}

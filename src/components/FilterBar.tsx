@@ -43,9 +43,9 @@ export default function FilterBar({
     filters.type || filters.siteStatus || filters.search;
 
   return (
-    <div className="border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+    <div className="border-b border-gray-100 dark:border-gray-800/80 bg-white dark:bg-gray-900">
       {!hideSearch && (
-        <div className="flex items-center gap-2 px-3 py-2 border-b border-gray-100 dark:border-gray-800">
+        <div className="flex items-center gap-2 px-3 py-2.5 border-b border-gray-100 dark:border-gray-800/80">
           <Search className="w-4 h-4 text-gray-400 dark:text-gray-500 shrink-0" />
           <input
             type="text"
@@ -53,11 +53,11 @@ export default function FilterBar({
             value={filters.search}
             onChange={(e) => onChange({ ...filters, search: e.target.value })}
             aria-label="Search places"
-            className="flex-1 text-base outline-none bg-transparent dark:text-gray-100 dark:placeholder:text-gray-500"
+            className="flex-1 text-sm outline-none bg-transparent dark:text-gray-100 dark:placeholder:text-gray-500"
           />
         </div>
       )}
-      <div className="flex items-center gap-2 px-3 py-2 overflow-x-auto scrollbar-hide md:flex-wrap md:overflow-x-visible">
+      <div className="flex items-center gap-1.5 px-3 py-2 overflow-x-auto scrollbar-hide md:flex-wrap md:overflow-x-visible">
         {TYPE_CHIPS.map((chip) => {
           const isActive = filters.type === chip.value;
           return (
@@ -69,10 +69,10 @@ export default function FilterBar({
                   type: isActive ? null : chip.value,
                 })
               }
-              className={`shrink-0 px-3 py-1 text-sm rounded-full border transition-colors ${
+              className={`shrink-0 px-2.5 py-1 text-[13px] rounded-full border transition-all duration-150 ${
                 isActive
-                  ? "bg-blue-600 text-white border-blue-600"
-                  : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500"
+                  ? "bg-blue-600 text-white border-blue-600 shadow-[var(--shadow-xs)]"
+                  : "bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-750"
               }`}
               data-filter-chip={chip.value}
             >
@@ -81,7 +81,7 @@ export default function FilterBar({
           );
         })}
 
-        <div className="w-px h-5 bg-gray-200 dark:bg-gray-700 shrink-0" />
+        <div className="w-px h-4 bg-gray-200 dark:bg-gray-700 shrink-0" />
 
         {STATUS_CHIPS.map((chip) => {
           const isActive = filters.siteStatus === chip.value;
@@ -94,10 +94,10 @@ export default function FilterBar({
                   siteStatus: isActive ? null : chip.value,
                 })
               }
-              className={`shrink-0 px-3 py-1 text-sm rounded-full border transition-colors ${
+              className={`shrink-0 px-2.5 py-1 text-[13px] rounded-full border transition-all duration-150 ${
                 isActive
-                  ? "bg-blue-600 text-white border-blue-600"
-                  : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500"
+                  ? "bg-blue-600 text-white border-blue-600 shadow-[var(--shadow-xs)]"
+                  : "bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-750"
               }`}
               data-filter-chip={chip.value}
             >
@@ -115,7 +115,7 @@ export default function FilterBar({
                 search: "",
               })
             }
-            className="shrink-0 px-3 py-1 text-sm rounded-full border border-gray-300 dark:border-gray-600 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors"
+            className="shrink-0 px-2.5 py-1 text-[13px] rounded-full border border-gray-200 dark:border-gray-700 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/50 transition-colors"
             data-filter-chip="clear"
           >
             Clear all

@@ -117,9 +117,9 @@ export default function OnboardingFlow({ onComplete }: { onComplete: () => void 
   return (
     <div className="fixed inset-0 z-[90] bg-white dark:bg-gray-950 flex flex-col">
       {/* Progress bar */}
-      <div className="h-1 bg-gray-200 dark:bg-gray-800">
+      <div className="h-1 bg-gray-100 dark:bg-gray-800">
         <div
-          className="h-full bg-blue-500 transition-all duration-300"
+          className="h-full bg-blue-500 transition-all duration-500 ease-out rounded-r-full"
           style={{ width: `${progress}%` }}
         />
       </div>
@@ -128,7 +128,7 @@ export default function OnboardingFlow({ onComplete }: { onComplete: () => void 
       <div className="flex justify-end p-4">
         <button
           onClick={handleSkip}
-          className="flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+          className="flex items-center gap-1 text-[13px] text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
         >
           Skip <X className="w-4 h-4" />
         </button>
@@ -316,7 +316,7 @@ export default function OnboardingFlow({ onComplete }: { onComplete: () => void 
       <div className="p-6 max-w-md mx-auto w-full">
         <button
           onClick={handleNext}
-          className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-blue-500 hover:bg-blue-600 text-white font-semibold transition-colors"
+          className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-blue-500 hover:bg-blue-600 text-white font-semibold shadow-[var(--shadow-sm)] hover:shadow-[var(--shadow-md)] transition-all duration-150"
         >
           {stepIndex === STEPS.length - 1
             ? "Get started"

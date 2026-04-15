@@ -248,13 +248,13 @@ export default function HomePage() {
         </div>
 
         {/* Desktop sidebar (hidden on mobile) */}
-        <div className="hidden lg:flex lg:flex-col lg:w-96 lg:border-l lg:border-gray-200 dark:lg:border-gray-700 dark:bg-gray-900">
+        <div className="hidden lg:flex lg:flex-col lg:w-96 lg:border-l lg:border-gray-200/80 dark:lg:border-gray-800/80 dark:bg-gray-900">
           {detailSlug && sheetView === "detail" ? (
             <>
-              <div className="p-3 border-b border-gray-200 dark:border-gray-700 flex items-center gap-2">
+              <div className="p-3 border-b border-gray-100 dark:border-gray-800/80 flex items-center gap-2">
                 <button
                   onClick={handleBackToListDesktop}
-                  className="flex items-center gap-1.5 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors"
+                  className="flex items-center gap-1.5 text-[13px] text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors"
                 >
                   <ArrowLeft className="w-4 h-4" />
                   <span>Back to list</span>
@@ -266,7 +266,7 @@ export default function HomePage() {
             </>
           ) : (
             <>
-              <div className="p-3 border-b border-gray-200 dark:border-gray-700">
+              <div className="p-3 border-b border-gray-100 dark:border-gray-800/80">
                 <FilterButton
                   filters={filters}
                   constraints={constraints}
@@ -280,7 +280,7 @@ export default function HomePage() {
               />
               <div className="flex-1 overflow-y-auto">
                 {loadError && (
-                  <div className="mx-3 mt-2 p-3 bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 rounded-lg text-sm text-red-700 dark:text-red-300">
+                  <div className="mx-3 mt-2 p-3 bg-red-50 dark:bg-red-950/40 border border-red-200/80 dark:border-red-800/60 rounded-xl text-[13px] text-red-700 dark:text-red-300">
                     Failed to load locations. Please try refreshing the page.
                   </div>
                 )}

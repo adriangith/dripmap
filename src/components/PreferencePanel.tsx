@@ -391,14 +391,14 @@ function PreferenceCard({
 
   return (
     <div
-      className={`rounded-xl border transition-all ${
+      className={`rounded-xl border transition-all duration-150 ${
         isDragging
           ? "opacity-50 scale-95"
           : dragOver
-            ? "border-blue-400 dark:border-blue-500 shadow-md"
+            ? "border-blue-400 dark:border-blue-500 shadow-[var(--shadow-md)]"
             : active
-              ? "border-blue-200 dark:border-blue-800 bg-blue-50/50 dark:bg-blue-950/30"
-              : "border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800"
+              ? "border-blue-200 dark:border-blue-800 bg-blue-50/40 dark:bg-blue-950/20 shadow-[var(--shadow-xs)]"
+              : "border-gray-200/80 dark:border-gray-700/80 bg-white dark:bg-gray-800"
       }`}
       data-dimension={dimension.key}
     >
@@ -601,12 +601,12 @@ export default function PreferencePanel({
   return (
     <div className="fixed inset-0 z-[1000] flex items-end lg:items-center lg:justify-center">
       {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/30 dark:bg-black/50" onClick={onClose} />
+      <div className="absolute inset-0 bg-black/25 dark:bg-black/50 backdrop-blur-[2px]" onClick={onClose} />
 
       {/* Panel */}
-      <div className="relative w-full lg:w-[400px] max-h-[85vh] bg-white dark:bg-gray-900 rounded-t-2xl lg:rounded-2xl shadow-2xl flex flex-col overflow-hidden">
+      <div className="relative w-full lg:w-[400px] max-h-[85vh] bg-white dark:bg-gray-900 rounded-t-2xl lg:rounded-2xl shadow-[var(--shadow-xl)] flex flex-col overflow-hidden border border-gray-200/50 dark:border-gray-700/50">
         {/* Header */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 dark:border-gray-800">
+        <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 dark:border-gray-800/80">
           <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">
             Preferences
           </h2>

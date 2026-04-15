@@ -55,7 +55,7 @@ export default async function LocationPage({ params }: PageProps) {
     <div className="min-h-screen flex flex-col">
       <main className="flex-1">
         {/* Hero area */}
-        <div className="bg-blue-50 dark:bg-gray-800 h-48 flex items-center justify-center">
+        <div className="bg-gradient-to-b from-blue-50 to-blue-100/50 dark:from-gray-800 dark:to-gray-850 h-48 flex items-center justify-center">
           {location.photos.length > 0 ? (
             <div className="text-center text-gray-500 dark:text-gray-400 text-sm">
               <MapPin className="w-8 h-8 mx-auto mb-2 text-blue-400" />
@@ -116,7 +116,7 @@ export default async function LocationPage({ params }: PageProps) {
           {location.highlights.length > 0 && (
             <div className="flex flex-wrap gap-1.5 mb-4">
               {location.highlights.map((h) => (
-                <span key={h} className="px-2.5 py-1 text-sm bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 rounded-full font-medium">
+                <span key={h} className="px-2.5 py-1 text-[13px] bg-blue-50/80 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 rounded-full font-medium ring-1 ring-blue-100 dark:ring-blue-900/30">
                   {h}
                 </span>
               ))}
@@ -272,7 +272,7 @@ export default async function LocationPage({ params }: PageProps) {
                 <p className="text-xs text-gray-500 mb-1">Facilities</p>
                 <div className="flex flex-wrap gap-1">
                   {location.facilities.map((f) => (
-                    <span key={f} className="px-2 py-0.5 text-xs bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded capitalize">
+                    <span key={f} className="px-2 py-0.5 text-xs bg-gray-100/80 dark:bg-gray-700/60 text-gray-700 dark:text-gray-300 rounded-md capitalize">
                       {f.replaceAll("-", " ")}
                     </span>
                   ))}
@@ -317,7 +317,7 @@ export default async function LocationPage({ params }: PageProps) {
               {location.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="px-2 py-1 text-xs bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 rounded-full"
+                  className="px-2 py-1 text-xs bg-blue-50/80 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 rounded-full ring-1 ring-blue-100 dark:ring-blue-900/30"
                 >
                   {tag}
                 </span>
@@ -344,7 +344,7 @@ export default async function LocationPage({ params }: PageProps) {
                 href={`https://www.google.com/maps/dir/?api=1&destination=${location.coordinates.lat},${location.coordinates.lng}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-lg bg-blue-600 dark:bg-blue-500 px-4 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors"
+                className="inline-flex items-center gap-2 rounded-xl bg-blue-600 dark:bg-blue-500 px-4 py-2.5 text-[13px] font-medium text-white shadow-[var(--shadow-sm)] hover:bg-blue-700 dark:hover:bg-blue-600 hover:shadow-[var(--shadow-md)] transition-all duration-150"
               >
                 <Navigation className="w-4 h-4" />
                 Google Maps
@@ -354,7 +354,7 @@ export default async function LocationPage({ params }: PageProps) {
                 href={`https://maps.apple.com/?daddr=${location.coordinates.lat},${location.coordinates.lng}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-lg bg-gray-900 dark:bg-gray-200 px-4 py-2.5 text-sm font-medium text-white dark:text-gray-900 shadow-sm hover:bg-gray-800 dark:hover:bg-gray-300 transition-colors"
+                className="inline-flex items-center gap-2 rounded-xl bg-gray-900 dark:bg-gray-200 px-4 py-2.5 text-[13px] font-medium text-white dark:text-gray-900 shadow-[var(--shadow-sm)] hover:bg-gray-800 dark:hover:bg-gray-300 hover:shadow-[var(--shadow-md)] transition-all duration-150"
               >
                 <Navigation className="w-4 h-4" />
                 Apple Maps

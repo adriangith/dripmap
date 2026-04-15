@@ -37,8 +37,8 @@ export default function DrivingInfoBanner({ destination }: DrivingInfoBannerProp
   if (!info) return null;
 
   return (
-    <div className="flex items-center gap-2 px-3 py-2 bg-blue-50 dark:bg-blue-950 rounded-lg text-sm text-blue-700 dark:text-blue-300 mb-4">
-      <Car className="w-4 h-4 shrink-0" />
+    <div className="flex items-center gap-2 px-3 py-2 bg-blue-50/80 dark:bg-blue-950/40 rounded-xl text-[13px] text-blue-700 dark:text-blue-300 mb-4 ring-1 ring-blue-100 dark:ring-blue-900/40">
+      <Car className="w-4 h-4 shrink-0 opacity-80" />
       <span>{formatDriveTime(info.duration)} · {formatDriveDistance(info.distance)} driving</span>
     </div>
   );

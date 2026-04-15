@@ -12,7 +12,7 @@ export default function SourceAttribution({ source, variant = "card" }: SourceAt
         href={source.url}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center gap-2 rounded-lg bg-purple-600 dark:bg-purple-500 px-4 py-3 text-sm font-medium text-white shadow-sm hover:bg-purple-700 dark:hover:bg-purple-600 transition-colors min-h-[44px]"
+        className="inline-flex items-center gap-2 rounded-xl bg-purple-600 dark:bg-purple-500 px-4 py-3 text-[13px] font-medium text-white shadow-[var(--shadow-sm)] hover:bg-purple-700 dark:hover:bg-purple-600 transition-all duration-150 hover:shadow-[var(--shadow-md)] min-h-[44px]"
       >
         Tickets via {source.provider}
         <ExternalLink className="w-3.5 h-3.5 opacity-70" />

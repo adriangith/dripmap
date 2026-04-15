@@ -102,7 +102,7 @@ function PopoverPanel({
   return (
     <div
       ref={ref}
-      className="relative z-50 bg-white rounded-xl shadow-lg border border-gray-200 p-3 mx-3 mt-1"
+      className="relative z-50 bg-white dark:bg-gray-800 rounded-xl shadow-[var(--shadow-lg)] border border-gray-200/80 dark:border-gray-700/60 p-3 mx-3 mt-1"
     >
       {children}
     </div>
@@ -125,10 +125,10 @@ function Chip({
   return (
     <button
       onClick={onClick}
-      className={`shrink-0 flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-full border transition-colors ${
+      className={`shrink-0 flex items-center gap-1.5 px-2.5 py-1.5 text-[13px] rounded-full border transition-all duration-150 ${
         active
-          ? "bg-blue-50 text-blue-700 border-blue-300"
-          : "bg-white text-gray-600 border-gray-200 hover:border-gray-300"
+          ? "bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-800 shadow-[var(--shadow-xs)]"
+          : "bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600"
       }`}
     >
       {icon}
@@ -163,9 +163,9 @@ export default function ContextBar({
   );
 
   return (
-    <div className="bg-gray-50 border-b border-gray-200">
+    <div className="bg-gray-50/80 dark:bg-gray-900/80 border-b border-gray-100 dark:border-gray-800/80">
       {/* Scrollable chip row */}
-      <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide px-3 py-2">
+      <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-hide px-3 py-2">
         <Chip
           icon={<MapPin className="w-3.5 h-3.5" />}
           label={hasLocation ? "Near you" : "Location"}

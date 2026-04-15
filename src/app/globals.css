@@ -4,6 +4,30 @@
   --color-water: #3b82f6;
   --color-water-dark: #1d4ed8;
   --color-water-light: #dbeafe;
+
+  /* Elevation shadows */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.12), 0 4px 16px rgba(0, 0, 0, 0.06);
+
+  /* Border colors */
+  --border-primary: rgba(0, 0, 0, 0.08);
+  --border-secondary: rgba(0, 0, 0, 0.05);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.2);
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.2);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
+    --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.6), 0 4px 16px rgba(0, 0, 0, 0.4);
+
+    --border-primary: rgba(255, 255, 255, 0.1);
+    --border-secondary: rgba(255, 255, 255, 0.06);
+  }
 }
 
 html,
@@ -13,13 +37,43 @@ body {
   background: transparent;
 }
 
+/* Smooth focus ring for accessibility */
+*:focus-visible {
+  outline: 2px solid var(--color-water);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Better text selection */
+::selection {
+  background-color: rgba(59, 130, 246, 0.2);
+}
+
+@media (prefers-color-scheme: dark) {
+  ::selection {
+    background-color: rgba(96, 165, 250, 0.3);
+  }
+}
+
 /* Leaflet container needs explicit height */
 .leaflet-container {
   height: 100%;
   width: 100%;
 }
 
-/* Leaflet popups — dark mode */
+/* Leaflet popups — refined styling */
+.leaflet-popup-content-wrapper {
+  border-radius: 12px !important;
+  box-shadow: var(--shadow-lg) !important;
+  border: 1px solid var(--border-primary);
+}
+.leaflet-popup-close-button {
+  font-size: 18px !important;
+  width: 24px !important;
+  height: 24px !important;
+  top: 6px !important;
+  right: 6px !important;
+}
 @media (prefers-color-scheme: dark) {
   .leaflet-popup-content-wrapper {
     background: #1e293b;
@@ -58,29 +112,30 @@ body {
   display: none;
 }
 
-/* Marker cluster overrides — blue water theme */
+/* Marker cluster overrides — refined blue water theme */
 .marker-cluster-small {
-  background-color: rgba(59, 130, 246, 0.3);
+  background-color: rgba(59, 130, 246, 0.2);
 }
 .marker-cluster-small div {
-  background-color: rgba(59, 130, 246, 0.6);
+  background-color: rgba(59, 130, 246, 0.55);
 }
 .marker-cluster-medium {
-  background-color: rgba(37, 99, 235, 0.3);
+  background-color: rgba(37, 99, 235, 0.2);
 }
 .marker-cluster-medium div {
-  background-color: rgba(37, 99, 235, 0.6);
+  background-color: rgba(37, 99, 235, 0.55);
 }
 .marker-cluster-large {
-  background-color: rgba(29, 78, 216, 0.3);
+  background-color: rgba(29, 78, 216, 0.2);
 }
 .marker-cluster-large div {
-  background-color: rgba(29, 78, 216, 0.6);
+  background-color: rgba(29, 78, 216, 0.55);
 }
 .marker-cluster div {
   color: white;
-  font-weight: 600;
-  font-size: 13px;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.02em;
 }
 
 /* Pin marker — teardrop shape with icon */
@@ -93,10 +148,10 @@ body {
 .pin-marker {
   width: 32px;
   height: 32px;
-  border: 2px solid white;
+  border: 2.5px solid white;
   border-radius: 50% 50% 50% 0;
   transform: rotate(-45deg);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.06);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -117,10 +172,10 @@ body {
   background: white;
   border-radius: 14px;
   padding: 3px 4px;
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.28);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(0, 0, 0, 0.04);
   white-space: nowrap;
   cursor: pointer;
-  transition: box-shadow 0.2s ease;
+  transition: box-shadow 0.2s ease, transform 0.15s ease;
 }
 .pin-flag-row {
   display: flex;
@@ -199,7 +254,8 @@ body {
 }
 .pin-flag:hover,
 .pin-wrapper.active .pin-flag {
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.22), 0 0 0 1px rgba(0, 0, 0, 0.06);
+  transform: translateX(-50%) scale(1.02);
 }
 
 /* At high zoom: show flag, hide pin */
@@ -215,7 +271,7 @@ body {
 @media (prefers-color-scheme: dark) {
   .pin-flag {
     background: #1e293b;
-    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.06);
   }
   .pin-flag::after {
     border-top-color: #1e293b;
@@ -225,10 +281,12 @@ body {
   }
   .pin-flag:hover,
   .pin-wrapper.active .pin-flag {
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 3px 14px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.08);
+    transform: translateX(-50%) scale(1.02);
   }
   .pin-marker {
-    border-color: #334155;
+    border-color: #475569;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.06);
   }
   .pin-flag-day {
     color: #64748b;
