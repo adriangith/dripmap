@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useRef, useEffect, useCallback, useMemo, useLayoutEffect } from "react";
 import { Search } from "lucide-react";
 import type { Filters, PlaceType, SiteStatus } from "@/lib/types";
 
@@ -26,11 +27,60 @@ const STATUS_CHIPS: { value: SiteStatus; label: string }[] = [
   { value: "seasonal", label: "Seasonal" },
 ];
 
+const FLIP_DURATION = 300;
+
 interface FilterBarProps {
   filters: Filters;
   onChange: (filters: Filters) => void;
   resultCount: number;
   hideSearch?: boolean;
+}
+
+// FLIP animation: snapshot positions during render, animate after DOM commit
+function useFlip(containerRef: React.RefObject<HTMLDivElement | null>, deps: unknown[]) {
+  const prevRects = useRef<Map<string, DOMRect>>(new Map());
+
+  // Snapshot "First" positions during render — DOM still has old layout
+  if (typeof window !== "undefined" && containerRef.current) {
+    const el = containerRef.current;
+    const chips = el.querySelectorAll<HTMLElement>("[data-filter-chip]");
+    const rects = new Map<string, DOMRect>();
+    chips.forEach((chip) => {
+      const key = chip.getAttribute("data-filter-chip")!;
+      rects.set(key, chip.getBoundingClientRect());
+    });
+    prevRects.current = rects;
+  }
+
+  // After DOM commit, compare old→new and animate
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useLayoutEffect(() => {
+    const el = containerRef.current;
+    if (!el || window.innerWidth < 768) return;
+    const prev = prevRects.current;
+    if (prev.size === 0) return;
+
+    const chips = el.querySelectorAll<HTMLElement>("[data-filter-chip]");
+    chips.forEach((chip) => {
+      const key = chip.getAttribute("data-filter-chip")!;
+      const oldRect = prev.get(key);
+      if (!oldRect) return;
+      const newRect = chip.getBoundingClientRect();
+      const dx = oldRect.left - newRect.left;
+      const dy = oldRect.top - newRect.top;
+      if (Math.abs(dx) < 1 && Math.abs(dy) < 1) return;
+
+      // Invert: place chip at old position
+      chip.style.transform = `translate(${dx}px, ${dy}px)`;
+      chip.style.transition = "none";
+
+      // Play: animate to new position on next frame
+      requestAnimationFrame(() => {
+        chip.style.transition = `transform ${FLIP_DURATION}ms cubic-bezier(0.4, 0, 0.2, 1)`;
+        chip.style.transform = "";
+      });
+    });
+  }, deps);
 }
 
 export default function FilterBar({
@@ -42,8 +92,84 @@ export default function FilterBar({
   const hasActiveFilters =
     filters.type || filters.siteStatus || filters.search;
 
+  const chipsRef = useRef<HTMLDivElement>(null);
+  const [collapsed, setCollapsed] = useState(true);
+  const [rowHeight, setRowHeight] = useState<number>(36);
+  const [fullHeight, setFullHeight] = useState<number>(36);
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  // Always promote active chip to front so it's visible when collapsed
+  const orderedTypeChips = useMemo(() => {
+    if (!filters.type) return TYPE_CHIPS;
+    const active = TYPE_CHIPS.find((c) => c.value === filters.type);
+    if (!active) return TYPE_CHIPS;
+    return [active, ...TYPE_CHIPS.filter((c) => c.value !== filters.type)];
+  }, [filters.type]);
+
+  const orderedStatusChips = useMemo(() => {
+    if (!filters.siteStatus) return STATUS_CHIPS;
+    const active = STATUS_CHIPS.find((c) => c.value === filters.siteStatus);
+    if (!active) return STATUS_CHIPS;
+    return [active, ...STATUS_CHIPS.filter((c) => c.value !== filters.siteStatus)];
+  }, [filters.siteStatus]);
+
+  // Animate chip reordering with FLIP
+  useFlip(chipsRef, [filters.type, filters.siteStatus]);
+
+  // Measure heights without touching inline styles — let React handle rendering
+  useEffect(() => {
+    const el = chipsRef.current;
+    if (!el) return;
+
+    const remeasure = () => {
+      const desktop = window.innerWidth >= 768;
+      setIsDesktop(desktop);
+      if (!desktop) return;
+
+      const prev = el.style.cssText;
+      el.style.maxHeight = "none";
+      el.style.overflow = "visible";
+      const full = el.scrollHeight;
+
+      const firstChip = el.querySelector("button") as HTMLElement | null;
+      const py = parseFloat(getComputedStyle(el).paddingTop) || 0;
+      const single = firstChip ? firstChip.offsetHeight + py * 2 : 36;
+
+      el.style.cssText = prev;
+
+      setRowHeight(single);
+      setFullHeight(full);
+    };
+
+    remeasure();
+    window.addEventListener("resize", remeasure);
+    return () => window.removeEventListener("resize", remeasure);
+  }, [filters, hasActiveFilters]);
+
+  const handleMouseEnter = useCallback(() => {
+    if (window.innerWidth < 768) return;
+    setCollapsed(false);
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    if (window.innerWidth < 768) return;
+    setCollapsed(true);
+  }, []);
+
+  const chipsStyle: React.CSSProperties = isDesktop
+    ? {
+        maxHeight: collapsed ? `${rowHeight}px` : `${fullHeight}px`,
+        overflow: "hidden",
+        transition: `max-height ${FLIP_DURATION}ms cubic-bezier(0.4, 0, 0.2, 1)`,
+      }
+    : {};
+
   return (
-    <div className="border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+    <div
+      className="border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       {!hideSearch && (
         <div className="flex items-center gap-2 px-3 py-2 border-b border-gray-100 dark:border-gray-800">
           <Search className="w-4 h-4 text-gray-400 dark:text-gray-500 shrink-0" />
@@ -57,8 +183,12 @@ export default function FilterBar({
           />
         </div>
       )}
-      <div className="flex items-center gap-2 px-3 py-2 overflow-x-auto scrollbar-hide md:flex-wrap md:overflow-x-visible">
-        {TYPE_CHIPS.map((chip) => {
+      <div
+        ref={chipsRef}
+        className="flex items-center gap-2 px-3 py-2 overflow-x-auto scrollbar-hide md:flex-wrap md:overflow-x-visible"
+        style={chipsStyle}
+      >
+        {orderedTypeChips.map((chip) => {
           const isActive = filters.type === chip.value;
           return (
             <button
@@ -83,7 +213,7 @@ export default function FilterBar({
 
         <div className="w-px h-5 bg-gray-200 dark:bg-gray-700 shrink-0" />
 
-        {STATUS_CHIPS.map((chip) => {
+        {orderedStatusChips.map((chip) => {
           const isActive = filters.siteStatus === chip.value;
           return (
             <button
