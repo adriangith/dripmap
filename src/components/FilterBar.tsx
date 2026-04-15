@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback, useMemo } from "react";
+import { useState, useRef, useEffect, useCallback, useMemo, useLayoutEffect } from "react";
 import { Search } from "lucide-react";
 import type { Filters, PlaceType, SiteStatus } from "@/lib/types";
 
@@ -27,11 +27,59 @@ const STATUS_CHIPS: { value: SiteStatus; label: string }[] = [
   { value: "seasonal", label: "Seasonal" },
 ];
 
+const FLIP_DURATION = 300;
+
 interface FilterBarProps {
   filters: Filters;
   onChange: (filters: Filters) => void;
   resultCount: number;
   hideSearch?: boolean;
+}
+
+// FLIP animation: snapshot positions before render, animate after
+function useFlip(containerRef: React.RefObject<HTMLDivElement | null>, deps: unknown[]) {
+  const prevRects = useRef<Map<string, DOMRect>>(new Map());
+
+  // Capture "First" positions before DOM update
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useLayoutEffect(() => {
+    const el = containerRef.current;
+    if (!el || window.innerWidth < 768) return;
+    const chips = el.querySelectorAll<HTMLElement>("[data-filter-chip]");
+    const rects = new Map<string, DOMRect>();
+    chips.forEach((chip) => {
+      const key = chip.getAttribute("data-filter-chip")!;
+      rects.set(key, chip.getBoundingClientRect());
+    });
+    prevRects.current = rects;
+  });
+
+  // Play animation after DOM update
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el || window.innerWidth < 768) return;
+    const prev = prevRects.current;
+    if (prev.size === 0) return;
+
+    const chips = el.querySelectorAll<HTMLElement>("[data-filter-chip]");
+    chips.forEach((chip) => {
+      const key = chip.getAttribute("data-filter-chip")!;
+      const oldRect = prev.get(key);
+      if (!oldRect) return;
+      const newRect = chip.getBoundingClientRect();
+      const dx = oldRect.left - newRect.left;
+      const dy = oldRect.top - newRect.top;
+      if (Math.abs(dx) < 1 && Math.abs(dy) < 1) return;
+
+      chip.style.transform = `translate(${dx}px, ${dy}px)`;
+      chip.style.transition = "none";
+      requestAnimationFrame(() => {
+        chip.style.transition = `transform ${FLIP_DURATION}ms cubic-bezier(0.4, 0, 0.2, 1)`;
+        chip.style.transform = "";
+      });
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, deps);
 }
 
 export default function FilterBar({
@@ -64,6 +112,9 @@ export default function FilterBar({
     return [active, ...STATUS_CHIPS.filter((c) => c.value !== filters.siteStatus)];
   }, [filters.siteStatus]);
 
+  // Animate chip reordering with FLIP
+  useFlip(chipsRef, [filters.type, filters.siteStatus]);
+
   // Measure heights without touching inline styles — let React handle rendering
   useEffect(() => {
     const el = chipsRef.current;
@@ -74,18 +125,15 @@ export default function FilterBar({
       setIsDesktop(desktop);
       if (!desktop) return;
 
-      // Temporarily remove constraints to measure natural full height
       const prev = el.style.cssText;
       el.style.maxHeight = "none";
       el.style.overflow = "visible";
       const full = el.scrollHeight;
 
-      // Measure single-row height from first chip
       const firstChip = el.querySelector("button") as HTMLElement | null;
       const py = parseFloat(getComputedStyle(el).paddingTop) || 0;
       const single = firstChip ? firstChip.offsetHeight + py * 2 : 36;
 
-      // Restore previous styles before React re-renders
       el.style.cssText = prev;
 
       setRowHeight(single);
@@ -107,12 +155,11 @@ export default function FilterBar({
     setCollapsed(true);
   }, []);
 
-  // Only apply collapse styles on desktop
   const chipsStyle: React.CSSProperties = isDesktop
     ? {
         maxHeight: collapsed ? `${rowHeight}px` : `${fullHeight}px`,
         overflow: "hidden",
-        transition: "max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+        transition: `max-height ${FLIP_DURATION}ms cubic-bezier(0.4, 0, 0.2, 1)`,
       }
     : {};
 
