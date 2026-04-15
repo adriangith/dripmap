@@ -36,15 +36,13 @@ interface FilterBarProps {
   hideSearch?: boolean;
 }
 
-// FLIP animation: snapshot positions before render, animate after
+// FLIP animation: snapshot positions during render, animate after DOM commit
 function useFlip(containerRef: React.RefObject<HTMLDivElement | null>, deps: unknown[]) {
   const prevRects = useRef<Map<string, DOMRect>>(new Map());
 
-  // Capture "First" positions before DOM update
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useLayoutEffect(() => {
+  // Snapshot "First" positions during render — DOM still has old layout
+  if (typeof window !== "undefined" && containerRef.current) {
     const el = containerRef.current;
-    if (!el || window.innerWidth < 768) return;
     const chips = el.querySelectorAll<HTMLElement>("[data-filter-chip]");
     const rects = new Map<string, DOMRect>();
     chips.forEach((chip) => {
@@ -52,10 +50,11 @@ function useFlip(containerRef: React.RefObject<HTMLDivElement | null>, deps: unk
       rects.set(key, chip.getBoundingClientRect());
     });
     prevRects.current = rects;
-  });
+  }
 
-  // Play animation after DOM update
-  useEffect(() => {
+  // After DOM commit, compare old→new and animate
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useLayoutEffect(() => {
     const el = containerRef.current;
     if (!el || window.innerWidth < 768) return;
     const prev = prevRects.current;
@@ -71,14 +70,16 @@ function useFlip(containerRef: React.RefObject<HTMLDivElement | null>, deps: unk
       const dy = oldRect.top - newRect.top;
       if (Math.abs(dx) < 1 && Math.abs(dy) < 1) return;
 
+      // Invert: place chip at old position
       chip.style.transform = `translate(${dx}px, ${dy}px)`;
       chip.style.transition = "none";
+
+      // Play: animate to new position on next frame
       requestAnimationFrame(() => {
         chip.style.transition = `transform ${FLIP_DURATION}ms cubic-bezier(0.4, 0, 0.2, 1)`;
         chip.style.transform = "";
       });
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps);
 }
 
