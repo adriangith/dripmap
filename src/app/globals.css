@@ -129,6 +129,7 @@ body {
 }
 .pin-flag-hours {
   display: flex;
+  justify-content: center;
   gap: 2px;
   padding: 0 4px;
   max-height: 0;
@@ -144,8 +145,7 @@ body {
   padding-bottom: 2px;
 }
 .pin-flag-day {
-  flex: 1;
-  min-width: 12px;
+  width: 14px;
   text-align: center;
   font-size: 9px;
   font-weight: 600;
