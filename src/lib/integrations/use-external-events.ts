@@ -36,14 +36,6 @@ export function useExternalEvents(staticIndex: PlaceIndexEntry[]): PlaceIndexEnt
     const endpoint = process.env.NEXT_PUBLIC_EXTERNAL_EVENTS_URL;
     if (!endpoint) return;
 
-    // Check localStorage cache
-    const cachedTs = localStorage.getItem(CACHE_TS_KEY);
-    const cachedData = localStorage.getItem(CACHE_KEY);
-
-    if (cachedTs && cachedData && Date.now() - Number(cachedTs) < STALE_MS) {
-      return;
-    }
-
     let cancelled = false;
 
     fetch(endpoint)
