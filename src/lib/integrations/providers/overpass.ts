@@ -1,9 +1,47 @@
-import type { PlaceIndexEntry } from "../../types";
+import type { PlaceIndexEntry, PlaceType } from "../../types";
 import type {
   EnrichmentProvider,
   LocationEnrichment,
 } from "../enrichment-types";
 import type { OpeningHoursEntry, DayOfWeek } from "../../types";
+
+// Place types where opening hours are meaningful — natural features,
+// public playgrounds, beaches etc. don't have hours, and any "nearby hours"
+// found in OSM almost always belong to a different venue.
+const OPENING_HOURS_ELIGIBLE_TYPES: ReadonlySet<PlaceType> = new Set([
+  "eatery",
+  "event",
+  "museum",
+]);
+
+// Jaccard-similarity threshold for matching an OSM element's `name` tag
+// to the location's name. Below this, we reject the opening_hours match.
+const NAME_MATCH_THRESHOLD = 0.4;
+
+const STOPWORDS = new Set([
+  "the", "a", "an", "of", "and", "&", "at", "in", "on",
+  "melbourne", "vic", "australia",
+]);
+
+function nameTokens(name: string): Set<string> {
+  return new Set(
+    name
+      .toLowerCase()
+      .replace(/[^a-z0-9\s]/g, " ")
+      .split(/\s+/)
+      .filter((t) => t.length >= 3 && !STOPWORDS.has(t))
+  );
+}
+
+function nameSimilarity(a: string, b: string): number {
+  const ta = nameTokens(a);
+  const tb = nameTokens(b);
+  if (ta.size === 0 || tb.size === 0) return 0;
+  let intersect = 0;
+  for (const t of ta) if (tb.has(t)) intersect++;
+  const union = ta.size + tb.size - intersect;
+  return union === 0 ? 0 : intersect / union;
+}
 
 // ── Configuration ────────────────────────────────────────────
 
@@ -13,7 +51,9 @@ const TIMEOUT_S = 25;
 
 // Batch locations into a single Overpass query to reduce API calls.
 // Overpass has a 2-slot rate limit, so we send one big query.
-const MAX_BATCH_SIZE = 50;
+const MAX_BATCH_SIZE = 25;
+const INTER_BATCH_DELAY_MS = 6000;
+const MAX_RETRIES = 3;
 
 // ── OSM → app mappings ──────────────────────────────────────
 
@@ -122,7 +162,7 @@ function buildQuery(locations: PlaceIndexEntry[]): string {
     )
     .join("");
 
-  return `[out:json][timeout:${TIMEOUT_S}];(${arounds});out tags;`;
+  return `[out:json][timeout:${TIMEOUT_S}];(${arounds});out center tags;`;
 }
 
 // ── Provider ─────────────────────────────────────────────────
@@ -147,26 +187,52 @@ export const overpassProvider: EnrichmentProvider = {
       const batch = locations.slice(i, i + MAX_BATCH_SIZE);
       const query = buildQuery(batch);
 
-      let elements: OsmElement[];
-      try {
-        const res = await fetch(OVERPASS_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: `data=${encodeURIComponent(query)}`,
-          signal: AbortSignal.timeout(30_000),
-        });
+      const batchNum = i / MAX_BATCH_SIZE + 1;
+      let elements: OsmElement[] = [];
+      let success = false;
 
-        if (!res.ok) {
+      for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+        try {
+          const res = await fetch(OVERPASS_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: `data=${encodeURIComponent(query)}`,
+            signal: AbortSignal.timeout(30_000),
+          });
+
+          if (res.status === 429 || res.status === 504) {
+            const backoff = 10_000 * attempt;
+            console.warn(
+              `  ⚠  Overpass ${res.status} for batch ${batchNum}, retry ${attempt}/${MAX_RETRIES} after ${backoff / 1000}s`
+            );
+            await new Promise((r) => setTimeout(r, backoff));
+            continue;
+          }
+
+          if (!res.ok) {
+            console.warn(
+              `  ⚠  Overpass returned ${res.status} for batch ${batchNum}`
+            );
+            break;
+          }
+
+          const json = (await res.json()) as { elements: OsmElement[] };
+          elements = json.elements ?? [];
+          success = true;
+          break;
+        } catch (err) {
           console.warn(
-            `  ⚠  Overpass returned ${res.status} for batch ${i / MAX_BATCH_SIZE + 1}`
+            `  ⚠  Overpass request failed for batch ${batchNum} (attempt ${attempt}):`,
+            err
           );
-          continue;
+          if (attempt < MAX_RETRIES) {
+            await new Promise((r) => setTimeout(r, 5000 * attempt));
+          }
         }
+      }
 
-        const json = (await res.json()) as { elements: OsmElement[] };
-        elements = json.elements ?? [];
-      } catch (err) {
-        console.warn(`  ⚠  Overpass request failed for batch ${i / MAX_BATCH_SIZE + 1}:`, err);
+      if (!success) {
+        console.warn(`  ⚠  Batch ${batchNum} gave up after ${MAX_RETRIES} attempts`);
         continue;
       }
 
@@ -188,24 +254,33 @@ export const overpassProvider: EnrichmentProvider = {
         const facilities = new Set<string>();
         let openingHours: OpeningHoursEntry[] | null = null;
 
+        const hoursEligible = OPENING_HOURS_ELIGIBLE_TYPES.has(loc.type);
+        let bestHoursMatch: { similarity: number; hours: OpeningHoursEntry[] } | null = null;
+
         for (const el of nearby) {
           const tags = el.tags ?? {};
 
-          // Map amenities
           if (tags.amenity && AMENITY_TO_FACILITY[tags.amenity]) {
             facilities.add(AMENITY_TO_FACILITY[tags.amenity]);
           }
 
-          // Map leisure
           if (tags.leisure && LEISURE_TO_FACILITY[tags.leisure]) {
             facilities.add(LEISURE_TO_FACILITY[tags.leisure]);
           }
 
-          // Parse opening hours (take first valid one found)
-          if (tags.opening_hours && !openingHours) {
-            openingHours = parseOsmOpeningHours(tags.opening_hours);
+          if (hoursEligible && tags.opening_hours && tags.name) {
+            const similarity = nameSimilarity(loc.name, tags.name);
+            if (
+              similarity >= NAME_MATCH_THRESHOLD &&
+              (!bestHoursMatch || similarity > bestHoursMatch.similarity)
+            ) {
+              const parsed = parseOsmOpeningHours(tags.opening_hours);
+              if (parsed) bestHoursMatch = { similarity, hours: parsed };
+            }
           }
         }
+
+        if (bestHoursMatch) openingHours = bestHoursMatch.hours;
 
         const enrichment: LocationEnrichment = { slug: loc.slug };
         if (facilities.size > 0) {
@@ -220,9 +295,8 @@ export const overpassProvider: EnrichmentProvider = {
         }
       }
 
-      // Rate-limit: wait 1s between batches
       if (i + MAX_BATCH_SIZE < locations.length) {
-        await new Promise((r) => setTimeout(r, 1000));
+        await new Promise((r) => setTimeout(r, INTER_BATCH_DELAY_MS));
       }
     }
 
