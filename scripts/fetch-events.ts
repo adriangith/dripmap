@@ -13,11 +13,13 @@ import * as path from "path";
 import type { EventProvider } from "../src/lib/integrations/types";
 import { toPlace, toIndexEntry } from "../src/lib/integrations/types";
 import { stubProvider } from "../src/lib/integrations/providers/stub";
+import { eventbriteProvider } from "../src/lib/integrations/providers/eventbrite";
 
 // ── Provider registry ────────────────────────────────────────
 
 const REGISTRY: Record<string, EventProvider> = {
   stub: stubProvider,
+  eventbrite: eventbriteProvider,
 };
 
 // ── Main ─────────────────────────────────────────────────────
