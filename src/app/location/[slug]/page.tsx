@@ -10,6 +10,7 @@ import VisitedButton from "@/components/VisitedButton";
 import MiniMapWrapper from "@/components/MiniMapWrapper";
 import DrivingInfoBanner from "@/components/DrivingInfoBanner";
 import CostIndicator from "@/components/CostIndicator";
+import EnrichmentSection from "@/components/EnrichmentSection";
 import type { Metadata } from "next";
 import type { Place, SwimPlace, BeachPlace, EventPlace, Duration } from "@/lib/types";
 
@@ -280,6 +281,12 @@ export default async function LocationPage({ params }: PageProps) {
               </div>
             )}
           </section>
+
+          {/* Enrichment data (weather, extra facilities from APIs) */}
+          <EnrichmentSection
+            slug={location.slug}
+            existingFacilities={location.facilities}
+          />
 
           {/* Directions */}
           <section className="mb-6">

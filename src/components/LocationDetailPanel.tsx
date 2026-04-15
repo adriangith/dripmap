@@ -32,6 +32,7 @@ const DURATION_DISPLAY: Record<Duration, string> = {
 
 import CostIndicator from "./CostIndicator";
 import SourceAttribution from "./SourceAttribution";
+import EnrichmentSection from "./EnrichmentSection";
 import { DAYS, DAY_LABELS, entriesForDay, formatHoursStatus, todayIdx } from "@/lib/openingHours";
 import type { OpeningHoursEntry } from "@/lib/types";
 
@@ -384,6 +385,12 @@ export default function LocationDetailPanel({
       {location.openingHours && location.openingHours.length > 0 && (
         <OpeningHoursSection entries={location.openingHours} />
       )}
+
+      {/* Enrichment data (weather, extra facilities from APIs) */}
+      <EnrichmentSection
+        slug={location.slug}
+        existingFacilities={location.facilities}
+      />
 
       {/* Common info */}
       <section className="mb-4">
