@@ -32,3 +32,6 @@ export const VALID_BOOKING = ["required", "recommended", "walk-in"];
 
 export const VALID_DIFFICULTY = ["easy", "moderate", "hard"];
 export const VALID_TERRAIN = ["paved", "gravel", "trail", "mixed"];
+
+export const VALID_DAYS = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
+export const TIME_PATTERN = /^([01]\d|2[0-3]):[0-5]\d$/;

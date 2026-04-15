@@ -246,4 +246,72 @@ describe("validatePlace", () => {
     expect(validatePlace({ ...validSwim, status: { ...validSwim.status, lastVerified: "not-a-date" } }))
       .toContainEqual(expect.stringContaining("lastVerified"));
   });
+
+  describe("openingHours", () => {
+    it("accepts a valid weekday + weekend schedule", () => {
+      const withHours = {
+        ...validSwim,
+        openingHours: [
+          { days: ["mon", "tue", "wed", "thu", "fri"], open: "09:00", close: "17:00" },
+          { days: ["sat", "sun"], open: "10:00", close: "16:00" },
+        ],
+      };
+      expect(validatePlace(withHours)).toEqual([]);
+    });
+
+    it("accepts split hours sharing a day set", () => {
+      const withSplit = {
+        ...validSwim,
+        openingHours: [
+          { days: ["mon", "tue", "wed"], open: "09:00", close: "12:00" },
+          { days: ["mon", "tue", "wed"], open: "14:00", close: "17:00" },
+        ],
+      };
+      expect(validatePlace(withSplit)).toEqual([]);
+    });
+
+    it("accepts cross-midnight close (close <= open)", () => {
+      const lateBar = {
+        ...validSwim,
+        openingHours: [{ days: ["fri", "sat"], open: "18:00", close: "02:00" }],
+      };
+      expect(validatePlace(lateBar)).toEqual([]);
+    });
+
+    it("rejects non-array openingHours", () => {
+      const bad = { ...validSwim, openingHours: "9-5" };
+      expect(validatePlace(bad)).toContainEqual(expect.stringContaining("openingHours"));
+    });
+
+    it("rejects empty openingHours array", () => {
+      const bad = { ...validSwim, openingHours: [] };
+      expect(validatePlace(bad)).toContainEqual(expect.stringContaining("openingHours"));
+    });
+
+    it("rejects invalid day tokens", () => {
+      const bad = {
+        ...validSwim,
+        openingHours: [{ days: ["monday"], open: "09:00", close: "17:00" }],
+      };
+      expect(validatePlace(bad)).toContainEqual(expect.stringContaining("days"));
+    });
+
+    it("rejects malformed time strings", () => {
+      const bad = {
+        ...validSwim,
+        openingHours: [{ days: ["mon"], open: "9am", close: "5pm" }],
+      };
+      const errs = validatePlace(bad);
+      expect(errs).toContainEqual(expect.stringContaining("open"));
+      expect(errs).toContainEqual(expect.stringContaining("close"));
+    });
+
+    it("rejects empty days array", () => {
+      const bad = {
+        ...validSwim,
+        openingHours: [{ days: [], open: "09:00", close: "17:00" }],
+      };
+      expect(validatePlace(bad)).toContainEqual(expect.stringContaining("days"));
+    });
+  });
 });

@@ -8,6 +8,7 @@ import {
   VALID_VENUE_TYPE, VALID_RECURRENCE_TYPE, VALID_DURATION,
   VALID_EATERY_CUISINE, VALID_DIETARY_OPTION, VALID_SEATING, VALID_BOOKING,
   VALID_DIFFICULTY, VALID_TERRAIN,
+  VALID_DAYS, TIME_PATTERN,
 } from "./location-enums";
 
 function checkEnum(value: unknown, allowed: string[], fieldName: string): string[] {
@@ -27,6 +28,40 @@ function checkArrayEnum(value: unknown, allowed: string[], fieldName: string): s
       errors.push(`${fieldName}: invalid value "${item}", must be one of [${allowed.join(", ")}]`);
     }
   }
+  return errors;
+}
+
+function validateOpeningHours(value: unknown): string[] {
+  const errors: string[] = [];
+  if (!Array.isArray(value)) {
+    return ["openingHours: must be an array"];
+  }
+  if (value.length === 0) {
+    return ["openingHours: must be a non-empty array (omit the field if the POI has no published hours)"];
+  }
+  value.forEach((entry, i) => {
+    const prefix = `openingHours[${i}]`;
+    if (!entry || typeof entry !== "object") {
+      errors.push(`${prefix}: must be an object with { days, open, close }`);
+      return;
+    }
+    const e = entry as Record<string, unknown>;
+    if (!Array.isArray(e.days) || e.days.length === 0) {
+      errors.push(`${prefix}.days: must be a non-empty array`);
+    } else {
+      for (const d of e.days) {
+        if (typeof d !== "string" || !VALID_DAYS.includes(d)) {
+          errors.push(`${prefix}.days: invalid value "${d}", must be one of [${VALID_DAYS.join(", ")}]`);
+        }
+      }
+    }
+    if (typeof e.open !== "string" || !TIME_PATTERN.test(e.open)) {
+      errors.push(`${prefix}.open: must be "HH:MM" 24-hour time`);
+    }
+    if (typeof e.close !== "string" || !TIME_PATTERN.test(e.close)) {
+      errors.push(`${prefix}.close: must be "HH:MM" 24-hour time`);
+    }
+  });
   return errors;
 }
 
@@ -101,6 +136,11 @@ function validateCoreFields(data: Record<string, unknown>): string[] {
     } else if (!/^\d{4}-\d{2}-\d{2}$/.test(status.lastVerified) || isNaN(Date.parse(status.lastVerified))) {
       errors.push("status.lastVerified: must be a valid YYYY-MM-DD date");
     }
+  }
+
+  // openingHours (optional)
+  if (data.openingHours !== undefined) {
+    errors.push(...validateOpeningHours(data.openingHours));
   }
 
   // fit (optional)

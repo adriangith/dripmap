@@ -7,7 +7,10 @@ import {
   VALID_VENUE_TYPE, VALID_RECURRENCE_TYPE, VALID_DURATION,
   VALID_EATERY_CUISINE, VALID_DIETARY_OPTION, VALID_SEATING, VALID_BOOKING,
   VALID_DIFFICULTY, VALID_TERRAIN,
+  VALID_DAYS,
 } from "./location-enums";
+
+const TIME_PATTERN_STR = "^([01]\\d|2[0-3]):[0-5]\\d$";
 
 const photo = {
   type: "object",
@@ -62,6 +65,27 @@ const fit = {
       ],
     },
   },
+};
+
+const openingHoursEntry = {
+  type: "object",
+  required: ["days", "open", "close"],
+  additionalProperties: false,
+  properties: {
+    days: {
+      type: "array",
+      minItems: 1,
+      items: { enum: VALID_DAYS },
+    },
+    open: { type: "string", pattern: TIME_PATTERN_STR },
+    close: { type: "string", pattern: TIME_PATTERN_STR },
+  },
+};
+
+const openingHours = {
+  type: "array",
+  minItems: 1,
+  items: openingHoursEntry,
 };
 
 const coordinates = {
@@ -204,6 +228,7 @@ const schema = {
     tags: { type: "array", items: { type: "string" } },
     status,
     fit,
+    openingHours,
     details: { type: "object" },
   },
   allOf: [
