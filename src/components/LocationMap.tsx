@@ -69,24 +69,15 @@ const PIN_ICONS: Record<PlaceType, string> = {
   museum: `<path d="M10 18v-7"/><path d="M11.12 2.198a2 2 0 0 1 1.76.006l7.866 3.847c.476.233.31.949-.22.949H3.474c-.53 0-.695-.716-.22-.949z"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="M3 22h18"/><path d="M6 18v-7"/>`,
 };
 
-function createPinIcon(type: PlaceType, opacity = 1): L.DivIcon {
+function createPinIcon(type: PlaceType, opacity = 1, name?: string, slug?: string): L.DivIcon {
   const color = PIN_COLORS[type];
   const svgPaths = PIN_ICONS[type];
+  const labelHtml = name
+    ? `<div class="pin-flag"><div class="pin-flag-dot" style="background:${color};"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">${svgPaths}</svg></div><span class="pin-flag-text">${name}</span></div>`
+    : "";
   return L.divIcon({
     className: "",
-    html: `<div style="
-      width: 32px; height: 32px;
-      background: ${color};
-      border: 2px solid white;
-      border-radius: 50% 50% 50% 0;
-      transform: rotate(-45deg);
-      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-      pointer-events: none;
-      opacity: ${opacity};
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    "><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transform: rotate(45deg);">${svgPaths}</svg></div>`,
+    html: `<div class="pin-wrapper" data-slug="${slug ?? ""}" style="opacity:${opacity};"><div class="pin-marker" style="background:${color};"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(45deg);">${svgPaths}</svg></div>${labelHtml}</div>`,
     iconSize: [32, 32],
     iconAnchor: [16, 32],
     popupAnchor: [0, -32],
@@ -162,6 +153,7 @@ export default function LocationMap({
 
   const [locating, setLocating] = useState(false);
   const [locateError, setLocateError] = useState<string | null>(null);
+  const prevFocusedSlugRef = useRef<string | null | undefined>(null);
 
   // Initialize map
   useEffect(() => {
@@ -327,31 +319,14 @@ export default function LocationMap({
         pinOpacity = 0.35 + 0.65 * ((s - minScore) / scoreRange);
       }
 
-      const popupContent = document.createElement("div");
-      const strong = document.createElement("strong");
-      strong.textContent = loc.name;
-      const typeSpan = document.createElement("span");
-      typeSpan.style.textTransform = "capitalize";
-      typeSpan.textContent = loc.type.replace("-", " ");
-      popupContent.append(strong, document.createElement("br"), typeSpan);
-
       const marker = L.marker([loc.coordinates.lat, loc.coordinates.lng], {
-        icon: createPinIcon(loc.type, pinOpacity),
-      }).bindPopup(popupContent, { autoClose: true, closeOnClick: true });
-
-      // Permanent label visible at higher zoom levels (CSS-controlled)
-      marker.bindTooltip(loc.name, {
-        permanent: true,
-        direction: "top",
-        offset: L.point(0, -30),
-        className: "poi-label",
+        icon: createPinIcon(loc.type, pinOpacity, loc.name, loc.slug),
       });
 
       if (clusterGroup) clusterGroup.addLayer(marker);
 
-      // On click: open popup, notify parent (route drawn by focus effect)
+      // On click: notify parent (route drawn by focus effect)
       marker.on("click", () => {
-        marker.openPopup();
         // Clear any hover route
         if (hoverRouteLayerRef.current) {
           hoverRouteLayerRef.current.remove();
@@ -363,15 +338,28 @@ export default function LocationMap({
       // Hover behaviour (desktop only — touch devices fire spurious
       // mouseover/mouseout that would immediately close the popup)
       marker.on("mouseover", () => {
-        if (window.matchMedia("(hover: hover)").matches) marker.openPopup();
+        marker.setZIndexOffset(10000);
         onMarkerHover(loc.slug);
       });
       marker.on("mouseout", () => {
-        if (window.matchMedia("(hover: hover)").matches) marker.closePopup();
+        // Keep elevated z-index if this is the focused marker
+        if (loc.slug !== prevFocusedSlugRef.current) {
+          marker.setZIndexOffset(0);
+        }
         onMarkerHover(null);
       });
 
       markersRef.current.set(loc.slug, marker);
+    }
+
+    // Re-apply active state if a marker is currently focused
+    if (prevFocusedSlugRef.current) {
+      const focusedMarker = markersRef.current.get(prevFocusedSlugRef.current);
+      if (focusedMarker) {
+        focusedMarker.setZIndexOffset(10000);
+        const el = focusedMarker.getElement();
+        el?.querySelector(".pin-wrapper")?.classList.add("active");
+      }
     }
 
     // Fit bounds only on initial load — subsequent filter/preference changes
@@ -390,14 +378,10 @@ export default function LocationMap({
     }
   }, [locations, onMarkerClick, onMarkerHover]);
 
-  // Highlight effect — open popup on hover, draw route polyline for walks
+  // Highlight effect — draw route polyline for walks on hover
   useEffect(() => {
     if (!highlightedSlug) return;
     const map = mapRef.current;
-    const marker = markersRef.current.get(highlightedSlug);
-    if (marker) {
-      marker.openPopup();
-    }
 
     // Draw route polyline for walk/bushwalk types (desktop hover only)
     // Skip if the focused detail panel already shows this route
@@ -413,7 +397,6 @@ export default function LocationMap({
     }
 
     return () => {
-      mapRef.current?.closePopup();
       if (hoverRouteLayerRef.current) {
         hoverRouteLayerRef.current.remove();
         hoverRouteLayerRef.current = null;
@@ -422,8 +405,25 @@ export default function LocationMap({
   }, [highlightedSlug, focusedSlug, locations]);
 
   // Focus effect — zoom to pin and center in visible area above sheet,
-  // and draw route polyline for walk/bushwalk types
+  // and draw route polyline for walk/bushwalk types.
+  // Only fly to the POI when focusedSlug changes (not on sheet resize),
+  // so the user can navigate freely (e.g. locate themselves) while a
+  // location is active.
   useEffect(() => {
+    const slugChanged = focusedSlug !== prevFocusedSlugRef.current;
+    const prevSlug = prevFocusedSlugRef.current;
+    prevFocusedSlugRef.current = focusedSlug;
+
+    // Remove active state from previous marker
+    if (prevSlug && slugChanged) {
+      const prevMarker = markersRef.current.get(prevSlug);
+      if (prevMarker) {
+        prevMarker.setZIndexOffset(0);
+        const el = prevMarker.getElement();
+        el?.querySelector(".pin-wrapper")?.classList.remove("active");
+      }
+    }
+
     if (!focusedSlug) {
       // Clear route when detail panel closes
       if (routeLayerRef.current) {
@@ -432,9 +432,17 @@ export default function LocationMap({
       }
       return;
     }
+
+    if (!slugChanged) return;
+
     const map = mapRef.current;
     const marker = markersRef.current.get(focusedSlug);
     if (map && marker) {
+      // Elevate and mark as active
+      marker.setZIndexOffset(10000);
+      const el = marker.getElement();
+      el?.querySelector(".pin-wrapper")?.classList.add("active");
+
       const sh = focusSheetHeight ?? getSheetHeight();
       setViewAboveSheet(map, marker.getLatLng(), 15, sh);
 
