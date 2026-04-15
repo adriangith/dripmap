@@ -47,41 +47,34 @@ test("clicking a map marker opens detail in bottom sheet on mobile", async ({
 
   // Zoom into Australia (where most locations are) via Leaflet API
   await page.evaluate(() => {
-    const container = document.querySelector(".leaflet-container") as any;
+    type LeafletMapLike = { setView: (center: [number, number], zoom: number) => void };
+    const container = document.querySelector(".leaflet-container") as Record<string, unknown> | null;
     if (!container) return;
-    // Leaflet stores the map instance on the DOM element
-    for (const key of Object.keys(container)) {
-      if (key.startsWith("_leaflet")) {
-        const mapInstance = (window as any).L?.Map?._maps;
+
+    let map: LeafletMapLike | null = null;
+    for (const key of Object.getOwnPropertyNames(container)) {
+      const value = container[key];
+      if (
+        value &&
+        typeof value === "object" &&
+        "setView" in value &&
+        typeof (value as { setView?: unknown }).setView === "function"
+      ) {
+        map = value as LeafletMapLike;
         break;
       }
     }
-    // Use leaflet-container's internal reference
-    const mapId = container._leaflet_id;
-    if (mapId != null) {
-      // Access L map through eachLayer hack
-      const L = (window as any).L;
-      if (L) {
-        // Find the map by iterating over all map instances
-        const mapContainer = container;
-        // Leaflet stores map ref directly
-        let map: any = null;
-        for (const key of Object.getOwnPropertyNames(container)) {
-          const val = container[key];
-          if (val && typeof val === "object" && typeof val.setView === "function") {
-            map = val;
-            break;
-          }
-        }
-        if (!map) {
-          // Alternative: access via _leaflet_map
-          map = container._leaflet_map;
-        }
-        if (map) {
-          map.setView([-37.8, 145], 8);
-        }
-      }
+    const fallback = container._leaflet_map;
+    if (
+      !map &&
+      fallback &&
+      typeof fallback === "object" &&
+      "setView" in fallback &&
+      typeof (fallback as { setView?: unknown }).setView === "function"
+    ) {
+      map = fallback as LeafletMapLike;
     }
+    map?.setView([-37.8, 145], 8);
   });
   await page.waitForTimeout(1500);
 
@@ -171,7 +164,8 @@ test("clicking a list card on mobile zooms and pans map to the pin", async ({
 
   // Verify the map zoomed to ~12 and pin is in visible area
   const mapData = await page.evaluate(() => {
-    const map = (window as any).__leafletMap;
+    type LeafletWindow = Window & { __leafletMap?: { getZoom: () => number } };
+    const map = (window as LeafletWindow).__leafletMap;
     if (!map) return null;
     return { zoom: map.getZoom() };
   });

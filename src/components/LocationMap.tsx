@@ -12,6 +12,12 @@ import type { PlaceIndexEntry, PlaceType, Coordinates, OpeningHoursEntry } from 
 import type { ScoredPlace } from "@/lib/constraints";
 import { DAYS, DAY_LETTERS, isOpenOnDay, todayIdx } from "@/lib/openingHours";
 
+declare global {
+  interface Window {
+    __leafletMap?: L.Map;
+  }
+}
+
 /** Normalize route points from either [lat, lng] arrays or {lat, lng} objects (Firestore). */
 function toLatLng(pt: [number, number] | { lat: number; lng: number }): L.LatLngTuple {
   return Array.isArray(pt) ? pt : [pt.lat, pt.lng];
@@ -245,7 +251,7 @@ export default function LocationMap({
 
     mapRef.current = map;
     // Expose for E2E tests
-    (window as any).__leafletMap = map;
+    window.__leafletMap = map;
 
     // Show/hide permanent POI labels based on zoom level
     const LABEL_ZOOM_THRESHOLD = 12;
