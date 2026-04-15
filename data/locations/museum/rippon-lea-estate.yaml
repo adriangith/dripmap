@@ -59,7 +59,7 @@ status:
   site: open
   lastVerified: "2026-04-13"
 openingHours:
-  - days: [wed, thu, fri, sat, sun]
+  - days: [mon, tue, wed, thu, fri, sat, sun]
     open: "10:00"
     close: "17:00"
 details: {}
