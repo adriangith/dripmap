@@ -157,10 +157,16 @@ export const bomProvider: EnrichmentProvider = {
     } catch {
       // Fallback: try FTP via curl (build-time only, not browser)
       try {
-        const { execSync } = await import("child_process");
-        xml = execSync(`curl -s --max-time 15 "${PRECIS_FORECAST_URL}"`, {
-          encoding: "utf-8",
-        });
+        const { spawnSync } = await import("child_process");
+        const result = spawnSync(
+          "curl",
+          ["-s", "--max-time", "15", PRECIS_FORECAST_URL],
+          { encoding: "utf-8" }
+        );
+        if (result.status !== 0 || !result.stdout) {
+          throw new Error(`curl exited with ${result.status}`);
+        }
+        xml = result.stdout;
       } catch {
         console.warn(
           "  ⚠  Could not fetch BOM forecast (both HTTP and FTP failed)"
@@ -206,23 +212,10 @@ export const bomProvider: EnrichmentProvider = {
         uvAlert: p.texts.uv_alert,
       }));
 
-      // Extract warnings from metropolitan area
-      const warnings: string[] = [];
-      for (const area of areas) {
-        if (area.type === "metropolitan" || area.type === "region") {
-          for (const period of area.periods) {
-            if (period.texts.warning_summary_footer) {
-              // This is just the generic footer, skip
-            }
-          }
-        }
-      }
-
       enrichments.push({
         slug: loc.slug,
         forecast,
         forecastArea: station.name,
-        ...(warnings.length > 0 ? { warnings } : {}),
       });
     }
 

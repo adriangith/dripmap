@@ -33,7 +33,7 @@ function nameTokens(name: string): Set<string> {
   );
 }
 
-function nameSimilarity(a: string, b: string): number {
+export function nameSimilarity(a: string, b: string): number {
   const ta = nameTokens(a);
   const tb = nameTokens(b);
   if (ta.size === 0 || tb.size === 0) return 0;

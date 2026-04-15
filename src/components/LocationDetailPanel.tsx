@@ -33,10 +33,17 @@ const DURATION_DISPLAY: Record<Duration, string> = {
 import CostIndicator from "./CostIndicator";
 import SourceAttribution from "./SourceAttribution";
 import EnrichmentSection from "./EnrichmentSection";
+import { useEnrichments } from "@/lib/integrations/use-enrichments";
 import { DAYS, DAY_LABELS, entriesForDay, formatHoursStatus, todayIdx } from "@/lib/openingHours";
 import type { OpeningHoursEntry } from "@/lib/types";
 
-function OpeningHoursSection({ entries }: { entries: OpeningHoursEntry[] }) {
+function OpeningHoursSection({
+  entries,
+  sourceLabel,
+}: {
+  entries: OpeningHoursEntry[];
+  sourceLabel?: string;
+}) {
   const todayIndex = todayIdx();
   const status = formatHoursStatus(entries);
   return (
@@ -56,6 +63,11 @@ function OpeningHoursSection({ entries }: { entries: OpeningHoursEntry[] }) {
           </span>
         )}
       </div>
+      {sourceLabel && (
+        <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">
+          {sourceLabel}
+        </p>
+      )}
       <ul className="text-sm">
         {DAYS.map((d, i) => {
           const ranges = entriesForDay(entries, d);
@@ -227,6 +239,7 @@ export default function LocationDetailPanel({
   const cache = useRef<Map<string, Place>>(new Map());
   const [drivingInfo, setDrivingInfo] = useState<DrivingInfo | null>(null);
   const drivingCache = useRef<Map<string, DrivingInfo>>(new Map());
+  const enrichments = useEnrichments();
 
   useEffect(() => {
     if (!slug) return;
@@ -382,9 +395,22 @@ export default function LocationDetailPanel({
         {location.type === "event" && <EventDetailsSection details={location.details} />}
       </section>
 
-      {location.openingHours && location.openingHours.length > 0 && (
-        <OpeningHoursSection entries={location.openingHours} />
-      )}
+      {(() => {
+        const yamlHours = location.openingHours;
+        const enrichedHours = enrichments[location.slug]?.openingHours;
+        if (yamlHours && yamlHours.length > 0) {
+          return <OpeningHoursSection entries={yamlHours} />;
+        }
+        if (enrichedHours && enrichedHours.length > 0) {
+          return (
+            <OpeningHoursSection
+              entries={enrichedHours}
+              sourceLabel="From OpenStreetMap — verify before visiting"
+            />
+          );
+        }
+        return null;
+      })()}
 
       {/* Enrichment data (weather, extra facilities from APIs) */}
       <EnrichmentSection

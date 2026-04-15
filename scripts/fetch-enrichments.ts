@@ -27,6 +27,11 @@ const DEFAULT_PROVIDERS = ["overpass", "bom"];
 // ── Main ─────────────────────────────────────────────────────
 
 async function main() {
+  if (process.env.SKIP_ENRICHMENTS === "1") {
+    console.log("⏭  SKIP_ENRICHMENTS=1 set — skipping enrichment fetch.");
+    return;
+  }
+
   const providerNames = (process.env.ENRICHMENT_PROVIDERS ?? "")
     .split(",")
     .map((s) => s.trim())

@@ -6,7 +6,10 @@ import {
 import type {
   LocationEnrichment,
 } from "../../src/lib/integrations/enrichment-types";
-import { parseOsmOpeningHours } from "../../src/lib/integrations/providers/overpass";
+import {
+  parseOsmOpeningHours,
+  nameSimilarity,
+} from "../../src/lib/integrations/providers/overpass";
 import { parseBomForecastXml } from "../../src/lib/integrations/providers/bom";
 
 // ── mergeEnrichments ─────────────────────────────────────────
@@ -119,6 +122,48 @@ describe("parseOsmOpeningHours", () => {
 
   it("returns null for unparseable format", () => {
     expect(parseOsmOpeningHours("sunrise-sunset")).toBeNull();
+  });
+});
+
+// ── nameSimilarity ───────────────────────────────────────────
+
+describe("nameSimilarity", () => {
+  it("returns 1 for identical names", () => {
+    expect(nameSimilarity("Sealife Aquarium", "Sealife Aquarium")).toBe(1);
+  });
+
+  it("is case- and punctuation-insensitive", () => {
+    expect(
+      nameSimilarity("Queen Vic Night Market", "queen-vic night market!")
+    ).toBe(1);
+  });
+
+  it("returns a partial score when tokens overlap", () => {
+    // ["sealife", "aquarium"] vs ["sea", "life", "aquarium"] — "sea"/"life" <3 chars filtered
+    // Effectively ["sealife","aquarium"] vs ["aquarium"] → 1/2 = 0.5
+    const s = nameSimilarity("Sealife Aquarium", "Sea Life Aquarium");
+    expect(s).toBeGreaterThan(0);
+    expect(s).toBeLessThan(1);
+  });
+
+  it("drops common stopwords so they don't inflate the score", () => {
+    // "Melbourne" is a stopword — only remaining match is "museum"
+    const s = nameSimilarity("Melbourne Holocaust Museum", "Melbourne Museum");
+    expect(s).toBeGreaterThan(0);
+    expect(s).toBeLessThanOrEqual(0.5);
+  });
+
+  it("returns 0 when names share no substantive tokens", () => {
+    expect(nameSimilarity("Eastern Beach Geelong", "Big W")).toBe(0);
+  });
+
+  it("returns 0 for empty input", () => {
+    expect(nameSimilarity("", "Sealife Aquarium")).toBe(0);
+    expect(nameSimilarity("Foo", "")).toBe(0);
+  });
+
+  it("returns 0 when both sides are only stopwords/short tokens", () => {
+    expect(nameSimilarity("The A An", "Of And")).toBe(0);
   });
 });
 
