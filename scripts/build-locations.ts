@@ -1,7 +1,11 @@
 import * as fs from "fs";
 import * as path from "path";
 import * as yaml from "js-yaml";
-import type { Place, PlaceIndexEntry } from "../src/lib/types";
+import type { Place, PlaceIndexEntry, WalkPlace } from "../src/lib/types";
+
+function isWalkPlace(place: Place): place is WalkPlace {
+  return place.type === "walk" || place.type === "bushwalk";
+}
 
 export function buildIndex(places: Place[]): PlaceIndexEntry[] {
   return places.map((p) => ({
@@ -19,8 +23,8 @@ export function buildIndex(places: Place[]): PlaceIndexEntry[] {
     ...(p.ageSuitability ? { ageSuitability: p.ageSuitability } : {}),
     ...(p.duration ? { duration: p.duration } : {}),
     ...(p.type === "event" ? { recurrence: p.details.recurrence } : {}),
-    ...((p.type === "walk" || p.type === "bushwalk") && (p as any).details?.route
-      ? { route: (p as any).details.route }
+    ...(isWalkPlace(p) && p.details.route
+      ? { route: p.details.route }
       : {}),
     ...(p.fit ? { fit: p.fit } : {}),
     ...(p.source ? { source: p.source } : {}),

@@ -17,24 +17,24 @@ const STALE_MS = 60 * 60 * 1000; // 1 hour
  * returns the static index unchanged.
  */
 export function useExternalEvents(staticIndex: PlaceIndexEntry[]): PlaceIndexEntry[] {
-  const [externalEntries, setExternalEntries] = useState<PlaceIndexEntry[]>([]);
+  const [externalEntries, setExternalEntries] = useState<PlaceIndexEntry[]>(() => {
+    if (typeof window === "undefined") return [];
+    if (!process.env.NEXT_PUBLIC_EXTERNAL_EVENTS_URL) return [];
+    const cachedTs = localStorage.getItem(CACHE_TS_KEY);
+    const cachedData = localStorage.getItem(CACHE_KEY);
+    if (cachedTs && cachedData && Date.now() - Number(cachedTs) < STALE_MS) {
+      try {
+        return JSON.parse(cachedData) as PlaceIndexEntry[];
+      } catch {
+        return [];
+      }
+    }
+    return [];
+  });
 
   useEffect(() => {
     const endpoint = process.env.NEXT_PUBLIC_EXTERNAL_EVENTS_URL;
     if (!endpoint) return;
-
-    // Check localStorage cache
-    const cachedTs = localStorage.getItem(CACHE_TS_KEY);
-    const cachedData = localStorage.getItem(CACHE_KEY);
-
-    if (cachedTs && cachedData && Date.now() - Number(cachedTs) < STALE_MS) {
-      try {
-        setExternalEntries(JSON.parse(cachedData));
-        return;
-      } catch {
-        // Cache corrupt — fall through to fetch
-      }
-    }
 
     let cancelled = false;
 

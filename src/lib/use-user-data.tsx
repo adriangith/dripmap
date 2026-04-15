@@ -53,35 +53,39 @@ function setLocalArray(key: string, arr: string[]) {
   localStorage.setItem(key, JSON.stringify(arr));
 }
 
+function getInitialUserData(): UserData {
+  if (typeof window === "undefined") {
+    return {
+      bookmarks: [],
+      visited: [],
+      preferences: null,
+      onboardingComplete: false,
+    };
+  }
+  const prefs = (() => {
+    try {
+      const raw = localStorage.getItem(LOCAL_PREFS_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch {
+      return null;
+    }
+  })();
+  return {
+    bookmarks: getLocalArray(LOCAL_BOOKMARKS_KEY),
+    visited: getLocalArray(LOCAL_VISITED_KEY),
+    preferences: prefs,
+    onboardingComplete: localStorage.getItem(LOCAL_ONBOARDING_KEY) === "true",
+  };
+}
+
 export function UserDataProvider({ children }: { children: ReactNode }) {
   const { user } = useAuth();
-  const [data, setData] = useState<UserData>({
-    bookmarks: [],
-    visited: [],
-    preferences: null,
-    onboardingComplete: false,
-  });
+  const [data, setData] = useState<UserData>(getInitialUserData);
   const [loading, setLoading] = useState(true);
   const migratedRef = useRef<string | null>(null);
 
-  // Load from localStorage on mount (before auth resolves)
   useEffect(() => {
-    const prefs = (() => {
-      try {
-        const raw = localStorage.getItem(LOCAL_PREFS_KEY);
-        return raw ? JSON.parse(raw) : null;
-      } catch {
-        return null;
-      }
-    })();
-
-    setData({
-      bookmarks: getLocalArray(LOCAL_BOOKMARKS_KEY),
-      visited: getLocalArray(LOCAL_VISITED_KEY),
-      preferences: prefs,
-      onboardingComplete: localStorage.getItem(LOCAL_ONBOARDING_KEY) === "true",
-    });
-    setLoading(false);
+    queueMicrotask(() => setLoading(false));
   }, []);
 
   // When user signs in, subscribe to Firestore + migrate

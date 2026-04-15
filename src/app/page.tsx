@@ -88,13 +88,15 @@ export default function HomePage() {
     // Only apply if sessionStorage has no saved constraints (fresh session)
     if (typeof sessionStorage !== "undefined" && sessionStorage.getItem(CONSTRAINTS_KEY)) return;
     prefsAppliedRef.current = true;
-    setConstraints((prev) => ({
-      ...prev,
-      ...(preferences.distance ? { distance: preferences.distance } : {}),
-      ...(preferences.cost ? { cost: preferences.cost } : {}),
-      ...(preferences.group ? { group: preferences.group } : {}),
-      ...(preferences.duration ? { duration: preferences.duration } : {}),
-    }));
+    queueMicrotask(() => {
+      setConstraints((prev) => ({
+        ...prev,
+        ...(preferences.distance ? { distance: preferences.distance } : {}),
+        ...(preferences.cost ? { cost: preferences.cost } : {}),
+        ...(preferences.group ? { group: preferences.group } : {}),
+        ...(preferences.duration ? { duration: preferences.duration } : {}),
+      }));
+    });
   }, [preferences]);
 
   // Persist filters & constraints to sessionStorage

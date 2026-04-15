@@ -231,8 +231,11 @@ export default function LocationDetailPanel({
     if (!slug) return;
 
     let aborted = false;
-    setLoading(true);
-    setError(null);
+    queueMicrotask(() => {
+      if (aborted) return;
+      setLoading(true);
+      setError(null);
+    });
 
     getLocationDetail(slug)
       .then((data: Place) => {
