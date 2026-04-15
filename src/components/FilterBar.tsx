@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useRef, useEffect, useCallback } from "react";
 import { Search } from "lucide-react";
 import type { Filters, PlaceType, SiteStatus } from "@/lib/types";
 
@@ -42,8 +43,68 @@ export default function FilterBar({
   const hasActiveFilters =
     filters.type || filters.siteStatus || filters.search;
 
+  // Desktop collapse/expand: measure full height, show single row by default
+  const chipsRef = useRef<HTMLDivElement>(null);
+  const [collapsed, setCollapsed] = useState(true);
+  const [collapsedHeight, setCollapsedHeight] = useState<number | null>(null);
+  const [fullHeight, setFullHeight] = useState<number | null>(null);
+
+  const measure = useCallback(() => {
+    const el = chipsRef.current;
+    if (!el || window.innerWidth < 768) return;
+    // Temporarily expand to measure full height
+    el.style.maxHeight = "none";
+    el.style.overflow = "visible";
+    const full = el.scrollHeight;
+    // Measure single-row height (first child's offsetTop + its height gives one row)
+    const firstChip = el.querySelector("button") as HTMLElement | null;
+    const single = firstChip
+      ? firstChip.offsetHeight + parseInt(getComputedStyle(el).paddingTop) * 2
+      : 36;
+    setFullHeight(full);
+    setCollapsedHeight(single);
+    // Restore collapsed state
+    if (collapsed) {
+      el.style.maxHeight = `${single}px`;
+      el.style.overflow = "hidden";
+    } else {
+      el.style.maxHeight = `${full}px`;
+      el.style.overflow = "visible";
+    }
+  }, [collapsed]);
+
+  useEffect(() => {
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, [measure, filters, hasActiveFilters]);
+
+  const handleMouseEnter = useCallback(() => {
+    if (window.innerWidth < 768) return;
+    setCollapsed(false);
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    if (window.innerWidth < 768) return;
+    setCollapsed(true);
+  }, []);
+
+  // Derive inline style for the chips container on desktop
+  const chipsStyle: React.CSSProperties =
+    collapsedHeight !== null && fullHeight !== null
+      ? {
+          maxHeight: collapsed ? `${collapsedHeight}px` : `${fullHeight}px`,
+          overflow: collapsed ? "hidden" : "visible",
+          transition: "max-height 0.2s ease",
+        }
+      : {};
+
   return (
-    <div className="border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+    <div
+      className="border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       {!hideSearch && (
         <div className="flex items-center gap-2 px-3 py-2 border-b border-gray-100 dark:border-gray-800">
           <Search className="w-4 h-4 text-gray-400 dark:text-gray-500 shrink-0" />
@@ -57,7 +118,11 @@ export default function FilterBar({
           />
         </div>
       )}
-      <div className="flex items-center gap-2 px-3 py-2 overflow-x-auto scrollbar-hide md:flex-wrap md:overflow-x-visible">
+      <div
+        ref={chipsRef}
+        className="flex items-center gap-2 px-3 py-2 overflow-x-auto scrollbar-hide md:flex-wrap md:overflow-x-visible"
+        style={chipsStyle}
+      >
         {TYPE_CHIPS.map((chip) => {
           const isActive = filters.type === chip.value;
           return (
