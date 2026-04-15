@@ -28,7 +28,12 @@ function toMinutes(hhmm: string): number {
 }
 
 function dayOfWeek(date: Date): DayOfWeek {
-  return DAYS[(date.getDay() + 6) % 7];
+  return DAYS[todayIdx(date)];
+}
+
+/** Monday-origin weekday index (0 = Mon … 6 = Sun). */
+export function todayIdx(date: Date = new Date()): number {
+  return (date.getDay() + 6) % 7;
 }
 
 function prevDay(day: DayOfWeek): DayOfWeek {

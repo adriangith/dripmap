@@ -313,5 +313,13 @@ describe("validatePlace", () => {
       };
       expect(validatePlace(bad)).toContainEqual(expect.stringContaining("days"));
     });
+
+    it("rejects equal open and close", () => {
+      const bad = {
+        ...validSwim,
+        openingHours: [{ days: ["mon"], open: "09:00", close: "09:00" }],
+      };
+      expect(validatePlace(bad)).toContainEqual(expect.stringContaining("must differ"));
+    });
   });
 });

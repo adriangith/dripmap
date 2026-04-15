@@ -10,7 +10,7 @@ import { Crosshair } from "lucide-react";
 
 import type { PlaceIndexEntry, PlaceType, Coordinates, OpeningHoursEntry } from "@/lib/types";
 import type { ScoredPlace } from "@/lib/constraints";
-import { DAYS, DAY_LETTERS, isOpenOnDay } from "@/lib/openingHours";
+import { DAYS, DAY_LETTERS, isOpenOnDay, todayIdx } from "@/lib/openingHours";
 
 /**
  * Sets the map view so that `latLng` appears centered in the visible area
@@ -73,18 +73,23 @@ const PIN_ICONS: Record<PlaceType, string> = {
 function buildHoursStripHtml(
   entries: OpeningHoursEntry[] | undefined,
   color: string,
-  todayIdx: number,
+  todayIndex: number,
 ): string {
   if (!entries || entries.length === 0) return "";
   const cells = DAYS.map((d, i) => {
     const open = isOpenOnDay(entries, d);
     const classes = ["pin-flag-day"];
     if (open) classes.push("open");
-    if (i === todayIdx) classes.push("today");
-    const style = open ? `style="background:${color};"` : "";
+    if (i === todayIndex) classes.push("today");
+    const style = open ? `style="background:${escapeColor(color)};"` : "";
     return `<span class="${classes.join(" ")}" ${style}>${DAY_LETTERS[d]}</span>`;
   }).join("");
   return `<div class="pin-flag-hours">${cells}</div>`;
+}
+
+/** Whitelist for color values interpolated into inline style attributes. */
+function escapeColor(color: string): string {
+  return /^#[0-9a-fA-F]{3,8}$/.test(color) ? color : "#6b7280";
 }
 
 function createPinIcon(
@@ -96,8 +101,7 @@ function createPinIcon(
 ): L.DivIcon {
   const color = PIN_COLORS[type];
   const svgPaths = PIN_ICONS[type];
-  const todayIdx = (new Date().getDay() + 6) % 7;
-  const hoursHtml = buildHoursStripHtml(openingHours, color, todayIdx);
+  const hoursHtml = buildHoursStripHtml(openingHours, color, todayIdx());
   const labelHtml = name
     ? `<div class="pin-flag"><div class="pin-flag-row"><div class="pin-flag-dot" style="background:${color};"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">${svgPaths}</svg></div><span class="pin-flag-text">${name}</span></div>${hoursHtml}</div>`
     : "";

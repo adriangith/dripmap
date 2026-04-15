@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { isOpenOnDay, isOpenAt, formatHoursStatus, entriesForDay } from "@/lib/openingHours";
+import { isOpenOnDay, isOpenAt, formatHoursStatus, entriesForDay, todayIdx } from "@/lib/openingHours";
 import type { OpeningHoursEntry } from "@/lib/types";
 
 const weekdays: OpeningHoursEntry = {
@@ -75,5 +75,32 @@ describe("openingHours", () => {
   it("entriesForDay filters correctly", () => {
     expect(entriesForDay([weekdays, fridayNight], "fri")).toHaveLength(2);
     expect(entriesForDay([weekdays, fridayNight], "sun")).toHaveLength(0);
+  });
+
+  it("isOpenAt inside the gap before an overnight range opens", () => {
+    const d = new Date(2026, 3, 17, 19, 0); // Fri 19:00, before 20:00 open
+    expect(isOpenAt([fridayNight], d)).toBe(false);
+  });
+
+  it("isOpenAt between the close and next open of an overnight schedule", () => {
+    const d = new Date(2026, 3, 18, 10, 0); // Sat 10:00 — Fri night closed at 02:00, Sat night opens 20:00
+    expect(isOpenAt([fridayNight], d)).toBe(false);
+  });
+
+  it("isOpenAt with multiple ranges on the same day — lunch split", () => {
+    const split: OpeningHoursEntry[] = [
+      { days: ["wed"], open: "11:00", close: "14:00" },
+      { days: ["wed"], open: "17:00", close: "21:00" },
+    ];
+    expect(isOpenAt(split, new Date(2026, 3, 15, 12, 0))).toBe(true);   // lunch
+    expect(isOpenAt(split, new Date(2026, 3, 15, 15, 0))).toBe(false);  // gap
+    expect(isOpenAt(split, new Date(2026, 3, 15, 19, 0))).toBe(true);   // dinner
+    expect(isOpenAt(split, new Date(2026, 3, 15, 22, 0))).toBe(false);  // closed
+  });
+
+  it("todayIdx returns Monday-origin index", () => {
+    expect(todayIdx(new Date(2026, 3, 13))).toBe(0); // Monday
+    expect(todayIdx(new Date(2026, 3, 15))).toBe(2); // Wednesday
+    expect(todayIdx(new Date(2026, 3, 19))).toBe(6); // Sunday
   });
 });

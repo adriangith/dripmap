@@ -32,11 +32,11 @@ const DURATION_DISPLAY: Record<Duration, string> = {
 
 import CostIndicator from "./CostIndicator";
 import SourceAttribution from "./SourceAttribution";
-import { DAYS, DAY_LABELS, entriesForDay, formatHoursStatus } from "@/lib/openingHours";
+import { DAYS, DAY_LABELS, entriesForDay, formatHoursStatus, todayIdx } from "@/lib/openingHours";
 import type { OpeningHoursEntry } from "@/lib/types";
 
 function OpeningHoursSection({ entries }: { entries: OpeningHoursEntry[] }) {
-  const todayIdx = (new Date().getDay() + 6) % 7;
+  const todayIndex = todayIdx();
   const status = formatHoursStatus(entries);
   return (
     <section className="mb-4">
@@ -58,7 +58,7 @@ function OpeningHoursSection({ entries }: { entries: OpeningHoursEntry[] }) {
       <ul className="text-sm">
         {DAYS.map((d, i) => {
           const ranges = entriesForDay(entries, d);
-          const isToday = i === todayIdx;
+          const isToday = i === todayIndex;
           return (
             <li
               key={d}

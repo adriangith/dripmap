@@ -55,11 +55,16 @@ function validateOpeningHours(value: unknown): string[] {
         }
       }
     }
-    if (typeof e.open !== "string" || !TIME_PATTERN.test(e.open)) {
+    const openValid = typeof e.open === "string" && TIME_PATTERN.test(e.open);
+    const closeValid = typeof e.close === "string" && TIME_PATTERN.test(e.close);
+    if (!openValid) {
       errors.push(`${prefix}.open: must be "HH:MM" 24-hour time`);
     }
-    if (typeof e.close !== "string" || !TIME_PATTERN.test(e.close)) {
+    if (!closeValid) {
       errors.push(`${prefix}.close: must be "HH:MM" 24-hour time`);
+    }
+    if (openValid && closeValid && e.open === e.close) {
+      errors.push(`${prefix}: open and close must differ (use 00:00 / 23:59 for all-day)`);
     }
   });
   return errors;
