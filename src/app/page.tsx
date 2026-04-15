@@ -19,6 +19,7 @@ import { DEFAULT_PRIORITY } from "@/lib/types";
 import type { ScoredPlace } from "@/lib/constraints";
 import { useUserData } from "@/lib/use-user-data";
 import { useExternalEvents } from "@/lib/integrations/use-external-events";
+import { getLocationIndex } from "@/lib/locations";
 
 const LocationMap = dynamic(() => import("@/components/LocationMap"), {
   ssr: false,
@@ -113,12 +114,8 @@ export default function HomePage() {
   const listScrollRef = useRef(0);
 
   useEffect(() => {
-    fetch("/generated/locations-index.json")
-      .then((res) => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return res.json();
-      })
-      .then((data: PlaceIndexEntry[]) => setStaticLocations(data))
+    getLocationIndex()
+      .then((data) => setStaticLocations(data))
       .catch(() => {
         setStaticLocations([]);
         setLoadError(true);

@@ -12,6 +12,11 @@ import type { PlaceIndexEntry, PlaceType, Coordinates, OpeningHoursEntry } from 
 import type { ScoredPlace } from "@/lib/constraints";
 import { DAYS, DAY_LETTERS, isOpenOnDay, todayIdx } from "@/lib/openingHours";
 
+/** Normalize route points from either [lat, lng] arrays or {lat, lng} objects (Firestore). */
+function toLatLng(pt: [number, number] | { lat: number; lng: number }): L.LatLngTuple {
+  return Array.isArray(pt) ? pt : [pt.lat, pt.lng];
+}
+
 /**
  * Sets the map view so that `latLng` appears centered in the visible area
  * above the bottom sheet, at the given zoom level.  The adjusted centre is
@@ -419,7 +424,7 @@ export default function LocationMap({
       const loc = locations.find((l) => l.slug === highlightedSlug);
       if (loc && (loc.type === "walk" || loc.type === "bushwalk") && loc.route) {
         const polyline = L.polyline(
-          loc.route.map(([lat, lng]) => [lat, lng] as L.LatLngTuple),
+          loc.route.map(toLatLng),
           { color: PIN_COLORS[loc.type], weight: 4, opacity: 0.7 },
         ).addTo(map);
         hoverRouteLayerRef.current = polyline;
@@ -484,7 +489,7 @@ export default function LocationMap({
       const loc = locations.find((l) => l.slug === focusedSlug);
       if (loc && (loc.type === "walk" || loc.type === "bushwalk") && loc.route) {
         routeLayerRef.current = L.polyline(
-          loc.route.map(([lat, lng]) => [lat, lng] as L.LatLngTuple),
+          loc.route.map(toLatLng),
           { color: PIN_COLORS[loc.type], weight: 4, opacity: 0.7 },
         ).addTo(map);
         // Fit map to route bounds

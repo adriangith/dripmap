@@ -113,7 +113,7 @@ export interface WalkDetails {
   distanceKm: number;
   difficulty: "easy" | "moderate" | "hard";
   terrain: "paved" | "gravel" | "trail" | "mixed";
-  route?: [number, number][];
+  route?: ([number, number] | { lat: number; lng: number })[];
 }
 
 export interface EateryDetails {
@@ -205,7 +205,7 @@ export interface PlaceIndexEntry {
   ageSuitability?: AgeSuitability;
   duration?: Duration;
   recurrence?: Recurrence; // only present for event type
-  route?: [number, number][]; // only present for walk/bushwalk type
+  route?: ([number, number] | { lat: number; lng: number })[]; // only present for walk/bushwalk type
   fit?: FitBlurbs;
   source?: { provider: string; url: string };
   openingHours?: OpeningHoursEntry[];

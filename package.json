@@ -13,6 +13,8 @@
     "test:e2e": "npm run build && playwright test",
     "validate": "npx tsx scripts/validate-locations.ts",
     "build:data": "npx tsx scripts/build-locations.ts",
+    "upload:data": "npx tsx scripts/upload-to-firestore.ts",
+    "deploy:data": "npm run validate && npm run build:data && npm run upload:data",
     "build:schema": "npx tsx scripts/build-schema.ts",
     "prebuild": "npm run build:schema && npm run validate && npm run build:data && npx tsx scripts/fetch-events.ts",
     "dev:network:https": "next dev --hostname 0.0.0.0 --experimental-https --experimental-https-key certificates/localhost-key.pem --experimental-https-cert certificates/localhost.pem"
@@ -43,6 +45,7 @@
     "@vitejs/plugin-react": "^6.0.1",
     "eslint": "^9",
     "eslint-config-next": "16.2.1",
+    "firebase-admin": "^13.8.0",
     "firebase-tools": "^15.14.0",
     "jsdom": "^29.0.1",
     "serve": "^14.2.6",
