@@ -24,6 +24,7 @@ export function buildIndex(places: Place[]): PlaceIndexEntry[] {
       : {}),
     ...(p.fit ? { fit: p.fit } : {}),
     ...(p.source ? { source: p.source } : {}),
+    ...(p.openingHours && p.openingHours.length > 0 ? { openingHours: p.openingHours } : {}),
   }));
 }
 

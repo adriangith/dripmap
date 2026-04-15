@@ -208,6 +208,7 @@ export interface PlaceIndexEntry {
   route?: [number, number][]; // only present for walk/bushwalk type
   fit?: FitBlurbs;
   source?: { provider: string; url: string };
+  openingHours?: OpeningHoursEntry[];
 }
 
 // ── Filters (updated for new types) ──────────────────────────

@@ -111,7 +111,8 @@ body {
   left: 50%;
   transform: translateX(-50%);
   display: none;
-  align-items: center;
+  flex-direction: column;
+  align-items: stretch;
   gap: 0;
   background: white;
   border-radius: 14px;
@@ -120,6 +121,45 @@ body {
   white-space: nowrap;
   cursor: pointer;
   transition: box-shadow 0.2s ease;
+}
+.pin-flag-row {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+.pin-flag-hours {
+  display: flex;
+  justify-content: center;
+  gap: 2px;
+  padding: 0 4px;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease, opacity 0.2s ease, margin-top 0.2s ease;
+}
+.pin-flag:hover .pin-flag-hours,
+.pin-wrapper.active .pin-flag-hours {
+  max-height: 18px;
+  opacity: 1;
+  margin-top: 3px;
+  padding-bottom: 2px;
+}
+.pin-flag-day {
+  width: 14px;
+  text-align: center;
+  font-size: 9px;
+  font-weight: 600;
+  line-height: 14px;
+  color: #9ca3af;
+  background: #f3f4f6;
+  border-radius: 3px;
+}
+.pin-flag-day.open {
+  color: white;
+}
+.pin-flag-day.today {
+  outline: 1.5px solid #1a1a1a;
+  outline-offset: 1px;
 }
 .pin-flag::after {
   content: "";
@@ -189,5 +229,15 @@ body {
   }
   .pin-marker {
     border-color: #334155;
+  }
+  .pin-flag-day {
+    color: #64748b;
+    background: #0f172a;
+  }
+  .pin-flag-day.open {
+    color: white;
+  }
+  .pin-flag-day.today {
+    outline-color: #e2e8f0;
   }
 }

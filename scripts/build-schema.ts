@@ -69,6 +69,8 @@ const fit = {
 
 const openingHoursEntry = {
   type: "object",
+  description:
+    "open and close must differ. When close <= open the range is treated as overnight (close is on the following day). For all-day use 00:00 / 23:59.",
   required: ["days", "open", "close"],
   additionalProperties: false,
   properties: {
