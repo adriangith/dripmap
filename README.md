@@ -49,12 +49,30 @@ npm run dev:network:https      # HTTPS dev server (required for geolocation)
 | `npm run lint` | ESLint |
 | `npm run test` | Vitest unit/integration tests |
 | `npm run test:e2e` | Build + Playwright E2E tests (Chromium) |
+| `npm run upload:data` | Upload location data to Firestore |
+| `npm run deploy:data` | Validate + build JSON + upload to Firestore |
 
 ### Adding a location
 
 1. Create a YAML file in `data/locations/<type>/` (see existing files for schema)
 2. Run `npm run validate` to check it
 3. Run `npm run build` to generate the site
+
+### Data deployment (Firestore)
+
+Location data is uploaded to Firestore separately from the static site build:
+
+```bash
+npm run deploy:data      # validate → build static JSON → upload to Firestore
+```
+
+To upload only (if data is already built):
+
+```bash
+npm run upload:data
+```
+
+Requires the `GOOGLE_APPLICATION_CREDENTIALS` environment variable pointing to a service account key JSON file, or pass `--service-account path/to/key.json`.
 
 ## Tech stack
 

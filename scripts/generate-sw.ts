@@ -19,8 +19,6 @@ async function main() {
       "_next/static/**/*.{js,css,png}",
       // All HTML pages for direct-URL offline access
       "**/*.html",
-      // Location data for offline map use
-      "generated/**/*.json",
       // PWA icons
       "icons/**/*.png",
       "apple-touch-icon.png",
@@ -81,32 +79,6 @@ async function main() {
             maxEntries: 1000,
             maxAgeSeconds: 60 * 60 * 24 * 30,
           },
-          cacheableResponse: {
-            statuses: [0, 200],
-          },
-        },
-      },
-      // Location detail JSON (runtime fallback for non-precached)
-      {
-        urlPattern: /\/generated\/locations\/.*\.json$/i,
-        handler: "CacheFirst",
-        options: {
-          cacheName: "location-details",
-          expiration: {
-            maxEntries: 500,
-            maxAgeSeconds: 60 * 60 * 24 * 7,
-          },
-          cacheableResponse: {
-            statuses: [0, 200],
-          },
-        },
-      },
-      // Location index
-      {
-        urlPattern: /\/generated\/locations-index\.json$/i,
-        handler: "StaleWhileRevalidate",
-        options: {
-          cacheName: "location-index",
           cacheableResponse: {
             statuses: [0, 200],
           },

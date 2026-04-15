@@ -7,6 +7,15 @@ vi.mock("../../src/lib/osrm", () => ({
   formatDriveDistance: vi.fn((m: number) => `${Math.round(m / 1000)} km`),
 }));
 
+vi.mock("../../src/lib/locations", () => ({
+  getLocationIndex: vi.fn(),
+  getLocationDetail: vi.fn(),
+  getLocationIndexStatic: vi.fn(),
+  getLocationDetailStatic: vi.fn(),
+  getAllLocationSlugs: vi.fn(),
+}));
+
+import { getLocationDetail } from "../../src/lib/locations";
 import { fetchDrivingInfo } from "../../src/lib/osrm";
 import type { Place } from "../../src/lib/types";
 
@@ -37,10 +46,7 @@ const mockLocation: Place = {
 };
 
 beforeEach(() => {
-  vi.spyOn(globalThis, "fetch").mockResolvedValue({
-    ok: true,
-    json: async () => mockLocation,
-  } as Response);
+  (getLocationDetail as ReturnType<typeof vi.fn>).mockResolvedValue(mockLocation);
 });
 
 afterEach(() => {
