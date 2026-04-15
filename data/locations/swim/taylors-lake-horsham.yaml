@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=../../../schemas/location.schema.json
 slug: taylors-lake-horsham
 name: Taylors Lake, Horsham
 type: swim

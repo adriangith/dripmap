@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=../../../schemas/location.schema.json
 slug: fairy-pools
 name: Fairy Pools
 type: swim

@@ -49,6 +49,14 @@ export interface PlaceStatus {
   note?: string;
 }
 
+export type DayOfWeek = "mon" | "tue" | "wed" | "thu" | "fri" | "sat" | "sun";
+
+export interface OpeningHoursEntry {
+  days: DayOfWeek[];
+  open: string;   // "HH:MM" 24h
+  close: string;  // "HH:MM" 24h; if <= open, treated as next-day close
+}
+
 // ── Type-specific details ─────────────────────────────────────
 
 export interface SwimDetails {
@@ -150,6 +158,7 @@ interface PlaceBase {
   status: PlaceStatus;
   fit?: FitBlurbs;
   source?: { provider: string; url: string };
+  openingHours?: OpeningHoursEntry[];
 }
 
 export interface SwimPlace extends PlaceBase {
@@ -199,6 +208,7 @@ export interface PlaceIndexEntry {
   route?: [number, number][]; // only present for walk/bushwalk type
   fit?: FitBlurbs;
   source?: { provider: string; url: string };
+  openingHours?: OpeningHoursEntry[];
 }
 
 // ── Filters (updated for new types) ──────────────────────────

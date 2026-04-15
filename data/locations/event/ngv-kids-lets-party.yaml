@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=../../../schemas/location.schema.json
 slug: ngv-kids-lets-party
 name: "Let's Party! Fashion for Kids — NGV"
 type: event

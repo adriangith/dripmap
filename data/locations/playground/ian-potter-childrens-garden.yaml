@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=../../../schemas/location.schema.json
 slug: ian-potter-childrens-garden
 name: Ian Potter Children's Garden
 type: playground

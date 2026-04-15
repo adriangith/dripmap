@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=../../../schemas/location.schema.json
 slug: st-george-river-lorne
 name: St George River Estuary, Lorne
 type: swim

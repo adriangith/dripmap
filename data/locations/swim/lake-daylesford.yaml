@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=../../../schemas/location.schema.json
 slug: lake-daylesford
 name: Lake Daylesford
 type: swim

@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=../../../schemas/location.schema.json
 slug: river-murray-thompsons-beach
 name: River Murray at Thompsons Beach, Cobram
 type: swim

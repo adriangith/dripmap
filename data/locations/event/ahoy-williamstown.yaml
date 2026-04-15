@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=../../../schemas/location.schema.json
 slug: ahoy-williamstown
 name: Ahoy Williamstown — PirateFest
 type: event

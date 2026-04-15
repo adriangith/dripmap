@@ -1,43 +1,15 @@
 import * as fs from "fs";
 import * as path from "path";
 import * as yaml from "js-yaml";
-
-const VALID_TYPES = [
-  "swim", "beach", "event", "bushwalk", "walk", "lookout", "waterfall",
-  "cave", "wildlife", "pool", "cycling", "fishing", "eatery", "playground",
-  "museum",
-];
-const VALID_COST = ["free", "$", "$$", "$$$"];
-const VALID_SEASONS = ["spring", "summer", "fall", "winter"];
-const VALID_SITE_STATUS = ["open", "closed", "seasonal", "unknown"];
-
-// Swim detail enums
-const VALID_DANGER = ["low", "moderate", "high", "extreme"];
-const VALID_WATER_ACCESS = ["open", "closed", "seasonal", "restricted", "unknown"];
-
-// Beach detail enums
-const VALID_BEACH_TYPE = ["surf", "bay", "rock-pools", "river", "estuary"];
-const VALID_DOG_POLICY = ["allowed", "seasonal-offleash", "prohibited"];
-const VALID_WAVE_EXPOSURE = ["sheltered", "moderate", "exposed"];
-const VALID_CROWD_LEVEL = ["quiet", "moderate", "busy"];
-
-// Event detail enums
-const VALID_VENUE_TYPE = ["outdoor", "indoor", "mixed"];
-const VALID_RECURRENCE_TYPE = ["once", "range", "weekly", "annual"];
-const VALID_DURATION = ["quick", "half-day", "full-day"];
-
-// Eatery detail enums
-const VALID_EATERY_CUISINE = [
-  "cafe", "restaurant", "pub", "fish-and-chips", "ice-cream",
-  "bakery", "market", "farm-gate", "pick-your-own", "food-truck",
-];
-const VALID_DIETARY_OPTION = ["vegetarian", "vegan", "gluten-free", "allergy-aware"];
-const VALID_SEATING = ["indoor", "outdoor", "both"];
-const VALID_BOOKING = ["required", "recommended", "walk-in"];
-
-// Bushwalk detail enums
-const VALID_DIFFICULTY = ["easy", "moderate", "hard"];
-const VALID_TERRAIN = ["paved", "gravel", "trail", "mixed"];
+import {
+  VALID_TYPES, VALID_COST, VALID_SEASONS, VALID_SITE_STATUS,
+  VALID_DANGER, VALID_WATER_ACCESS,
+  VALID_BEACH_TYPE, VALID_DOG_POLICY, VALID_WAVE_EXPOSURE, VALID_CROWD_LEVEL,
+  VALID_VENUE_TYPE, VALID_RECURRENCE_TYPE, VALID_DURATION,
+  VALID_EATERY_CUISINE, VALID_DIETARY_OPTION, VALID_SEATING, VALID_BOOKING,
+  VALID_DIFFICULTY, VALID_TERRAIN,
+  VALID_DAYS, TIME_PATTERN,
+} from "./location-enums";
 
 function checkEnum(value: unknown, allowed: string[], fieldName: string): string[] {
   if (typeof value !== "string" || !allowed.includes(value)) {
@@ -56,6 +28,45 @@ function checkArrayEnum(value: unknown, allowed: string[], fieldName: string): s
       errors.push(`${fieldName}: invalid value "${item}", must be one of [${allowed.join(", ")}]`);
     }
   }
+  return errors;
+}
+
+function validateOpeningHours(value: unknown): string[] {
+  const errors: string[] = [];
+  if (!Array.isArray(value)) {
+    return ["openingHours: must be an array"];
+  }
+  if (value.length === 0) {
+    return ["openingHours: must be a non-empty array (omit the field if the POI has no published hours)"];
+  }
+  value.forEach((entry, i) => {
+    const prefix = `openingHours[${i}]`;
+    if (!entry || typeof entry !== "object") {
+      errors.push(`${prefix}: must be an object with { days, open, close }`);
+      return;
+    }
+    const e = entry as Record<string, unknown>;
+    if (!Array.isArray(e.days) || e.days.length === 0) {
+      errors.push(`${prefix}.days: must be a non-empty array`);
+    } else {
+      for (const d of e.days) {
+        if (typeof d !== "string" || !VALID_DAYS.includes(d)) {
+          errors.push(`${prefix}.days: invalid value "${d}", must be one of [${VALID_DAYS.join(", ")}]`);
+        }
+      }
+    }
+    const openValid = typeof e.open === "string" && TIME_PATTERN.test(e.open);
+    const closeValid = typeof e.close === "string" && TIME_PATTERN.test(e.close);
+    if (!openValid) {
+      errors.push(`${prefix}.open: must be "HH:MM" 24-hour time`);
+    }
+    if (!closeValid) {
+      errors.push(`${prefix}.close: must be "HH:MM" 24-hour time`);
+    }
+    if (openValid && closeValid && e.open === e.close) {
+      errors.push(`${prefix}: open and close must differ (use 00:00 / 23:59 for all-day)`);
+    }
+  });
   return errors;
 }
 
@@ -130,6 +141,11 @@ function validateCoreFields(data: Record<string, unknown>): string[] {
     } else if (!/^\d{4}-\d{2}-\d{2}$/.test(status.lastVerified) || isNaN(Date.parse(status.lastVerified))) {
       errors.push("status.lastVerified: must be a valid YYYY-MM-DD date");
     }
+  }
+
+  // openingHours (optional)
+  if (data.openingHours !== undefined) {
+    errors.push(...validateOpeningHours(data.openingHours));
   }
 
   // fit (optional)

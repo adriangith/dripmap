@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=../../../schemas/location.schema.json
 slug: youngs-creek-reservoir
 name: Young's Creek Reservoir, Orbost
 type: swim

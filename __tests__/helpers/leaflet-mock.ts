@@ -10,6 +10,9 @@ export function createLeafletMock() {
     closePopup: vi.fn().mockReturnThis(),
     remove: vi.fn().mockReturnThis(),
     getTooltip: vi.fn().mockReturnValue(null),
+    setZIndexOffset: vi.fn().mockReturnThis(),
+    getElement: vi.fn().mockReturnValue(null),
+    getLatLng: vi.fn().mockReturnValue({ lat: 0, lng: 0 }),
   };
 
   const mockMap = {
