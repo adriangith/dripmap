@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { Search } from "lucide-react";
 import type { Filters, PlaceType, SiteStatus } from "@/lib/types";
 
@@ -43,27 +43,38 @@ export default function FilterBar({
   const hasActiveFilters =
     filters.type || filters.siteStatus || filters.search;
 
-  // Desktop collapse/expand: measure full height, show single row by default
   const chipsRef = useRef<HTMLDivElement>(null);
   const [collapsed, setCollapsed] = useState(true);
   const [collapsedHeight, setCollapsedHeight] = useState<number | null>(null);
   const [fullHeight, setFullHeight] = useState<number | null>(null);
 
+  // When collapsed, promote the active type chip to the front so it's visible
+  const orderedTypeChips = useMemo(() => {
+    if (!collapsed || !filters.type) return TYPE_CHIPS;
+    const active = TYPE_CHIPS.find((c) => c.value === filters.type);
+    if (!active) return TYPE_CHIPS;
+    return [active, ...TYPE_CHIPS.filter((c) => c.value !== filters.type)];
+  }, [collapsed, filters.type]);
+
+  const orderedStatusChips = useMemo(() => {
+    if (!collapsed || !filters.siteStatus) return STATUS_CHIPS;
+    const active = STATUS_CHIPS.find((c) => c.value === filters.siteStatus);
+    if (!active) return STATUS_CHIPS;
+    return [active, ...STATUS_CHIPS.filter((c) => c.value !== filters.siteStatus)];
+  }, [collapsed, filters.siteStatus]);
+
   const measure = useCallback(() => {
     const el = chipsRef.current;
     if (!el || window.innerWidth < 768) return;
-    // Temporarily expand to measure full height
     el.style.maxHeight = "none";
     el.style.overflow = "visible";
     const full = el.scrollHeight;
-    // Measure single-row height (first child's offsetTop + its height gives one row)
     const firstChip = el.querySelector("button") as HTMLElement | null;
     const single = firstChip
       ? firstChip.offsetHeight + parseInt(getComputedStyle(el).paddingTop) * 2
       : 36;
     setFullHeight(full);
     setCollapsedHeight(single);
-    // Restore collapsed state
     if (collapsed) {
       el.style.maxHeight = `${single}px`;
       el.style.overflow = "hidden";
@@ -89,13 +100,12 @@ export default function FilterBar({
     setCollapsed(true);
   }, []);
 
-  // Derive inline style for the chips container on desktop
   const chipsStyle: React.CSSProperties =
     collapsedHeight !== null && fullHeight !== null
       ? {
           maxHeight: collapsed ? `${collapsedHeight}px` : `${fullHeight}px`,
           overflow: collapsed ? "hidden" : "visible",
-          transition: "max-height 0.2s ease",
+          transition: "max-height 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
         }
       : {};
 
@@ -123,7 +133,7 @@ export default function FilterBar({
         className="flex items-center gap-2 px-3 py-2 overflow-x-auto scrollbar-hide md:flex-wrap md:overflow-x-visible"
         style={chipsStyle}
       >
-        {TYPE_CHIPS.map((chip) => {
+        {orderedTypeChips.map((chip) => {
           const isActive = filters.type === chip.value;
           return (
             <button
@@ -148,7 +158,7 @@ export default function FilterBar({
 
         <div className="w-px h-5 bg-gray-200 dark:bg-gray-700 shrink-0" />
 
-        {STATUS_CHIPS.map((chip) => {
+        {orderedStatusChips.map((chip) => {
           const isActive = filters.siteStatus === chip.value;
           return (
             <button
