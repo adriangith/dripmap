@@ -124,9 +124,10 @@ test("filtering by type hides non-matching cards", async ({ page }) => {
   await page.locator('[data-filter-chip="waterfall"]').first().click();
 
   await expect(fairyPoolsCard).not.toBeVisible();
-  const hasCards = (await page.locator("button.rounded-lg:has(h3), a.rounded-lg:has(h3)").count()) > 0;
+  const hasMatchingCards =
+    (await page.locator("button.rounded-lg:has(h3), a.rounded-lg:has(h3)").count()) > 0;
   const noMatches = await page.getByText("No places match your filters.").isVisible();
-  expect(hasCards || noMatches).toBe(true);
+  expect(hasMatchingCards || noMatches).toBe(true);
 });
 
 test("detail page renders mini map without errors", async ({ page }) => {
