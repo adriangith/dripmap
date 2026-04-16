@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef } from "react";
 import Link from "next/link";
 import type { PlaceIndexEntry, Coordinates, Constraints } from "@/lib/types";
 import { haversineDistanceKm, formatDistance } from "@/lib/useCurrentLocation";
@@ -43,10 +44,11 @@ export default function LocationCard({
 
   const photo = location.photo && !location.photo.includes("placeholder") ? location.photo : undefined;
 
+  const cardRef = useRef<HTMLElement>(null);
   const fitBlurb = buildFitParagraph(location.fit, activeConstraints ?? null);
   const hoursStatus = formatHoursStatus(location.openingHours);
 
-  const edgeColor = useEdgeColor(photo);
+  const edgeColor = useEdgeColor(photo, cardRef);
   // Always darken the edge color so white text is readable over the gradient
   const gradientColor = edgeColor ? darkenEdgeColor(edgeColor) : null;
 
@@ -168,6 +170,7 @@ export default function LocationCard({
   if (onCardClick) {
     return (
       <button
+        ref={cardRef as React.RefObject<HTMLButtonElement>}
         className={`${cardClassName} w-full text-left`}
         onClick={() => onCardClick(location.slug)}
         onMouseEnter={() => onHover?.(location.slug)}
@@ -181,6 +184,7 @@ export default function LocationCard({
   // Default: render as link (desktop sidebar)
   return (
     <Link
+      ref={cardRef as React.RefObject<HTMLAnchorElement>}
       href={`/location/${location.slug}`}
       className={cardClassName}
       onMouseEnter={() => onHover?.(location.slug)}

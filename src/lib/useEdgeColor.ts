@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, type RefObject } from "react";
 
 // Simple LRU-ish cache so repeated renders don't re-extract
 const cache = new Map<string, string>();
@@ -9,11 +9,18 @@ const MAX_CACHE = 80;
 /**
  * Extracts the average color from the left edge of an image.
  * Returns an "r, g, b" string for use in rgba(), or null while loading / on failure.
+ *
+ * Pass an optional ref to a container element — extraction is deferred until the
+ * element is within 200px of the viewport (IntersectionObserver with rootMargin).
  */
-export function useEdgeColor(src: string | undefined): string | null {
+export function useEdgeColor(
+  src: string | undefined,
+  containerRef?: RefObject<HTMLElement | null>,
+): string | null {
   // Read from cache synchronously — avoids calling setState in the effect body
   const cached = src ? cache.get(src) ?? null : null;
   const [color, setColor] = useState<string | null>(cached);
+  const [visible, setVisible] = useState(!containerRef);
 
   // Keep color in sync when src changes and we already have a cached value
   const current = cached ?? color;
@@ -21,8 +28,30 @@ export function useEdgeColor(src: string | undefined): string | null {
     setColor(cached);
   }
 
+  // Observe visibility when a container ref is provided
   useEffect(() => {
-    if (!src || cache.has(src)) return;
+    if (!containerRef) {
+      setVisible(true);
+      return;
+    }
+    const el = containerRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "200px" },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [containerRef]);
+
+  useEffect(() => {
+    if (!src || !visible || cache.has(src)) return;
 
     let cancelled = false;
     const img = new Image();
@@ -82,7 +111,7 @@ export function useEdgeColor(src: string | undefined): string | null {
     return () => {
       cancelled = true;
     };
-  }, [src]);
+  }, [src, visible]);
 
   return current;
 }
