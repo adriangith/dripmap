@@ -101,8 +101,8 @@ export default function LocationCard({
   );
 
   const cardContent = photo ? (
-    // Full-bleed photo card
-    <div className="relative w-full h-32">
+    // Full-bleed photo card — content-sized, image fills as background
+    <div className="relative w-full">
       <Image
         src={photo}
         alt=""
@@ -111,8 +111,8 @@ export default function LocationCard({
         sizes="(max-width: 768px) 100vw, 400px"
       />
       <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/20 via-40% to-black/70" />
-      <div className="absolute inset-0 flex flex-col justify-end p-3 gap-0.5">
-        <div className="flex items-end justify-between gap-2">
+      <div className="relative p-3 pt-1.5">
+        <div className="flex items-start justify-between gap-2 mb-1">
           <h3 className="font-semibold text-white truncate text-sm drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]">{location.name}</h3>
           <div className="shrink-0">
             <StatusBadge status={location.status.site} />
