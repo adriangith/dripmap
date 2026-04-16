@@ -1,7 +1,10 @@
+"use client";
+
 import Link from "next/link";
 import type { PlaceIndexEntry, Coordinates, Constraints } from "@/lib/types";
 import { haversineDistanceKm, formatDistance } from "@/lib/useCurrentLocation";
 import { buildFitParagraph } from "@/lib/fit";
+import { useEdgeColor } from "@/lib/useEdgeColor";
 import TypeBadge from "./TypeBadge";
 import StatusBadge from "./StatusBadge";
 import CostIndicator from "./CostIndicator";
@@ -43,6 +46,8 @@ export default function LocationCard({
 
   const fitBlurb = buildFitParagraph(location.fit, activeConstraints ?? null);
   const hoursStatus = formatHoursStatus(location.openingHours);
+
+  const edgeColor = useEdgeColor(photo);
 
   const cardClassName = `block rounded-lg border overflow-hidden transition-all duration-100 active:scale-[0.98] active:shadow-none ${
     isHighlighted
@@ -101,16 +106,28 @@ export default function LocationCard({
   );
 
   const cardContent = photo ? (
-    // Full-bleed photo card — content-sized, image fills as background
+    // Full-bleed photo card — image offset right, edge-color gradient on left
     <div className="relative w-full">
       <Image
         src={photo}
         alt=""
         fill
-        className="object-cover brightness-90 saturate-[0.85]"
+        className="object-cover object-right brightness-90 saturate-[0.85]"
         sizes="(max-width: 768px) 100vw, 400px"
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/20 via-40% to-black/70" />
+      {/* Left-to-right gradient using extracted edge color, falling back to dark */}
+      <div
+        className="absolute inset-0"
+        style={
+          edgeColor
+            ? {
+                background: `linear-gradient(to right, rgba(${edgeColor}, 0.95) 0%, rgba(${edgeColor}, 0.75) 35%, rgba(${edgeColor}, 0.25) 65%, transparent 100%)`,
+              }
+            : {
+                background: "linear-gradient(to right, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.45) 40%, transparent 100%)",
+              }
+        }
+      />
       <div className="relative p-3 pt-1.5">
         <div className="flex items-start justify-between gap-2 mb-1">
           <h3 className="font-semibold text-white truncate text-sm drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]">{location.name}</h3>
