@@ -40,6 +40,16 @@ test("hovering a map marker highlights the matching sidebar card", async ({
   ).toBeVisible({ timeout: 10_000 });
   await page.locator(".leaflet-marker-icon, .marker-cluster").first().waitFor({ timeout: 10_000 });
 
+  // Zoom into Victoria at level 13 so markers uncluster into individual icons
+  await page.evaluate(() => {
+    type MapLike = { setView: (center: [number, number], zoom: number) => void };
+    type LeafletWindow = Window & { __leafletMap?: MapLike };
+    const map = (window as LeafletWindow).__leafletMap;
+    if (map) map.setView([-37.92, 145.31], 13);
+  });
+  // Wait for individual (non-cluster) marker icons to appear
+  await expect(page.locator(".leaflet-marker-icon").first()).toBeVisible({ timeout: 10_000 });
+
   // Grab the first marker actually in-viewport and hover it
   const hovered = await page.evaluate(() => {
     const icons = document.querySelectorAll<HTMLElement>(".leaflet-marker-icon");
@@ -178,13 +188,26 @@ test("clicking a list card on mobile zooms and pans map to the pin", async ({
   // Wait for markers to load
   await page.waitForSelector(".leaflet-marker-icon", { timeout: 10_000 });
 
-  // Tap the handle once to cycle from peek → half, revealing the list
+  // Tap the handle once to cycle from peek → half, revealing the list.
+  // Use page.mouse directly — handle.click() doesn't always dispatch mousedown
+  // to the element before window mouseup, which the BottomSheet tap handler needs.
   const handle = page.locator(".rounded-t-2xl .cursor-grab").first();
-  await handle.click();
-  await page.waitForTimeout(600);
+  const handleBox = await handle.boundingBox();
+  expect(handleBox).toBeTruthy();
+  const hx = handleBox!.x + handleBox!.width / 2;
+  const hy = handleBox!.y + handleBox!.height / 2;
+  await page.mouse.move(hx, hy);
+  await page.mouse.down();
+  await page.mouse.up();
+
+  // Wait for the sheet spring animation to expand past half-height
+  await page.waitForFunction(() => {
+    const sheet = document.querySelector(".rounded-t-2xl") as HTMLElement | null;
+    return sheet ? parseInt(sheet.style.height || "0") > 200 : false;
+  }, { timeout: 5_000 });
 
   // Find a card button (mobile renders cards as buttons) and click it
-  const card = page.locator("button.rounded-lg").first();
+  const card = page.locator(".rounded-t-2xl .overflow-y-auto").locator("button.rounded-lg").first();
   await expect(card).toBeVisible({ timeout: 5_000 });
   await card.click();
 
@@ -192,10 +215,14 @@ test("clicking a list card on mobile zooms and pans map to the pin", async ({
   const sheetBackButton = page.locator(".rounded-t-2xl").getByRole("button", { name: /back to list/i });
   await expect(sheetBackButton).toBeVisible({ timeout: 5_000 });
 
-  // Wait for pan animation to settle
-  await page.waitForTimeout(500);
+  // Wait for the map flyTo animation to complete (target zoom: 15, duration: 0.8s)
+  await page.waitForFunction(() => {
+    type LeafletWindow = Window & { __leafletMap?: { getZoom: () => number } };
+    const map = (window as LeafletWindow).__leafletMap;
+    return map ? map.getZoom() >= 14 : false;
+  }, { timeout: 5_000 });
 
-  // Verify the map zoomed to ~12 and pin is in visible area
+  // Verify the map has zoomed to the detail view level
   const mapData = await page.evaluate(() => {
     type LeafletWindow = Window & { __leafletMap?: { getZoom: () => number } };
     const map = (window as LeafletWindow).__leafletMap;
@@ -204,8 +231,7 @@ test("clicking a list card on mobile zooms and pans map to the pin", async ({
   });
 
   expect(mapData).toBeTruthy();
-  expect(mapData!.zoom).toBeGreaterThanOrEqual(11);
-  expect(mapData!.zoom).toBeLessThanOrEqual(13);
+  expect(mapData!.zoom).toBeGreaterThanOrEqual(14);
 });
 
 test("locate button is visible and clickable above the bottom sheet on mobile", async ({
