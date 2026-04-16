@@ -134,10 +134,10 @@ export default function LocationCard({
         style={
           gradientColor
             ? {
-                background: `linear-gradient(to right, rgba(${gradientColor}, 1) 10%, transparent 60%)`,
+                background: `linear-gradient(to right, rgb(${gradientColor}) 35%, transparent 80%)`,
               }
             : {
-                background: "linear-gradient(to right, rgba(0,0,0,1) 10%, transparent 60%)",
+                background: "linear-gradient(to right, rgb(0,0,0) 35%, transparent 80%)",
               }
         }
       />
