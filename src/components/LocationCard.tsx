@@ -9,7 +9,6 @@ import TypeBadge from "./TypeBadge";
 import StatusBadge from "./StatusBadge";
 import CostIndicator from "./CostIndicator";
 import SourceAttribution from "./SourceAttribution";
-import Image from "next/image";
 import { formatHoursStatus } from "@/lib/openingHours";
 
 interface LocationCardProps {
@@ -108,13 +107,14 @@ export default function LocationCard({
   const cardContent = photo ? (
     // Full-bleed photo card — image offset right, edge-color gradient on left
     <div className="relative w-full">
-      <Image
+      {/* Plain img for full control over object-position (unoptimized images anyway) */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
         src={photo}
         alt=""
-        fill
-        className="brightness-90 saturate-[0.85]"
-        style={{ objectFit: "cover", objectPosition: "65% center" }}
-        sizes="(max-width: 768px) 100vw, 400px"
+        loading="lazy"
+        className="absolute inset-0 w-full h-full object-cover brightness-90 saturate-[0.85]"
+        style={{ objectPosition: "65% center" }}
       />
       {/* Left-to-right gradient using extracted edge color, falling back to dark */}
       <div
