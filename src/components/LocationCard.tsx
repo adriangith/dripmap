@@ -58,11 +58,11 @@ export default function LocationCard({
 
   // Shared bottom row: highlights / fit / tags
   const bottomRow = fitBlurb ? (
-    <p className={`text-sm mt-1.5 line-clamp-2 ${photo ? "max-w-[65%] text-white/90 drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]" : "text-emerald-700 dark:text-emerald-400"}`}>
+    <p className={`text-sm mt-1.5 ${photo ? "max-w-[65%] text-white/90 drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]" : "line-clamp-2 text-emerald-700 dark:text-emerald-400"}`}>
       {fitBlurb}
     </p>
   ) : location.highlights.length > 0 ? (
-    <p className={`text-sm mt-1.5 line-clamp-1 ${photo ? "max-w-[65%] text-white/80 drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]" : "text-gray-600 dark:text-gray-400"}`}>
+    <p className={`text-sm mt-1.5 ${photo ? "max-w-[65%] text-white/80 drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]" : "line-clamp-1 text-gray-600 dark:text-gray-400"}`}>
       {location.highlights[0]}
     </p>
   ) : location.tags.length > 0 ? (
