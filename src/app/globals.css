@@ -161,6 +161,13 @@ body {
   outline: 1.5px solid #1a1a1a;
   outline-offset: 1px;
 }
+/* Subtle visual distinction for OSM-sourced hours */
+.pin-flag-hours.enriched .pin-flag-day {
+  opacity: 0.65;
+}
+.pin-flag-hours.enriched .pin-flag-day.open {
+  opacity: 0.75;
+}
 .pin-flag::after {
   content: "";
   position: absolute;

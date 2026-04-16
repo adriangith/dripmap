@@ -10,6 +10,7 @@ import { Crosshair } from "lucide-react";
 
 import type { PlaceIndexEntry, PlaceType, Coordinates, OpeningHoursEntry } from "@/lib/types";
 import type { ScoredPlace } from "@/lib/constraints";
+import { useEnrichments } from "@/lib/integrations/use-enrichments";
 import { DAYS, DAY_LETTERS, isOpenOnDay, todayIdx } from "@/lib/openingHours";
 
 declare global {
@@ -85,8 +86,10 @@ function buildHoursStripHtml(
   entries: OpeningHoursEntry[] | undefined,
   color: string,
   todayIndex: number,
+  isEnriched = false,
 ): string {
   if (!entries || entries.length === 0) return "";
+  const enrichedClass = isEnriched ? " enriched" : "";
   const cells = DAYS.map((d, i) => {
     const open = isOpenOnDay(entries, d);
     const classes = ["pin-flag-day"];
@@ -95,7 +98,7 @@ function buildHoursStripHtml(
     const style = open ? `style="background:${escapeColor(color)};"` : "";
     return `<span class="${classes.join(" ")}" ${style}>${DAY_LETTERS[d]}</span>`;
   }).join("");
-  return `<div class="pin-flag-hours">${cells}</div>`;
+  return `<div class="pin-flag-hours${enrichedClass}">${cells}</div>`;
 }
 
 /** Whitelist for color values interpolated into inline style attributes. */
@@ -109,10 +112,14 @@ function createPinIcon(
   name?: string,
   slug?: string,
   openingHours?: OpeningHoursEntry[],
+  enrichedHours?: OpeningHoursEntry[],
 ): L.DivIcon {
   const color = PIN_COLORS[type];
   const svgPaths = PIN_ICONS[type];
-  const hoursHtml = buildHoursStripHtml(openingHours, color, todayIdx());
+  const hasYamlHours = openingHours && openingHours.length > 0;
+  const hours = hasYamlHours ? openingHours : enrichedHours;
+  const isEnriched = !hasYamlHours && !!enrichedHours?.length;
+  const hoursHtml = buildHoursStripHtml(hours, color, todayIdx(), isEnriched);
   const labelHtml = name
     ? `<div class="pin-flag"><div class="pin-flag-row"><div class="pin-flag-dot" style="background:${color};"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">${svgPaths}</svg></div><span class="pin-flag-text">${name}</span></div>${hoursHtml}</div>`
     : "";
@@ -195,6 +202,7 @@ export default function LocationMap({
   const [locating, setLocating] = useState(false);
   const [locateError, setLocateError] = useState<string | null>(null);
   const prevFocusedSlugRef = useRef<string | null | undefined>(null);
+  const enrichments = useEnrichments();
 
   // Initialize map
   useEffect(() => {
@@ -361,7 +369,7 @@ export default function LocationMap({
       }
 
       const marker = L.marker([loc.coordinates.lat, loc.coordinates.lng], {
-        icon: createPinIcon(loc.type, pinOpacity, loc.name, loc.slug, loc.openingHours),
+        icon: createPinIcon(loc.type, pinOpacity, loc.name, loc.slug, loc.openingHours, enrichments[loc.slug]?.openingHours),
       });
 
       if (clusterGroup) clusterGroup.addLayer(marker);
@@ -417,7 +425,7 @@ export default function LocationMap({
         maxZoom: 10,
       });
     }
-  }, [locations, onMarkerClick, onMarkerHover]);
+  }, [locations, enrichments, onMarkerClick, onMarkerHover]);
 
   // Highlight effect — draw route polyline for walks on hover
   useEffect(() => {
