@@ -192,6 +192,7 @@ test("clicking a list card on mobile zooms and pans map to the pin", async ({
   // Use page.mouse directly — handle.click() doesn't always dispatch mousedown
   // to the element before window mouseup, which the BottomSheet tap handler needs.
   const handle = page.locator(".rounded-t-2xl .cursor-grab").first();
+  await expect(handle).toBeVisible({ timeout: 5_000 });
   const handleBox = await handle.boundingBox();
   expect(handleBox).toBeTruthy();
   const hx = handleBox!.x + handleBox!.width / 2;
@@ -215,14 +216,15 @@ test("clicking a list card on mobile zooms and pans map to the pin", async ({
   const sheetBackButton = page.locator(".rounded-t-2xl").getByRole("button", { name: /back to list/i });
   await expect(sheetBackButton).toBeVisible({ timeout: 5_000 });
 
-  // Wait for the map flyTo animation to complete (target zoom: 15, duration: 0.8s)
+  // Wait for the map flyTo animation to complete (target zoom: 15 — see
+  // setViewAboveSheet in LocationMap.tsx; duration: 0.8s)
   await page.waitForFunction(() => {
     type LeafletWindow = Window & { __leafletMap?: { getZoom: () => number } };
     const map = (window as LeafletWindow).__leafletMap;
     return map ? map.getZoom() >= 14 : false;
   }, { timeout: 5_000 });
 
-  // Verify the map has zoomed to the detail view level
+  // Verify the map has zoomed to the detail view level (target: 15)
   const mapData = await page.evaluate(() => {
     type LeafletWindow = Window & { __leafletMap?: { getZoom: () => number } };
     const map = (window as LeafletWindow).__leafletMap;
