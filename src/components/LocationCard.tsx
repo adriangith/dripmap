@@ -105,16 +105,14 @@ export default function LocationCard({
   );
 
   const cardContent = photo ? (
-    // Full-bleed photo card — image offset right, edge-color gradient on left
+    // Full-bleed photo card with edge-color gradient on left
     <div className="relative w-full">
-      {/* Plain img for full control over object-position (unoptimized images anyway) */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={photo}
         alt=""
         loading="lazy"
         className="absolute inset-0 w-full h-full object-cover brightness-90 saturate-[0.85]"
-        style={{ objectPosition: "65% center" }}
       />
       {/* Left-to-right gradient using extracted edge color, falling back to dark */}
       <div
