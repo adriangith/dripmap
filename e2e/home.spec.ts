@@ -5,17 +5,20 @@ test.beforeEach(async ({ context }) => {
   await bypassOnboarding(context);
 });
 
-test("clicking a location card navigates to the detail page", async ({
+test("clicking a location card opens inline detail on desktop", async ({
   page,
 }) => {
   await page.goto("/");
-  const card = page.getByRole("link", { name: /Fairy Pools/ }).first();
-  await expect(card).toBeVisible();
+  const sidebar = page.locator('[data-testid="location-sidebar"]');
+  // Wait for the list to load — sidebar cards render as buttons, not links
+  const card = sidebar.getByRole("button", { name: /Fairy Pools/ }).first();
+  await expect(card).toBeVisible({ timeout: 10_000 });
   await card.click();
-  await expect(page).toHaveURL(/\/location\/fairy-pools/);
+  // Detail opens inline in the sidebar — URL stays at /
+  await expect(page).toHaveURL(/\/$/);
   await expect(
-    page.getByRole("heading", { name: "Fairy Pools" })
-  ).toBeVisible();
+    sidebar.getByRole("heading", { name: "Fairy Pools" })
+  ).toBeVisible({ timeout: 5_000 });
 });
 
 test("detail page has a back link to the map", async ({ page }) => {
@@ -30,13 +33,24 @@ test("hovering a map marker opens a popup with the location name", async ({
   page,
 }) => {
   await page.goto("/");
-  // Filter to waterfall type using chip button
-  await page.locator('[data-filter-chip="waterfall"]').first().click();
-  const marker = page.locator(".leaflet-marker-icon").first();
-  await expect(marker).toBeVisible({ timeout: 10_000 });
-  await marker.hover({ force: true });
+  // Wait for markers to be in the DOM, then ensure one is in-viewport
+  await page.locator(".leaflet-marker-icon, .marker-cluster").first().waitFor({ timeout: 10_000 });
+  // Grab the first marker that's actually in the visible viewport
+  const marker = await page.evaluateHandle(() => {
+    const icons = document.querySelectorAll<HTMLElement>(".leaflet-marker-icon");
+    for (const icon of icons) {
+      const r = icon.getBoundingClientRect();
+      if (r.width > 0 && r.height > 0 && r.top >= 0 && r.left >= 0 &&
+          r.bottom <= window.innerHeight && r.right <= window.innerWidth) {
+        return icon;
+      }
+    }
+    return null;
+  });
+  expect(marker.asElement()).not.toBeNull();
+  await (marker.asElement() as import("@playwright/test").ElementHandle).hover({ force: true });
   const popup = page.locator(".leaflet-popup-content");
-  await expect(popup).toBeVisible();
+  await expect(popup).toBeVisible({ timeout: 5_000 });
   await expect(popup).toHaveText(/.+/);
 });
 
@@ -50,7 +64,7 @@ test("clicking a map marker opens detail in bottom sheet on mobile", async ({
   const markers = page.locator(".leaflet-marker-icon");
   await expect(markers.first()).toBeVisible({ timeout: 10_000 });
 
-  // Zoom into Australia (where most locations are) via Leaflet API
+  // Zoom into Victoria (where most locations are) via Leaflet API
   await page.evaluate(() => {
     type LeafletMapLike = { setView: (center: [number, number], zoom: number) => void };
     const container = document.querySelector(".leaflet-container") as Record<string, unknown> | null;
@@ -97,21 +111,27 @@ test("clicking a map marker opens detail in bottom sheet on mobile", async ({
   });
   expect(clicked).toBe(true);
 
-  // Should show detail panel with "Back to list" in the bottom sheet
-  const backButton = page.getByText("Back to list");
+  // Should show detail panel with "Back to list" in the bottom sheet header
+  const backButton = page.locator("button").filter({ hasText: "Back to list" }).first();
   await expect(backButton).toBeVisible({ timeout: 5_000 });
   await expect(page).toHaveURL(/\/$/);
 });
 
 test("filtering by type hides non-matching cards", async ({ page }) => {
   await page.goto("/");
-  await expect(page.getByText("Fairy Pools").first()).toBeVisible();
+  const sidebar = page.locator('[data-testid="location-sidebar"]');
+  // Wait for the sidebar list to populate
+  await expect(sidebar.getByRole("button", { name: /Fairy Pools/ }).first()).toBeVisible({
+    timeout: 10_000,
+  });
 
   // Click the waterfall chip
   await page.locator('[data-filter-chip="waterfall"]').first().click();
 
-  await expect(page.getByText("Niagara Falls").first()).toBeVisible();
-  await expect(page.getByText("Fairy Pools")).not.toBeVisible();
+  await expect(sidebar.getByRole("button", { name: /Niagara Falls/ }).first()).toBeVisible({
+    timeout: 5_000,
+  });
+  await expect(sidebar.getByRole("button", { name: /Fairy Pools/ })).toHaveCount(0);
 });
 
 test("detail page renders mini map without errors", async ({ page }) => {
@@ -161,8 +181,9 @@ test("clicking a list card on mobile zooms and pans map to the pin", async ({
   await expect(card).toBeVisible({ timeout: 5_000 });
   await card.click();
 
-  // Wait for the detail panel to appear
-  await expect(page.getByText("Back to list")).toBeVisible({ timeout: 5_000 });
+  // Wait for the detail panel header to appear — "Back to list" is in the sheet header
+  const backButton = page.locator("button").filter({ hasText: "Back to list" }).first();
+  await expect(backButton).toBeVisible({ timeout: 5_000 });
 
   // Wait for pan animation to settle
   await page.waitForTimeout(500);

@@ -6,6 +6,13 @@ test.describe("Offline / PWA", () => {
     await bypassOnboarding(context);
   });
 
+  // Scope "Fairy Pools" checks to the sidebar so we don't match hidden map-pin labels
+  const fairyPoolsCard = (page: import("@playwright/test").Page) =>
+    page
+      .locator('[data-testid="location-sidebar"]')
+      .getByRole("button", { name: /Fairy Pools/ })
+      .first();
+
   test("service worker registers and activates", async ({ page }) => {
     await page.goto("/");
 
@@ -43,9 +50,7 @@ test.describe("Offline / PWA", () => {
 
     // Reload so the active SW serves precached assets
     await page.reload({ waitUntil: "domcontentloaded" });
-    await expect(page.getByText("Fairy Pools").first()).toBeVisible({
-      timeout: 10_000,
-    });
+    await expect(fairyPoolsCard(page)).toBeVisible({ timeout: 10_000 });
 
     // Go offline
     await context.setOffline(true);
@@ -57,9 +62,7 @@ test.describe("Offline / PWA", () => {
     await expect(page.locator("body")).not.toHaveText(/is not available/i);
     await expect(page.locator("body")).toContainText(/.+/);
     // Check for location cards which are present on the home page
-    await expect(page.getByText("Fairy Pools").first()).toBeVisible({
-      timeout: 10_000,
-    });
+    await expect(fairyPoolsCard(page)).toBeVisible({ timeout: 10_000 });
   });
 
   test("location cards are visible offline", async ({ context, page }) => {
@@ -69,15 +72,11 @@ test.describe("Offline / PWA", () => {
     await page.evaluate(async () => {
       await navigator.serviceWorker.ready;
     });
-    await expect(page.getByText("Fairy Pools").first()).toBeVisible({
-      timeout: 10_000,
-    });
+    await expect(fairyPoolsCard(page)).toBeVisible({ timeout: 10_000 });
 
     // Reload to let SW take control and cache everything
     await page.reload({ waitUntil: "domcontentloaded" });
-    await expect(page.getByText("Fairy Pools").first()).toBeVisible({
-      timeout: 10_000,
-    });
+    await expect(fairyPoolsCard(page)).toBeVisible({ timeout: 10_000 });
 
     // Go offline
     await context.setOffline(true);
@@ -85,9 +84,7 @@ test.describe("Offline / PWA", () => {
     await page.reload({ waitUntil: "domcontentloaded" });
 
     // Location cards should still render from cache
-    await expect(page.getByText("Fairy Pools").first()).toBeVisible({
-      timeout: 10_000,
-    });
+    await expect(fairyPoolsCard(page)).toBeVisible({ timeout: 10_000 });
   });
 
   test("detail page available offline after prior visit", async ({
@@ -108,9 +105,7 @@ test.describe("Offline / PWA", () => {
 
     // Go back to home — still online
     await page.goto("/");
-    await expect(page.getByText("Fairy Pools").first()).toBeVisible({
-      timeout: 10_000,
-    });
+    await expect(fairyPoolsCard(page)).toBeVisible({ timeout: 10_000 });
 
     // Go offline
     await context.setOffline(true);

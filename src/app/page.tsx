@@ -247,7 +247,7 @@ export default function HomePage() {
         </div>
 
         {/* Desktop sidebar (hidden on mobile) */}
-        <div className="hidden lg:flex lg:flex-col lg:w-96 lg:border-l lg:border-gray-200 dark:lg:border-gray-700 dark:bg-gray-900">
+        <div data-testid="location-sidebar" className="hidden lg:flex lg:flex-col lg:w-96 lg:border-l lg:border-gray-200 dark:lg:border-gray-700 dark:bg-gray-900">
           {detailSlug && sheetView === "detail" ? (
             <>
               <div className="p-3 border-b border-gray-200 dark:border-gray-700 flex items-center gap-2">
