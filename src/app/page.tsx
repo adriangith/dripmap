@@ -247,7 +247,7 @@ export default function HomePage() {
         </div>
 
         {/* Desktop sidebar (hidden on mobile) */}
-        <div className="hidden lg:flex lg:flex-col lg:w-96 lg:border-l lg:border-gray-200 dark:lg:border-gray-700 dark:bg-gray-900">
+        <div data-testid="location-sidebar" className="hidden lg:flex lg:flex-col lg:w-96 lg:border-l lg:border-gray-200 dark:lg:border-gray-700 dark:bg-gray-900">
           {detailSlug && sheetView === "detail" ? (
             <>
               <div className="p-3 border-b border-gray-200 dark:border-gray-700 flex items-center gap-2">
@@ -305,7 +305,7 @@ export default function HomePage() {
         header={
           sheetView === "detail" && detailSlug ? (
             <div className="flex items-center gap-2 px-3 py-1">
-              <button onClick={handleBackToList} className="shrink-0 p-1">
+              <button onClick={handleBackToList} className="shrink-0 p-1" aria-label="Back to list">
                 <ArrowLeft className="w-4 h-4 text-gray-500 dark:text-gray-400" />
               </button>
               <span className="text-sm font-semibold text-gray-900 dark:text-gray-100 truncate">
