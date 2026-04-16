@@ -48,6 +48,18 @@ export default function LocationCard({
 
   const edgeColor = useEdgeColor(photo);
 
+  // Determine if text over the gradient should be dark based on edge color luminance
+  const isDarkBg = (() => {
+    if (!edgeColor) return true; // fallback gradient is black
+    const [r, g, b] = edgeColor.split(",").map(Number);
+    // Perceived brightness (ITU-R BT.601)
+    return 0.299 * r + 0.587 * g + 0.114 * b < 140;
+  })();
+  const photoTextColor = isDarkBg ? "text-white" : "text-gray-900";
+  const photoTextMuted = isDarkBg ? "text-white/80" : "text-gray-700";
+  const photoTextFaint = isDarkBg ? "text-white/70" : "text-gray-600";
+  const photoShadow = isDarkBg ? "drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]" : "drop-shadow-[0_1px_2px_rgba(255,255,255,0.3)]";
+
   const cardClassName = `block rounded-lg border overflow-hidden transition-all duration-100 active:scale-[0.98] active:shadow-none ${
     isHighlighted
       ? "border-blue-400 bg-blue-50 dark:bg-blue-950 shadow-md"
@@ -56,11 +68,11 @@ export default function LocationCard({
 
   // Shared bottom row: highlights / fit / tags
   const bottomRow = fitBlurb ? (
-    <p className={`text-sm mt-1.5 line-clamp-2 ${photo ? "text-white/90 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]" : "text-emerald-700 dark:text-emerald-400"}`}>
+    <p className={`text-sm mt-1.5 line-clamp-2 ${photo ? `${photoTextColor}/90 ${photoShadow}` : "text-emerald-700 dark:text-emerald-400"}`}>
       {fitBlurb}
     </p>
   ) : location.highlights.length > 0 ? (
-    <p className={`text-sm mt-1.5 line-clamp-1 ${photo ? "text-white/80 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]" : "text-gray-600 dark:text-gray-400"}`}>
+    <p className={`text-sm mt-1.5 line-clamp-1 ${photo ? `${photoTextMuted} ${photoShadow}` : "text-gray-600 dark:text-gray-400"}`}>
       {location.highlights[0]}
     </p>
   ) : location.tags.length > 0 ? (
@@ -68,7 +80,7 @@ export default function LocationCard({
       {location.tags.slice(0, 3).map((tag) => (
         <span
           key={tag}
-          className={`px-1.5 py-0.5 text-xs rounded ${photo ? "bg-white/20 text-white backdrop-blur-sm" : "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300"}`}
+          className={`px-1.5 py-0.5 text-xs rounded ${photo ? `${isDarkBg ? "bg-white/20 text-white" : "bg-black/10 text-gray-800"} backdrop-blur-sm` : "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300"}`}
         >
           {tag}
         </span>
@@ -78,11 +90,11 @@ export default function LocationCard({
 
   // Meta row: type icon, country, distance, cost, hours, source
   const metaRow = (
-    <div className={`flex items-center gap-2 ${photo ? "[&_span]:text-white/80 [&_span]:drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)]" : ""}`}>
+    <div className={`flex items-center gap-2 ${photo ? `[&_span]:${photoTextMuted} [&_span]:${photoShadow}` : ""}`}>
       <TypeBadge type={location.type} showLabel={false} />
-      <span className={`text-sm ${photo ? "text-white/80 drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)]" : "text-gray-500 dark:text-gray-400"}`}>{location.country}</span>
+      <span className={`text-sm ${photo ? `${photoTextMuted} ${photoShadow}` : "text-gray-500 dark:text-gray-400"}`}>{location.country}</span>
       {distance && (
-        <span className={`text-xs font-medium ${photo ? "text-white/80 drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)]" : "text-gray-500 dark:text-gray-400"}`}>{distance}</span>
+        <span className={`text-xs font-medium ${photo ? `${photoTextMuted} ${photoShadow}` : "text-gray-500 dark:text-gray-400"}`}>{distance}</span>
       )}
       <CostIndicator cost={location.cost} />
       {hoursStatus && (
@@ -90,8 +102,8 @@ export default function LocationCard({
           className={`text-xs font-medium px-1.5 py-0.5 rounded ${
             photo
               ? hoursStatus.open
-                ? "bg-emerald-500/30 text-white backdrop-blur-sm"
-                : "bg-black/20 text-white/70 backdrop-blur-sm"
+                ? `${isDarkBg ? "bg-emerald-500/30 text-white" : "bg-emerald-500/30 text-gray-900"} backdrop-blur-sm`
+                : `${isDarkBg ? "bg-black/20 text-white/70" : "bg-white/30 text-gray-600"} backdrop-blur-sm`
               : hoursStatus.open
                 ? "bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300"
                 : "bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400"
@@ -139,7 +151,7 @@ export default function LocationCard({
       />
       <div className="relative p-3 pt-1.5">
         <div className="flex items-start justify-between gap-2 mb-1">
-          <h3 className="font-semibold text-white truncate text-sm drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]">{location.name}</h3>
+          <h3 className={`font-semibold ${photoTextColor} truncate text-sm ${photoShadow}`}>{location.name}</h3>
           <div className="shrink-0">
             <StatusBadge status={location.status.site} />
           </div>
