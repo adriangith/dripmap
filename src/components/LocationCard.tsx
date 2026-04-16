@@ -107,20 +107,23 @@ export default function LocationCard({
   const cardContent = photo ? (
     // Full-bleed photo card with edge-color gradient on left
     <div
-      className="relative w-full"
+      className="relative w-full overflow-hidden"
       style={
         edgeColor
           ? { backgroundColor: `rgb(${edgeColor})` }
           : { backgroundColor: "#000" }
       }
     >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={photo}
-        alt=""
-        loading="lazy"
-        className="absolute inset-0 w-full h-full object-cover brightness-90 saturate-[0.85]"
-      />
+      {/* Oversized container shifts photo center rightward; card clips overflow */}
+      <div className="absolute top-0 h-full" style={{ width: "130%", left: "10%" }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={photo}
+          alt=""
+          loading="lazy"
+          className="w-full h-full object-cover brightness-90 saturate-[0.85]"
+        />
+      </div>
       {/* Left-to-right gradient using extracted edge color, falling back to dark */}
       <div
         className="absolute inset-0"
