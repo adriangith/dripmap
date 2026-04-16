@@ -29,29 +29,36 @@ test("detail page has a back link to the map", async ({ page }) => {
   await expect(page).toHaveURL(/\/$/);
 });
 
-test("hovering a map marker opens a popup with the location name", async ({
+test("hovering a map marker highlights the matching sidebar card", async ({
   page,
 }) => {
   await page.goto("/");
-  // Wait for markers to be in the DOM, then ensure one is in-viewport
+  const sidebar = page.locator('[data-testid="location-sidebar"]');
+  // Wait for markers and sidebar cards to load
+  await expect(
+    sidebar.getByRole("button").first()
+  ).toBeVisible({ timeout: 10_000 });
   await page.locator(".leaflet-marker-icon, .marker-cluster").first().waitFor({ timeout: 10_000 });
-  // Grab the first marker that's actually in the visible viewport
-  const marker = await page.evaluateHandle(() => {
+
+  // Grab the first marker actually in-viewport and hover it
+  const hovered = await page.evaluate(() => {
     const icons = document.querySelectorAll<HTMLElement>(".leaflet-marker-icon");
     for (const icon of icons) {
       const r = icon.getBoundingClientRect();
       if (r.width > 0 && r.height > 0 && r.top >= 0 && r.left >= 0 &&
           r.bottom <= window.innerHeight && r.right <= window.innerWidth) {
-        return icon;
+        // Fire the mouseover event directly (Leaflet listens for mouseover)
+        icon.dispatchEvent(new MouseEvent("mouseover", { bubbles: true }));
+        return true;
       }
     }
-    return null;
+    return false;
   });
-  expect(marker.asElement()).not.toBeNull();
-  await (marker.asElement() as import("@playwright/test").ElementHandle).hover({ force: true });
-  const popup = page.locator(".leaflet-popup-content");
-  await expect(popup).toBeVisible({ timeout: 5_000 });
-  await expect(popup).toHaveText(/.+/);
+  expect(hovered).toBe(true);
+  // The hovered marker's card in the sidebar should become highlighted
+  await expect(
+    sidebar.locator(".border-blue-400")
+  ).toBeVisible({ timeout: 5_000 });
 });
 
 test("clicking a map marker opens detail in bottom sheet on mobile", async ({
@@ -111,26 +118,28 @@ test("clicking a map marker opens detail in bottom sheet on mobile", async ({
   });
   expect(clicked).toBe(true);
 
-  // Should show detail panel with "Back to list" in the bottom sheet header
-  const backButton = page.locator("button").filter({ hasText: "Back to list" }).first();
-  await expect(backButton).toBeVisible({ timeout: 5_000 });
+  // Should show the back button in the mobile sheet header (aria-label="Back to list")
+  const sheetBackButton = page.locator(".rounded-t-2xl").getByRole("button", { name: /back to list/i });
+  await expect(sheetBackButton).toBeVisible({ timeout: 5_000 });
   await expect(page).toHaveURL(/\/$/);
 });
 
 test("filtering by type hides non-matching cards", async ({ page }) => {
   await page.goto("/");
   const sidebar = page.locator('[data-testid="location-sidebar"]');
-  // Wait for the sidebar list to populate
+  // Wait for the sidebar list to populate with swim locations
   await expect(sidebar.getByRole("button", { name: /Fairy Pools/ }).first()).toBeVisible({
     timeout: 10_000,
   });
 
-  // Click the waterfall chip
-  await page.locator('[data-filter-chip="waterfall"]').first().click();
+  // Filter to beach type (7 beach locations, no swim locations)
+  await page.locator('[data-filter-chip="beach"]').first().click();
 
-  await expect(sidebar.getByRole("button", { name: /Niagara Falls/ }).first()).toBeVisible({
-    timeout: 5_000,
-  });
+  // A beach location should appear
+  await expect(
+    sidebar.getByRole("button", { name: /Eastern Beach/ }).first()
+  ).toBeVisible({ timeout: 5_000 });
+  // Fairy Pools (swim type) should be gone
   await expect(sidebar.getByRole("button", { name: /Fairy Pools/ })).toHaveCount(0);
 });
 
@@ -169,21 +178,19 @@ test("clicking a list card on mobile zooms and pans map to the pin", async ({
   // Wait for markers to load
   await page.waitForSelector(".leaflet-marker-icon", { timeout: 10_000 });
 
-  // Swipe the bottom sheet up to reveal the list (snap to half)
+  // Tap the handle once to cycle from peek → half, revealing the list
   const handle = page.locator(".rounded-t-2xl .cursor-grab").first();
-  await handle.dispatchEvent("pointerdown", { clientY: 800 });
-  await page.mouse.move(195, 400, { steps: 5 });
-  await page.mouse.up();
-  await page.waitForTimeout(500);
+  await handle.click();
+  await page.waitForTimeout(600);
 
   // Find a card button (mobile renders cards as buttons) and click it
   const card = page.locator("button.rounded-lg").first();
   await expect(card).toBeVisible({ timeout: 5_000 });
   await card.click();
 
-  // Wait for the detail panel header to appear — "Back to list" is in the sheet header
-  const backButton = page.locator("button").filter({ hasText: "Back to list" }).first();
-  await expect(backButton).toBeVisible({ timeout: 5_000 });
+  // Wait for the mobile sheet back button (aria-label="Back to list")
+  const sheetBackButton = page.locator(".rounded-t-2xl").getByRole("button", { name: /back to list/i });
+  await expect(sheetBackButton).toBeVisible({ timeout: 5_000 });
 
   // Wait for pan animation to settle
   await page.waitForTimeout(500);
