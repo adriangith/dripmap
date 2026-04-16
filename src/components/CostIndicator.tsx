@@ -23,7 +23,7 @@ export default function CostIndicator({ cost, showLabel = false }: CostIndicator
 
   if (level === 0) {
     return (
-      <span className="text-xs font-medium text-green-500 dark:text-green-500">
+      <span className="text-xs font-medium text-gray-500 dark:text-gray-400">
         Free
       </span>
     );
