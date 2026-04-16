@@ -86,3 +86,15 @@ export function useEdgeColor(src: string | undefined): string | null {
 
   return current;
 }
+
+/**
+ * Darkens an "r, g, b" edge color so white text is always readable.
+ * Preserves hue/saturation but caps perceived brightness to maxLuminance.
+ */
+export function darkenEdgeColor(rgb: string, maxLuminance = 90): string {
+  const [r, g, b] = rgb.split(",").map(Number);
+  const lum = 0.299 * r + 0.587 * g + 0.114 * b;
+  if (lum <= maxLuminance) return rgb;
+  const scale = maxLuminance / lum;
+  return `${Math.round(r * scale)}, ${Math.round(g * scale)}, ${Math.round(b * scale)}`;
+}
