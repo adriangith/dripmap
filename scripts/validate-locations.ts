@@ -31,6 +31,31 @@ function checkArrayEnum(value: unknown, allowed: string[], fieldName: string): s
   return errors;
 }
 
+function validateCoordArray(value: unknown, fieldName: string, minPoints: number): string[] {
+  const errors: string[] = [];
+  if (!Array.isArray(value)) {
+    errors.push(`${fieldName}: must be an array of [lat, lng] pairs`);
+  } else if ((value as unknown[]).length < minPoints) {
+    errors.push(`${fieldName}: must have at least ${minPoints} points`);
+  } else {
+    for (let i = 0; i < (value as unknown[]).length; i++) {
+      const point = (value as unknown[])[i];
+      if (!Array.isArray(point) || (point as unknown[]).length !== 2) {
+        errors.push(`${fieldName}[${i}]: must be a [lat, lng] pair`);
+        continue;
+      }
+      const [lat, lng] = point as [unknown, unknown];
+      if (typeof lat !== "number" || lat < -90 || lat > 90) {
+        errors.push(`${fieldName}[${i}]: lat must be between -90 and 90`);
+      }
+      if (typeof lng !== "number" || lng < -180 || lng > 180) {
+        errors.push(`${fieldName}[${i}]: lng must be between -180 and 180`);
+      }
+    }
+  }
+  return errors;
+}
+
 function validateOpeningHours(value: unknown): string[] {
   const errors: string[] = [];
   if (!Array.isArray(value)) {
@@ -242,25 +267,18 @@ function validateBushwalkDetails(details: Record<string, unknown>): string[] {
 
   // Optional route: array of [lat, lng] pairs
   if (details.route !== undefined) {
-    if (!Array.isArray(details.route)) {
-      errors.push("details.route: must be an array of [lat, lng] pairs");
-    } else if ((details.route as unknown[]).length < 2) {
-      errors.push("details.route: must have at least 2 points");
-    } else {
-      for (let i = 0; i < (details.route as unknown[]).length; i++) {
-        const point = (details.route as unknown[])[i];
-        if (!Array.isArray(point) || (point as unknown[]).length !== 2) {
-          errors.push(`details.route[${i}]: must be a [lat, lng] pair`);
-          continue;
-        }
-        const [lat, lng] = point as [unknown, unknown];
-        if (typeof lat !== "number" || lat < -90 || lat > 90) {
-          errors.push(`details.route[${i}]: lat must be between -90 and 90`);
-        }
-        if (typeof lng !== "number" || lng < -180 || lng > 180) {
-          errors.push(`details.route[${i}]: lng must be between -180 and 180`);
-        }
-      }
+    errors.push(...validateCoordArray(details.route, "details.route", 2));
+  }
+
+  // Optional waypoints: array of [lat, lng] pairs used by generate-routes script
+  if (details.waypoints !== undefined) {
+    errors.push(...validateCoordArray(details.waypoints, "details.waypoints", 2));
+  }
+
+  // Optional walkingMapsId: numeric ID for walkingmaps.com.au route import
+  if (details.walkingMapsId !== undefined) {
+    if (typeof details.walkingMapsId !== "number" || !Number.isInteger(details.walkingMapsId) || details.walkingMapsId <= 0) {
+      errors.push("details.walkingMapsId: must be a positive integer");
     }
   }
 

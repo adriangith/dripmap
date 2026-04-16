@@ -60,6 +60,15 @@ details:
   distanceKm: 14
   difficulty: moderate
   terrain: mixed
+  waypoints:
+    - [-38.1432, 145.1268]  # Frankston station
+    - [-38.1485, 145.1238]  # Frankston foreshore
+    - [-38.1530, 145.1200]  # Frankston Pier area
+    - [-38.1630, 145.1090]  # Daveys Bay
+    - [-38.1720, 145.0980]  # Olivers Hill
+    - [-38.1810, 145.0890]  # Canadian Bay
+    - [-38.1880, 145.0830]  # The Pines Flora & Fauna Reserve
+    - [-38.1950, 145.0810]  # Mt Eliza village
 fit:
   cost: 'Completely free — no passes or permits needed.'
   duration:

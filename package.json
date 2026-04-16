@@ -12,6 +12,7 @@
     "test:watch": "vitest",
     "test:e2e": "npm run build && playwright test",
     "validate": "npx tsx scripts/validate-locations.ts",
+    "generate:routes": "npx tsx scripts/generate-routes.ts",
     "build:data": "npx tsx scripts/build-locations.ts",
     "upload:data": "npx tsx scripts/upload-to-firestore.ts",
     "deploy:data": "npm run validate && npm run build:data && npm run upload:data",

@@ -59,6 +59,16 @@ details:
   distanceKm: 22
   difficulty: moderate
   terrain: mixed
+  waypoints:
+    - [-37.7210, 144.8340]  # Aircraft station
+    - [-37.7350, 144.8370]  # Maribyrnong River Trail north
+    - [-37.7500, 144.8380]  # Brimbank Park
+    - [-37.7700, 144.8500]  # Maribyrnong River, Avondale Heights
+    - [-37.7900, 144.8700]  # Maribyrnong, near Highpoint
+    - [-37.8060, 144.8850]  # Footscray
+    - [-37.8250, 144.8900]  # Westgate Park area
+    - [-37.8400, 144.8930]  # West Melbourne waterfront
+    - [-37.8567, 144.8985]  # Williamstown station
 fit:
   cost: 'Completely free — no passes or permits needed.'
   duration:
