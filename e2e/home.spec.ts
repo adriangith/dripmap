@@ -1,4 +1,9 @@
 import { test, expect } from "@playwright/test";
+import { bypassOnboarding } from "./helpers";
+
+test.beforeEach(async ({ context }) => {
+  await bypassOnboarding(context);
+});
 
 test("clicking a location card navigates to the detail page", async ({
   page,

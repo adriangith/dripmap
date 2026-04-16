@@ -1,6 +1,11 @@
 import { test, expect } from "@playwright/test";
+import { bypassOnboarding } from "./helpers";
 
 test.describe("Offline / PWA", () => {
+  test.beforeEach(async ({ context }) => {
+    await bypassOnboarding(context);
+  });
+
   test("service worker registers and activates", async ({ page }) => {
     await page.goto("/");
 
@@ -37,7 +42,10 @@ test.describe("Offline / PWA", () => {
     });
 
     // Reload so the active SW serves precached assets
-    await page.reload({ waitUntil: "networkidle" });
+    await page.reload({ waitUntil: "domcontentloaded" });
+    await expect(page.getByText("Fairy Pools").first()).toBeVisible({
+      timeout: 10_000,
+    });
 
     // Go offline
     await context.setOffline(true);
@@ -66,7 +74,7 @@ test.describe("Offline / PWA", () => {
     });
 
     // Reload to let SW take control and cache everything
-    await page.reload({ waitUntil: "networkidle" });
+    await page.reload({ waitUntil: "domcontentloaded" });
     await expect(page.getByText("Fairy Pools").first()).toBeVisible({
       timeout: 10_000,
     });
@@ -93,14 +101,16 @@ test.describe("Offline / PWA", () => {
     });
 
     // Visit the detail page so it gets cached
-    await page.goto("/location/fairy-pools", { waitUntil: "networkidle" });
+    await page.goto("/location/fairy-pools", { waitUntil: "domcontentloaded" });
     await expect(
       page.getByRole("heading", { name: "Fairy Pools" })
-    ).toBeVisible();
+    ).toBeVisible({ timeout: 10_000 });
 
     // Go back to home — still online
     await page.goto("/");
-    await page.waitForLoadState("networkidle");
+    await expect(page.getByText("Fairy Pools").first()).toBeVisible({
+      timeout: 10_000,
+    });
 
     // Go offline
     await context.setOffline(true);
