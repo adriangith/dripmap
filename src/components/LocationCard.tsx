@@ -105,7 +105,7 @@ export default function LocationCard({
   );
 
   const cardContent = photo ? (
-    // Full-bleed photo card — image anchored right, gradient fills left gap
+    // Full-bleed photo card with edge-color gradient on left
     <div
       className="relative w-full"
       style={
@@ -119,7 +119,7 @@ export default function LocationCard({
         src={photo}
         alt=""
         loading="lazy"
-        className="absolute right-0 top-0 h-full w-auto brightness-90 saturate-[0.85]"
+        className="absolute inset-0 w-full h-full object-cover brightness-90 saturate-[0.85]"
       />
       {/* Left-to-right gradient using extracted edge color, falling back to dark */}
       <div
