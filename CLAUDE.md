@@ -11,6 +11,7 @@ npm run dev              # Dev server on localhost:3000
 npm run dev:network      # Dev server on 0.0.0.0 (LAN accessible)
 npm run dev:network:https # HTTPS dev server (needed for geolocation API)
 npm run build            # Full build: validate YAML → build JSON → Next.js export → generate SW
+npm run enrich           # Fetch external events + enrichments (Overpass, BOM) — slow, run separately
 npm run lint             # ESLint (flat config, ESLint 9)
 npm run test             # Vitest unit/integration tests (single run)
 npm run test:watch       # Vitest in watch mode
@@ -36,7 +37,7 @@ data/locations/*.yaml → scripts/validate-locations.ts → scripts/build-locati
     → public/generated/locations/{slug}.json (full detail per location)
 ```
 
-The `prebuild` hook runs validation and data build automatically before `next build`. Location YAML files have a strict schema (see `scripts/validate-locations.ts` for fields/types).
+The `prebuild` hook runs validation and data build automatically before `next build`. Enrichment (Overpass, BOM weather) is a separate step — run `npm run enrich` independently or let the daily CI schedule handle it. Location YAML files have a strict schema (see `scripts/validate-locations.ts` for fields/types).
 
 ### Data Deployment (Firestore)
 

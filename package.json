@@ -16,7 +16,8 @@
     "upload:data": "npx tsx scripts/upload-to-firestore.ts",
     "deploy:data": "npm run validate && npm run build:data && npm run upload:data",
     "build:schema": "npx tsx scripts/build-schema.ts",
-    "prebuild": "npm run build:schema && npm run validate && npm run build:data && npx tsx scripts/fetch-events.ts && npx tsx scripts/fetch-enrichments.ts",
+    "enrich": "npx tsx scripts/fetch-events.ts && npx tsx scripts/fetch-enrichments.ts",
+    "prebuild": "npm run build:schema && npm run validate && npm run build:data",
     "dev:network:https": "next dev --hostname 0.0.0.0 --experimental-https --experimental-https-key certificates/localhost-key.pem --experimental-https-cert certificates/localhost.pem"
   },
   "dependencies": {
