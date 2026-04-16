@@ -112,7 +112,8 @@ export default function LocationCard({
         src={photo}
         alt=""
         fill
-        className="object-cover object-right brightness-90 saturate-[0.85]"
+        className="object-cover brightness-90 saturate-[0.85]"
+        style={{ objectPosition: "65% center" }}
         sizes="(max-width: 768px) 100vw, 400px"
       />
       {/* Left-to-right gradient using extracted edge color, falling back to dark */}
