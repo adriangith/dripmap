@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, type RefObject } from "react";
+import { useState, useEffect, useCallback, type RefObject } from "react";
 
 // Simple LRU-ish cache so repeated renders don't re-extract
 const cache = new Map<string, string>();
@@ -18,38 +18,25 @@ export function useEdgeColor(
   containerRef?: RefObject<HTMLElement | null>,
 ): string | null {
   const cached = src ? cache.get(src) ?? null : null;
-  const [color, setColor] = useState<string | null>(cached);
+  const [asyncColor, setAsyncColor] = useState<string | null>(null);
   const [visible, setVisible] = useState(!containerRef);
 
-  // Sync state when src changes and cache already has the value
-  useEffect(() => {
-    if (cached && cached !== color) setColor(cached);
-  }, [src, cached]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  // Return cache hit immediately, fall back to async state
-  const current = cached ?? color;
-
   // Observe visibility when a container ref is provided
-  useEffect(() => {
-    if (!containerRef) {
+  const observerCallback = useCallback(([entry]: IntersectionObserverEntry[]) => {
+    if (entry.isIntersecting) {
       setVisible(true);
-      return;
     }
+  }, []);
+
+  useEffect(() => {
+    if (!containerRef) return;
     const el = containerRef.current;
     if (!el) return;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          observer.disconnect();
-        }
-      },
-      { rootMargin: "200px" },
-    );
+    const observer = new IntersectionObserver(observerCallback, { rootMargin: "200px" });
     observer.observe(el);
     return () => observer.disconnect();
-  }, [containerRef]);
+  }, [containerRef, observerCallback]);
 
   useEffect(() => {
     if (!src || !visible || cache.has(src)) return;
@@ -65,7 +52,6 @@ export function useEdgeColor(
         const ctx = canvas.getContext("2d", { willReadFrequently: true });
         if (!ctx) return;
 
-        // Draw small for speed
         if (img.naturalHeight <= 0 || img.naturalWidth <= 0) return;
         const h = 40;
         const w = Math.round((img.naturalWidth / img.naturalHeight) * h);
@@ -100,7 +86,7 @@ export function useEdgeColor(
         }
         cache.set(src, result);
 
-        if (!cancelled) setColor(result);
+        if (!cancelled) setAsyncColor(result);
       } catch {
         // Tainted canvas (CORS) — leave color as null → fallback gradient
       }
@@ -116,7 +102,8 @@ export function useEdgeColor(
     };
   }, [src, visible]);
 
-  return current;
+  // Cache hit takes priority; async state is fallback for first load
+  return cached ?? asyncColor;
 }
 
 /**
