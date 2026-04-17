@@ -9,6 +9,21 @@
  */
 import * as fs from "fs";
 import * as path from "path";
+
+// Load .env.local so standalone scripts pick up API keys
+const envLocalPath = path.resolve(process.cwd(), ".env.local");
+if (fs.existsSync(envLocalPath)) {
+  for (const line of fs.readFileSync(envLocalPath, "utf-8").split("\n")) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith("#")) continue;
+    const eqIdx = trimmed.indexOf("=");
+    if (eqIdx === -1) continue;
+    const key = trimmed.slice(0, eqIdx).trim();
+    const val = trimmed.slice(eqIdx + 1).trim();
+    if (!process.env[key]) process.env[key] = val;
+  }
+}
+
 import type { EnrichmentProvider } from "../src/lib/integrations/enrichment-types";
 import { mergeEnrichments } from "../src/lib/integrations/enrichment-types";
 import type { PlaceIndexEntry } from "../src/lib/types";
