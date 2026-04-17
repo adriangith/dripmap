@@ -503,6 +503,40 @@ export default function PreferencePanel({
   const containerRef = useRef<HTMLDivElement>(null);
   const cardRects = useRef<DOMRect[]>([]);
 
+  // Panel drag-to-move (desktop only)
+  const [panelOffset, setPanelOffset] = useState({ x: 0, y: 0 });
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  const handlePanelDragStart = useCallback((e: React.PointerEvent) => {
+    if (window.innerWidth < 1024) return;
+    e.preventDefault();
+    const el = e.currentTarget;
+    el.setPointerCapture(e.pointerId);
+    let startX: number, startY: number;
+    setPanelOffset((cur) => {
+      startX = e.clientX - cur.x;
+      startY = e.clientY - cur.y;
+      return cur;
+    });
+
+    const onMove = (ev: React.PointerEvent | PointerEvent) => {
+      setPanelOffset({ x: ev.clientX - startX!, y: ev.clientY - startY! });
+    };
+    const onUp = () => {
+      el.removeEventListener("pointermove", onMove);
+      el.removeEventListener("pointerup", onUp);
+      el.removeEventListener("lostpointercapture", onUp);
+    };
+    el.addEventListener("pointermove", onMove);
+    el.addEventListener("pointerup", onUp);
+    el.addEventListener("lostpointercapture", onUp);
+  }, []);
+
+  const handleClose = useCallback(() => {
+    setPanelOffset({ x: 0, y: 0 });
+    onClose();
+  }, [onClose]);
+
   const priority = constraints.priority;
 
   const orderedDimensions = priority.map(
@@ -575,11 +609,11 @@ export default function PreferencePanel({
   useEffect(() => {
     if (!open) return;
     const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") handleClose();
     };
     document.addEventListener("keydown", handleEsc);
     return () => document.removeEventListener("keydown", handleEsc);
-  }, [open, onClose]);
+  }, [open, handleClose]);
 
     const activeCount = orderedDimensions.filter((d) => isActive(d.key, filters, constraints)).length;
 
@@ -601,12 +635,19 @@ export default function PreferencePanel({
   return (
     <div className="fixed inset-0 z-[1000] flex items-end lg:items-center lg:justify-center">
       {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/30 dark:bg-black/50" onClick={onClose} />
+      <div className="absolute inset-0 bg-black/30 dark:bg-black/50" onClick={handleClose} />
 
       {/* Panel */}
-      <div className="relative w-full lg:w-[400px] max-h-[85vh] bg-white dark:bg-gray-900 rounded-t-2xl lg:rounded-2xl shadow-2xl flex flex-col overflow-hidden">
-        {/* Header */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 dark:border-gray-800">
+      <div
+        ref={panelRef}
+        className="relative w-full lg:w-[400px] max-h-[85vh] bg-white dark:bg-gray-900 rounded-t-2xl lg:rounded-2xl shadow-2xl flex flex-col overflow-hidden"
+        style={panelOffset.x || panelOffset.y ? { transform: `translate(${panelOffset.x}px, ${panelOffset.y}px)` } : undefined}
+      >
+        {/* Header — drag handle on desktop */}
+        <div
+          onPointerDown={handlePanelDragStart}
+          className="flex items-center justify-between px-4 py-3 border-b border-gray-100 dark:border-gray-800 lg:cursor-grab lg:active:cursor-grabbing select-none"
+        >
           <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">
             Preferences
           </h2>
@@ -619,7 +660,7 @@ export default function PreferencePanel({
                 Reset
               </button>
             )}
-            <button onClick={onClose} className="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
+            <button onClick={handleClose} className="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
               <X className="w-5 h-5 text-gray-500 dark:text-gray-400" />
             </button>
           </div>
