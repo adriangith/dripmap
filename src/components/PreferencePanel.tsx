@@ -519,15 +519,15 @@ export default function PreferencePanel({
       return cur;
     });
 
-    const onMove = (ev: React.PointerEvent | PointerEvent) => {
+    const onMove = (ev: PointerEvent) => {
       setPanelOffset({ x: ev.clientX - startX!, y: ev.clientY - startY! });
     };
     const onUp = () => {
-      el.removeEventListener("pointermove", onMove);
+      el.removeEventListener("pointermove", onMove as EventListener);
       el.removeEventListener("pointerup", onUp);
       el.removeEventListener("lostpointercapture", onUp);
     };
-    el.addEventListener("pointermove", onMove);
+    el.addEventListener("pointermove", onMove as EventListener);
     el.addEventListener("pointerup", onUp);
     el.addEventListener("lostpointercapture", onUp);
   }, []);
