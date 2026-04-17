@@ -233,10 +233,9 @@ export default function HomePage() {
             onMarkerHover={handleMarkerHover}
             onUserLocation={handleUserLocation}
           />
-          {/* Floating filter button — above the sheet on mobile, hidden on desktop */}
+          {/* Floating filter button — above the sheet on mobile, bottom-left on desktop */}
           <div
-            className="absolute left-3 z-20 lg:hidden transition-opacity"
-            style={{ bottom: "calc(var(--sheet-height, 96px) + 12px)" }}
+            className="absolute left-3 z-20 transition-opacity bottom-4 max-lg:[bottom:calc(var(--sheet-height,96px)+12px)]"
           >
             <FilterButton
               filters={filters}
@@ -265,13 +264,6 @@ export default function HomePage() {
             </>
           ) : (
             <>
-              <div className="p-3 border-b border-gray-200 dark:border-gray-700">
-                <FilterButton
-                  filters={filters}
-                  constraints={constraints}
-                  onClick={() => setPrefsOpen(true)}
-                />
-              </div>
               <FilterBar
                 filters={filters}
                 onChange={setFilters}
