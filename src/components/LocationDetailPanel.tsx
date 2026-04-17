@@ -363,7 +363,7 @@ export default function LocationDetailPanel({
         const summary = location.highlights[0];
         const editorial = summary ? `${summary}. ${fitText}` : fitText;
         return (
-          <p className="italic text-gray-900 dark:text-gray-100 leading-relaxed mb-4" style={{ fontSize: '15px' }}>
+          <p className="text-gray-900 dark:text-gray-100 leading-relaxed mb-4" style={{ fontSize: '15px', fontFamily: 'var(--font-merriweather), serif' }}>
             {editorial}
           </p>
         );
