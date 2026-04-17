@@ -103,3 +103,25 @@ jobs:
             playwright-report/
             test-results/
           retention-days: 7
+
+  deploy-data:
+    if: github.event_name == 'push'
+    needs: [lint, test]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+
+      - name: Write service account key
+        run: echo "$FIREBASE_SA_KEY" > /tmp/sa-key.json
+        env:
+          FIREBASE_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}
+
+      - name: Deploy data to Firestore
+        run: npm run deploy:data
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: /tmp/sa-key.json
