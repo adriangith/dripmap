@@ -359,15 +359,19 @@ export default function LocationDetailPanel({
       {/* Fit blurb — personalised editorial lead-in */}
       {(() => {
         const fitText = buildFitParagraph(location.fit, activeConstraints ?? null);
-        return fitText ? (
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-sm mb-4">
-            {fitText}
-          </p>
-        ) : null;
+        if (!fitText) return null;
+        const summary = location.highlights[0];
+        const editorial = summary ? `${summary}. ${fitText}` : fitText;
+        return (
+          <>
+            <p className="text-sm italic text-gray-600 dark:text-gray-400 leading-relaxed mb-4">
+              {editorial}
+            </p>
+            <h3 className="text-base font-semibold text-gray-900 dark:text-gray-100 mb-2">Description</h3>
+          </>
+        );
       })()}
 
-      {/* Description */}
-      <h3 className="text-base font-semibold text-gray-900 dark:text-gray-100 mb-2">About</h3>
       <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-sm mb-4">
         {location.description}
       </p>
