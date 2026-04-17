@@ -136,6 +136,7 @@ export interface FitBlurbs {
   duration?: string | { quick?: string; "half-day"?: string; "full-day"?: string };
   group?: string;
   date?: string;
+  setting?: string;
 }
 
 // ── Discriminated union ───────────────────────────────────────

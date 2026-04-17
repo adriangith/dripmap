@@ -45,7 +45,7 @@ export default function LocationCard({
   const photo = location.photo && !location.photo.includes("placeholder") ? location.photo : undefined;
 
   const cardRef = useRef<HTMLElement>(null);
-  const fitBlurb = buildFitParagraph(location.fit, activeConstraints ?? null);
+  const fitBlurb = buildFitParagraph(location.fit, activeConstraints ?? null, location, null, driveMinutes);
   const hoursStatus = formatHoursStatus(location.openingHours);
 
   const edgeColor = useEdgeColor(photo, cardRef);
