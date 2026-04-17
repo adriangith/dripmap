@@ -8,6 +8,7 @@ import type {
 // ── Configuration ────────────────────────────────────────────
 
 const FSQ_BASE = "https://api.foursquare.com/v3";
+const FSQ_API_VERSION = "20260401";
 const INTER_REQUEST_DELAY_MS = 200;
 const MAX_RETRIES = 3;
 const PHOTOS_LIMIT = 3;
@@ -45,6 +46,7 @@ async function fsqFetch<T>(
         headers: {
           Authorization: apiKey,
           Accept: "application/json",
+          "X-Places-Api-Version": FSQ_API_VERSION,
         },
         signal: AbortSignal.timeout(15_000),
       });
