@@ -67,8 +67,7 @@ const DURATION_OPTIONS: { value: DurationFilter; label: string }[] = [
 const GROUP_OPTIONS: { value: GroupType; label: string }[] = [
   { value: "solo", label: "Solo" },
   { value: "adults", label: "Adults" },
-  { value: "family-young", label: "Little kids" },
-  { value: "family-older", label: "Older kids" },
+  { value: "family", label: "Family" },
   { value: "friends", label: "Friends" },
 ];
 
@@ -517,6 +516,7 @@ interface PreferencePanelProps {
   onConstraintsChange: (c: Constraints) => void;
   hasLocation: boolean;
   onRequestLocation: () => void;
+  onRedoOnboarding?: () => void;
 }
 
 export default function PreferencePanel({
@@ -528,6 +528,7 @@ export default function PreferencePanel({
   onConstraintsChange,
   hasLocation,
   onRequestLocation,
+  onRedoOnboarding,
 }: PreferencePanelProps) {
   const [expandedDim, setExpandedDim] = useState<FilterDimension | null>(null);
   const [dragIndex, setDragIndex] = useState<number | null>(null);
@@ -623,6 +624,7 @@ export default function PreferencePanel({
       cost: "any",
       duration: "any",
       group: null,
+      familyComposition: null,
       visited: "any",
       setting: "any",
       priority: [...constraints.priority],
@@ -685,6 +687,15 @@ export default function PreferencePanel({
               isDragging={dragIndex === i}
             />
           ))}
+
+          {onRedoOnboarding && (
+            <button
+              onClick={onRedoOnboarding}
+              className="w-full mt-4 py-2.5 text-sm text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950 rounded-xl transition-colors"
+            >
+              Redo onboarding wizard
+            </button>
+          )}
         </div>
       </div>
     </div>

@@ -44,6 +44,7 @@ const defaultConstraints: Constraints = {
   cost: "any",
   duration: "any",
   group: null,
+  familyComposition: null,
   visited: "any",
   setting: "any",
   priority: [...DEFAULT_PRIORITY],
@@ -83,9 +84,10 @@ export default function HomePage() {
   const [userLocation, setUserLocation] = useState<Coordinates | null>(null);
   const [loadError, setLoadError] = useState(false);
   const [prefsOpen, setPrefsOpen] = useState(false);
+  const [redoOnboarding, setRedoOnboarding] = useState(false);
 
-  // Onboarding gate: show onboarding until completed/skipped
-  const showOnboarding = !onboardingComplete && !onboardingDone;
+  // Onboarding gate: show onboarding until completed/skipped, or redo requested
+  const showOnboarding = (!onboardingComplete && !onboardingDone) || redoOnboarding;
 
   // Apply saved preferences as session defaults (only for fresh sessions)
   const prefsAppliedRef = useRef(false);
@@ -101,6 +103,7 @@ export default function HomePage() {
         ...(preferences.cost ? { cost: preferences.cost } : {}),
         ...(preferences.group ? { group: preferences.group } : {}),
         ...(preferences.duration ? { duration: preferences.duration } : {}),
+        ...(preferences.familyComposition ? { familyComposition: preferences.familyComposition } : {}),
       }));
     });
   }, [preferences]);
@@ -213,7 +216,7 @@ export default function HomePage() {
   }, []);
 
   if (showOnboarding) {
-    return <OnboardingFlow onComplete={() => setOnboardingDone(true)} />;
+    return <OnboardingFlow onComplete={() => { setOnboardingDone(true); setRedoOnboarding(false); }} />;
   }
 
   return (
@@ -393,6 +396,7 @@ export default function HomePage() {
         onConstraintsChange={setConstraints}
         hasLocation={userLocation !== null}
         onRequestLocation={handleRequestLocation}
+        onRedoOnboarding={() => { setPrefsOpen(false); setRedoOnboarding(true); }}
       />
 
     </div>

@@ -1,4 +1,4 @@
-import type { PlaceIndexEntry, Constraints, Coordinates, DateMode, TimeOfDay } from "./types";
+import type { PlaceIndexEntry, Constraints, Coordinates, DateMode, TimeOfDay, FamilyComposition } from "./types";
 import type { EnrichmentIndex } from "./integrations/enrichment-types";
 import { haversineDistanceKm } from "./useCurrentLocation";
 import { isEventOnDate, isEventOnDayOfWeek } from "./event-dates";
@@ -55,24 +55,60 @@ function costScore(placeCost: string, filter: string): number {
 const GROUP_TO_IDEAL: Record<string, string[]> = {
   solo: ["adults", "teens"],
   adults: ["adults", "teens"],
+  family: ["toddlers", "preschool", "primary", "teens"],
   "family-young": ["toddlers", "preschool", "primary"],
   "family-older": ["primary", "teens"],
   friends: ["adults", "teens"],
 };
 
-function passesGroupFilter(place: PlaceIndexEntry, group: string | null): boolean {
+/** Map kid ages to ageSuitability ideal labels. */
+function kidAgeToIdeals(age: number): string[] {
+  if (age <= 3) return ["toddlers"];
+  if (age <= 5) return ["toddlers", "preschool"];
+  if (age <= 12) return ["primary"];
+  return ["teens"];
+}
+
+function idealsFromFamily(composition: FamilyComposition): string[] {
+  const ideals = new Set<string>(["adults"]);
+  for (const age of composition.kidAges) {
+    for (const ideal of kidAgeToIdeals(age)) {
+      ideals.add(ideal);
+    }
+  }
+  return [...ideals];
+}
+
+function passesGroupFilter(place: PlaceIndexEntry, group: string | null, family?: FamilyComposition | null): boolean {
   if (!group) return true;
+
+  // Use family composition for precise filtering when available
+  if (family && family.kidAges.length > 0) {
+    const ideals = idealsFromFamily(family);
+    const placeIdeals = place.ageSuitability?.ideal ?? [];
+    if (placeIdeals.length === 0) return true;
+    return placeIdeals.some((i) => ideals.includes(i));
+  }
+
   const validIdeals = GROUP_TO_IDEAL[group];
   if (!validIdeals) return true;
   const placeIdeals = place.ageSuitability?.ideal ?? [];
-  // If the place has no age data, let it through
   if (placeIdeals.length === 0) return true;
-  // At least one of the place's ideal groups must overlap with the preference
   return placeIdeals.some((i) => validIdeals.includes(i));
 }
 
-function groupScore(place: PlaceIndexEntry, group: string | null): number {
+function groupScore(place: PlaceIndexEntry, group: string | null, family?: FamilyComposition | null): number {
   if (!group) return 0;
+
+  // Use family composition for precise scoring when available
+  if (family && family.kidAges.length > 0) {
+    const ideals = idealsFromFamily(family);
+    const placeIdeals = place.ageSuitability?.ideal ?? [];
+    if (placeIdeals.length === 0) return 0;
+    const overlap = placeIdeals.filter((i) => ideals.includes(i)).length;
+    return overlap * 3;
+  }
+
   const validIdeals = GROUP_TO_IDEAL[group];
   if (!validIdeals) return 0;
   const placeIdeals = place.ageSuitability?.ideal ?? [];
@@ -157,7 +193,7 @@ export function applyConstraints(
     if (!passesDurationFilter(place, constraints.duration)) continue;
 
     // Hard filter: group suitability
-    if (!passesGroupFilter(place, constraints.group)) continue;
+    if (!passesGroupFilter(place, constraints.group, constraints.familyComposition)) continue;
 
     // Compute drive time for sorting
     const driveMin = userLocation
@@ -195,7 +231,7 @@ export function applyConstraints(
     score += costScore(place.cost, constraints.cost) * (priorityWeights["cost"] ?? 1);
 
     // Group score
-    score += groupScore(place, constraints.group) * (priorityWeights["group"] ?? 1);
+    score += groupScore(place, constraints.group, constraints.familyComposition) * (priorityWeights["group"] ?? 1);
 
     // Visited preference score
     if (constraints.visited !== "any") {

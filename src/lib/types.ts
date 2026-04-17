@@ -229,7 +229,13 @@ export interface Filters {
 export type DistanceThreshold = "30min" | "1hr" | "2hr" | "daytrip" | "any";
 export type CostFilter = "free" | "affordable" | "any";
 export type DurationFilter = "quick" | "half-day" | "full-day" | "any";
-export type GroupType = "solo" | "adults" | "family-young" | "family-older" | "friends" | null;
+export type GroupType = "solo" | "adults" | "family" | "family-young" | "family-older" | "friends" | null;
+
+export interface FamilyComposition {
+  adults: number;
+  kids: number;
+  kidAges: number[];
+}
 
 export type DateMode =
   | { mode: "specific"; date: Date }
@@ -253,6 +259,7 @@ export interface Constraints {
   cost: CostFilter;
   duration: DurationFilter;
   group: GroupType;
+  familyComposition: FamilyComposition | null;
   visited: VisitedFilter;
   setting: SettingFilter;
   priority: FilterDimension[];

@@ -30,8 +30,7 @@ const COST_OPTIONS: { value: CostFilter; label: string }[] = [
 const GROUP_OPTIONS: { value: NonNullable<GroupType>; label: string; emoji: string }[] = [
   { value: "solo", label: "Solo", emoji: "🧍" },
   { value: "adults", label: "Adults", emoji: "👫" },
-  { value: "family-young", label: "Family (young kids)", emoji: "👨‍👩‍👧" },
-  { value: "family-older", label: "Family (older kids)", emoji: "👨‍👩‍👦‍👦" },
+  { value: "family", label: "Family", emoji: "👨‍👩‍👧‍👦" },
   { value: "friends", label: "Friends", emoji: "👥" },
 ];
 

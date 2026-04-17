@@ -35,6 +35,7 @@ const DURATION_LEAD: Record<string, string> = {
 const GROUP_LEAD: Record<string, string> = {
   solo: "Just you and the quiet",
   adults: "Grown-ups only, no permission needed",
+  family: "A family adventure awaits",
   "family-young": "Little legs and big ones, side by side",
   "family-older": "Big enough to keep up, young enough to wonder",
   friends: "Something best shared with good company",
@@ -74,6 +75,7 @@ const DURATION_TAIL: Record<string, string> = {
 const GROUP_TAIL: Record<string, string> = {
   solo: "just for you",
   adults: "grown-ups only",
+  family: "the whole family",
   "family-young": "little ones in tow",
   "family-older": "the kids will love it",
   friends: "bring the crew",

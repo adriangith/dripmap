@@ -99,6 +99,7 @@ const DURATION_OPTIONS: { value: DurationFilter; label: string }[] = [
 const GROUP_LABELS: Record<string, string> = {
   solo: "myself",
   adults: "adults",
+  family: "the family",
   "family-young": "little kids",
   "family-older": "older kids",
   friends: "friends",
@@ -108,8 +109,7 @@ const GROUP_OPTIONS: { value: GroupType; label: string }[] = [
   { value: null, label: "anyone" },
   { value: "solo", label: "myself" },
   { value: "adults", label: "adults" },
-  { value: "family-young", label: "little kids" },
-  { value: "family-older", label: "older kids" },
+  { value: "family", label: "the family" },
   { value: "friends", label: "friends" },
 ];
 

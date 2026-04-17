@@ -11,6 +11,7 @@ const noConstraints: Constraints = {
   cost: "any",
   duration: "any",
   group: null,
+  familyComposition: null,
   visited: "any",
   setting: "any",
   priority: [...DEFAULT_PRIORITY],
