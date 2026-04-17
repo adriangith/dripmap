@@ -2,119 +2,200 @@
 
 import type { Filters, Constraints, FilterDimension } from "@/lib/types";
 
-// ── Natural-language fragments ───────────────────────────────
+// ── Poetic idle sentences (no filters active) ────────────────
 
-const DISTANCE_PHRASES: Record<string, string> = {
-  "30min": "close by",
-  "1hr": "within an hour's drive",
-  "2hr": "within a couple of hours",
-  daytrip: "for a day trip",
+const IDLE_SENTENCES = [
+  "Where shall the day take us?",
+  "The world is wide — let's narrow it down",
+  "Every path leads somewhere worth finding",
+];
+
+// ── Lead phrases (when a dimension drives the sentence) ──────
+
+const COST_LEAD: Record<string, string> = {
+  free: "Let's wander where the price is nothing",
+  affordable: "Something gentle on the pocket",
 };
 
-const COST_ADJECTIVE: Record<string, string> = {
-  free: "free",
-  affordable: "affordable",
+const DISTANCE_LEAD: Record<string, string> = {
+  "30min": "Adventure waits just around the bend",
+  "1hr": "An hour down the road, something calls",
+  "2hr": "A little further afield, something waits",
+  daytrip: "Pack the car — it's worth the winding drive",
 };
 
-const DURATION_PHRASES: Record<string, string> = {
-  quick: "for a quick outing",
-  "half-day": "for a half-day adventure",
-  "full-day": "for a full day out",
+const DURATION_LEAD: Record<string, string> = {
+  quick: "A stolen hour, nothing more",
+  "half-day": "A slow, easy half-day ahead",
+  "full-day": "From dawn to golden hour",
 };
 
-const GROUP_PHRASES: Record<string, string> = {
+const GROUP_LEAD: Record<string, string> = {
+  solo: "Just you and the quiet",
+  adults: "Grown-ups only, no permission needed",
+  "family-young": "Little legs and big ones, side by side",
+  "family-older": "Big enough to keep up, young enough to wonder",
+  friends: "Something best shared with good company",
+};
+
+const VISITED_LEAD: Record<string, string> = {
+  new: "Somewhere your feet haven't been",
+  familiar: "An old favourite, waiting",
+};
+
+// ── Trailing phrases (secondary position after em-dash) ──────
+
+const COST_TAIL: Record<string, string> = {
+  free: "and it won't cost a thing",
+  affordable: "easy on the wallet",
+};
+
+const DISTANCE_TAIL: Record<string, string> = {
+  "30min": "close at hand",
+  "1hr": "an hour away",
+  "2hr": "a drive worth taking",
+  daytrip: "a day's journey out",
+};
+
+const DURATION_TAIL: Record<string, string> = {
+  quick: "just a stolen hour",
+  "half-day": "half a day to fill",
+  "full-day": "the whole day yours",
+};
+
+const GROUP_TAIL: Record<string, string> = {
   solo: "just for you",
-  adults: "for a grown-ups' outing",
-  "family-young": "the little ones will love",
-  "family-older": "the kids will enjoy",
-  friends: "to share with friends",
+  adults: "grown-ups only",
+  "family-young": "little ones in tow",
+  "family-older": "the kids will love it",
+  friends: "bring the crew",
 };
 
-const VISITED_PHRASES: Record<string, string> = {
-  new: "you haven't tried",
-  familiar: "you know and love",
+const VISITED_TAIL: Record<string, string> = {
+  new: "somewhere new",
+  familiar: "a place you know",
 };
+
+// ── Date / time helpers ──────────────────────────────────────
 
 const DAY_LABELS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-function getDatePhrase(d: Constraints["date"]): string | null {
-  if (!d) return null;
-  if (d.mode === "specific") {
-    return `on ${d.date.toLocaleDateString("en-AU", { weekday: "short", month: "short", day: "numeric" })}`;
+function getDateLeadPhrase(d: Constraints["date"], tod: Constraints["timeOfDay"]): string | null {
+  const parts: string[] = [];
+
+  if (d) {
+    if (d.mode === "specific") {
+      const label = d.date.toLocaleDateString("en-AU", { weekday: "short", month: "short", day: "numeric" });
+      parts.push(`On ${label}, the calendar says go`);
+    } else if (d.days.length === 2 && d.days.includes(0) && d.days.includes(6)) {
+      parts.push("When the weekend stretches out");
+    } else if (d.days.length === 5 && !d.days.includes(0) && !d.days.includes(6)) {
+      parts.push("On a quiet weekday");
+    } else if (d.days.length > 0) {
+      parts.push(`On ${d.days.map((n) => DAY_LABELS[n]).join("/")}, let's make it count`);
+    }
   }
-  if (d.days.length === 0) return null;
-  if (d.days.length === 2 && d.days.includes(0) && d.days.includes(6)) return "this weekend";
-  if (d.days.length === 5 && !d.days.includes(0) && !d.days.includes(6)) return "on a weekday";
-  return `on ${d.days.map((n) => DAY_LABELS[n]).join("/")}`;
+
+  if (tod === "day") parts.push(parts.length ? "while the sun is up" : "While the sun is up");
+  if (tod === "evening") parts.push(parts.length ? "as the light fades" : "As the light fades");
+
+  return parts.length > 0 ? parts.join(", ") : null;
 }
 
-function getTimeOfDayPhrase(t: Constraints["timeOfDay"]): string | null {
-  if (t === "day") return "during the day";
-  if (t === "evening") return "in the evening";
-  return null;
+function getDateTailPhrase(d: Constraints["date"], tod: Constraints["timeOfDay"]): string | null {
+  const parts: string[] = [];
+
+  if (d) {
+    if (d.mode === "specific") {
+      parts.push(`on ${d.date.toLocaleDateString("en-AU", { weekday: "short", month: "short", day: "numeric" })}`);
+    } else if (d.days.length === 2 && d.days.includes(0) && d.days.includes(6)) {
+      parts.push("this weekend");
+    } else if (d.days.length === 5 && !d.days.includes(0) && !d.days.includes(6)) {
+      parts.push("on a weekday");
+    } else if (d.days.length > 0) {
+      parts.push(`on ${d.days.map((n) => DAY_LABELS[n]).join("/")}`);
+    }
+  }
+
+  if (tod === "day") parts.push("while it's light");
+  if (tod === "evening") parts.push("under evening sky");
+
+  return parts.length > 0 ? parts.join(", ") : null;
 }
 
-// ── Default prompts (no filters active) ─────────────────────
+// ── Sentence builder ─────────────────────────────────────────
 
-const IDLE_SENTENCES = [
-  "What should we explore today?",
-  "Where shall we wander?",
-  "Ready to discover something new?",
-];
+function getLeadPhrase(dim: FilterDimension, constraints: Constraints): string | null {
+  switch (dim) {
+    case "cost": return COST_LEAD[constraints.cost] ?? null;
+    case "distance": return DISTANCE_LEAD[constraints.distance] ?? null;
+    case "duration": return DURATION_LEAD[constraints.duration] ?? null;
+    case "group": return constraints.group ? (GROUP_LEAD[constraints.group] ?? null) : null;
+    case "familiarity": return VISITED_LEAD[constraints.visited] ?? null;
+    case "date": return getDateLeadPhrase(constraints.date, constraints.timeOfDay);
+  }
+}
+
+function getTailPhrase(dim: FilterDimension, constraints: Constraints): string | null {
+  switch (dim) {
+    case "cost": return COST_TAIL[constraints.cost] ?? null;
+    case "distance": return DISTANCE_TAIL[constraints.distance] ?? null;
+    case "duration": return DURATION_TAIL[constraints.duration] ?? null;
+    case "group": return constraints.group ? (GROUP_TAIL[constraints.group] ?? null) : null;
+    case "familiarity": return VISITED_TAIL[constraints.visited] ?? null;
+    case "date": return getDateTailPhrase(constraints.date, constraints.timeOfDay);
+  }
+}
 
 /**
- * Build a discovery-oriented sentence from the active filters,
- * reading them in priority order to create natural prose.
+ * Build a poetic, discovery-oriented sentence from the active filters.
+ * The first active dimension (by priority) gets a full lead phrase;
+ * remaining dimensions trail after an em-dash.
  *
  * Examples:
- *   No filters     → "What should we explore today?"
- *   cost=free      → "How about something free?"
- *   cost+dist      → "How about something free close by?"
- *   dist+group     → "How about something close by the little ones will love?"
+ *   No filters           → "Where shall the day take us?"
+ *   cost=free            → "Let's wander where the price is nothing"
+ *   cost+dist            → "Let's wander where the price is nothing — close at hand"
+ *   group=family-young   → "Little legs and big ones, side by side"
+ *   dist+group+duration  → "Adventure waits just around the bend — little ones in tow, just a stolen hour"
  */
 export function generateSentence(
   filters: Filters,
   constraints: Constraints,
 ): string {
-  // Gather active dimensions in priority order
-  const parts: { dim: FilterDimension }[] = [];
+  const activeDims: FilterDimension[] = [];
   for (const dim of constraints.priority) {
     if (isDimActive(dim, filters, constraints)) {
-      parts.push({ dim });
+      activeDims.push(dim);
     }
   }
 
-  if (parts.length === 0) {
+  if (activeDims.length === 0) {
     return IDLE_SENTENCES[new Date().getDay() % IDLE_SENTENCES.length];
   }
 
-  const cost = constraints.cost !== "any" ? COST_ADJECTIVE[constraints.cost] : null;
-  const dist = constraints.distance !== "any" ? DISTANCE_PHRASES[constraints.distance] : null;
-  const date = getDatePhrase(constraints.date);
-  const tod = getTimeOfDayPhrase(constraints.timeOfDay);
-  const dur = constraints.duration !== "any" ? DURATION_PHRASES[constraints.duration] : null;
-  const group = constraints.group ? GROUP_PHRASES[constraints.group] : null;
-
-  // Subject: "something free" or "something"
-  const subject = cost ? `something ${cost}` : "something";
-
-  // Build trailing qualifiers in priority order (skip cost, already in subject)
-  const qualifiers: string[] = [];
-  for (const p of parts) {
-    if (p.dim === "cost") continue;
-    if (p.dim === "distance" && dist) qualifiers.push(dist);
-    if (p.dim === "date") {
-      if (date) qualifiers.push(date);
-      if (tod) qualifiers.push(tod);
-    }
-    if (p.dim === "duration" && dur) qualifiers.push(dur);
-    if (p.dim === "group" && group) qualifiers.push(group);
-    if (p.dim === "familiarity" && constraints.visited !== "any") qualifiers.push(VISITED_PHRASES[constraints.visited]);
+  // Find the first dimension that produces a usable lead phrase
+  let leadPhrase: string | null = null;
+  let leadIndex = 0;
+  while (leadIndex < activeDims.length && !leadPhrase) {
+    leadPhrase = getLeadPhrase(activeDims[leadIndex], constraints);
+    leadIndex++;
   }
 
-  const tail = qualifiers.length > 0 ? ` ${qualifiers.join(" ")}` : "";
+  if (!leadPhrase) {
+    return IDLE_SENTENCES[new Date().getDay() % IDLE_SENTENCES.length];
+  }
 
-  return `How about ${subject}${tail}?`;
+  const tailPhrases = activeDims
+    .slice(leadIndex)
+    .map((dim) => getTailPhrase(dim, constraints))
+    .filter((p): p is string => p !== null);
+
+  if (tailPhrases.length === 0) {
+    return leadPhrase;
+  }
+
+  return `${leadPhrase} — ${tailPhrases.join(", ")}`;
 }
 
 function isDimActive(dim: FilterDimension, filters: Filters, constraints: Constraints): boolean {
