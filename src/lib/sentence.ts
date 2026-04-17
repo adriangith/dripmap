@@ -1,6 +1,8 @@
 "use client";
 
 import type { Filters, Constraints, FilterDimension } from "@/lib/types";
+import type { DayForecast } from "@/lib/integrations/enrichment-types";
+import { classifyWeather, weatherPhrase } from "@/lib/weather";
 
 // ── Poetic idle sentences (no filters active) ────────────────
 
@@ -43,6 +45,12 @@ const VISITED_LEAD: Record<string, string> = {
   familiar: "An old favourite, waiting",
 };
 
+const SETTING_LEAD: Record<string, string> = {
+  indoor: "Under a roof, away from it all",
+  outdoor: "Out where the sky stretches wide",
+  "outdoor-water": "Where the water meets the shore",
+};
+
 // ── Trailing phrases (secondary position after em-dash) ──────
 
 const COST_TAIL: Record<string, string> = {
@@ -74,6 +82,19 @@ const GROUP_TAIL: Record<string, string> = {
 const VISITED_TAIL: Record<string, string> = {
   new: "somewhere new",
   familiar: "a place you know",
+};
+
+const SETTING_TAIL: Record<string, string> = {
+  indoor: "under cover",
+  outdoor: "in the open air",
+  "outdoor-water": "by the water",
+};
+
+// ── Weather preambles ────────────────────────────────────────
+
+const WEATHER_PREAMBLE: Record<string, string> = {
+  rain: "Rain is whispering outside",
+  storm: "A storm rolls in",
 };
 
 // ── Date / time helpers ──────────────────────────────────────
@@ -132,6 +153,7 @@ function getLeadPhrase(dim: FilterDimension, constraints: Constraints): string |
     case "duration": return DURATION_LEAD[constraints.duration] ?? null;
     case "group": return constraints.group ? (GROUP_LEAD[constraints.group] ?? null) : null;
     case "familiarity": return VISITED_LEAD[constraints.visited] ?? null;
+    case "setting": return constraints.setting !== "any" ? (SETTING_LEAD[constraints.setting] ?? null) : null;
     case "date": return getDateLeadPhrase(constraints.date, constraints.timeOfDay);
   }
 }
@@ -143,6 +165,7 @@ function getTailPhrase(dim: FilterDimension, constraints: Constraints): string |
     case "duration": return DURATION_TAIL[constraints.duration] ?? null;
     case "group": return constraints.group ? (GROUP_TAIL[constraints.group] ?? null) : null;
     case "familiarity": return VISITED_TAIL[constraints.visited] ?? null;
+    case "setting": return constraints.setting !== "any" ? (SETTING_TAIL[constraints.setting] ?? null) : null;
     case "date": return getDateTailPhrase(constraints.date, constraints.timeOfDay);
   }
 }
@@ -151,17 +174,18 @@ function getTailPhrase(dim: FilterDimension, constraints: Constraints): string |
  * Build a poetic, discovery-oriented sentence from the active filters.
  * The first active dimension (by priority) gets a full lead phrase;
  * remaining dimensions trail after an em-dash.
+ * Optionally incorporates weather context from BOM forecast data.
  *
  * Examples:
  *   No filters           → "Where shall the day take us?"
  *   cost=free            → "Let's wander where the price is nothing"
  *   cost+dist            → "Let's wander where the price is nothing — close at hand"
- *   group=family-young   → "Little legs and big ones, side by side"
- *   dist+group+duration  → "Adventure waits just around the bend — little ones in tow, just a stolen hour"
+ *   setting=indoor+rain  → "Rain is whispering outside — under a roof, away from it all"
  */
 export function generateSentence(
   filters: Filters,
   constraints: Constraints,
+  forecast?: DayForecast | null,
 ): string {
   const activeDims: FilterDimension[] = [];
   for (const dim of constraints.priority) {
@@ -170,7 +194,14 @@ export function generateSentence(
     }
   }
 
+  // Weather preamble for rain/storm — prepended before the main sentence
+  const condition = forecast ? classifyWeather(forecast.precis) : "clear";
+  const preamble = WEATHER_PREAMBLE[condition] ?? null;
+
   if (activeDims.length === 0) {
+    if (preamble) {
+      return `${preamble} — where shall we go?`;
+    }
     return IDLE_SENTENCES[new Date().getDay() % IDLE_SENTENCES.length];
   }
 
@@ -183,6 +214,9 @@ export function generateSentence(
   }
 
   if (!leadPhrase) {
+    if (preamble) {
+      return `${preamble} — where shall we go?`;
+    }
     return IDLE_SENTENCES[new Date().getDay() % IDLE_SENTENCES.length];
   }
 
@@ -191,11 +225,19 @@ export function generateSentence(
     .map((dim) => getTailPhrase(dim, constraints))
     .filter((p): p is string => p !== null);
 
+  // Compose: optionally preamble — lead — tails
+  let sentence: string;
   if (tailPhrases.length === 0) {
-    return leadPhrase;
+    sentence = leadPhrase;
+  } else {
+    sentence = `${leadPhrase} — ${tailPhrases.join(", ")}`;
   }
 
-  return `${leadPhrase} — ${tailPhrases.join(", ")}`;
+  if (preamble) {
+    return `${preamble} — ${sentence.charAt(0).toLowerCase() + sentence.slice(1)}`;
+  }
+
+  return sentence;
 }
 
 function isDimActive(dim: FilterDimension, filters: Filters, constraints: Constraints): boolean {
@@ -206,6 +248,7 @@ function isDimActive(dim: FilterDimension, filters: Filters, constraints: Constr
     case "duration": return constraints.duration !== "any";
     case "group": return constraints.group !== null;
     case "familiarity": return constraints.visited !== "any";
+    case "setting": return constraints.setting !== "any";
   }
 }
 
@@ -220,5 +263,6 @@ export function activeFilterCount(filters: Filters, constraints: Constraints): n
   if (constraints.duration !== "any") count++;
   if (constraints.group !== null) count++;
   if (constraints.visited !== "any") count++;
+  if (constraints.setting !== "any") count++;
   return count;
 }

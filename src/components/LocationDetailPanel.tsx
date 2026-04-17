@@ -358,7 +358,9 @@ export default function LocationDetailPanel({
 
       {/* Fit blurb — personalised editorial lead-in */}
       {(() => {
-        const fitText = buildFitParagraph(location.fit, activeConstraints ?? null);
+        const placeEntry = { slug: location.slug, name: location.name, type: location.type, coordinates: location.coordinates, region: location.region, country: location.country, cost: location.cost, highlights: location.highlights, status: location.status, tags: location.tags };
+        const driveMin = drivingInfo ? drivingInfo.duration / 60 : null;
+        const fitText = buildFitParagraph(location.fit, activeConstraints ?? null, placeEntry, enrichments, driveMin);
         if (!fitText) return null;
         const summary = location.highlights[0];
         const editorial = summary ? `${summary}. ${fitText}` : fitText;
