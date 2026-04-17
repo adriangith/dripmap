@@ -73,6 +73,10 @@ export default function HomePage() {
     if (!loaded.priority.includes("familiarity")) {
       loaded.priority = [...loaded.priority, "familiarity"];
     }
+    if (!loaded.priority.includes("setting")) {
+      loaded.priority = [...loaded.priority, "setting"];
+    }
+    if (!loaded.setting) loaded.setting = "any";
     return loaded;
   });
   const [highlightedSlug, setHighlightedSlug] = useState<string | null>(null);
@@ -246,6 +250,7 @@ export default function HomePage() {
               filters={filters}
               constraints={constraints}
               onClick={() => setPrefsOpen(true)}
+              enrichments={enrichments}
             />
           </div>
         </div>
@@ -274,6 +279,7 @@ export default function HomePage() {
                   filters={filters}
                   constraints={constraints}
                   onClick={() => setPrefsOpen(true)}
+                  enrichments={enrichments}
                 />
               </div>
               <FilterBar
@@ -294,6 +300,7 @@ export default function HomePage() {
                   userLocation={userLocation}
                   onCardClick={handleOpenDesktopDetail}
                   activeConstraints={constraints}
+                  enrichments={enrichments}
                 />
               </div>
             </>
@@ -370,6 +377,7 @@ export default function HomePage() {
               userLocation={userLocation}
               onCardClick={handleOpenDetail}
               activeConstraints={constraints}
+              enrichments={enrichments}
             />
           </>
         ) : null}

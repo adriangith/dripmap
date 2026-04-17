@@ -2,7 +2,7 @@
 
 import type { Filters, Constraints, FilterDimension } from "@/lib/types";
 import type { DayForecast } from "@/lib/integrations/enrichment-types";
-import { classifyWeather, weatherPhrase } from "@/lib/weather";
+import { classifyWeather } from "@/lib/weather";
 
 // ── Poetic idle sentences (no filters active) ────────────────
 

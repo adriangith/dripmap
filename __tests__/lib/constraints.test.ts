@@ -117,8 +117,8 @@ describe("applyConstraints", () => {
       cost: "$$",
     };
     const enrichments = {
-      "test-swim": { slug: "test-swim", forecast: [{ date: new Date().toISOString().slice(0, 10), precis: "Rain." }] },
-      "test-museum": { slug: "test-museum", forecast: [{ date: new Date().toISOString().slice(0, 10), precis: "Rain." }] },
+      "test-swim": { slug: "test-swim", forecast: [{ date: (() => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`; })(), precis: "Rain." }] },
+      "test-museum": { slug: "test-museum", forecast: [{ date: (() => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`; })(), precis: "Rain." }] },
     };
     const result = applyConstraints(
       [swim, museum],
@@ -139,8 +139,8 @@ describe("applyConstraints", () => {
       cost: "free",
     };
     const enrichments = {
-      "test-swim": { slug: "test-swim", forecast: [{ date: new Date().toISOString().slice(0, 10), precis: "Sunny.", max: 35 }] },
-      "test-museum": { slug: "test-museum", forecast: [{ date: new Date().toISOString().slice(0, 10), precis: "Sunny.", max: 35 }] },
+      "test-swim": { slug: "test-swim", forecast: [{ date: (() => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`; })(), precis: "Sunny.", max: 35 }] },
+      "test-museum": { slug: "test-museum", forecast: [{ date: (() => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`; })(), precis: "Sunny.", max: 35 }] },
     };
     const result = applyConstraints(
       [museum, swim],

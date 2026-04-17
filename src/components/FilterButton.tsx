@@ -2,17 +2,28 @@
 
 import { SlidersHorizontal } from "lucide-react";
 import { generateSentence, activeFilterCount } from "@/lib/sentence";
+import { getForecastForPlace } from "@/lib/weather";
 import type { Filters, Constraints } from "@/lib/types";
+import type { EnrichmentIndex, DayForecast } from "@/lib/integrations/enrichment-types";
 
 interface FilterButtonProps {
   filters: Filters;
   constraints: Constraints;
   onClick: () => void;
+  enrichments?: EnrichmentIndex | null;
 }
 
-export default function FilterButton({ filters, constraints, onClick }: FilterButtonProps) {
+export default function FilterButton({ filters, constraints, onClick, enrichments }: FilterButtonProps) {
   const count = activeFilterCount(filters, constraints);
-  const sentence = generateSentence(filters, constraints);
+
+  // Pick a representative forecast (first enriched location) for the sentence preamble
+  let forecast: DayForecast | null = null;
+  if (enrichments) {
+    const firstSlug = Object.keys(enrichments).find((k) => enrichments[k]?.forecast?.length);
+    if (firstSlug) forecast = getForecastForPlace(firstSlug, enrichments);
+  }
+
+  const sentence = generateSentence(filters, constraints, forecast);
 
   return (
     <button

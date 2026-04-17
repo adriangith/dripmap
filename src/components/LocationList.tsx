@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { PlaceIndexEntry, Coordinates, Constraints } from "@/lib/types";
+import type { EnrichmentIndex } from "@/lib/integrations/enrichment-types";
 import LocationCard from "./LocationCard";
 
 interface LocationListProps {
@@ -9,6 +10,7 @@ interface LocationListProps {
   userLocation?: Coordinates | null;
   onCardClick?: (slug: string) => void;
   activeConstraints?: Constraints | null;
+  enrichments?: EnrichmentIndex | null;
 }
 
 export default function LocationList({
@@ -18,6 +20,7 @@ export default function LocationList({
   userLocation,
   onCardClick,
   activeConstraints,
+  enrichments,
 }: LocationListProps) {
   if (locations.length === 0) {
     return (
@@ -38,6 +41,7 @@ export default function LocationList({
           userLocation={userLocation}
           onCardClick={onCardClick}
           activeConstraints={activeConstraints}
+          enrichments={enrichments}
         />
       ))}
       <div className="pt-2 pb-1 text-center">

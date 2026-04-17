@@ -80,7 +80,8 @@ export function getForecastForPlace(
   const now = new Date();
   if (offsetMinutes) now.setMinutes(now.getMinutes() + offsetMinutes);
 
-  const targetDate = now.toISOString().slice(0, 10);
+  // Use local date string — BOM forecasts use Australian local dates
+  const targetDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
 
   return (
     enrichment.forecast.find((f) => f.date === targetDate) ??
@@ -181,6 +182,9 @@ export function weatherFitPhrase(
   if (setting === "outdoor" || setting === "outdoor-water") {
     if (condition === "rain" || condition === "storm") {
       return "Weather today might not be ideal — consider an indoor alternative.";
+    }
+    if (condition === "overcast") {
+      return "It's looking overcast — layers might be a good idea.";
     }
     if (setting === "outdoor-water" && forecast.max !== undefined && forecast.max >= 30) {
       return "Perfect weather for getting in the water!";

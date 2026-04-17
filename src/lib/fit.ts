@@ -33,23 +33,23 @@ export function buildFitParagraph(
   if (constraints.group && fit.group) parts.push(fit.group);
   if ((constraints.date || constraints.timeOfDay) && fit.date) parts.push(fit.date);
 
-  // Setting blurb — show the YAML blurb when setting preference is active,
-  // or a weather-aware phrase when forecast data is available.
-  if (constraints.setting && constraints.setting !== "any" && fit.setting) {
-    parts.push(fit.setting);
-  }
-
-  if (place) {
+  // Setting blurb: prefer dynamic weather phrase when forecast is available,
+  // fall back to static YAML blurb otherwise.
+  if (place && enrichments) {
     const setting = settingForPlace(place);
     const forecast = getForecastForPlace(
       place.slug,
-      enrichments ?? null,
+      enrichments,
       driveMinutes ?? undefined,
     );
     if (forecast) {
       const wp = weatherFitPhrase(setting, forecast);
       if (wp) parts.push(wp);
+    } else if (constraints.setting && constraints.setting !== "any" && fit.setting) {
+      parts.push(fit.setting);
     }
+  } else if (constraints.setting && constraints.setting !== "any" && fit.setting) {
+    parts.push(fit.setting);
   }
 
   if (parts.length === 0) return null;

@@ -213,7 +213,7 @@ export function applyConstraints(
       const setting = settingForPlace(place);
       const settingWeight = priorityWeights["setting"] ?? 1;
 
-      // Setting preference match (even without weather data)
+      // Setting preference match / mismatch
       if (constraints.setting !== "any") {
         if (setting === constraints.setting) {
           score += 10 * settingWeight;
@@ -222,6 +222,8 @@ export function applyConstraints(
           (constraints.setting === "outdoor-water" && setting === "outdoor")
         ) {
           score += 3 * settingWeight; // partial match
+        } else {
+          score -= 5 * settingWeight; // clear mismatch penalty
         }
       }
 
