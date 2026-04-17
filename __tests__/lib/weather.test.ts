@@ -133,7 +133,9 @@ describe("weatherFitPhrase", () => {
     expect(weatherFitPhrase("indoor", rain)).toContain("indoors");
   });
 
-  it("returns null for no forecast", () => {
-    expect(weatherFitPhrase("outdoor", null)).toBeNull();
+  it("returns setting fallback when no forecast", () => {
+    expect(weatherFitPhrase("outdoor", null)).toContain("outdoor");
+    expect(weatherFitPhrase("indoor", null)).toContain("indoor");
+    expect(weatherFitPhrase("outdoor-water", null)).toContain("water");
   });
 });

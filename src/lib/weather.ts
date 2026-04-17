@@ -170,31 +170,41 @@ export function weatherPhrase(forecast: DayForecast | null): string | null {
   }
 }
 
+/** Setting-only fallback blurbs (no forecast needed). */
+const SETTING_FALLBACK: Record<Setting, string> = {
+  indoor: "This is an indoor spot — great for any weather.",
+  outdoor: "This is an outdoor spot — check the forecast before heading out.",
+  "outdoor-water": "This is a water spot — best enjoyed on warm, sunny days.",
+};
+
 /** Setting-aware suggestion for the fit blurb. */
 export function weatherFitPhrase(
   setting: Setting,
   forecast: DayForecast | null,
 ): string | null {
-  if (!forecast) return null;
-  const condition = classifyWeather(forecast.precis);
+  // When we have a forecast, give a specific weather-aware blurb
+  if (forecast) {
+    const condition = classifyWeather(forecast.precis);
 
-  if (setting === "outdoor" || setting === "outdoor-water") {
-    if (condition === "rain" || condition === "storm") {
-      return "Weather today might not be ideal — consider an indoor alternative.";
+    if (setting === "outdoor" || setting === "outdoor-water") {
+      if (condition === "rain" || condition === "storm") {
+        return "Weather today might not be ideal — consider an indoor alternative.";
+      }
+      if (setting === "outdoor-water" && forecast.max !== undefined && forecast.max >= 30) {
+        return "Perfect weather for getting in the water!";
+      }
+      if (condition === "clear") {
+        return "Great weather for getting outside!";
+      }
     }
-    if (setting === "outdoor-water" && forecast.max !== undefined && forecast.max >= 30) {
-      return "Perfect weather for getting in the water!";
-    }
-    if (condition === "clear") {
-      return "Great weather for getting outside!";
+
+    if (setting === "indoor") {
+      if (condition === "rain" || condition === "storm") {
+        return "A perfect day to head indoors.";
+      }
     }
   }
 
-  if (setting === "indoor") {
-    if (condition === "rain" || condition === "storm") {
-      return "A perfect day to head indoors.";
-    }
-  }
-
-  return null;
+  // Fallback: always show a setting-based blurb
+  return SETTING_FALLBACK[setting] ?? null;
 }
