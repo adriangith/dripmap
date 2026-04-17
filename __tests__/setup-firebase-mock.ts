@@ -1,6 +1,22 @@
 // Mock Firebase modules for test environment
 import { vi } from "vitest";
 
+// jsdom doesn't provide IntersectionObserver — stub it so useEdgeColor works
+if (typeof globalThis.IntersectionObserver === "undefined") {
+  globalThis.IntersectionObserver = class IntersectionObserver {
+    constructor(private cb: IntersectionObserverCallback) {}
+    observe(target: Element) {
+      // Immediately report as intersecting so hooks proceed in tests
+      this.cb(
+        [{ isIntersecting: true, target } as IntersectionObserverEntry],
+        this as unknown as IntersectionObserver,
+      );
+    }
+    unobserve() {}
+    disconnect() {}
+  } as unknown as typeof IntersectionObserver;
+}
+
 vi.mock("firebase/app", () => ({
   initializeApp: vi.fn(() => ({})),
   getApps: vi.fn(() => []),
