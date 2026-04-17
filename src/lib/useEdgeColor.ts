@@ -17,16 +17,17 @@ export function useEdgeColor(
   src: string | undefined,
   containerRef?: RefObject<HTMLElement | null>,
 ): string | null {
-  // Read from cache synchronously — avoids calling setState in the effect body
   const cached = src ? cache.get(src) ?? null : null;
   const [color, setColor] = useState<string | null>(cached);
   const [visible, setVisible] = useState(!containerRef);
 
-  // Keep color in sync when src changes and we already have a cached value
+  // Sync state when src changes and cache already has the value
+  useEffect(() => {
+    if (cached && cached !== color) setColor(cached);
+  }, [src, cached]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Return cache hit immediately, fall back to async state
   const current = cached ?? color;
-  if (cached && cached !== color) {
-    setColor(cached);
-  }
 
   // Observe visibility when a container ref is provided
   useEffect(() => {
@@ -65,8 +66,10 @@ export function useEdgeColor(
         if (!ctx) return;
 
         // Draw small for speed
+        if (img.naturalHeight <= 0 || img.naturalWidth <= 0) return;
         const h = 40;
         const w = Math.round((img.naturalWidth / img.naturalHeight) * h);
+        if (!isFinite(w) || w <= 0 || w > 10000) return;
         canvas.width = w;
         canvas.height = h;
         ctx.drawImage(img, 0, 0, w, h);
