@@ -14,6 +14,13 @@ export interface DayForecast {
   uvAlert?: string; // e.g. "Sun protection 10:00am to 2:40pm"
 }
 
+/** A photo sourced from Foursquare */
+export interface FoursquarePhoto {
+  url: string;
+  width: number;
+  height: number;
+}
+
 /** Enrichment data for a single location */
 export interface LocationEnrichment {
   slug: string;
@@ -27,6 +34,20 @@ export interface LocationEnrichment {
   warnings?: string[];
   /** Forecast area name matched by BOM */
   forecastArea?: string;
+  /** Foursquare Place ID */
+  fsqId?: string;
+  /** Foursquare venue rating (0–10) */
+  fsqRating?: number;
+  /** Foursquare price tier (1–4) */
+  fsqPrice?: number;
+  /** User-submitted venue photos from Foursquare */
+  fsqPhotos?: FoursquarePhoto[];
+  /** Top user tips from Foursquare */
+  fsqTips?: string[];
+  /** Venue website from Foursquare */
+  fsqWebsite?: string;
+  /** Foursquare popularity score (0–1) */
+  fsqPopularity?: number;
 }
 
 /** All enrichments keyed by slug for fast lookup */
@@ -64,6 +85,13 @@ export function mergeEnrichments(
         if (enrichment.warnings) existing.warnings = enrichment.warnings;
         if (enrichment.forecastArea)
           existing.forecastArea = enrichment.forecastArea;
+        if (enrichment.fsqId) existing.fsqId = enrichment.fsqId;
+        if (enrichment.fsqRating != null) existing.fsqRating = enrichment.fsqRating;
+        if (enrichment.fsqPrice != null) existing.fsqPrice = enrichment.fsqPrice;
+        if (enrichment.fsqPhotos) existing.fsqPhotos = enrichment.fsqPhotos;
+        if (enrichment.fsqTips) existing.fsqTips = enrichment.fsqTips;
+        if (enrichment.fsqWebsite) existing.fsqWebsite = enrichment.fsqWebsite;
+        if (enrichment.fsqPopularity != null) existing.fsqPopularity = enrichment.fsqPopularity;
       } else {
         index[enrichment.slug] = { ...enrichment };
       }

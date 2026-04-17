@@ -14,15 +14,17 @@ import { mergeEnrichments } from "../src/lib/integrations/enrichment-types";
 import type { PlaceIndexEntry } from "../src/lib/types";
 import { overpassProvider } from "../src/lib/integrations/providers/overpass";
 import { bomProvider } from "../src/lib/integrations/providers/bom";
+import { foursquareProvider } from "../src/lib/integrations/providers/foursquare";
 
 // ── Provider registry ────────────────────────────────────────
 
 const REGISTRY: Record<string, EnrichmentProvider> = {
   overpass: overpassProvider,
   bom: bomProvider,
+  foursquare: foursquareProvider,
 };
 
-const DEFAULT_PROVIDERS = ["overpass", "bom"];
+const DEFAULT_PROVIDERS = ["overpass", "bom", "foursquare"];
 
 // ── Main ─────────────────────────────────────────────────────
 

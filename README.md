@@ -49,6 +49,7 @@ npm run dev:network:https      # HTTPS dev server (required for geolocation)
 | `npm run lint` | ESLint |
 | `npm run test` | Vitest unit/integration tests |
 | `npm run test:e2e` | Build + Playwright E2E tests (Chromium) |
+| `npm run enrich` | Fetch external events + enrichments (Overpass, BOM, Foursquare) |
 | `npm run upload:data` | Upload location data to Firestore |
 | `npm run deploy:data` | Validate + build JSON + upload to Firestore |
 
@@ -73,6 +74,19 @@ npm run upload:data
 ```
 
 Requires the `GOOGLE_APPLICATION_CREDENTIALS` environment variable pointing to a service account key JSON file, or pass `--service-account path/to/key.json`.
+
+### Foursquare enrichment
+
+The enrichment pipeline can optionally fetch venue ratings, prices, photos, and tips from the [Foursquare Places API](https://docs.foursquare.com/developer/reference/search-data). Set the `FOURSQUARE_API_KEY` environment variable to enable it:
+
+```bash
+export FOURSQUARE_API_KEY=fsq3...
+npm run enrich
+```
+
+To run only the Foursquare provider: `ENRICHMENT_PROVIDERS=foursquare npm run enrich`.
+
+Get a free API key at [foursquare.com/developers](https://foursquare.com/developers). The enrichment runs at build time and caches results — no runtime API calls are made.
 
 ## Tech stack
 
