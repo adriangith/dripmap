@@ -29,7 +29,7 @@ export default function FilterButton({ filters, constraints, onClick }: FilterBu
           </span>
         )}
       </div>
-      <span className="text-sm lg:text-base text-gray-700 dark:text-gray-300 max-w-[300px] lg:max-w-[400px] text-left">
+      <span className="text-sm lg:text-base text-gray-700 dark:text-gray-300 max-w-[400px] lg:max-w-[520px] text-left">
         {sentence}
       </span>
     </button>
