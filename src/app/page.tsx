@@ -19,6 +19,7 @@ import { DEFAULT_PRIORITY } from "@/lib/types";
 import type { ScoredPlace } from "@/lib/constraints";
 import { useUserData } from "@/lib/use-user-data";
 import { useExternalEvents } from "@/lib/integrations/use-external-events";
+import { useEnrichments } from "@/lib/integrations/use-enrichments";
 import { getLocationIndex } from "@/lib/locations";
 
 const LocationMap = dynamic(() => import("@/components/LocationMap"), {
@@ -44,6 +45,7 @@ const defaultConstraints: Constraints = {
   duration: "any",
   group: null,
   visited: "any",
+  setting: "any",
   priority: [...DEFAULT_PRIORITY],
 };
 
@@ -71,6 +73,10 @@ export default function HomePage() {
     if (!loaded.priority.includes("familiarity")) {
       loaded.priority = [...loaded.priority, "familiarity"];
     }
+    if (!loaded.priority.includes("setting")) {
+      loaded.priority = [...loaded.priority, "setting"];
+    }
+    if (!loaded.setting) loaded.setting = "any";
     return loaded;
   });
   const [highlightedSlug, setHighlightedSlug] = useState<string | null>(null);
@@ -127,10 +133,12 @@ export default function HomePage() {
   // Merge in external events (from remote endpoint, if configured)
   const allLocations = useExternalEvents(staticLocations);
 
+  const enrichments = useEnrichments();
+
   const filteredLocations: ScoredPlace[] = useMemo(() => {
     const filtered = filterLocations(allLocations, filters);
-    return applyConstraints(filtered, constraints, userLocation);
-  }, [allLocations, filters, constraints, userLocation]);
+    return applyConstraints(filtered, constraints, userLocation, enrichments);
+  }, [allLocations, filters, constraints, userLocation, enrichments]);
 
   // Open detail view in the sheet (from pin tap or card tap)
   const handleOpenDetail = useCallback((slug: string) => {
@@ -242,6 +250,7 @@ export default function HomePage() {
               filters={filters}
               constraints={constraints}
               onClick={() => setPrefsOpen(true)}
+              enrichments={enrichments}
             />
           </div>
         </div>
@@ -270,6 +279,7 @@ export default function HomePage() {
                   filters={filters}
                   constraints={constraints}
                   onClick={() => setPrefsOpen(true)}
+                  enrichments={enrichments}
                 />
               </div>
               <FilterBar
@@ -290,6 +300,7 @@ export default function HomePage() {
                   userLocation={userLocation}
                   onCardClick={handleOpenDesktopDetail}
                   activeConstraints={constraints}
+                  enrichments={enrichments}
                 />
               </div>
             </>
@@ -366,6 +377,7 @@ export default function HomePage() {
               userLocation={userLocation}
               onCardClick={handleOpenDetail}
               activeConstraints={constraints}
+              enrichments={enrichments}
             />
           </>
         ) : null}

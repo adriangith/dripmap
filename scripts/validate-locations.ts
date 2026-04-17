@@ -154,7 +154,7 @@ function validateCoreFields(data: Record<string, unknown>): string[] {
       errors.push("fit: must be an object");
     } else {
       const fit = data.fit as Record<string, unknown>;
-      const validFitKeys = ["cost", "duration", "group", "date"];
+      const validFitKeys = ["cost", "duration", "group", "date", "setting"];
       const validDurationKeys = ["quick", "half-day", "full-day"];
       for (const key of Object.keys(fit)) {
         if (!validFitKeys.includes(key)) {

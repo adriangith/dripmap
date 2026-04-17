@@ -8,6 +8,7 @@ import type {
   DurationFilter,
   GroupType,
   VisitedFilter,
+  SettingFilter,
   DateMode,
   TimeOfDay,
   PlaceType,
@@ -113,6 +114,20 @@ const GROUP_OPTIONS: { value: GroupType; label: string }[] = [
 ];
 
 const DAY_LABELS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+const SETTING_LABELS: Record<SettingFilter, string> = {
+  indoor: "indoors",
+  outdoor: "outdoors",
+  "outdoor-water": "in the water",
+  any: "any setting",
+};
+
+const SETTING_OPTIONS: { value: SettingFilter; label: string }[] = [
+  { value: "any", label: "any setting" },
+  { value: "indoor", label: "indoors" },
+  { value: "outdoor", label: "outdoors" },
+  { value: "outdoor-water", label: "in the water" },
+];
 
 function dateToLabel(d: DateMode, tod: TimeOfDay): string {
   const todSuffix = tod === "day" ? ", daytime" : tod === "evening" ? ", evening" : "";
@@ -243,7 +258,7 @@ function OptionButton({
 
 // ── Main component ───────────────────────────────────────────
 
-type OpenToken = "type" | "distance" | "date" | "cost" | "duration" | "group" | "visited" | null;
+type OpenToken = "type" | "distance" | "date" | "cost" | "duration" | "group" | "visited" | "setting" | null;
 
 interface SentenceFilterProps {
   filters: Filters;
@@ -301,6 +316,7 @@ export default function SentenceFilter({
   const durActive = constraints.duration !== "any";
   const groupActive = constraints.group !== null;
   const visitedActive = constraints.visited !== "any";
+  const settingActive = constraints.setting !== "any";
 
   return (
     <div
@@ -595,6 +611,30 @@ export default function SentenceFilter({
               setOpenToken(null);
             }}
           />
+        </div>
+      </Token>
+
+      <span className="text-gray-400"> · </span>
+
+      {/* Setting token */}
+      <Token
+        label={SETTING_LABELS[constraints.setting]}
+        active={settingActive}
+        popoverOpen={openToken === "setting"}
+        onTap={() => toggle("setting")}
+      >
+        <div className="flex flex-col gap-0.5">
+          {SETTING_OPTIONS.map((opt) => (
+            <OptionButton
+              key={opt.value}
+              label={opt.label}
+              selected={constraints.setting === opt.value}
+              onClick={() => {
+                updateConstraint({ setting: opt.value });
+                setOpenToken(null);
+              }}
+            />
+          ))}
         </div>
       </Token>
     </div>

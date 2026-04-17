@@ -7,10 +7,12 @@ import { DEFAULT_PRIORITY } from "../../src/lib/types";
 const noConstraints: Constraints = {
   distance: "any",
   date: null,
+  timeOfDay: null,
   cost: "any",
   duration: "any",
   group: null,
   visited: "any",
+  setting: "any",
   priority: [...DEFAULT_PRIORITY],
 };
 
@@ -104,5 +106,65 @@ describe("applyConstraints", () => {
     );
     expect(result[0].slug).toBe("far-place");
     expect(result[1].slug).toBe("near-place");
+  });
+
+  it("boosts indoor places with weather enrichment on rainy days", () => {
+    const museum: PlaceIndexEntry = {
+      ...swim,
+      slug: "test-museum",
+      name: "Test Museum",
+      type: "museum",
+      cost: "$$",
+    };
+    const enrichments = {
+      "test-swim": { slug: "test-swim", forecast: [{ date: (() => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`; })(), precis: "Rain." }] },
+      "test-museum": { slug: "test-museum", forecast: [{ date: (() => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`; })(), precis: "Rain." }] },
+    };
+    const result = applyConstraints(
+      [swim, museum],
+      noConstraints,
+      userLocation,
+      enrichments,
+    );
+    // Museum (indoor) should score higher than swim (outdoor-water) on rainy day
+    expect(result[0].slug).toBe("test-museum");
+  });
+
+  it("boosts outdoor-water places on hot clear days", () => {
+    const museum: PlaceIndexEntry = {
+      ...swim,
+      slug: "test-museum",
+      name: "Test Museum",
+      type: "museum",
+      cost: "free",
+    };
+    const enrichments = {
+      "test-swim": { slug: "test-swim", forecast: [{ date: (() => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`; })(), precis: "Sunny.", max: 35 }] },
+      "test-museum": { slug: "test-museum", forecast: [{ date: (() => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`; })(), precis: "Sunny.", max: 35 }] },
+    };
+    const result = applyConstraints(
+      [museum, swim],
+      noConstraints,
+      userLocation,
+      enrichments,
+    );
+    // Swim (outdoor-water) should score higher on a hot clear day
+    expect(result[0].slug).toBe("test-swim");
+  });
+
+  it("setting preference boosts matching places", () => {
+    const museum: PlaceIndexEntry = {
+      ...swim,
+      slug: "test-museum",
+      name: "Test Museum",
+      type: "museum",
+      cost: "free",
+    };
+    const result = applyConstraints(
+      [swim, museum],
+      { ...noConstraints, setting: "indoor" },
+      userLocation,
+    );
+    expect(result[0].slug).toBe("test-museum");
   });
 });

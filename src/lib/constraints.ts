@@ -1,7 +1,9 @@
 import type { PlaceIndexEntry, Constraints, Coordinates, DateMode, TimeOfDay } from "./types";
+import type { EnrichmentIndex } from "./integrations/enrichment-types";
 import { haversineDistanceKm } from "./useCurrentLocation";
 import { isEventOnDate, isEventOnDayOfWeek } from "./event-dates";
 import { getVisited } from "./visited";
+import { settingForPlace, getForecastForPlace, weatherScore } from "./weather";
 
 const ROAD_FACTOR = 1.4;
 const AVG_SPEED_KMH = 60;
@@ -138,6 +140,7 @@ export function applyConstraints(
   places: PlaceIndexEntry[],
   constraints: Constraints,
   userLocation: Coordinates | null,
+  enrichments?: EnrichmentIndex | null,
 ): ScoredPlace[] {
   const scored: ScoredPlace[] = [];
 
@@ -202,6 +205,33 @@ export function applyConstraints(
         score += 15 * familiarityWeight;
       } else if (constraints.visited === "familiar" && isVisited) {
         score += 15 * familiarityWeight;
+      }
+    }
+
+    // Weather × setting score
+    if (constraints.setting !== "any" || enrichments) {
+      const setting = settingForPlace(place);
+      const settingWeight = priorityWeights["setting"] ?? 1;
+
+      // Setting preference match / mismatch
+      if (constraints.setting !== "any") {
+        if (setting === constraints.setting) {
+          score += 10 * settingWeight;
+        } else if (
+          (constraints.setting === "outdoor" && setting === "outdoor-water") ||
+          (constraints.setting === "outdoor-water" && setting === "outdoor")
+        ) {
+          score += 3 * settingWeight; // partial match
+        } else {
+          score -= 5 * settingWeight; // clear mismatch penalty
+        }
+      }
+
+      // Weather-based adjustment
+      if (enrichments) {
+        const forecast = getForecastForPlace(place.slug, enrichments, driveMin ?? undefined);
+        const wScore = weatherScore(setting, forecast);
+        score += wScore * settingWeight;
       }
     }
 
