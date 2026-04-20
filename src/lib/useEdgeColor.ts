@@ -7,11 +7,8 @@ const cache = new Map<string, string>();
 const MAX_CACHE = 80;
 
 /**
- * Extracts the average color from the left edge of an image.
+ * Extracts the most common color from the visible region of a card's image.
  * Returns an "r, g, b" string for use in rgba(), or null while loading / on failure.
- *
- * Pass an optional ref to a container element — extraction is deferred until the
- * element is within 200px of the viewport (IntersectionObserver with rootMargin).
  */
 export function useEdgeColor(
   src: string | undefined,
@@ -21,7 +18,6 @@ export function useEdgeColor(
   const [asyncColor, setAsyncColor] = useState<string | null>(null);
   const [visible, setVisible] = useState(!containerRef);
 
-  // Observe visibility when a container ref is provided
   const observerCallback = useCallback(([entry]: IntersectionObserverEntry[]) => {
     if (entry.isIntersecting) {
       setVisible(true);
@@ -53,33 +49,72 @@ export function useEdgeColor(
         if (!ctx) return;
 
         if (img.naturalHeight <= 0 || img.naturalWidth <= 0) return;
-        const h = 40;
+        const h = 16;
         const w = Math.round((img.naturalWidth / img.naturalHeight) * h);
         if (!isFinite(w) || w <= 0 || w > 10000) return;
         canvas.width = w;
         canvas.height = h;
         ctx.drawImage(img, 0, 0, w, h);
 
-        // Sample left 8% strip
-        const stripW = Math.max(1, Math.round(w * 0.08));
-        const data = ctx.getImageData(0, 0, stripW, h).data;
+        // Sample only the visible cropped region (~right 77% of image)
+        const visibleLeft = Math.round(w * 0.23);
+        const visibleW = w - visibleLeft;
+        const data = ctx.getImageData(visibleLeft, 0, visibleW, h).data;
+        const totalPixels = visibleW * h;
 
-        let r = 0,
-          g = 0,
-          b = 0;
-        const count = stripW * h;
+        // Fast bucketing with typed arrays (3-bit per channel = 512 buckets)
+        const bucketCount = new Uint16Array(512);
+        const bucketR = new Uint32Array(512);
+        const bucketG = new Uint32Array(512);
+        const bucketB = new Uint32Array(512);
+
         for (let i = 0; i < data.length; i += 4) {
-          r += data[i];
-          g += data[i + 1];
-          b += data[i + 2];
+          const pr = data[i], pg = data[i + 1], pb = data[i + 2];
+          const max = Math.max(pr, pg, pb);
+          const min = Math.min(pr, pg, pb);
+          if (max < 30 || min > 225) continue;
+
+          const key = ((pr >> 5) << 6) | ((pg >> 5) << 3) | (pb >> 5);
+          bucketCount[key]++;
+          bucketR[key] += pr;
+          bucketG[key] += pg;
+          bucketB[key] += pb;
         }
-        r = Math.round(r / count);
-        g = Math.round(g / count);
-        b = Math.round(b / count);
 
-        const result = `${r}, ${g}, ${b}`;
+        // Find best bucket, biased toward warm colors
+        let bestIdx = -1;
+        let bestScore = -1;
+        for (let i = 0; i < 512; i++) {
+          const cnt = bucketCount[i];
+          if (cnt === 0) continue;
+          const ar = bucketR[i] / cnt;
+          const ab = bucketB[i] / cnt;
+          const warmth = 1 + Math.max(0, (ar - ab) / 255);
+          const score = cnt * warmth;
+          if (score > bestScore) {
+            bestScore = score;
+            bestIdx = i;
+          }
+        }
 
-        // Evict oldest entries if cache is full
+        let bestR: number, bestG: number, bestB: number;
+        if (bestIdx >= 0) {
+          const cnt = bucketCount[bestIdx];
+          bestR = Math.round(bucketR[bestIdx] / cnt);
+          bestG = Math.round(bucketG[bestIdx] / cnt);
+          bestB = Math.round(bucketB[bestIdx] / cnt);
+        } else {
+          let sr = 0, sg = 0, sb = 0;
+          for (let i = 0; i < data.length; i += 4) {
+            sr += data[i]; sg += data[i + 1]; sb += data[i + 2];
+          }
+          bestR = Math.round(sr / totalPixels);
+          bestG = Math.round(sg / totalPixels);
+          bestB = Math.round(sb / totalPixels);
+        }
+
+        const result = `${bestR}, ${bestG}, ${bestB}`;
+
         if (cache.size >= MAX_CACHE) {
           const first = cache.keys().next().value;
           if (first !== undefined) cache.delete(first);
@@ -92,17 +127,11 @@ export function useEdgeColor(
       }
     };
 
-    img.onerror = () => {
-      // Image failed to load — leave null
-    };
-
+    img.onerror = () => {};
     img.src = src;
-    return () => {
-      cancelled = true;
-    };
+    return () => { cancelled = true; };
   }, [src, visible]);
 
-  // Cache hit takes priority; async state is fallback for first load
   return cached ?? asyncColor;
 }
 

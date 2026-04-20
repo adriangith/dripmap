@@ -128,6 +128,7 @@ export default function LocationCard({
           src={photo}
           alt=""
           loading="lazy"
+          crossOrigin="anonymous"
           className="w-full h-full object-cover brightness-90 saturate-[0.85]"
         />
       </div>

@@ -60,7 +60,7 @@ export default function BottomSheet({ children, header, snapTo, onHeightChange, 
   const sheetRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   // React state only used for content-visibility threshold — NOT updated per pixel
-  const [, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const heightRef = useRef(SNAP_PEEK);
   const draggingRef = useRef(false);
@@ -295,7 +295,7 @@ export default function BottomSheet({ children, header, snapTo, onHeightChange, 
   return (
     <div
       ref={sheetRef}
-      className="fixed bottom-2 left-2 right-2 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl rounded-2xl shadow-[0_-4px_24px_rgba(0,0,0,0.15)] dark:shadow-[0_-4px_24px_rgba(0,0,0,0.5)] border border-white/50 dark:border-gray-700/50 z-40 flex flex-col lg:hidden"
+      className="fixed bottom-2 left-2 right-2 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl rounded-3xl shadow-[0_-4px_24px_rgba(0,0,0,0.15)] dark:shadow-[0_-4px_24px_rgba(0,0,0,0.5)] border border-white/50 dark:border-gray-700/50 z-40 flex flex-col lg:hidden"
       style={{ height: SNAP_PEEK }}
     >
       {/* Drag handle — enlarged 48px hit target */}
@@ -326,7 +326,7 @@ export default function BottomSheet({ children, header, snapTo, onHeightChange, 
       )}
 
       {/* Scrollable content */}
-      <div ref={scrollRef} className="flex-1 overflow-y-auto overscroll-contain">
+      <div ref={scrollRef} className={`flex-1 overflow-y-auto overscroll-contain rounded-b-3xl ${isExpanded ? 'shadow-[inset_0_-6px_12px_rgba(0,0,0,0.08)]' : ''}`}>
         {children}
       </div>
     </div>
