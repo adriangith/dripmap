@@ -120,6 +120,8 @@ export default function HomePage() {
   const [snapTarget, setSnapTarget] = useState<number | null>(null);
   const [focusSheetHeight, setFocusSheetHeight] = useState<number | undefined>();
   const listScrollRef = useRef(0);
+  const desktopScrollRef = useRef<HTMLDivElement>(null);
+  const savedSheetHeightRef = useRef<number | null>(null);
 
   // Track dark mode for inline styles (radial-gradient can't use Tailwind dark:)
   const [isDark, setIsDark] = useState(false);
@@ -154,9 +156,11 @@ export default function HomePage() {
 
   // Open detail view in the sheet (from pin tap or card tap)
   const handleOpenDetail = useCallback((slug: string) => {
-    // Save list scroll position before switching to detail
-    const scrollEl = document.querySelector(".fixed.bottom-0 .overflow-y-auto");
+    // Save list scroll position and sheet height before switching to detail
+    const scrollEl = document.querySelector(".fixed.bottom-2 .overflow-y-auto") as HTMLElement | null;
     if (scrollEl) listScrollRef.current = scrollEl.scrollTop;
+    const sheetH = parseInt(getComputedStyle(document.documentElement).getPropertyValue("--sheet-height")) || null;
+    savedSheetHeightRef.current = sheetH;
 
     setDetailSlug(slug);
     setSheetView("detail");
@@ -171,14 +175,20 @@ export default function HomePage() {
     setDetailSlug(null);
     setHighlightedSlug(null);
     setFocusSheetHeight(undefined);
+    // Restore sheet to previous snap position
+    if (savedSheetHeightRef.current) {
+      setSnapTarget(savedSheetHeightRef.current);
+    }
     // Restore list scroll position after React re-renders the list
     requestAnimationFrame(() => {
-      const scrollEl = document.querySelector(".fixed.bottom-0 .overflow-y-auto");
+      const scrollEl = document.querySelector(".fixed.bottom-2 .overflow-y-auto") as HTMLElement | null;
       if (scrollEl) scrollEl.scrollTop = listScrollRef.current;
     });
   }, []);
 
   const handleOpenDesktopDetail = useCallback((slug: string) => {
+    // Save desktop list scroll position
+    if (desktopScrollRef.current) listScrollRef.current = desktopScrollRef.current.scrollTop;
     setDetailSlug(slug);
     setSheetView("detail");
   }, []);
@@ -187,6 +197,10 @@ export default function HomePage() {
     setSheetView("list");
     setDetailSlug(null);
     setHighlightedSlug(null);
+    // Restore desktop list scroll position after React re-renders
+    requestAnimationFrame(() => {
+      if (desktopScrollRef.current) desktopScrollRef.current.scrollTop = listScrollRef.current;
+    });
   }, []);
 
   const handleMarkerClick = useCallback((slug: string) => {
@@ -309,7 +323,7 @@ export default function HomePage() {
                 {/* Scooped/inverted corners — layered over scroll area, not inside it */}
                 <div className="hidden lg:block absolute left-0 w-5 h-5 pointer-events-none z-20" style={{ top: '-1px', background: `radial-gradient(circle at 100% 100%, transparent 20px, ${scoopColor} 20.5px)`, filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.12))' }} />
                 <div className="hidden lg:block absolute right-0 w-5 h-5 pointer-events-none z-20" style={{ top: '-1px', background: `radial-gradient(circle at 0% 100%, transparent 20px, ${scoopColor} 20.5px)`, filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.12))' }} />
-                <div className="h-full overflow-y-auto">
+                <div ref={desktopScrollRef} className="h-full overflow-y-auto">
                 {loadError && (
                   <div className="mx-3 mt-2 p-3 bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 rounded-lg text-sm text-red-700 dark:text-red-300">
                     Failed to load locations. Please try refreshing the page.
