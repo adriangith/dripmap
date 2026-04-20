@@ -185,7 +185,7 @@ export default function FilterBar({
       )}
       <div
         ref={chipsRef}
-        className="flex items-center gap-2 px-3 py-1.5 overflow-x-auto scrollbar-hide md:flex-wrap md:overflow-x-visible"
+        className="flex items-center gap-2 px-3 py-2 overflow-x-auto scrollbar-hide md:flex-wrap md:overflow-x-visible"
         style={chipsStyle}
       >
         {orderedTypeChips.map((chip) => {
