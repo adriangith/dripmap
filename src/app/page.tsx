@@ -248,8 +248,24 @@ export default function HomePage() {
       <div className="h-full flex overflow-hidden">
         {/* Map — edge-to-edge, extends into safe areas */}
         <div className="flex-1 relative overflow-hidden">
-          {/* Faded logo overlay — respects safe area */}
-          <div className="absolute left-3 right-3 lg:right-[calc(24rem*1.2+1.5rem)] z-10 flex items-center justify-between" style={{ top: "calc(0.75rem + env(safe-area-inset-top))" }}>
+          {/* Logo + auth — below filter button on mobile */}
+          <div
+            className="lg:hidden absolute left-3 right-3 z-10 flex items-center justify-between"
+            style={{ top: "calc(0.75rem + env(safe-area-inset-top) + 3rem)" }}
+          >
+            <Link href="/" className="flex items-center gap-1.5 opacity-40">
+              <Compass className="w-5 h-5 text-blue-600" />
+              <span className="font-bold text-blue-700 text-sm">Drift</span>
+            </Link>
+            <div>
+              <AuthButton />
+            </div>
+          </div>
+          {/* Logo + auth — top row on desktop */}
+          <div
+            className="hidden lg:flex absolute left-3 right-[calc(24rem*1.2+1.5rem)] z-10 items-center justify-between"
+            style={{ top: "calc(0.75rem + env(safe-area-inset-top))" }}
+          >
             <Link href="/" className="flex items-center gap-1.5 opacity-40">
               <Compass className="w-5 h-5 text-blue-600" />
               <span className="font-bold text-blue-700 text-sm">Drift</span>
@@ -270,7 +286,7 @@ export default function HomePage() {
           {/* Floating filter button — top on mobile (full width) */}
           <div
             className="lg:hidden absolute z-20 left-3 right-3"
-            style={{ top: "calc(0.75rem + env(safe-area-inset-top) + 2.5rem)" }}
+            style={{ top: "calc(0.75rem + env(safe-area-inset-top))" }}
           >
             <FilterButton
               filters={filters}
