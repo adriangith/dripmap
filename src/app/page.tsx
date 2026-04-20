@@ -370,8 +370,15 @@ export default function HomePage() {
         header={
           sheetView === "detail" && detailSlug ? (
             <div className="flex items-center gap-2 px-3 py-1">
-              <button onClick={handleBackToList} className="shrink-0 p-1" aria-label="Back to list">
-                <ArrowLeft className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+              <button
+                onClick={handleBackToList}
+                onTouchStart={(e) => e.stopPropagation()}
+                onMouseDown={(e) => e.stopPropagation()}
+                className="shrink-0 p-2.5 -m-1.5 rounded-xl active:bg-gray-200/60 dark:active:bg-gray-700/60"
+                style={{ touchAction: "auto" }}
+                aria-label="Back to list"
+              >
+                <ArrowLeft className="w-5 h-5 text-gray-500 dark:text-gray-400" />
               </button>
               <span className="text-sm font-semibold text-gray-900 dark:text-gray-100 truncate">
                 {allLocations.find((l) => l.slug === detailSlug)?.name ?? "Details"}
