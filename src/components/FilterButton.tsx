@@ -17,6 +17,8 @@ export default function FilterButton({ filters, constraints, onClick }: FilterBu
   return (
     <button
       onClick={onClick}
+      aria-label="Open filter preferences"
+      aria-haspopup="dialog"
       className="flex items-start gap-2 backdrop-blur-md bg-white/85 dark:bg-gray-900/85
                  rounded-2xl shadow-lg border border-white/60 dark:border-gray-700/60
                  px-3 py-2 lg:px-4 lg:py-2.5 transition-all hover:shadow-xl active:scale-[0.98]"
@@ -29,7 +31,7 @@ export default function FilterButton({ filters, constraints, onClick }: FilterBu
           </span>
         )}
       </div>
-      <span className="text-sm lg:text-base text-gray-700 dark:text-gray-300 max-w-[400px] lg:max-w-[520px] text-left">
+      <span className="text-sm lg:text-base text-gray-700 dark:text-gray-300 max-w-[25rem] lg:max-w-[32.5rem] text-left">
         {sentence}
       </span>
     </button>

@@ -505,22 +505,20 @@ export default function PreferencePanel({
 
   // Panel drag-to-move (desktop only)
   const [panelOffset, setPanelOffset] = useState({ x: 0, y: 0 });
-  const panelRef = useRef<HTMLDivElement>(null);
+  const panelOffsetRef = useRef({ x: 0, y: 0 });
 
   const handlePanelDragStart = useCallback((e: React.PointerEvent) => {
     if (window.innerWidth < 1024) return;
     e.preventDefault();
     const el = e.currentTarget;
     el.setPointerCapture(e.pointerId);
-    let startX: number, startY: number;
-    setPanelOffset((cur) => {
-      startX = e.clientX - cur.x;
-      startY = e.clientY - cur.y;
-      return cur;
-    });
+    const startX = e.clientX - panelOffsetRef.current.x;
+    const startY = e.clientY - panelOffsetRef.current.y;
 
     const onMove = (ev: PointerEvent) => {
-      setPanelOffset({ x: ev.clientX - startX!, y: ev.clientY - startY! });
+      const next = { x: ev.clientX - startX, y: ev.clientY - startY };
+      panelOffsetRef.current = next;
+      setPanelOffset(next);
     };
     const onUp = () => {
       el.removeEventListener("pointermove", onMove as EventListener);
@@ -533,7 +531,9 @@ export default function PreferencePanel({
   }, []);
 
   const handleClose = useCallback(() => {
-    setPanelOffset({ x: 0, y: 0 });
+    const zero = { x: 0, y: 0 };
+    panelOffsetRef.current = zero;
+    setPanelOffset(zero);
     onClose();
   }, [onClose]);
 
@@ -639,14 +639,13 @@ export default function PreferencePanel({
 
       {/* Panel */}
       <div
-        ref={panelRef}
-        className="relative w-full lg:w-[400px] max-h-[85vh] bg-white dark:bg-gray-900 rounded-t-2xl lg:rounded-2xl shadow-2xl flex flex-col overflow-hidden"
+        className="relative w-full lg:w-[25rem] max-h-[85vh] bg-white dark:bg-gray-900 rounded-t-2xl lg:rounded-2xl shadow-2xl flex flex-col overflow-hidden"
         style={panelOffset.x || panelOffset.y ? { transform: `translate(${panelOffset.x}px, ${panelOffset.y}px)` } : undefined}
       >
         {/* Header — drag handle on desktop */}
         <div
           onPointerDown={handlePanelDragStart}
-          className="flex items-center justify-between px-4 py-3 border-b border-gray-100 dark:border-gray-800 lg:cursor-grab lg:active:cursor-grabbing select-none"
+          className="flex items-center justify-between px-4 py-3 border-b border-gray-100 dark:border-gray-800 lg:cursor-grab lg:active:cursor-grabbing lg:touch-none select-none"
         >
           <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">
             Preferences
