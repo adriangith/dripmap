@@ -64,10 +64,11 @@ openingHours:
     close: "17:00"
 details: {}
 fit:
-  cost: 'Moderately priced and worth every dollar.'
+  cost: 'Inexpensive at $15-$9 per person considering the size of the estate. Free for Glen Eira residents'
   duration:
     quick: 'A whistle-stop tour is possible but you''ll miss a lot.'
     half-day: 'A thorough visit takes a good half-day.'
     full-day: 'A morning visit leaves the afternoon free for something else.'
   group: 'Interactive displays keep younger visitors engaged.'
   date: 'Open regular hours — a great rainy-day option.'
+  setting: 'Mostly indoors with outdoor gardens — partly weather-dependent.'

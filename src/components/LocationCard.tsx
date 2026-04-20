@@ -5,6 +5,7 @@ import Link from "next/link";
 import type { PlaceIndexEntry, Coordinates, Constraints } from "@/lib/types";
 import { haversineDistanceKm, formatDistance } from "@/lib/useCurrentLocation";
 import { buildFitParagraph } from "@/lib/fit";
+import type { EnrichmentIndex } from "@/lib/integrations/enrichment-types";
 import { useEdgeColor, darkenEdgeColor } from "@/lib/useEdgeColor";
 import TypeBadge from "./TypeBadge";
 import StatusBadge from "./StatusBadge";
@@ -19,6 +20,7 @@ interface LocationCardProps {
   userLocation?: Coordinates | null;
   onCardClick?: (slug: string) => void;
   activeConstraints?: Constraints | null;
+  enrichments?: EnrichmentIndex | null;
 }
 
 export default function LocationCard({
@@ -28,6 +30,7 @@ export default function LocationCard({
   userLocation,
   onCardClick,
   activeConstraints,
+  enrichments,
 }: LocationCardProps) {
   const driveMinutes = (location as { _driveMinutes?: number | null })._driveMinutes;
   const distance = driveMinutes != null
@@ -45,7 +48,7 @@ export default function LocationCard({
   const photo = location.photo && !location.photo.includes("placeholder") ? location.photo : undefined;
 
   const cardRef = useRef<HTMLElement>(null);
-  const fitBlurb = buildFitParagraph(location.fit, activeConstraints ?? null);
+  const fitBlurb = buildFitParagraph(location.fit, activeConstraints ?? null, location, enrichments ?? null, driveMinutes);
   const hoursStatus = formatHoursStatus(location.openingHours);
 
   const edgeColor = useEdgeColor(photo, cardRef);

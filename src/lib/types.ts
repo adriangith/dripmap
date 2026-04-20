@@ -1,3 +1,7 @@
+// ── Setting (venue environment) ──────────────────────────────
+
+export type Setting = "indoor" | "outdoor" | "outdoor-water";
+
 // ── Shared enums ──────────────────────────────────────────────
 
 export type PlaceType =
@@ -132,6 +136,7 @@ export interface FitBlurbs {
   duration?: string | { quick?: string; "half-day"?: string; "full-day"?: string };
   group?: string;
   date?: string;
+  setting?: string;
 }
 
 // ── Discriminated union ───────────────────────────────────────
@@ -235,9 +240,11 @@ export type TimeOfDay = "day" | "evening" | null;
 
 export type VisitedFilter = "new" | "familiar" | "any";
 
-export type FilterDimension = "distance" | "date" | "cost" | "duration" | "group" | "familiarity";
+export type SettingFilter = "indoor" | "outdoor" | "outdoor-water" | "any";
 
-export const DEFAULT_PRIORITY: FilterDimension[] = ["distance", "date", "cost", "duration", "group", "familiarity"];
+export type FilterDimension = "distance" | "date" | "cost" | "duration" | "group" | "familiarity" | "setting";
+
+export const DEFAULT_PRIORITY: FilterDimension[] = ["distance", "date", "cost", "duration", "group", "familiarity", "setting"];
 
 export interface Constraints {
   distance: DistanceThreshold;
@@ -247,6 +254,7 @@ export interface Constraints {
   duration: DurationFilter;
   group: GroupType;
   visited: VisitedFilter;
+  setting: SettingFilter;
   priority: FilterDimension[];
 }
 

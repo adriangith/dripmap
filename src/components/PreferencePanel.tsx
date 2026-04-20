@@ -11,6 +11,7 @@ import {
   X,
   ChevronDown,
   CircleCheck,
+  CloudSun,
 } from "lucide-react";
 import type {
   Filters,
@@ -22,6 +23,7 @@ import type {
   GroupType,
   DateMode,
   VisitedFilter,
+  SettingFilter,
 } from "@/lib/types";
 
 // ── Dimension metadata ──────────────────────────────────────
@@ -39,6 +41,7 @@ const DIMENSIONS: DimensionMeta[] = [
   { key: "duration", icon: Clock, label: "Duration" },
   { key: "group", icon: Users, label: "Who" },
   { key: "familiarity", icon: CircleCheck, label: "Familiarity" },
+  { key: "setting", icon: CloudSun, label: "Setting" },
 ];
 
 // ── Value options ───────────────────────────────────────────
@@ -76,6 +79,12 @@ const VISITED_OPTIONS: { value: VisitedFilter; label: string }[] = [
   { value: "familiar", label: "Somewhere familiar" },
 ];
 
+const SETTING_OPTIONS: { value: SettingFilter; label: string }[] = [
+  { value: "indoor", label: "Indoors" },
+  { value: "outdoor", label: "Outdoors" },
+  { value: "outdoor-water", label: "Water" },
+];
+
 // ── Helpers ─────────────────────────────────────────────────
 
 function getValueLabel(dim: FilterDimension, filters: Filters, constraints: Constraints): string {
@@ -110,6 +119,10 @@ function getValueLabel(dim: FilterDimension, filters: Filters, constraints: Cons
       return constraints.visited === "any"
         ? "Flexible"
         : VISITED_OPTIONS.find((o) => o.value === constraints.visited)?.label ?? "Flexible";
+    case "setting":
+      return constraints.setting === "any"
+        ? "Flexible"
+        : SETTING_OPTIONS.find((o) => o.value === constraints.setting)?.label ?? "Flexible";
   }
 }
 
@@ -121,6 +134,7 @@ function isActive(dim: FilterDimension, filters: Filters, constraints: Constrain
     case "duration": return constraints.duration !== "any";
     case "group": return constraints.group !== null;
     case "familiarity": return constraints.visited !== "any";
+    case "setting": return constraints.setting !== "any";
   }
 }
 
@@ -343,6 +357,24 @@ function ValuePicker({
               onClick={() => onConstraintsChange({ ...constraints, visited: constraints.visited === opt.value ? "any" : opt.value })}
               className={`px-2.5 py-1 text-xs rounded-full border transition-colors ${
                 constraints.visited === opt.value
+                  ? "bg-blue-600 text-white border-blue-600"
+                  : "border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-blue-300"
+              }`}
+            >
+              {opt.label}
+            </button>
+          ))}
+        </div>
+      );
+    case "setting":
+      return (
+        <div className="flex flex-wrap gap-1.5">
+          {SETTING_OPTIONS.map((opt) => (
+            <button
+              key={opt.value}
+              onClick={() => onConstraintsChange({ ...constraints, setting: constraints.setting === opt.value ? "any" : opt.value })}
+              className={`px-2.5 py-1 text-xs rounded-full border transition-colors ${
+                constraints.setting === opt.value
                   ? "bg-blue-600 text-white border-blue-600"
                   : "border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-blue-300"
               }`}
@@ -627,6 +659,7 @@ export default function PreferencePanel({
       duration: "any",
       group: null,
       visited: "any",
+      setting: "any",
       priority: [...constraints.priority],
     });
   }, [filters, constraints, onFiltersChange, onConstraintsChange]);
