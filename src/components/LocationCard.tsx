@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import type { PlaceIndexEntry, Coordinates, Constraints } from "@/lib/types";
 import { haversineDistanceKm, formatDistance } from "@/lib/useCurrentLocation";
@@ -45,7 +45,9 @@ export default function LocationCard({
       ? formatDistance(haversineDistanceKm(userLocation, location.coordinates))
       : null;
 
-  const photo = location.photo && !location.photo.includes("placeholder") ? location.photo : undefined;
+  const photoUrl = location.photo && !location.photo.includes("placeholder") ? location.photo : undefined;
+  const [imgFailed, setImgFailed] = useState(false);
+  const photo = imgFailed ? undefined : photoUrl;
 
   const cardRef = useRef<HTMLElement>(null);
   const fitBlurb = buildFitParagraph(location.fit, activeConstraints ?? null, location, enrichments ?? null, driveMinutes);
@@ -129,6 +131,7 @@ export default function LocationCard({
           alt=""
           loading="lazy"
           crossOrigin="anonymous"
+          onError={() => setImgFailed(true)}
           className="w-full h-full object-cover brightness-90 saturate-[0.85]"
         />
       </div>
