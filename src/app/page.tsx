@@ -253,9 +253,22 @@ export default function HomePage() {
             onMarkerHover={handleMarkerHover}
             onUserLocation={handleUserLocation}
           />
-          {/* Floating filter button — above the sheet on mobile, bottom-left on desktop */}
+          {/* Floating filter button — top on mobile (full width) */}
           <div
-            className="absolute left-3 z-20 transition-opacity bottom-4 max-lg:[bottom:calc(var(--sheet-height,96px)+12px)]"
+            className="lg:hidden absolute z-20 left-3 right-3"
+            style={{ top: "calc(0.75rem + env(safe-area-inset-top) + 2.5rem)" }}
+          >
+            <FilterButton
+              filters={filters}
+              constraints={constraints}
+              onClick={() => setPrefsOpen(true)}
+              enrichments={enrichments}
+              fullWidth
+            />
+          </div>
+          {/* Floating filter button — bottom-left on desktop */}
+          <div
+            className="hidden lg:block absolute z-20 left-3 bottom-4"
           >
             <FilterButton
               filters={filters}
