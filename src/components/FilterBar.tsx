@@ -166,12 +166,12 @@ export default function FilterBar({
 
   return (
     <div
-      className="border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900"
+      className="border-b border-white/30 dark:border-gray-700 bg-transparent relative z-10 shadow-[0_4px_12px_rgba(0,0,0,0.06)]"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
       {!hideSearch && (
-        <div className="flex items-center gap-2 px-3 py-2 border-b border-gray-100 dark:border-gray-800">
+        <div className="flex items-center gap-2 mx-3 mt-2 mb-1 px-3 py-2 bg-white/60 dark:bg-gray-800/60 rounded-xl border border-gray-200/50 dark:border-gray-700/50 shadow-sm">
           <Search className="w-4 h-4 text-gray-400 dark:text-gray-500 shrink-0" />
           <input
             type="text"
@@ -185,7 +185,7 @@ export default function FilterBar({
       )}
       <div
         ref={chipsRef}
-        className="flex items-center gap-2 px-3 py-2 overflow-x-auto scrollbar-hide md:flex-wrap md:overflow-x-visible"
+        className="flex items-center gap-2 px-3 pt-1 pb-2 overflow-x-auto scrollbar-hide md:flex-wrap md:overflow-x-visible"
         style={chipsStyle}
       >
         {orderedTypeChips.map((chip) => {
@@ -202,7 +202,7 @@ export default function FilterBar({
               className={`shrink-0 px-3 py-1 text-sm rounded-full border transition-colors ${
                 isActive
                   ? "bg-blue-600 text-white border-blue-600"
-                  : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500"
+                  : "bg-white/50 dark:bg-gray-800/50 text-gray-700 dark:text-gray-300 border-gray-300/50 dark:border-gray-600 hover:bg-white/80 dark:hover:bg-gray-800/80"
               }`}
               data-filter-chip={chip.value}
             >
@@ -211,7 +211,7 @@ export default function FilterBar({
           );
         })}
 
-        <div className="w-px h-5 bg-gray-200 dark:bg-gray-700 shrink-0" />
+        <div className="w-px h-5 bg-gray-300/50 dark:bg-gray-700 shrink-0" />
 
         {orderedStatusChips.map((chip) => {
           const isActive = filters.siteStatus === chip.value;
@@ -227,7 +227,7 @@ export default function FilterBar({
               className={`shrink-0 px-3 py-1 text-sm rounded-full border transition-colors ${
                 isActive
                   ? "bg-blue-600 text-white border-blue-600"
-                  : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500"
+                  : "bg-white/50 dark:bg-gray-800/50 text-gray-700 dark:text-gray-300 border-gray-300/50 dark:border-gray-600 hover:bg-white/80 dark:hover:bg-gray-800/80"
               }`}
               data-filter-chip={chip.value}
             >

@@ -254,11 +254,11 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Desktop sidebar (hidden on mobile) */}
-        <div data-testid="location-sidebar" className="hidden lg:flex lg:flex-col lg:w-96 lg:border-l lg:border-gray-200 dark:lg:border-gray-700 dark:bg-gray-900">
+        {/* Desktop sidebar — floats over map */}
+        <div data-testid="location-sidebar" className="hidden lg:flex lg:flex-col lg:w-[24rem] absolute right-3 top-3 bottom-3 z-20 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/50 dark:border-gray-700/50 overflow-hidden [zoom:1.2]">
           {detailSlug && sheetView === "detail" ? (
             <>
-              <div className="p-3 border-b border-gray-200 dark:border-gray-700 flex items-center gap-2">
+              <div className="p-3 border-b border-white/30 dark:border-gray-700 flex items-center gap-2">
                 <button
                   onClick={handleBackToListDesktop}
                   className="flex items-center gap-1.5 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors"
@@ -316,7 +316,7 @@ export default function HomePage() {
             </div>
           ) : (
             <>
-              <div className="flex items-center gap-2 px-3 py-1 border-b border-gray-100 dark:border-gray-800">
+              <div className="flex items-center gap-2 mx-3 my-1 px-3 py-2 bg-white/60 dark:bg-gray-800/60 rounded-xl border border-gray-200/50 dark:border-gray-700/50 shadow-sm">
                 <Search className="w-4 h-4 text-gray-400 dark:text-gray-500 shrink-0" />
                 <input
                   type="text"
