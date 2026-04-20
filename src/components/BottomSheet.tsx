@@ -54,9 +54,11 @@ interface BottomSheetProps {
   onHeightChange?: (height: number) => void;
   /** Fires only when crossing the expanded/collapsed threshold */
   onExpandedChange?: (expanded: boolean) => void;
+  /** Color for scooped corner backgrounds */
+  scoopColor?: string;
 }
 
-export default function BottomSheet({ children, header, snapTo, onHeightChange, onExpandedChange }: BottomSheetProps) {
+export default function BottomSheet({ children, header, snapTo, onHeightChange, onExpandedChange, scoopColor = 'rgba(255,255,255,0.9)' }: BottomSheetProps) {
   const sheetRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   // React state only used for content-visibility threshold — NOT updated per pixel
@@ -380,8 +382,8 @@ export default function BottomSheet({ children, header, snapTo, onHeightChange, 
           {/* Scooped/inverted corners — visible only when scrolled */}
           {scrolled && (
             <>
-              <div className="scoop-left absolute top-full left-0 w-5 h-5 pointer-events-none z-50" style={{ filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.12))' }} />
-              <div className="scoop-right absolute top-full right-0 w-5 h-5 pointer-events-none z-50" style={{ filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.12))' }} />
+              <div className="absolute top-full left-0 w-5 h-5 pointer-events-none z-50" style={{ background: `radial-gradient(circle at 100% 100%, transparent 20px, ${scoopColor} 20.5px)`, filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.12))' }} />
+              <div className="absolute top-full right-0 w-5 h-5 pointer-events-none z-50" style={{ background: `radial-gradient(circle at 0 100%, transparent 20px, ${scoopColor} 20.5px)`, filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.12))' }} />
             </>
           )}
         </div>

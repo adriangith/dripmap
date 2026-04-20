@@ -121,6 +121,18 @@ export default function HomePage() {
   const [focusSheetHeight, setFocusSheetHeight] = useState<number | undefined>();
   const listScrollRef = useRef(0);
 
+  // Track dark mode for inline styles (radial-gradient can't use Tailwind dark:)
+  const [isDark, setIsDark] = useState(false);
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return;
+    const mq = window.matchMedia('(prefers-color-scheme: dark)');
+    setIsDark(mq.matches); // eslint-disable-line react-hooks/set-state-in-effect
+    const handler = (e: MediaQueryListEvent) => setIsDark(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
+  const scoopColor = isDark ? 'rgba(17,24,39,0.95)' : 'rgba(255,255,255,0.95)';
+
   useEffect(() => {
     getLocationIndex()
       .then((data) => setStaticLocations(data))
@@ -279,11 +291,12 @@ export default function HomePage() {
                   onChange={setFilters}
                   resultCount={filteredLocations.length}
                 />
-                {/* Scooped/inverted corners — concave cutouts hanging from filter bar */}
-                <div className="scoop-left hidden lg:block absolute top-full left-0 w-5 h-5 pointer-events-none z-50" style={{ filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.12))' }} />
-                <div className="scoop-right hidden lg:block absolute top-full right-0 w-5 h-5 pointer-events-none z-50" style={{ filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.12))' }} />
               </div>
-              <div className="flex-1 overflow-y-auto shadow-[inset_0_-6px_12px_rgba(0,0,0,0.08)]">
+              <div className="relative flex-1 min-h-0 shadow-[inset_0_-6px_12px_rgba(0,0,0,0.08)]">
+                {/* Scooped/inverted corners — layered over scroll area, not inside it */}
+                <div className="hidden lg:block absolute left-0 w-5 h-5 pointer-events-none z-20" style={{ top: '-1px', background: `radial-gradient(circle at 100% 100%, transparent 20px, ${scoopColor} 20.5px)`, filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.12))' }} />
+                <div className="hidden lg:block absolute right-0 w-5 h-5 pointer-events-none z-20" style={{ top: '-1px', background: `radial-gradient(circle at 0% 100%, transparent 20px, ${scoopColor} 20.5px)`, filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.12))' }} />
+                <div className="h-full overflow-y-auto">
                 {loadError && (
                   <div className="mx-3 mt-2 p-3 bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 rounded-lg text-sm text-red-700 dark:text-red-300">
                     Failed to load locations. Please try refreshing the page.
@@ -298,6 +311,7 @@ export default function HomePage() {
                   activeConstraints={constraints}
                   enrichments={enrichments}
                 />
+                </div>
               </div>
             </>
           )}
@@ -309,6 +323,7 @@ export default function HomePage() {
         snapTo={snapTarget}
         onHeightChange={handleSheetHeightChange}
         onExpandedChange={handleSheetExpandedChange}
+        scoopColor={isDark ? 'rgba(17,24,39,0.9)' : 'rgba(255,255,255,0.9)'}
         header={
           sheetView === "detail" && detailSlug ? (
             <div className="flex items-center gap-2 px-3 py-1">

@@ -6,23 +6,6 @@
   --color-water-light: #dbeafe;
 }
 
-@layer base {
-  .scoop-left {
-    background: radial-gradient(circle at 100% 100%, transparent 20px, rgba(255,255,255,0.9) 20.5px);
-  }
-  .scoop-right {
-    background: radial-gradient(circle at 0 100%, transparent 20px, rgba(255,255,255,0.9) 20.5px);
-  }
-  @media (prefers-color-scheme: dark) {
-    .scoop-left {
-      background: radial-gradient(circle at 100% 100%, transparent 20px, rgba(17,24,39,0.9) 20.5px);
-    }
-    .scoop-right {
-      background: radial-gradient(circle at 0 100%, transparent 20px, rgba(17,24,39,0.9) 20.5px);
-    }
-  }
-}
-
 html,
 body {
   height: 100%;
