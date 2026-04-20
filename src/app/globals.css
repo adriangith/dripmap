@@ -13,6 +13,13 @@ body {
   background: transparent;
 }
 
+/* Scale up the entire UI on desktop to ~110% */
+@media (min-width: 1024px) {
+  html {
+    font-size: 110%;
+  }
+}
+
 /* Leaflet container needs explicit height */
 .leaflet-container {
   height: 100%;
