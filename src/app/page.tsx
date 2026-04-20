@@ -273,12 +273,17 @@ export default function HomePage() {
             </>
           ) : (
             <>
-              <FilterBar
-                filters={filters}
-                onChange={setFilters}
-                resultCount={filteredLocations.length}
-              />
-              <div className="flex-1 overflow-y-auto">
+              <div className="relative z-20">
+                <FilterBar
+                  filters={filters}
+                  onChange={setFilters}
+                  resultCount={filteredLocations.length}
+                />
+                {/* Scooped/inverted corners — concave cutouts hanging from filter bar */}
+                <div className="scoop-left hidden lg:block absolute top-full left-0 w-5 h-5 pointer-events-none z-50" style={{ filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.12))' }} />
+                <div className="scoop-right hidden lg:block absolute top-full right-0 w-5 h-5 pointer-events-none z-50" style={{ filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.12))' }} />
+              </div>
+              <div className="flex-1 overflow-y-auto shadow-[inset_0_-6px_12px_rgba(0,0,0,0.08)]">
                 {loadError && (
                   <div className="mx-3 mt-2 p-3 bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 rounded-lg text-sm text-red-700 dark:text-red-300">
                     Failed to load locations. Please try refreshing the page.

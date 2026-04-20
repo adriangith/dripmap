@@ -166,7 +166,7 @@ export default function FilterBar({
 
   return (
     <div
-      className="border-b border-white/30 dark:border-gray-700 bg-transparent relative z-10 shadow-[0_4px_12px_rgba(0,0,0,0.06)]"
+      className="border-b border-white/30 dark:border-gray-700 bg-transparent relative shadow-[0_4px_12px_rgba(0,0,0,0.12)] pb-0.5"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >

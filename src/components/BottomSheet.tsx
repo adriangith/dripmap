@@ -58,8 +58,10 @@ interface BottomSheetProps {
 
 export default function BottomSheet({ children, header, snapTo, onHeightChange, onExpandedChange }: BottomSheetProps) {
   const sheetRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
   // React state only used for content-visibility threshold — NOT updated per pixel
   const [, setIsExpanded] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const heightRef = useRef(SNAP_PEEK);
   const draggingRef = useRef(false);
   const animatingRef = useRef(false);
@@ -93,6 +95,20 @@ export default function BottomSheet({ children, header, snapTo, onHeightChange, 
   useEffect(() => {
     applyHeight(SNAP_PEEK);
   }, [applyHeight]);
+
+  // Show shadow/corners when filter bar area has scrolled out of view
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const onScroll = () => {
+      // Show once scrolled past the first child (filter bar area)
+      const firstChild = el.firstElementChild as HTMLElement | null;
+      const threshold = firstChild?.offsetHeight ?? 0;
+      setScrolled(el.scrollTop >= threshold);
+    };
+    el.addEventListener("scroll", onScroll, { passive: true });
+    return () => el.removeEventListener("scroll", onScroll);
+  }, []);
 
   const getSnaps = useCallback(() => {
     const vh = window.innerHeight;
@@ -279,7 +295,7 @@ export default function BottomSheet({ children, header, snapTo, onHeightChange, 
   return (
     <div
       ref={sheetRef}
-      className="fixed bottom-0 left-0 right-0 bg-white/75 dark:bg-gray-900/80 backdrop-blur-xl rounded-t-2xl shadow-[0_-4px_24px_rgba(0,0,0,0.15)] dark:shadow-[0_-4px_24px_rgba(0,0,0,0.5)] border-t border-white/50 dark:border-gray-700/50 z-40 flex flex-col lg:hidden"
+      className="fixed bottom-2 left-2 right-2 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl rounded-2xl shadow-[0_-4px_24px_rgba(0,0,0,0.15)] dark:shadow-[0_-4px_24px_rgba(0,0,0,0.5)] border border-white/50 dark:border-gray-700/50 z-40 flex flex-col lg:hidden"
       style={{ height: SNAP_PEEK }}
     >
       {/* Drag handle — enlarged 48px hit target */}
@@ -297,13 +313,20 @@ export default function BottomSheet({ children, header, snapTo, onHeightChange, 
 
       {/* Header — outside scroll, popovers can overflow visibly */}
       {header && (
-        <div className="shrink-0 relative z-10 overflow-visible shadow-[0_4px_12px_rgba(0,0,0,0.06)]">
+        <div className={`shrink-0 relative z-10 overflow-visible transition-shadow duration-200 ${scrolled ? 'shadow-[0_4px_12px_rgba(0,0,0,0.12)]' : ''}`}>
           {header}
+          {/* Scooped/inverted corners — visible only when scrolled */}
+          {scrolled && (
+            <>
+              <div className="absolute top-full left-0 w-5 h-5 pointer-events-none z-50" style={{ background: 'radial-gradient(circle at 100% 100%, transparent 20px, rgba(255,255,255,0.9) 20.5px)', filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.12))' }} />
+              <div className="absolute top-full right-0 w-5 h-5 pointer-events-none z-50" style={{ background: 'radial-gradient(circle at 0 100%, transparent 20px, rgba(255,255,255,0.9) 20.5px)', filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.12))' }} />
+            </>
+          )}
         </div>
       )}
 
       {/* Scrollable content */}
-      <div className="flex-1 overflow-y-auto overscroll-contain">
+      <div ref={scrollRef} className="flex-1 overflow-y-auto overscroll-contain">
         {children}
       </div>
     </div>
