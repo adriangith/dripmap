@@ -369,11 +369,14 @@ export default function HomePage() {
         scoopColor={isDark ? 'rgba(17,24,39,0.9)' : 'rgba(255,255,255,0.9)'}
         header={
           sheetView === "detail" && detailSlug ? (
-            <div className="flex items-center gap-2 px-3 py-1">
+            /* Stop all drags on the detail header — prevents sheet cycling on touch */
+            <div
+              className="flex items-center gap-2 px-3 py-1"
+              onTouchStart={(e) => e.stopPropagation()}
+              onMouseDown={(e) => e.stopPropagation()}
+            >
               <button
                 onClick={handleBackToList}
-                onTouchStart={(e) => e.stopPropagation()}
-                onMouseDown={(e) => e.stopPropagation()}
                 className="shrink-0 p-2.5 -m-1.5 rounded-xl active:bg-gray-200/60 dark:active:bg-gray-700/60"
                 style={{ touchAction: "auto" }}
                 aria-label="Back to list"
@@ -447,7 +450,14 @@ export default function HomePage() {
       {/* Preference panel (modal overlay) */}
       <PreferencePanel
         open={prefsOpen}
-        onClose={() => setPrefsOpen(false)}
+        onClose={() => {
+          setPrefsOpen(false);
+          // If the sheet is fully collapsed (peek), expand to middle so the
+          // updated list is visible without the user needing to drag it up.
+          if (!isSheetExpanded) {
+            setSnapTarget(window.innerHeight * SNAP_HALF);
+          }
+        }}
         filters={filters}
         constraints={constraints}
         onFiltersChange={setFilters}
