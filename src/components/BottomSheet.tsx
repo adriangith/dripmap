@@ -75,6 +75,10 @@ export default function BottomSheet({ children, header, snapTo, onHeightChange, 
   const lastTouchTime = useRef(0);
   const velocityRef = useRef(0);
 
+  // Pull-to-collapse: track when a scroll-area touch should become a panel drag
+  const scrollTouchStartY = useRef(0);
+  const scrollDragActive = useRef(false);
+
   // Write height directly to the DOM — no React re-render
   const applyHeight = useCallback((h: number) => {
     heightRef.current = h;
@@ -288,6 +292,59 @@ export default function BottomSheet({ children, header, snapTo, onHeightChange, 
     };
   }, [handleDragMove, handleDragEnd, handleHandleTap]);
 
+  // Pull-to-collapse: when scrolled to top and pulling down, drag the panel
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    const onTouchStart = (e: TouchEvent) => {
+      scrollTouchStartY.current = e.touches[0].clientY;
+      scrollDragActive.current = false;
+    };
+
+    const onTouchMove = (e: TouchEvent) => {
+      const clientY = e.touches[0].clientY;
+      const pullingDown = clientY > scrollTouchStartY.current;
+
+      // If already dragging the panel, continue
+      if (scrollDragActive.current) {
+        e.preventDefault();
+        handleDragMove(clientY);
+        return;
+      }
+
+      // Transition to panel drag if at scroll top and pulling down
+      if (pullingDown && el.scrollTop <= 0) {
+        scrollDragActive.current = true;
+        e.preventDefault();
+        handleDragStart(clientY);
+        return;
+      }
+    };
+
+    const onTouchEnd = () => {
+      if (scrollDragActive.current) {
+        scrollDragActive.current = false;
+        draggingRef.current = false;
+        if (dragDistanceRef.current < 5) {
+          handleHandleTap();
+        } else {
+          handleDragEnd();
+        }
+      }
+    };
+
+    el.addEventListener("touchstart", onTouchStart, { passive: true });
+    el.addEventListener("touchmove", onTouchMove, { passive: false });
+    el.addEventListener("touchend", onTouchEnd);
+
+    return () => {
+      el.removeEventListener("touchstart", onTouchStart);
+      el.removeEventListener("touchmove", onTouchMove);
+      el.removeEventListener("touchend", onTouchEnd);
+    };
+  }, [handleDragStart, handleDragMove, handleDragEnd, handleHandleTap]);
+
   useEffect(() => {
     return () => cancelSpring.current?.();
   }, []);
@@ -313,13 +370,18 @@ export default function BottomSheet({ children, header, snapTo, onHeightChange, 
 
       {/* Header — outside scroll, popovers can overflow visibly */}
       {header && (
-        <div className={`shrink-0 relative z-10 overflow-visible transition-shadow duration-200 ${scrolled ? 'shadow-[0_4px_12px_rgba(0,0,0,0.12)]' : ''}`}>
+        <div
+          className={`shrink-0 relative z-10 overflow-visible transition-shadow duration-200 ${scrolled ? 'shadow-[0_4px_12px_rgba(0,0,0,0.12)]' : ''}`}
+          style={{ touchAction: "none" }}
+          onTouchStart={(e) => handleDragStart(e.touches[0].clientY)}
+          onMouseDown={(e) => handleDragStart(e.clientY)}
+        >
           {header}
           {/* Scooped/inverted corners — visible only when scrolled */}
           {scrolled && (
             <>
-              <div className="absolute top-full left-0 w-5 h-5 pointer-events-none z-50" style={{ background: 'radial-gradient(circle at 100% 100%, transparent 20px, rgba(255,255,255,0.9) 20.5px)', filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.12))' }} />
-              <div className="absolute top-full right-0 w-5 h-5 pointer-events-none z-50" style={{ background: 'radial-gradient(circle at 0 100%, transparent 20px, rgba(255,255,255,0.9) 20.5px)', filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.12))' }} />
+              <div className="scoop-left absolute top-full left-0 w-5 h-5 pointer-events-none z-50" style={{ filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.12))' }} />
+              <div className="scoop-right absolute top-full right-0 w-5 h-5 pointer-events-none z-50" style={{ filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.12))' }} />
             </>
           )}
         </div>

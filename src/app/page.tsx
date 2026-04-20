@@ -220,9 +220,9 @@ export default function HomePage() {
     <div className="fixed inset-0 overflow-hidden">
       {/* Desktop layout: side-by-side */}
       <div className="h-full flex overflow-hidden">
-        {/* Map — leave room for collapsed bottom sheet on mobile */}
+        {/* Map — edge-to-edge, extends into safe areas */}
         <div className="flex-1 relative overflow-hidden">
-          {/* Faded logo overlay */}
+          {/* Faded logo overlay — respects safe area */}
           <div className="absolute left-3 right-3 z-10 flex items-center justify-between" style={{ top: "calc(0.75rem + env(safe-area-inset-top))" }}>
             <Link href="/" className="flex items-center gap-1.5 opacity-40">
               <Compass className="w-5 h-5 text-blue-600" />
