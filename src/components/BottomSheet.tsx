@@ -300,7 +300,7 @@ export default function BottomSheet({ children, header, snapTo, onHeightChange, 
     >
       {/* Drag handle — enlarged 48px hit target */}
       <div
-        className="flex items-center justify-center h-12 cursor-grab active:cursor-grabbing shrink-0"
+        className="flex items-center justify-center h-5 cursor-grab active:cursor-grabbing shrink-0"
         style={{ touchAction: "none" }}
         onMouseDown={(e) => handleDragStart(e.clientY)}
         onTouchStart={(e) => {
