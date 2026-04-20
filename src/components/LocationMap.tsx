@@ -586,8 +586,7 @@ export default function LocationMap({
 
       {/* Zoom + locate controls — positioned above mobile bottom sheet */}
       <div
-        className="absolute right-4 z-50 flex flex-col gap-2 lg:bottom-4"
-        style={{ bottom: `calc(var(--sheet-height, 96px) + 20px)` }}
+        className="absolute right-4 z-50 flex flex-col gap-2 lg:bottom-3 lg:right-[calc(24rem*1.2+1.5rem)] max-lg:[bottom:calc(var(--sheet-height,96px)+20px)]"
       >
         {/* Zoom in/out */}
         <div className="flex flex-col rounded-xl overflow-hidden shadow-[0_2px_8px_rgba(0,0,0,0.15)] dark:shadow-[0_2px_8px_rgba(0,0,0,0.4)]">

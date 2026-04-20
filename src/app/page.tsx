@@ -235,12 +235,12 @@ export default function HomePage() {
         {/* Map — edge-to-edge, extends into safe areas */}
         <div className="flex-1 relative overflow-hidden">
           {/* Faded logo overlay — respects safe area */}
-          <div className="absolute left-3 right-3 z-10 flex items-center justify-between" style={{ top: "calc(0.75rem + env(safe-area-inset-top))" }}>
+          <div className="absolute left-3 right-3 lg:right-[calc(24rem*1.2+1.5rem)] z-10 flex items-center justify-between" style={{ top: "calc(0.75rem + env(safe-area-inset-top))" }}>
             <Link href="/" className="flex items-center gap-1.5 opacity-40">
               <Compass className="w-5 h-5 text-blue-600" />
               <span className="font-bold text-blue-700 text-sm">Drift</span>
             </Link>
-            <div className="opacity-70">
+            <div>
               <AuthButton />
             </div>
           </div>
