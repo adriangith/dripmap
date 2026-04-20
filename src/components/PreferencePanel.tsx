@@ -509,6 +509,7 @@ export default function PreferencePanel({
 
   const handlePanelDragStart = useCallback((e: React.PointerEvent) => {
     if (window.innerWidth < 1024) return;
+    if ((e.target as HTMLElement).closest("button")) return;
     e.preventDefault();
     const el = e.currentTarget;
     el.setPointerCapture(e.pointerId);
