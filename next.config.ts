@@ -16,7 +16,7 @@ const nextConfig: NextConfig = {
     unoptimized: true,
   },
   turbopack: {},
-  allowedDevOrigins: ["192.168.5.18"],
+  allowedDevOrigins: ["192.168.5.18", "dripmap.shoobra.dev"],
 };
 
 export default withPWA(nextConfig);
