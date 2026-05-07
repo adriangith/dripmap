@@ -23,6 +23,7 @@
 # misc
 .DS_Store
 *.pem
+nohup.out
 
 # debug
 npm-debug.log*
