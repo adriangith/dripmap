@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useMemo, useRef } from "react";
+import { useState, useEffect, useLayoutEffect, useCallback, useMemo, useRef } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { Compass, Search, ArrowLeft } from "lucide-react";
@@ -11,7 +11,7 @@ import FilterButton from "@/components/FilterButton";
 import PreferencePanel from "@/components/PreferencePanel";
 import LocationList from "@/components/LocationList";
 import LocationDetailPanel from "@/components/LocationDetailPanel";
-import BottomSheet, { SNAP_HALF } from "@/components/BottomSheet";
+import BottomSheet, { SNAP_HALF, SNAP_PEEK } from "@/components/BottomSheet";
 import { filterLocations } from "@/lib/filters";
 import { applyConstraints } from "@/lib/constraints";
 import type { PlaceIndexEntry, Filters, Coordinates, Constraints } from "@/lib/types";
@@ -120,6 +120,20 @@ export default function HomePage() {
   const [snapTarget, setSnapTarget] = useState<number | null>(null);
   const [focusSheetHeight, setFocusSheetHeight] = useState<number | undefined>();
   const listScrollRef = useRef(0);
+  const desktopScrollRef = useRef<HTMLDivElement>(null);
+  const savedSheetHeightRef = useRef<number | null>(null);
+
+  // Track dark mode for inline styles (radial-gradient can't use Tailwind dark:)
+  const [isDark, setIsDark] = useState(false);
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return;
+    const mq = window.matchMedia('(prefers-color-scheme: dark)');
+    setIsDark(mq.matches); // eslint-disable-line react-hooks/set-state-in-effect
+    const handler = (e: MediaQueryListEvent) => setIsDark(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
+  const scoopColor = isDark ? 'rgba(17,24,39,0.95)' : 'rgba(255,255,255,0.95)';
 
   useEffect(() => {
     getLocationIndex()
@@ -142,9 +156,11 @@ export default function HomePage() {
 
   // Open detail view in the sheet (from pin tap or card tap)
   const handleOpenDetail = useCallback((slug: string) => {
-    // Save list scroll position before switching to detail
-    const scrollEl = document.querySelector(".fixed.bottom-0 .overflow-y-auto");
+    // Save list scroll position and sheet height before switching to detail
+    const scrollEl = document.querySelector(".fixed.bottom-2 .overflow-y-auto") as HTMLElement | null;
     if (scrollEl) listScrollRef.current = scrollEl.scrollTop;
+    const sheetH = parseInt(getComputedStyle(document.documentElement).getPropertyValue("--sheet-height")) || null;
+    savedSheetHeightRef.current = sheetH;
 
     setDetailSlug(slug);
     setSheetView("detail");
@@ -159,14 +175,20 @@ export default function HomePage() {
     setDetailSlug(null);
     setHighlightedSlug(null);
     setFocusSheetHeight(undefined);
+    // Restore sheet to previous snap position
+    if (savedSheetHeightRef.current) {
+      setSnapTarget(savedSheetHeightRef.current);
+    }
     // Restore list scroll position after React re-renders the list
     requestAnimationFrame(() => {
-      const scrollEl = document.querySelector(".fixed.bottom-0 .overflow-y-auto");
+      const scrollEl = document.querySelector(".fixed.bottom-2 .overflow-y-auto") as HTMLElement | null;
       if (scrollEl) scrollEl.scrollTop = listScrollRef.current;
     });
   }, []);
 
   const handleOpenDesktopDetail = useCallback((slug: string) => {
+    // Save desktop list scroll position
+    if (desktopScrollRef.current) listScrollRef.current = desktopScrollRef.current.scrollTop;
     setDetailSlug(slug);
     setSheetView("detail");
   }, []);
@@ -175,6 +197,10 @@ export default function HomePage() {
     setSheetView("list");
     setDetailSlug(null);
     setHighlightedSlug(null);
+    // Restore desktop list scroll position after React re-renders
+    requestAnimationFrame(() => {
+      if (desktopScrollRef.current) desktopScrollRef.current.scrollTop = listScrollRef.current;
+    });
   }, []);
 
   const handleMarkerClick = useCallback((slug: string) => {
@@ -220,15 +246,31 @@ export default function HomePage() {
     <div className="fixed inset-0 overflow-hidden">
       {/* Desktop layout: side-by-side */}
       <div className="h-full flex overflow-hidden">
-        {/* Map — leave room for collapsed bottom sheet on mobile */}
+        {/* Map — edge-to-edge, extends into safe areas */}
         <div className="flex-1 relative overflow-hidden">
-          {/* Faded logo overlay */}
-          <div className="absolute left-3 right-3 z-10 flex items-center justify-between" style={{ top: "calc(0.75rem + env(safe-area-inset-top))" }}>
+          {/* Logo + auth — below filter button on mobile */}
+          <div
+            className="lg:hidden absolute left-3 right-3 z-10 flex items-center justify-between"
+            style={{ top: "calc(0.75rem + env(safe-area-inset-top) + 3rem)" }}
+          >
             <Link href="/" className="flex items-center gap-1.5 opacity-40">
               <Compass className="w-5 h-5 text-blue-600" />
               <span className="font-bold text-blue-700 text-sm">Drift</span>
             </Link>
-            <div className="opacity-70">
+            <div>
+              <AuthButton />
+            </div>
+          </div>
+          {/* Logo + auth — top row on desktop */}
+          <div
+            className="hidden lg:flex absolute left-3 right-[calc(24rem*1.2+1.5rem)] z-10 items-center justify-between"
+            style={{ top: "calc(0.75rem + env(safe-area-inset-top))" }}
+          >
+            <Link href="/" className="flex items-center gap-1.5 opacity-40">
+              <Compass className="w-5 h-5 text-blue-600" />
+              <span className="font-bold text-blue-700 text-sm">Drift</span>
+            </Link>
+            <div>
               <AuthButton />
             </div>
           </div>
@@ -241,9 +283,22 @@ export default function HomePage() {
             onMarkerHover={handleMarkerHover}
             onUserLocation={handleUserLocation}
           />
-          {/* Floating filter button — above the sheet on mobile, bottom-left on desktop */}
+          {/* Floating filter button — top on mobile (full width) */}
           <div
-            className="absolute left-3 z-20 transition-opacity bottom-4 max-lg:[bottom:calc(var(--sheet-height,96px)+12px)]"
+            className="lg:hidden absolute z-20 left-3 right-3"
+            style={{ top: "calc(0.75rem + env(safe-area-inset-top))" }}
+          >
+            <FilterButton
+              filters={filters}
+              constraints={constraints}
+              onClick={() => setPrefsOpen(true)}
+              enrichments={enrichments}
+              fullWidth
+            />
+          </div>
+          {/* Floating filter button — bottom-left on desktop */}
+          <div
+            className="hidden lg:block absolute z-20 left-3 bottom-4"
           >
             <FilterButton
               filters={filters}
@@ -254,11 +309,11 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Desktop sidebar (hidden on mobile) */}
-        <div data-testid="location-sidebar" className="hidden lg:flex lg:flex-col lg:w-96 lg:border-l lg:border-gray-200 dark:lg:border-gray-700 dark:bg-gray-900">
+        {/* Desktop sidebar — floats over map */}
+        <div data-testid="location-sidebar" className="hidden lg:flex lg:flex-col lg:w-[24rem] absolute right-3 top-3 bottom-3 z-20 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/50 dark:border-gray-700/50 overflow-hidden [zoom:1.2]">
           {detailSlug && sheetView === "detail" ? (
             <>
-              <div className="p-3 border-b border-gray-200 dark:border-gray-700 flex items-center gap-2">
+              <div className="p-3 border-b border-white/30 dark:border-gray-700 flex items-center gap-2">
                 <button
                   onClick={handleBackToListDesktop}
                   className="flex items-center gap-1.5 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors"
@@ -273,12 +328,18 @@ export default function HomePage() {
             </>
           ) : (
             <>
-              <FilterBar
-                filters={filters}
-                onChange={setFilters}
-                resultCount={filteredLocations.length}
-              />
-              <div className="flex-1 overflow-y-auto">
+              <div className="relative z-20">
+                <FilterBar
+                  filters={filters}
+                  onChange={setFilters}
+                  resultCount={filteredLocations.length}
+                />
+              </div>
+              <div className="relative flex-1 min-h-0 shadow-[inset_0_-6px_12px_rgba(0,0,0,0.08)]">
+                {/* Scooped/inverted corners — layered over scroll area, not inside it */}
+                <div className="hidden lg:block absolute left-0 w-5 h-5 pointer-events-none z-20" style={{ top: '-1px', background: `radial-gradient(circle at 100% 100%, transparent 20px, ${scoopColor} 20.5px)`, filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.12))' }} />
+                <div className="hidden lg:block absolute right-0 w-5 h-5 pointer-events-none z-20" style={{ top: '-1px', background: `radial-gradient(circle at 0% 100%, transparent 20px, ${scoopColor} 20.5px)`, filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.12))' }} />
+                <div ref={desktopScrollRef} className="h-full overflow-y-auto">
                 {loadError && (
                   <div className="mx-3 mt-2 p-3 bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 rounded-lg text-sm text-red-700 dark:text-red-300">
                     Failed to load locations. Please try refreshing the page.
@@ -293,6 +354,7 @@ export default function HomePage() {
                   activeConstraints={constraints}
                   enrichments={enrichments}
                 />
+                </div>
               </div>
             </>
           )}
@@ -304,11 +366,22 @@ export default function HomePage() {
         snapTo={snapTarget}
         onHeightChange={handleSheetHeightChange}
         onExpandedChange={handleSheetExpandedChange}
+        scoopColor={isDark ? 'rgba(17,24,39,0.9)' : 'rgba(255,255,255,0.9)'}
         header={
           sheetView === "detail" && detailSlug ? (
-            <div className="flex items-center gap-2 px-3 py-1">
-              <button onClick={handleBackToList} className="shrink-0 p-1" aria-label="Back to list">
-                <ArrowLeft className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+            /* Stop all drags on the detail header — prevents sheet cycling on touch */
+            <div
+              className="flex items-center gap-2 px-3 py-1"
+              onTouchStart={(e) => e.stopPropagation()}
+              onMouseDown={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={handleBackToList}
+                className="shrink-0 p-2.5 -m-1.5 rounded-xl active:bg-gray-200/60 dark:active:bg-gray-700/60"
+                style={{ touchAction: "auto" }}
+                aria-label="Back to list"
+              >
+                <ArrowLeft className="w-5 h-5 text-gray-500 dark:text-gray-400" />
               </button>
               <span className="text-sm font-semibold text-gray-900 dark:text-gray-100 truncate">
                 {allLocations.find((l) => l.slug === detailSlug)?.name ?? "Details"}
@@ -316,7 +389,7 @@ export default function HomePage() {
             </div>
           ) : (
             <>
-              <div className="flex items-center gap-2 px-3 py-1 border-b border-gray-100 dark:border-gray-800">
+              <div className="flex items-center gap-2 mx-3 my-1 px-3 py-2 bg-white/60 dark:bg-gray-800/60 rounded-xl border border-gray-200/50 dark:border-gray-700/50 shadow-sm">
                 <Search className="w-4 h-4 text-gray-400 dark:text-gray-500 shrink-0" />
                 <input
                   type="text"
@@ -377,7 +450,14 @@ export default function HomePage() {
       {/* Preference panel (modal overlay) */}
       <PreferencePanel
         open={prefsOpen}
-        onClose={() => setPrefsOpen(false)}
+        onClose={() => {
+          setPrefsOpen(false);
+          // If the sheet is fully collapsed (peek), expand to middle so the
+          // updated list is visible without the user needing to drag it up.
+          if (!isSheetExpanded) {
+            setSnapTarget(window.innerHeight * SNAP_HALF);
+          }
+        }}
         filters={filters}
         constraints={constraints}
         onFiltersChange={setFilters}

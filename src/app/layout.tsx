@@ -43,8 +43,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${merriweather.variable} dark:bg-gray-950`}>
-      <body className="h-full text-gray-900 dark:text-gray-100 dark:bg-gray-950 antialiased">
+    <html lang="en" className={`${merriweather.variable}`}>
+      <body className="h-full text-gray-900 dark:text-gray-100 antialiased">
         <Providers>
           {children}
         </Providers>

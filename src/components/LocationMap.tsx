@@ -6,7 +6,7 @@ import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster";
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
-import { Crosshair } from "lucide-react";
+import { Crosshair, Plus, Minus } from "lucide-react";
 
 import type { PlaceIndexEntry, PlaceType, Coordinates, OpeningHoursEntry } from "@/lib/types";
 import type { ScoredPlace } from "@/lib/constraints";
@@ -245,8 +245,6 @@ export default function LocationMap({
     };
     mql.addEventListener("change", onThemeChange);
 
-    L.control.zoom({ position: "topright" }).addTo(map);
-
     const clusterGroup = L.markerClusterGroup({
       maxClusterRadius: 50,
       spiderfyOnMaxZoom: true,
@@ -337,6 +335,7 @@ export default function LocationMap({
       map.remove();
       mapRef.current = null;
       clusterGroupRef.current = null;
+      if (window.__leafletMap === map) window.__leafletMap = undefined;
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -586,23 +585,44 @@ export default function LocationMap({
     <div className="relative h-full w-full">
       <div ref={mapContainerRef} className="h-full w-full isolate" />
 
-      {/* Locate me button — positioned above mobile bottom sheet */}
-      <button
-        onClick={handleLocateMe}
-        disabled={locating}
-        aria-label="Show my location"
-        data-testid="locate-button"
-        className="absolute right-4 z-50 flex h-10 w-10 items-center justify-center rounded-full bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 active:bg-gray-100 dark:active:bg-gray-600 transition-colors disabled:opacity-60 lg:bottom-4"
-        style={{ bottom: `calc(var(--sheet-height, 96px) + 84px)` }}
+      {/* Zoom + locate controls — positioned above mobile bottom sheet */}
+      <div
+        className="absolute right-4 z-50 flex flex-col gap-2 lg:bottom-3 lg:right-[calc(24rem*1.2+1.5rem)] max-lg:[bottom:calc(var(--sheet-height,96px)+20px)]"
       >
-        <Crosshair className={`w-5 h-5 text-blue-600 ${locating ? "animate-spin" : ""}`} />
-      </button>
+        {/* Zoom in/out */}
+        <div className="flex flex-col rounded-xl overflow-hidden shadow-[0_2px_8px_rgba(0,0,0,0.15)] dark:shadow-[0_2px_8px_rgba(0,0,0,0.4)]">
+          <button
+            onClick={() => mapRef.current?.zoomIn()}
+            aria-label="Zoom in"
+            className="flex items-center justify-center w-[36px] h-[36px] bg-white dark:bg-[#1e293b] hover:bg-[#f1f5f9] dark:hover:bg-[#334155] active:bg-[#e2e8f0] dark:active:bg-[#475569] transition-colors border-b border-[#e2e8f0] dark:border-[#334155]"
+          >
+            <Plus className="w-[18px] h-[18px] text-[#334155] dark:text-[#94a3b8]" strokeWidth={2.5} />
+          </button>
+          <button
+            onClick={() => mapRef.current?.zoomOut()}
+            aria-label="Zoom out"
+            className="flex items-center justify-center w-[36px] h-[36px] bg-white dark:bg-[#1e293b] hover:bg-[#f1f5f9] dark:hover:bg-[#334155] active:bg-[#e2e8f0] dark:active:bg-[#475569] transition-colors"
+          >
+            <Minus className="w-[18px] h-[18px] text-[#334155] dark:text-[#94a3b8]" strokeWidth={2.5} />
+          </button>
+        </div>
+        {/* Locate me */}
+        <button
+          onClick={handleLocateMe}
+          disabled={locating}
+          aria-label="Show my location"
+          data-testid="locate-button"
+          className="flex items-center justify-center w-[36px] h-[36px] rounded-xl bg-white dark:bg-[#1e293b] shadow-[0_2px_8px_rgba(0,0,0,0.15)] dark:shadow-[0_2px_8px_rgba(0,0,0,0.4)] hover:bg-[#f1f5f9] dark:hover:bg-[#334155] active:bg-[#e2e8f0] dark:active:bg-[#475569] transition-colors disabled:opacity-60"
+        >
+          <Crosshair className={`w-[18px] h-[18px] text-[#334155] dark:text-[#94a3b8] ${locating ? "animate-spin" : ""}`} />
+        </button>
+      </div>
 
       {/* Error toast */}
       {locateError && (
         <div
           className="absolute right-4 z-50 rounded-lg bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 px-3 py-2 text-sm text-red-700 dark:text-red-300 shadow-md lg:bottom-16"
-          style={{ bottom: `calc(var(--sheet-height, 96px) + 132px)` }}
+          style={{ bottom: `calc(var(--sheet-height, 96px) + 160px)` }}
         >
           {locateError}
         </div>

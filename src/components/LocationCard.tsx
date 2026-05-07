@@ -1,10 +1,9 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import type { PlaceIndexEntry, Coordinates, Constraints } from "@/lib/types";
 import { haversineDistanceKm, formatDistance } from "@/lib/useCurrentLocation";
-import { buildFitParagraph } from "@/lib/fit";
 import type { EnrichmentIndex } from "@/lib/integrations/enrichment-types";
 import { useEdgeColor, darkenEdgeColor } from "@/lib/useEdgeColor";
 import TypeBadge from "./TypeBadge";
@@ -29,8 +28,8 @@ export default function LocationCard({
   isHighlighted,
   userLocation,
   onCardClick,
-  activeConstraints,
-  enrichments,
+  activeConstraints: _activeConstraints,
+  enrichments: _enrichments,
 }: LocationCardProps) {
   const driveMinutes = (location as { _driveMinutes?: number | null })._driveMinutes;
   const distance = driveMinutes != null
@@ -45,10 +44,12 @@ export default function LocationCard({
       ? formatDistance(haversineDistanceKm(userLocation, location.coordinates))
       : null;
 
-  const photo = location.photo && !location.photo.includes("placeholder") ? location.photo : undefined;
+  const photoUrl = location.photo && !location.photo.includes("placeholder") ? location.photo : undefined;
+  const [imgFailed, setImgFailed] = useState(false);
+  const photo = imgFailed ? undefined : photoUrl;
 
   const cardRef = useRef<HTMLElement>(null);
-  const fitBlurb = buildFitParagraph(location.fit, activeConstraints ?? null, location, enrichments ?? null, driveMinutes);
+  // Fit blurb intentionally not shown on cards (shown in detail panel only)
   const hoursStatus = formatHoursStatus(location.openingHours);
 
   const edgeColor = useEdgeColor(photo, cardRef);
@@ -61,12 +62,8 @@ export default function LocationCard({
       : "border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm hover:shadow-md"
   }`;
 
-  // Shared bottom row: highlights / fit / tags
-  const bottomRow = fitBlurb ? (
-    <p className={`text-sm mt-1.5 ${photo ? "max-w-[65%] text-white/90 drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]" : "line-clamp-2 text-emerald-700 dark:text-emerald-400"}`}>
-      {fitBlurb}
-    </p>
-  ) : location.highlights.length > 0 ? (
+  // Shared bottom row: highlights / tags (no fit blurb)
+  const bottomRow = location.highlights.length > 0 ? (
     <p className={`text-sm mt-1.5 ${photo ? "max-w-[65%] text-white/80 drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]" : "line-clamp-1 text-gray-600 dark:text-gray-400"}`}>
       {location.highlights[0]}
     </p>
@@ -128,6 +125,8 @@ export default function LocationCard({
           src={photo}
           alt=""
           loading="lazy"
+          crossOrigin="anonymous"
+          onError={() => setImgFailed(true)}
           className="w-full h-full object-cover brightness-90 saturate-[0.85]"
         />
       </div>

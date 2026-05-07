@@ -11,9 +11,10 @@ interface FilterButtonProps {
   constraints: Constraints;
   onClick: () => void;
   enrichments?: EnrichmentIndex | null;
+  fullWidth?: boolean;
 }
 
-export default function FilterButton({ filters, constraints, onClick, enrichments }: FilterButtonProps) {
+export default function FilterButton({ filters, constraints, onClick, enrichments, fullWidth }: FilterButtonProps) {
   const count = activeFilterCount(filters, constraints);
 
   // Pick a representative forecast (first enriched location) for the sentence preamble
@@ -30,9 +31,9 @@ export default function FilterButton({ filters, constraints, onClick, enrichment
       onClick={onClick}
       aria-label="Open filter preferences"
       aria-haspopup="dialog"
-      className="flex items-start gap-2 backdrop-blur-md bg-white/85 dark:bg-gray-900/85
+      className={`flex items-start gap-2 backdrop-blur-md bg-white/85 dark:bg-gray-900/85
                  rounded-2xl shadow-lg border border-white/60 dark:border-gray-700/60
-                 px-3 py-2 lg:px-4 lg:py-2.5 transition-all hover:shadow-xl active:scale-[0.98]"
+                 px-3 py-2 lg:px-4 lg:py-2.5 transition-all hover:shadow-xl active:scale-[0.98]${fullWidth ? ' w-full' : ''}`}
     >
       <div className="relative mt-0.5">
         <SlidersHorizontal className="w-4 h-4 lg:w-5 lg:h-5 text-gray-600 dark:text-gray-300" />

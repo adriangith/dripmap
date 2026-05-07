@@ -54,12 +54,16 @@ interface BottomSheetProps {
   onHeightChange?: (height: number) => void;
   /** Fires only when crossing the expanded/collapsed threshold */
   onExpandedChange?: (expanded: boolean) => void;
+  /** Color for scooped corner backgrounds */
+  scoopColor?: string;
 }
 
-export default function BottomSheet({ children, header, snapTo, onHeightChange, onExpandedChange }: BottomSheetProps) {
+export default function BottomSheet({ children, header, snapTo, onHeightChange, onExpandedChange, scoopColor = 'rgba(255,255,255,0.9)' }: BottomSheetProps) {
   const sheetRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
   // React state only used for content-visibility threshold — NOT updated per pixel
-  const [, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const heightRef = useRef(SNAP_PEEK);
   const draggingRef = useRef(false);
   const animatingRef = useRef(false);
@@ -72,6 +76,10 @@ export default function BottomSheet({ children, header, snapTo, onHeightChange, 
   const lastTouchY = useRef(0);
   const lastTouchTime = useRef(0);
   const velocityRef = useRef(0);
+
+  // Pull-to-collapse: track when a scroll-area touch should become a panel drag
+  const scrollTouchStartY = useRef(0);
+  const scrollDragActive = useRef(false);
 
   // Write height directly to the DOM — no React re-render
   const applyHeight = useCallback((h: number) => {
@@ -94,8 +102,22 @@ export default function BottomSheet({ children, header, snapTo, onHeightChange, 
     applyHeight(SNAP_PEEK);
   }, [applyHeight]);
 
+  // Show shadow/corners when filter bar area has scrolled out of view
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const onScroll = () => {
+      // Show once scrolled past the first child (filter bar area)
+      const firstChild = el.firstElementChild as HTMLElement | null;
+      const threshold = firstChild?.offsetHeight ?? 0;
+      setScrolled(el.scrollTop >= threshold);
+    };
+    el.addEventListener("scroll", onScroll, { passive: true });
+    return () => el.removeEventListener("scroll", onScroll);
+  }, []);
+
   const getSnaps = useCallback(() => {
-    const vh = window.innerHeight;
+    const vh = Math.max(window.innerHeight, 200); // guard against 0 during early layout
     return [SNAP_PEEK, vh * SNAP_HALF, vh * SNAP_FULL];
   }, []);
 
@@ -272,6 +294,60 @@ export default function BottomSheet({ children, header, snapTo, onHeightChange, 
     };
   }, [handleDragMove, handleDragEnd, handleHandleTap]);
 
+  // Pull-to-collapse: when scrolled to top and pulling down, drag the panel
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    const onTouchStart = (e: TouchEvent) => {
+      scrollTouchStartY.current = e.touches[0].clientY;
+      scrollDragActive.current = false;
+    };
+
+    const onTouchMove = (e: TouchEvent) => {
+      const clientY = e.touches[0].clientY;
+      const pullingDown = clientY > scrollTouchStartY.current;
+
+      // If already dragging the panel, continue
+      if (scrollDragActive.current) {
+        e.preventDefault();
+        e.stopPropagation(); // prevent window touchmove from double-counting distance
+        handleDragMove(clientY);
+        return;
+      }
+
+      // Transition to panel drag if at scroll top and pulling down
+      if (pullingDown && el.scrollTop <= 0) {
+        scrollDragActive.current = true;
+        e.preventDefault();
+        handleDragStart(clientY);
+        return;
+      }
+    };
+
+    const onTouchEnd = () => {
+      if (scrollDragActive.current) {
+        scrollDragActive.current = false;
+        draggingRef.current = false;
+        if (dragDistanceRef.current < 5) {
+          handleHandleTap();
+        } else {
+          handleDragEnd();
+        }
+      }
+    };
+
+    el.addEventListener("touchstart", onTouchStart, { passive: true });
+    el.addEventListener("touchmove", onTouchMove, { passive: false });
+    el.addEventListener("touchend", onTouchEnd);
+
+    return () => {
+      el.removeEventListener("touchstart", onTouchStart);
+      el.removeEventListener("touchmove", onTouchMove);
+      el.removeEventListener("touchend", onTouchEnd);
+    };
+  }, [handleDragStart, handleDragMove, handleDragEnd, handleHandleTap]);
+
   useEffect(() => {
     return () => cancelSpring.current?.();
   }, []);
@@ -279,12 +355,12 @@ export default function BottomSheet({ children, header, snapTo, onHeightChange, 
   return (
     <div
       ref={sheetRef}
-      className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 rounded-t-2xl shadow-[0_-2px_16px_rgba(0,0,0,0.12)] dark:shadow-[0_-2px_16px_rgba(0,0,0,0.4)] z-40 flex flex-col lg:hidden"
+      className="fixed bottom-2 left-2 right-2 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl rounded-3xl shadow-[0_-4px_24px_rgba(0,0,0,0.15)] dark:shadow-[0_-4px_24px_rgba(0,0,0,0.5)] border border-white/50 dark:border-gray-700/50 z-40 flex flex-col lg:hidden"
       style={{ height: SNAP_PEEK }}
     >
       {/* Drag handle — enlarged 48px hit target */}
       <div
-        className="flex items-center justify-center h-12 cursor-grab active:cursor-grabbing shrink-0"
+        className="flex items-center justify-center h-5 cursor-grab active:cursor-grabbing shrink-0"
         style={{ touchAction: "none" }}
         onMouseDown={(e) => handleDragStart(e.clientY)}
         onTouchStart={(e) => {
@@ -297,13 +373,25 @@ export default function BottomSheet({ children, header, snapTo, onHeightChange, 
 
       {/* Header — outside scroll, popovers can overflow visibly */}
       {header && (
-        <div className="shrink-0 relative z-10 overflow-visible">
+        <div
+          className={`shrink-0 relative z-10 overflow-visible transition-shadow duration-200 ${scrolled ? 'shadow-[0_4px_12px_rgba(0,0,0,0.12)]' : ''}`}
+          style={{ touchAction: "none" }}
+          onTouchStart={(e) => handleDragStart(e.touches[0].clientY)}
+          onMouseDown={(e) => handleDragStart(e.clientY)}
+        >
           {header}
+          {/* Scooped/inverted corners — visible only when scrolled */}
+          {scrolled && (
+            <>
+              <div className="absolute top-full left-0 w-5 h-5 pointer-events-none z-50" style={{ background: `radial-gradient(circle at 100% 100%, transparent 20px, ${scoopColor} 20.5px)`, filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.12))' }} />
+              <div className="absolute top-full right-0 w-5 h-5 pointer-events-none z-50" style={{ background: `radial-gradient(circle at 0 100%, transparent 20px, ${scoopColor} 20.5px)`, filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.12))' }} />
+            </>
+          )}
         </div>
       )}
 
       {/* Scrollable content */}
-      <div className="flex-1 overflow-y-auto overscroll-contain">
+      <div ref={scrollRef} className={`flex-1 overflow-y-auto overscroll-contain rounded-b-3xl ${isExpanded ? 'shadow-[inset_0_-6px_12px_rgba(0,0,0,0.08)]' : ''}`}>
         {children}
       </div>
     </div>

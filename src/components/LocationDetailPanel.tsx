@@ -326,12 +326,10 @@ export default function LocationDetailPanel({
     <div className="px-4 pb-6">
       {/* Title and badges */}
       <div className="mb-3">
-        <div className="flex items-start justify-between gap-2">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">{location.name}</h2>
-          <div className="flex gap-1.5 shrink-0">
-            <BookmarkButton slug={location.slug} />
-            <VisitedButton slug={location.slug} />
-          </div>
+        <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">{location.name}</h2>
+        <div className="flex items-center gap-2 mt-1.5">
+          <BookmarkButton slug={location.slug} />
+          <VisitedButton slug={location.slug} />
         </div>
         <div className="flex items-center gap-2 mt-1">
           <TypeBadge type={location.type} />
