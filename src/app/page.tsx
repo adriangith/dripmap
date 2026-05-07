@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useMemo, useRef } from "react";
+import { useState, useEffect, useLayoutEffect, useCallback, useMemo, useRef } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { Compass, Search, ArrowLeft } from "lucide-react";
@@ -11,7 +11,7 @@ import FilterButton from "@/components/FilterButton";
 import PreferencePanel from "@/components/PreferencePanel";
 import LocationList from "@/components/LocationList";
 import LocationDetailPanel from "@/components/LocationDetailPanel";
-import BottomSheet, { SNAP_HALF } from "@/components/BottomSheet";
+import BottomSheet, { SNAP_HALF, SNAP_PEEK } from "@/components/BottomSheet";
 import { filterLocations } from "@/lib/filters";
 import { applyConstraints } from "@/lib/constraints";
 import type { PlaceIndexEntry, Filters, Coordinates, Constraints } from "@/lib/types";

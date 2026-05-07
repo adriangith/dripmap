@@ -117,7 +117,7 @@ export default function BottomSheet({ children, header, snapTo, onHeightChange, 
   }, []);
 
   const getSnaps = useCallback(() => {
-    const vh = window.innerHeight;
+    const vh = Math.max(window.innerHeight, 200); // guard against 0 during early layout
     return [SNAP_PEEK, vh * SNAP_HALF, vh * SNAP_FULL];
   }, []);
 
@@ -311,6 +311,7 @@ export default function BottomSheet({ children, header, snapTo, onHeightChange, 
       // If already dragging the panel, continue
       if (scrollDragActive.current) {
         e.preventDefault();
+        e.stopPropagation(); // prevent window touchmove from double-counting distance
         handleDragMove(clientY);
         return;
       }

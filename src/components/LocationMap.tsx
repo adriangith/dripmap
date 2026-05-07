@@ -335,6 +335,7 @@ export default function LocationMap({
       map.remove();
       mapRef.current = null;
       clusterGroupRef.current = null;
+      if (window.__leafletMap === map) window.__leafletMap = undefined;
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
